@@ -16,6 +16,8 @@ Tout est gratuit, rien à installer : les outils s'ouvrent par double-clic dans 
 | `verificateur-html-sharepoint.html` | Vérificateur général (liens, scripts externes, taille, images) |
 | `modele-page-sharepoint.html` | Page simple pour confirmer que la fonctionnalité marche |
 | `README.md` | Guide général sur les pages HTML SharePoint |
+| `ETAT-DU-PROJET.md` | Résumé des constats et prochaines étapes |
+| `test.html` | Test rapide : SharePoint accepte-t-il les pages HTML ? |
 
 ---
 
@@ -87,6 +89,8 @@ Si le fichier se télécharge au lieu de s'afficher, l'interface n'est pas encor
 ## 5. Guide de test, le jour où « Page HTML » apparaît
 
 Faites les tests **dans votre site sandbox**, dans cet ordre. Comptez environ 20 minutes.
+
+> **Constat du 14 octobre 2026** : « + Nouveau » ne propose que Page Wiki, Page Web Part et Lien ; `test.html` ne peut pas être ajouté à Pages du site ; ouvert dans un onglet, il fonctionne (JavaScript ✅). La fonctionnalité n'est donc **pas encore activée**. Refaites le test rapide de `ETAT-DU-PROJET.md` (section 4) chaque semaine.
 
 ### Test 1 : la fonctionnalité marche-t-elle ? (2 min)
 1. Pages du site › **Charger › Fichiers** › `modele-page-sharepoint.html`.

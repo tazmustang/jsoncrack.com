@@ -6,7 +6,9 @@ Tout est **gratuit** et ne demande **aucune installation** : deux fichiers HTML 
 
 | Fichier | Rôle |
 |---|---|
+| `ETAT-DU-PROJET.md` | **À lire en premier** : où on en est, constats, ce qu'il ne faut pas faire, prochaines étapes |
 | `README.md` | Ce guide : recherche, règles, installation, utilisation, dépannage |
+| `test.html` | Petit fichier de test (fond bleu + bouton) pour vérifier si SharePoint accepte les pages HTML |
 | `modele-page-sharepoint.html` | Modèle de page d'accueil prêt à personnaliser et à téléverser |
 | `verificateur-html-sharepoint.html` | Outil local : vérifie un fichier HTML avant téléversement, corrige les liens, convertit les images en base64 |
 | `test-bac-a-sable.html` | Page de diagnostic à téléverser comme « Page HTML » : indique ce que SharePoint autorise réellement (stockage, téléchargements, fenêtres, liens…) |
@@ -139,6 +141,11 @@ Le modèle contient : en-tête, menu d'ancres collant, cartes « outils », indi
 2. **Charger › Fichiers**, puis choisissez votre `.html`. Pour une page avec fichiers annexes, utilisez **Charger › Dossier** en conservant la structure.
 3. Ouvrez la page, vérifiez l'affichage et **testez chaque lien**.
 4. Cliquez sur **Publier**. Pour la mettre en avant, ajoutez-la à la navigation du site ou définissez-la comme page d'accueil (… › Définir comme page d'accueil), après test.
+
+### Erreurs fréquentes : Page Wiki, Page Web Part, modèle de site
+
+- **Page Wiki (classique)** et **Page Web Part (classique)** du menu « + Nouveau » : SharePoint **retire le JavaScript** collé dedans. Ce ne sont pas des pages HTML.
+- **Paramètres › Appliquer un modèle de site** : sert à restructurer tout un site (listes, thème, navigation). Fermez la fenêtre sans rien choisir.
 
 ### Erreur fréquente : la « page d'application »
 
