@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Correctifs – Appréciation de la contribution</title>
+<!--
+  Outil 100 % local : ouvrez ce fichier dans Edge (double-clic).
+  Il lit VOTRE fichier appreciation.html, applique les correctifs v3.1
+  et vous fait télécharger la version corrigée. Rien n'est envoyé sur Internet.
+-->
+<style>
+  :root { --p:#074b98; --navy:#00285e; --ok:#107c10; --warn:#bc4b09; --err:#c50f1f; --bord:#e0e0e0; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:"Segoe UI", system-ui, Arial, sans-serif; background:#f5f5f5; color:#242424; line-height:1.5; }
+  header { background:var(--navy); color:#fff; padding:24px 16px; }
+  header h1 { margin:0; font-size:1.5rem; }
+  header p { margin:4px 0 0; opacity:.9; }
+  main { max-width:900px; margin:0 auto; padding:16px; }
+  .bloc { background:#fff; border:1px solid var(--bord); border-radius:8px; padding:20px; margin:16px 0; }
+  h2 { margin:0 0 12px; font-size:1.2rem; color:var(--navy); }
+  .depot { border:2px dashed var(--p); border-radius:8px; padding:32px; text-align:center; cursor:pointer; background:#f3f8fd; }
+  .depot.survol { background:#dbeafa; }
+  button { font:inherit; padding:10px 18px; border-radius:6px; border:1px solid var(--p); background:var(--p); color:#fff; cursor:pointer; font-weight:600; }
+  button:disabled { opacity:.5; cursor:not-allowed; }
+  ul.res { list-style:none; padding:0; margin:12px 0; }
+  ul.res li { border-left:5px solid; padding:8px 12px; margin:6px 0; background:#fafafa; border-radius:0 6px 6px 0; }
+  li.ok { border-color:var(--ok); } li.deja { border-color:#5c5c5c; } li.ko { border-color:var(--err); }
+  .petit { color:#5c5c5c; font-size:.9rem; }
+  code { background:#eee; padding:1px 5px; border-radius:4px; }
+  table { border-collapse:collapse; width:100%; font-size:.92rem; }
+  th, td { border:1px solid var(--bord); padding:8px; text-align:left; vertical-align:top; }
+  th { background:#eef4fb; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Correctifs v3.1 – Appréciation de la contribution</h1>
+  <p>Rend l'application compatible avec les « pages HTML » SharePoint, sans toucher à vos images ni à vos données.</p>
+</header>
+<main>
+  <section class="bloc">
+    <h2>1. Choisir votre fichier</h2>
+    <div class="depot" id="depot" tabindex="0" role="button" aria-label="Choisir le fichier HTML de l'application">
+      Glissez ici votre fichier <strong>appreciation.html</strong> (version 3.0), ou cliquez pour le choisir.
+      <input type="file" id="fichier" accept=".html,.htm" hidden>
+    </div>
+    <div id="sortie" hidden>
+      <p class="petit" id="info"></p>
+      <ul class="res" id="resultats"></ul>
+      <p id="bilan"></p>
+      <button id="telecharger">⬇️ Télécharger la version corrigée</button>
+    </div>
+  </section>
+
+  <section class="bloc">
+    <h2>Ce que font les correctifs</h2>
+    <table>
+      <tr><th>Correctif</th><th>Pourquoi</th></tr>
+      <tr><td>Message « Cette page ne peut pas s'exécuter ici »</td><td>Si SharePoint bloque le JavaScript (page wiki classique), l'utilisateur voit une explication au lieu d'un écran de mot de passe qui ne répond pas.</td></tr>
+      <tr><td>Écran de mot de passe sauté si le stockage est bloqué</td><td>Dans une page HTML SharePoint, <code>localStorage</code> est interdit : l'écran restait figé.</td></tr>
+      <tr><td>« 💾 Copie locale » fonctionne toujours</td><td>Sans stockage, le bouton télécharge quand même le fichier .json (avant, le téléchargement était sauté si l'enregistrement dans le navigateur échouait).</td></tr>
+      <tr><td>Bandeau « Ouvrir l'application » non bloquant</td><td>Il s'affichait dès que la page était dans un cadre, donc toujours dans une page HTML SharePoint.</td></tr>
+      <tr><td>Bandeau d'information adapté</td><td>Explique quoi faire quand la sauvegarde dans le navigateur est impossible.</td></tr>
+      <tr><td>Dépôt possible même si les fenêtres de confirmation sont bloquées</td><td>Dans le bac à sable, <code>confirm()</code> peut répondre « Non » sans s'afficher : le bouton « Déposer » ne faisait alors plus rien. Les messages d'erreur s'affichent aussi dans la page.</td></tr>
+      <tr><td>Numéro de version 3.1</td><td>Pour savoir quelle version est en ligne.</td></tr>
+    </table>
+  </section>
+</main>
+
+<script>
+(function () {
+  var MESSAGE_JS_BLOQUE =
+    '<div id="jsBloque" style="position:fixed;inset:0;z-index:100000;background:#00285e;color:#fff;display:flex;align-items:center;justify-content:center;text-align:center;padding:30px;font-family:Segoe UI,Arial,sans-serif;">' +
+    '<div><h2 style="margin:0 0 10px;">Cette page ne peut pas s\'exécuter ici</h2>' +
+    '<p style="margin:0;">SharePoint bloque le JavaScript à cet endroit.<br>Téléchargez le fichier HTML et ouvrez-le dans Edge, ou utilisez une « page HTML » SharePoint.</p></div></div>';
+
+  var UTILITAIRES =
+    '/* ---------- Correctifs v3.1 : compatibilité page HTML SharePoint ---------- */\n' +
+    '(function(){ var b = document.getElementById(\'jsBloque\'); if(b) b.parentNode.removeChild(b); })();\n' +
+    'function storageDispo(){ try{ localStorage.setItem(\'__t\',\'1\'); localStorage.removeItem(\'__t\'); return true; }catch(e){ return false; } }\n';
+
+  // Chaque correctif : marqueur (déjà appliqué ?), motif à trouver, remplacement
+  var CORRECTIFS = [
+    { nom: "Numéro de version 3.1", deja: "Version 3.1",
+      motif: /(<title>[^<]*<\/title>)/i,
+      remp: "$1\n<!-- Version 3.1 — correctifs de compatibilité « page HTML SharePoint » (stockage bloqué, bandeau, message si script bloqué) -->" },
+    { nom: "Message si le JavaScript est bloqué", deja: 'id="jsBloque"',
+      motif: /<body([^>]*)>/i,
+      remp: function (m, attrs) { return "<body" + attrs + ">\n" + MESSAGE_JS_BLOQUE + "\n"; } },
+    { nom: "Fonctions utilitaires (détection du stockage)", deja: "function storageDispo(",
+      motif: /<script>/,
+      remp: function () { return "<script>\n" + UTILITAIRES; } },
+    { nom: "Bandeau « Ouvrir l'application » non bloquant", deja: "v3.1 : plus de bandeau",
+      motif: /return inIframe \|\| webParam;/,
+      remp: "return webParam; /* v3.1 : plus de bandeau bloquant dans un iframe (page HTML SharePoint) */" },
+    { nom: "Écran de mot de passe sauté si le stockage est bloqué", deja: "!cryptoAvailable || !storageDispo()",
+      motif: /if\(!cryptoAvailable\)\{(\s*\/\/ Navigateur sans Web Crypto)/,
+      remp: "if(!cryptoAvailable || !storageDispo()){ /* v3.1 */\n    localStorageOK = storageDispo();$1" },
+    { nom: "« 💾 Copie locale » fonctionne sans stockage", deja: "/* v3.1 */ if(manual)",
+      motif: /if\(!vaultKey\) return; \/\/ pas encore déverrouillé/,
+      remp: "if(!vaultKey){ /* v3.1 */ if(manual){ exportJSON(); note.textContent = '💾 Copie (.json) téléchargée à ' + new Date().toLocaleTimeString('fr-CA') + ' — conservation dans le navigateur indisponible ici.'; } return; }" },
+    { nom: "« 💾 Copie locale » télécharge même si l'enregistrement échoue", deja: "v3.1 : export même sans stockage",
+      motif: /note\.textContent = manual \? '⚠️ Sauvegarde locale indisponible ici — utilisez « Télécharger le brouillon \(\.json\) »' : '';/g,
+      remp: "if(manual){ exportJSON(); } /* v3.1 : export même sans stockage */ note.textContent = manual ? '💾 Copie (.json) téléchargée — conservation dans le navigateur indisponible ici.' : '';" },
+    { nom: "Dépôt : erreurs aussi affichées dans la page", deja: "v3.1 : erreur visible",
+      motif: /if\(erreur\)\{ alert\(erreur\); return; \}/,
+      remp: "if(erreur){ /* v3.1 : erreur visible */ var s31 = document.getElementById('sendStatus'); if(s31) s31.innerHTML = '<span class=\"flow-status err\">⚠️ ' + esc(erreur) + '</span>'; alert(erreur); return; }" },
+    { nom: "Dépôt : fonctionne même si les fenêtres de confirmation sont bloquées", deja: "v3.1 : confirm bloqué",
+      motif: /if\(!confirm\(confirmations\[action\]\)\) return;/,
+      remp: "var t31 = Date.now(); var ok31 = confirm(confirmations[action]); if(!ok31 && Date.now() - t31 > 50) return; /* v3.1 : confirm bloqué par SharePoint = on continue */" },
+    { nom: "Bandeau d'information : seulement si le stockage est bloqué", deja: "embedded && !storageDispo()",
+      motif: /if\(embedded\)\{/,
+      remp: "if(embedded && !storageDispo()){ /* v3.1 */" },
+    { nom: "Bandeau d'information : nouveau texte", deja: "Votre brouillon ne peut pas être conservé",
+      motif: /banner\.innerHTML = "[^"\n]*";/,
+      remp: 'banner.innerHTML = "ℹ️ Formulaire affiché dans une page SharePoint. <strong>Votre brouillon ne peut pas être conservé dans ce navigateur</strong> : utilisez régulièrement « 💾 Copie locale » (fichier .json) ou « ☁️ Déposer sur SharePoint ». Pour reprendre plus tard, utilisez « 📁 Charger un dossier ».";' },
+    { nom: "Message de sauvegarde au démarrage", deja: "n31 = document.getElementById",
+      motif: /(\n[ \t]*initVault\(\);)(\s*<\/script>)/,
+      remp: "$1\nif(!storageDispo()){ var n31 = document.getElementById('autosaveNote'); if(n31) n31.textContent = 'ℹ️ Sauvegarde dans le navigateur indisponible ici — utilisez « 💾 Copie locale » ou « ☁️ Déposer sur SharePoint ».'; } /* v3.1 */$2" }
+  ];
+
+  var texteCorrige = "", nomSource = "appreciation.html";
+  var depot = document.getElementById("depot"), champ = document.getElementById("fichier");
+  depot.addEventListener("click", function () { champ.click(); });
+  depot.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); champ.click(); } });
+  depot.addEventListener("dragover", function (e) { e.preventDefault(); depot.classList.add("survol"); });
+  depot.addEventListener("dragleave", function () { depot.classList.remove("survol"); });
+  depot.addEventListener("drop", function (e) { e.preventDefault(); depot.classList.remove("survol"); if (e.dataTransfer.files[0]) lire(e.dataTransfer.files[0]); });
+  champ.addEventListener("change", function () { if (champ.files[0]) lire(champ.files[0]); });
+
+  function lire(f) {
+    nomSource = f.name;
+    var r = new FileReader();
+    r.onload = function () { appliquer(String(r.result)); };
+    r.readAsText(f, "UTF-8");
+  }
+
+  function esc(s) { return String(s).replace(/[&<>]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]; }); }
+
+  function appliquer(texte) {
+    var lignes = [], nbOk = 0, nbDeja = 0, nbKo = 0;
+    if (texte.indexOf("vaultOverlay") === -1 || texte.indexOf("initVault") === -1) {
+      lignes.push('<li class="ko">Ce fichier ne ressemble pas à l\'application « Appréciation de la contribution » (vaultOverlay / initVault introuvables).</li>');
+      nbKo++;
+    } else {
+      CORRECTIFS.forEach(function (c) {
+        if (texte.indexOf(c.deja) !== -1) { nbDeja++; lignes.push('<li class="deja">↺ Déjà appliqué : ' + esc(c.nom) + '</li>'); return; }
+        c.motif.lastIndex = 0;
+        if (!c.motif.test(texte)) { nbKo++; lignes.push('<li class="ko">❌ Introuvable : ' + esc(c.nom) + ' — ce passage du code a été modifié ; correction manuelle nécessaire (voir le guide).</li>'); return; }
+        c.motif.lastIndex = 0;
+        texte = texte.replace(c.motif, c.remp);
+        nbOk++; lignes.push('<li class="ok">✅ Appliqué : ' + esc(c.nom) + '</li>');
+      });
+    }
+    texteCorrige = texte;
+    document.getElementById("sortie").hidden = false;
+    document.getElementById("info").textContent = "Fichier : " + nomSource + " (" + Math.round(texte.length / 1024) + " Ko)";
+    document.getElementById("resultats").innerHTML = lignes.join("");
+    var bilan = document.getElementById("bilan");
+    if (nbKo === 0) {
+      bilan.innerHTML = "<strong>✅ " + nbOk + " correctif(s) appliqué(s), " + nbDeja + " déjà présent(s).</strong> Téléchargez la version corrigée.";
+    } else {
+      bilan.innerHTML = "<strong style='color:#c50f1f'>⚠️ " + nbKo + " correctif(s) n'ont pas pu être appliqués.</strong> Vous pouvez télécharger quand même, mais faites les corrections manquantes à la main (guide, section 6).";
+    }
+    document.getElementById("telecharger").disabled = (nbOk === 0);
+  }
+
+  document.getElementById("telecharger").addEventListener("click", function () {
+    var nom = nomSource.replace(/\.html?$/i, "").replace(/-v3\.1$/, "") + "-v3.1.html";
+    var blob = new Blob([texteCorrige], { type: "text/html;charset=utf-8" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = nom;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+  });
+})();
+</script>
+</body>
+</html>

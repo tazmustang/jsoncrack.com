@@ -9,6 +9,9 @@ Tout est **gratuit** et ne demande **aucune installation** : deux fichiers HTML 
 | `README.md` | Ce guide : recherche, règles, installation, utilisation, dépannage |
 | `modele-page-sharepoint.html` | Modèle de page d'accueil prêt à personnaliser et à téléverser |
 | `verificateur-html-sharepoint.html` | Outil local : vérifie un fichier HTML avant téléversement, corrige les liens, convertit les images en base64 |
+| `test-bac-a-sable.html` | Page de diagnostic à téléverser comme « Page HTML » : indique ce que SharePoint autorise réellement (stockage, téléchargements, fenêtres, liens…) |
+| `appreciation/GUIDE-APPRECIATION.md` | Guide de l'application « Appréciation de la contribution » : correctifs v3.1, utilisation, test du jour J |
+| `appreciation/appliquer-correctifs.html` | Outil local qui transforme `appreciation.html` v3.0 en v3.1 compatible « Page HTML » |
 
 > ⚠️ La fonctionnalité est en **préversion publique depuis début octobre 2026** et sa disponibilité générale est prévue **de mi-novembre à fin décembre 2026** (message MC1479517). Certains détails ci-dessous peuvent encore changer : testez toujours dans votre locataire.
 
