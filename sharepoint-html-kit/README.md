@@ -137,6 +137,10 @@ Le modèle contient : en-tête, menu d'ancres collant, cartes « outils », indi
 3. Ouvrez la page, vérifiez l'affichage et **testez chaque lien**.
 4. Cliquez sur **Publier**. Pour la mettre en avant, ajoutez-la à la navigation du site ou définissez-la comme page d'accueil (… › Définir comme page d'accueil), après test.
 
+### Erreur fréquente : la « page d'application »
+
+Si, après **+ Nouveau**, vous arrivez sur un écran **« Détails de la page d'application »** avec « Titre du composant WebPart », « 0 résultats » et « Sources de données : Recherche dans SharePoint / Recherche dans Microsoft », vous avez créé une **page d'application** contenant un composant de **résultats de recherche**. **Ce n'est pas une page HTML.** Quittez sans enregistrer (ou supprimez-la dans Pages du site) et suivez l'étape 4 ou le choix **+ Nouveau › Page HTML**.
+
 ### Étape 5 (facultative) : avec Copilot (licence requise)
 
 Exemples de requêtes à adapter :
