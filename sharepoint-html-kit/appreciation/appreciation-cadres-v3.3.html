@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Appréciation de la contribution</title>
+<!-- Version 3.3 — stockage du navigateur vérifié réellement (SharePoint peut l'imiter) ; lectures JSON sécurisées -->
 <!-- Version 3.2 — les 3 formulaires du 15 octobre 2026 (introduction, type de rencontre, sections A à F) -->
 <!-- Version 3.1 — correctifs de compatibilité « page HTML SharePoint » (stockage bloqué, bandeau, message si script bloqué) -->
 <!-- Version 3.0 — dépôt authentifié par SharePoint (aucune URL de flux dans ce fichier) -->
@@ -925,7 +926,31 @@
 <script>
 /* ---------- Correctifs v3.1 : compatibilité page HTML SharePoint ---------- */
 (function(){ var b = document.getElementById('jsBloque'); if(b) b.parentNode.removeChild(b); })();
-function storageDispo(){ try{ localStorage.setItem('__t','1'); localStorage.removeItem('__t'); return true; }catch(e){ return false; } }
+/* v3.3 : SharePoint peut remplacer localStorage par une imitation qui ne lève pas d'erreur mais renvoie
+   autre chose qu'un texte. On vérifie donc un aller-retour complet, une seule fois. */
+let _stockageOK = null;
+function storageDispo(){
+  if(_stockageOK !== null) return _stockageOK;
+  try{
+    const k = '__t' + Date.now();
+    localStorage.setItem(k, '1');
+    const ok = localStorage.getItem(k) === '1' && localStorage.getItem(k + '_absent') === null;
+    localStorage.removeItem(k);
+    _stockageOK = ok;
+  }catch(e){ _stockageOK = false; }
+  return _stockageOK;
+}
+/* Lit une valeur du stockage : toujours un texte ou null, jamais d'erreur */
+function lireStockage(k){
+  if(!storageDispo()) return null;
+  try{ const v = localStorage.getItem(k); return typeof v === 'string' ? v : null; }catch(e){ return null; }
+}
+/* Lit du JSON sans jamais planter : accepte un objet déjà lu, renvoie null si illisible */
+function lireJSON(v){
+  if(v && typeof v === 'object') return v;
+  if(typeof v !== 'string' || !v) return null;
+  try{ return JSON.parse(v); }catch(e){ return null; }
+}
 
 /* ---------- Détection de l'aperçu SharePoint et bannière de lancement ---------- */
 (function(){
@@ -1085,9 +1110,10 @@ const CONFIG_DEFAUT = {
   lienApplication: ''    // ex. lien vers l'endroit où les gens récupèrent ce fichier HTML (page SharePoint, dossier partagé)
 };
 const CONFIG_KEY = 'appreciationConfig_v2';
+let configSession = null; /* v3.3 : configuration gardée pour la session quand le navigateur ne peut rien conserver */
 function getConfig(){
   let saved = {};
-  try{ saved = JSON.parse(localStorage.getItem(CONFIG_KEY) || '{}') || {}; }catch(e){ saved = {}; }
+  saved = lireJSON(lireStockage(CONFIG_KEY)) || configSession || {}; /* v3.3 */
   const c = Object.assign({}, CONFIG_DEFAUT);
   Object.keys(c).forEach(k=>{ if(saved[k]) c[k] = saved[k]; });
   return c;
@@ -1917,6 +1943,7 @@ async function saveLocal(manual){
   if(!cryptoAvailable){
     // Repli sans chiffrement (navigateur ne supportant pas Web Crypto)
     try{
+      if(!storageDispo()) throw new Error('stockage indisponible'); /* v3.3 */
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       const now = new Date().toLocaleTimeString('fr-CA');
       note.textContent = (manual ? '💾 Brouillon enregistré (non chiffré) et téléchargé à ' : 'Sauvegarde automatique à ') + now;
@@ -1956,7 +1983,7 @@ function initVault(){
   }
 
   let salt = null;
-  try{ salt = localStorage.getItem(VAULT_SALT_KEY); }catch(e){ localStorageOK = false; }
+  salt = lireStockage(VAULT_SALT_KEY); /* v3.3 */
 
   if(!salt){
     document.getElementById('vaultModeFirstUse').style.display = 'block';
@@ -1970,11 +1997,11 @@ function initVault(){
 function loadLocalIfAnyPlain(){
   // Repli non chiffré — utilisé seulement si Web Crypto est indisponible
   let raw = null;
-  try{ raw = localStorage.getItem(STORAGE_KEY); }catch(e){ localStorageOK = false; return; }
+  raw = lireStockage(STORAGE_KEY); /* v3.3 */
   if(raw){
     try{
-      const parsed = JSON.parse(raw);
-      if(confirm("Un brouillon a été trouvé dans ce navigateur. Voulez-vous le charger ?")){
+      const parsed = lireJSON(raw);
+      if(parsed && confirm("Un brouillon a été trouvé dans ce navigateur. Voulez-vous le charger ?")){
         state = mergeIntoEmptyState(parsed);
       }
     }catch(e){ console.warn('Brouillon local illisible', e); }
@@ -2006,14 +2033,14 @@ async function unlockVault(){
   if(!p){ statusEl.textContent = 'Veuillez entrer votre mot de passe.'; return; }
   statusEl.textContent = 'Déverrouillage...';
   let saltB64 = null;
-  try{ saltB64 = localStorage.getItem(VAULT_SALT_KEY); }catch(e){}
+  saltB64 = lireStockage(VAULT_SALT_KEY); /* v3.3 */
   try{
     const { key } = await deriveVaultKey(p, saltB64);
     vaultKey = key;
     let raw = null;
-    try{ raw = localStorage.getItem(VAULT_DATA_KEY); }catch(e){}
-    if(raw){
-      const encObj = JSON.parse(raw);
+    raw = lireStockage(VAULT_DATA_KEY); /* v3.3 */
+    const encObj = lireJSON(raw);
+    if(encObj && encObj.iv && encObj.data){
       const parsed = await decryptToState(encObj); // échoue (exception) si mauvais mot de passe
       if(confirm("Un brouillon chiffré a été trouvé dans ce navigateur. Voulez-vous le charger ?")){
         state = mergeIntoEmptyState(parsed);
@@ -2118,7 +2145,8 @@ document.getElementById('fileInput').addEventListener('change', function(e){
   const reader = new FileReader();
   reader.onload = function(evt){
     try{
-      const parsed = JSON.parse(evt.target.result);
+      const parsed = lireJSON(evt.target.result); /* v3.3 */
+      if(!parsed) throw new Error('contenu JSON illisible');
       const officiel = !!((parsed.workflow || {}).derniereMaj);
       state = mergeIntoEmptyState(parsed);
       if(officiel){ state.workflow.dernierDepot = {action:'', date:''}; }
@@ -2350,9 +2378,14 @@ function saveSpConfigAndClose(){
   const c = {depotNewFormUrl: val('cfgDepot'), mesDossiersUrl: val('cfgDossiers'), lienApplication: val('cfgLien')};
   const bad = Object.values(c).filter(v => v && !/^https:\/\/[a-z0-9-]+\.sharepoint\.com\//i.test(v) && !/^https:\/\//i.test(v));
   if(bad.length){ document.getElementById('flowConfigStatus').innerHTML = '<span class="flow-status err">Les adresses doivent commencer par https://</span>'; return; }
-  try{ localStorage.setItem(CONFIG_KEY, JSON.stringify(c)); }catch(e){}
-  document.getElementById('flowConfigStatus').innerHTML = '<span class="flow-status ok">✔ Configuration enregistrée dans ce navigateur.</span>';
-  setTimeout(closeSpConfig, 700);
+  configSession = c;
+  if(storageDispo()){
+    try{ localStorage.setItem(CONFIG_KEY, JSON.stringify(c)); }catch(e){}
+    document.getElementById('flowConfigStatus').innerHTML = '<span class="flow-status ok">✔ Configuration enregistrée dans ce navigateur.</span>';
+  }else{
+    document.getElementById('flowConfigStatus').innerHTML = '<span class="flow-status pending">✔ Configuration gardée pour cette session seulement : ce navigateur ne peut rien conserver ici. Demandez que les adresses soient inscrites directement dans le fichier.</span>';
+  }
+  setTimeout(closeSpConfig, storageDispo() ? 700 : 2500);
 }
 
 document.addEventListener('keydown', function(e){

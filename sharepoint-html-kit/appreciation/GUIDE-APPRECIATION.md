@@ -8,13 +8,14 @@ Ce dossier contient tout ce qu'il faut pour :
 
 Tout est gratuit, rien à installer : les outils s'ouvrent par double-clic dans Edge.
 
-> **Nouveau (16 octobre 2026) : version 3.2.** `appreciation-cadres-v3.2.html` intègre déjà les correctifs v3.1 et les trois formulaires du 15 octobre 2026. Utilisez-la directement : l'outil de correctifs (section 2) n'est plus nécessaire. Détails, installation et test : `appreciation/VERSION-3.2.md`.
+> **Nouveau (16 octobre 2026) : version 3.3.** `appreciation-cadres-v3.3.html` intègre les correctifs v3.1, les trois formulaires du 15 octobre 2026 (`VERSION-3.2.md`) et le correctif du blocage « Mot de passe incorrect » dans la page HTML SharePoint (`VERSION-3.3.md`). Utilisez-la directement : l'outil de correctifs (section 2) n'est plus nécessaire.
 
 | Fichier | Rôle |
 |---|---|
 | `appreciation/GUIDE-APPRECIATION.md` | Ce guide |
-| `appreciation/appreciation-cadres-v3.2.html` | **L'application, version 3.2** (formulaires du 15 octobre 2026) |
-| `appreciation/VERSION-3.2.md` | Changements de la v3.2, installation et test rapide |
+| `appreciation/appreciation-cadres-v3.3.html` | **L'application, version 3.3** (formulaires du 15 octobre 2026, compatible page HTML SharePoint) |
+| `appreciation/VERSION-3.3.md` | Correctif SharePoint, adresses à inscrire, test, avis sur les conseils de Copilot |
+| `appreciation/VERSION-3.2.md` | Changements des formulaires du 15 octobre 2026 |
 | `appreciation/appliquer-correctifs.html` | Outil qui corrige **votre** fichier `appreciation.html` (sans toucher aux images) |
 | `test-bac-a-sable.html` | Page de diagnostic à téléverser comme « Page HTML » le jour J |
 | `verificateur-html-sharepoint.html` | Vérificateur général (liens, scripts externes, taille, images) |

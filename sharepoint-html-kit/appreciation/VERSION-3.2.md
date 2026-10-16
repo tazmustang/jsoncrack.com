@@ -1,6 +1,6 @@
 # Version 3.2 — les trois formulaires du 15 octobre 2026
 
-Fichier : `appreciation-cadres-v3.2.html` (remplace `appreciation-cadres_-v3.1.html`).
+Fichier : `appreciation-cadres-v3.2.html`, remplacé depuis par `appreciation-cadres-v3.3.html` (voir `VERSION-3.3.md`), qui contient les mêmes formulaires.
 Gratuit, rien à installer : il s'ouvre par double-clic dans Edge, comme avant.
 
 ---
