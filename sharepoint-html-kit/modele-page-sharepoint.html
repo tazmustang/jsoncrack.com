@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Modèle – Page HTML SharePoint</title>
+<!--
+  MODÈLE DE PAGE HTML POUR SHAREPOINT ONLINE
+  Règles respectées (voir README.md) :
+   - Tout est dans CE fichier : CSS dans <style>, JavaScript dans <script>.
+   - Aucun <link rel="stylesheet">, aucun script CDN, aucune police Google Fonts.
+   - Aucun fetch(), aucun appel d'API, aucun localStorage.
+   - Images : SVG en ligne ou image en base64 (data:image/...).
+   - Liens externes / autres sites : target="_blank" rel="noopener".
+   - Liens internes à la page : ancres (#section).
+  Cherchez « À MODIFIER » pour personnaliser.
+-->
+<style>
+  /* ===== Couleurs : À MODIFIER selon votre charte ===== */
+  :root {
+    --primaire: #0f6cbd;      /* bleu Microsoft Fluent */
+    --primaire-fonce: #0a4f8c;
+    --accent: #e3008c;
+    --fond: #f5f5f5;
+    --carte: #ffffff;
+    --texte: #242424;
+    --texte-doux: #5c5c5c;
+    --bordure: #e0e0e0;
+    --rayon: 8px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    /* Polices système : aucune police externe nécessaire */
+    font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+    font-size: 1rem;
+    line-height: 1.55;
+    color: var(--texte);
+    background: var(--fond);
+  }
+  a { color: var(--primaire); }
+  a:focus-visible, button:focus-visible, summary:focus-visible {
+    outline: 3px solid var(--accent); outline-offset: 2px;
+  }
+  .conteneur { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
+
+  /* En-tête */
+  .hero {
+    background: linear-gradient(135deg, var(--primaire), var(--primaire-fonce));
+    color: #fff; padding: 48px 0 40px;
+  }
+  .hero h1 { margin: 0 0 8px; font-size: clamp(1.8rem, 4vw, 2.6rem); }
+  .hero p { margin: 0; max-width: 60ch; opacity: .95; font-size: 1.1rem; }
+  .bouton {
+    display: inline-block; margin-top: 20px; padding: 10px 20px;
+    background: #fff; color: var(--primaire-fonce); border-radius: var(--rayon);
+    text-decoration: none; font-weight: 600;
+  }
+  .bouton:hover { background: #eaf3fc; }
+
+  /* Menu d'ancres (navigation interne : fonctionne toujours) */
+  nav.menu {
+    position: sticky; top: 0; z-index: 10;
+    background: var(--carte); border-bottom: 1px solid var(--bordure);
+  }
+  nav.menu ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px; }
+  nav.menu a {
+    display: block; padding: 12px 14px; text-decoration: none;
+    color: var(--texte); font-weight: 600; border-bottom: 3px solid transparent;
+  }
+  nav.menu a:hover { border-bottom-color: var(--primaire); }
+
+  section { padding: 40px 0 8px; }
+  h2 { font-size: 1.6rem; margin: 0 0 16px; }
+
+  /* Cartes */
+  .grille { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+  .carte {
+    background: var(--carte); border: 1px solid var(--bordure); border-radius: var(--rayon);
+    padding: 20px; display: flex; flex-direction: column; gap: 8px;
+  }
+  .carte h3 { margin: 0; font-size: 1.15rem; }
+  .carte p { margin: 0; color: var(--texte-doux); flex: 1; }
+  .carte svg { width: 40px; height: 40px; }
+
+  /* Indicateurs + barres (graphique sans bibliothèque) */
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 24px; }
+  .kpi { background: var(--carte); border-radius: var(--rayon); padding: 16px; border-left: 5px solid var(--primaire); }
+  .kpi .valeur { font-size: 2rem; font-weight: 700; }
+  .kpi .libelle { color: var(--texte-doux); }
+  .barres { background: var(--carte); border-radius: var(--rayon); padding: 20px; border: 1px solid var(--bordure); }
+  .barre { display: grid; grid-template-columns: 140px 1fr 48px; align-items: center; gap: 12px; margin: 8px 0; }
+  .piste { background: #eee; border-radius: 99px; height: 14px; overflow: hidden; }
+  .remplissage { background: var(--primaire); height: 100%; width: 0; transition: width 1s ease; }
+
+  /* Onglets */
+  .onglets [role="tablist"] { display: flex; gap: 4px; flex-wrap: wrap; }
+  .onglets button[role="tab"] {
+    font: inherit; padding: 10px 16px; border: 1px solid var(--bordure); border-bottom: none;
+    background: #eaeaea; cursor: pointer; border-radius: var(--rayon) var(--rayon) 0 0;
+  }
+  .onglets button[aria-selected="true"] { background: var(--carte); font-weight: 700; color: var(--primaire); }
+  .onglets [role="tabpanel"] {
+    background: var(--carte); border: 1px solid var(--bordure); padding: 20px;
+    border-radius: 0 var(--rayon) var(--rayon) var(--rayon);
+  }
+
+  /* Liens de démonstration */
+  .liens li { margin: 6px 0; }
+  .etiquette { font-size: .8rem; background: #eaf3fc; color: var(--primaire-fonce); padding: 2px 8px; border-radius: 99px; margin-left: 6px; }
+
+  /* FAQ */
+  details { background: var(--carte); border: 1px solid var(--bordure); border-radius: var(--rayon); margin: 8px 0; padding: 0 16px; }
+  summary { cursor: pointer; padding: 14px 0; font-weight: 600; }
+
+  footer { margin-top: 40px; padding: 24px 0; color: var(--texte-doux); border-top: 1px solid var(--bordure); font-size: .9rem; }
+
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .remplissage { transition: none; } }
+  @media (max-width: 600px) { .barre { grid-template-columns: 90px 1fr 40px; } }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="conteneur">
+    <!-- À MODIFIER : titre et texte d'accueil -->
+    <h1>Bienvenue sur notre espace</h1>
+    <p>Tout ce dont vous avez besoin au quotidien : outils, nouvelles, indicateurs et réponses à vos questions.</p>
+    <a class="bouton" href="#outils">Découvrir les outils</a>
+  </div>
+</header>
+
+<nav class="menu" aria-label="Sections de la page">
+  <div class="conteneur">
+    <ul>
+      <li><a href="#outils">Outils</a></li>
+      <li><a href="#indicateurs">Indicateurs</a></li>
+      <li><a href="#nouvelles">Nouvelles</a></li>
+      <li><a href="#liens">Liens utiles</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="conteneur">
+
+  <!-- ===== OUTILS ===== -->
+  <section id="outils" aria-labelledby="t-outils">
+    <h2 id="t-outils">Vos outils Microsoft</h2>
+    <div class="grille">
+      <!-- À MODIFIER : remplacez VOTRE-LOCATAIRE par le nom de votre tenant -->
+      <article class="carte">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8" fill="#f25022"/><rect x="13" y="3" width="8" height="8" fill="#7fba00"/><rect x="3" y="13" width="8" height="8" fill="#00a4ef"/><rect x="13" y="13" width="8" height="8" fill="#ffb900"/></svg>
+        <h3>Microsoft 365</h3>
+        <p>Accédez à toutes vos applications.</p>
+        <a href="https://www.microsoft365.com/" target="_blank" rel="noopener">Ouvrir Microsoft 365</a>
+      </article>
+      <article class="carte">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#038387"/><text x="12" y="16.5" font-size="12" text-anchor="middle" fill="#fff" font-family="Segoe UI, Arial">S</text></svg>
+        <h3>SharePoint</h3>
+        <p>Sites d'équipe, documents et pages.</p>
+        <a href="https://VOTRE-LOCATAIRE.sharepoint.com/" target="_blank" rel="noopener">Ouvrir SharePoint</a>
+      </article>
+      <article class="carte">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="3" fill="#5b5fc7"/><text x="12" y="16.5" font-size="12" text-anchor="middle" fill="#fff" font-family="Segoe UI, Arial">T</text></svg>
+        <h3>Teams</h3>
+        <p>Conversations, réunions et canaux.</p>
+        <a href="https://teams.microsoft.com/" target="_blank" rel="noopener">Ouvrir Teams</a>
+      </article>
+      <article class="carte">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 18h12a4 4 0 0 0 0-8 6 6 0 0 0-11.5 1.5A3.5 3.5 0 0 0 6 18z" fill="#0364b8"/></svg>
+        <h3>OneDrive</h3>
+        <p>Vos fichiers personnels, partout.</p>
+        <a href="https://VOTRE-LOCATAIRE-my.sharepoint.com/" target="_blank" rel="noopener">Ouvrir OneDrive</a>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===== INDICATEURS (données saisies à la main, sans fetch) ===== -->
+  <section id="indicateurs" aria-labelledby="t-ind">
+    <h2 id="t-ind">Indicateurs du mois</h2>
+    <div class="kpis" id="kpis"></div>
+    <div class="barres" id="barres" aria-label="Avancement des projets"></div>
+  </section>
+
+  <!-- ===== NOUVELLES (onglets accessibles) ===== -->
+  <section id="nouvelles" aria-labelledby="t-nouv">
+    <h2 id="t-nouv">Nouvelles</h2>
+    <div class="onglets">
+      <div role="tablist" aria-label="Catégories de nouvelles">
+        <button role="tab" id="tab-1" aria-controls="panel-1" aria-selected="true">Entreprise</button>
+        <button role="tab" id="tab-2" aria-controls="panel-2" aria-selected="false" tabindex="-1">Équipe</button>
+        <button role="tab" id="tab-3" aria-controls="panel-3" aria-selected="false" tabindex="-1">Formation</button>
+      </div>
+      <div role="tabpanel" id="panel-1" aria-labelledby="tab-1">
+        <h3>Nouvelle politique de télétravail</h3>
+        <p>À MODIFIER : texte de la nouvelle. Les informations détaillées sont dans le document officiel.</p>
+      </div>
+      <div role="tabpanel" id="panel-2" aria-labelledby="tab-2" hidden>
+        <h3>Bienvenue aux nouveaux collègues</h3>
+        <p>À MODIFIER : présentation de l'équipe.</p>
+      </div>
+      <div role="tabpanel" id="panel-3" aria-labelledby="tab-3" hidden>
+        <h3>Formation Copilot – octobre</h3>
+        <p>À MODIFIER : dates et inscription.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== LIENS : un exemple de chaque cas (cf. README, section 4) ===== -->
+  <section id="liens" aria-labelledby="t-liens">
+    <h2 id="t-liens">Liens utiles</h2>
+    <ul class="liens">
+      <li><a href="#faq">Aller à la FAQ</a> <span class="etiquette">ancre, même page</span></li>
+      <li><a href="https://VOTRE-LOCATAIRE.sharepoint.com/sites/VOTRE-SITE/SitePages/autre-page.html" target="_blank" rel="noopener">Autre page HTML du même site</a> <span class="etiquette">même site</span></li>
+      <li><a href="https://VOTRE-LOCATAIRE.sharepoint.com/sites/RH/Documents%20partages/Guide.pdf" target="_blank" rel="noopener">Guide RH (PDF)</a> <span class="etiquette">même locataire</span></li>
+      <li><a href="https://learn.microsoft.com/fr-fr/" target="_blank" rel="noopener">Microsoft Learn</a> <span class="etiquette">externe – domaine à autoriser</span></li>
+    </ul>
+  </section>
+
+  <!-- ===== FAQ (details/summary : aucun JavaScript requis) ===== -->
+  <section id="faq" aria-labelledby="t-faq">
+    <h2 id="t-faq">Questions fréquentes</h2>
+    <details>
+      <summary>Un lien ne s'ouvre pas, que faire ?</summary>
+      <p>Le domaine de destination doit être autorisé par l'administrateur du site (Paramètres du site › Sécurité des champs HTML).</p>
+    </details>
+    <details>
+      <summary>Qui peut voir cette page ?</summary>
+      <p>Uniquement les personnes qui ont déjà accès au site. La publication n'ajoute aucune permission.</p>
+    </details>
+    <details>
+      <summary>Qui contacter ?</summary>
+      <p>À MODIFIER : nom de l'équipe ou adresse de contact.</p>
+    </details>
+  </section>
+</main>
+
+<footer>
+  <div class="conteneur">
+    <!-- À MODIFIER -->
+    Page maintenue par l'équipe Communication · Dernière mise à jour : <span id="maj">octobre 2026</span>
+  </div>
+</footer>
+
+<script>
+  // ===== Données : À MODIFIER (écrites dans le fichier : les appels réseau sont bloqués) =====
+  const indicateurs = [
+    { libelle: "Demandes traitées", valeur: "1 284" },
+    { libelle: "Satisfaction", valeur: "94 %" },
+    { libelle: "Projets actifs", valeur: "12" },
+    { libelle: "Formations suivies", valeur: "356" }
+  ];
+  const projets = [
+    { nom: "Migration intranet", pct: 80 },
+    { nom: "Déploiement Copilot", pct: 55 },
+    { nom: "Refonte des processus", pct: 30 }
+  ];
+
+  // Indicateurs
+  const kpis = document.getElementById("kpis");
+  indicateurs.forEach(function (k) {
+    const div = document.createElement("div");
+    div.className = "kpi";
+    div.innerHTML = '<div class="valeur"></div><div class="libelle"></div>';
+    div.querySelector(".valeur").textContent = k.valeur;
+    div.querySelector(".libelle").textContent = k.libelle;
+    kpis.appendChild(div);
+  });
+
+  // Barres de progression
+  const barres = document.getElementById("barres");
+  projets.forEach(function (p) {
+    const ligne = document.createElement("div");
+    ligne.className = "barre";
+    ligne.innerHTML = '<span></span><div class="piste" role="progressbar" aria-valuemin="0" aria-valuemax="100"><div class="remplissage"></div></div><strong></strong>';
+    ligne.querySelector("span").textContent = p.nom;
+    ligne.querySelector(".piste").setAttribute("aria-valuenow", p.pct);
+    ligne.querySelector(".piste").setAttribute("aria-label", p.nom);
+    ligne.querySelector("strong").textContent = p.pct + " %";
+    barres.appendChild(ligne);
+    requestAnimationFrame(function () {
+      setTimeout(function () { ligne.querySelector(".remplissage").style.width = p.pct + "%"; }, 50);
+    });
+  });
+
+  // Onglets accessibles (clic + flèches du clavier)
+  const onglets = Array.from(document.querySelectorAll('[role="tab"]'));
+  function activer(tab) {
+    onglets.forEach(function (t) {
+      const actif = t === tab;
+      t.setAttribute("aria-selected", actif);
+      t.tabIndex = actif ? 0 : -1;
+      document.getElementById(t.getAttribute("aria-controls")).hidden = !actif;
+    });
+    tab.focus();
+  }
+  onglets.forEach(function (t, i) {
+    t.addEventListener("click", function () { activer(t); });
+    t.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") activer(onglets[(i + 1) % onglets.length]);
+      if (e.key === "ArrowLeft") activer(onglets[(i - 1 + onglets.length) % onglets.length]);
+    });
+  });
+</script>
+</body>
+</html>

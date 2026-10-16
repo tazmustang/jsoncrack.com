@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Test du bac à sable SharePoint</title>
+<!--
+  PAGE DE DIAGNOSTIC — à téléverser comme « page HTML » dans SharePoint.
+  Elle indique ce que le bac à sable autorise réellement dans VOTRE locataire :
+  JavaScript, stockage, chiffrement, téléchargements, boîtes de dialogue, impression, liens...
+  À MODIFIER avant le test : les 3 liens de la section 3 (cherchez « À MODIFIER »).
+-->
+<style>
+  :root { --p:#074b98; --navy:#00285e; --ok:#107c10; --warn:#bc4b09; --err:#c50f1f; --bord:#e0e0e0; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:"Segoe UI", system-ui, Arial, sans-serif; background:#f5f5f5; color:#242424; line-height:1.5; }
+  header { background:var(--navy); color:#fff; padding:22px 16px; }
+  header h1 { margin:0; font-size:1.5rem; }
+  header p { margin:4px 0 0; opacity:.9; }
+  main { max-width:960px; margin:0 auto; padding:16px; }
+  .bloc { background:#fff; border:1px solid var(--bord); border-radius:8px; padding:18px; margin:16px 0; }
+  h2 { margin:0 0 10px; font-size:1.15rem; color:var(--navy); }
+  table { border-collapse:collapse; width:100%; font-size:.92rem; }
+  th, td { border:1px solid var(--bord); padding:8px; text-align:left; vertical-align:top; }
+  th { background:#eef4fb; }
+  .ok { color:var(--ok); font-weight:700; } .ko { color:var(--err); font-weight:700; } .na { color:var(--warn); font-weight:700; }
+  button { font:inherit; padding:8px 14px; border-radius:6px; border:1px solid var(--p); background:var(--p); color:#fff; cursor:pointer; margin:4px 4px 4px 0; }
+  textarea { width:100%; min-height:160px; font-family:Consolas, monospace; font-size:.8rem; }
+  .petit { color:#5c5c5c; font-size:.9rem; }
+  ul.liens li { margin:6px 0; }
+  #jsKo { background:var(--err); color:#fff; padding:14px 16px; font-weight:700; }
+</style>
+</head>
+<body>
+<div id="jsKo">❌ Le JavaScript ne s'exécute pas sur cette page : les tests automatiques sont impossibles.</div>
+<header>
+  <h1>Test du bac à sable SharePoint</h1>
+  <p>Ce que les pages HTML ont le droit de faire dans votre organisation.</p>
+</header>
+<main>
+  <section class="bloc">
+    <h2>1. Tests automatiques</h2>
+    <table>
+      <thead><tr><th style="width:38%">Fonction</th><th style="width:14%">Résultat</th><th>Détail / impact</th></tr></thead>
+      <tbody id="auto"></tbody>
+    </table>
+  </section>
+
+  <section class="bloc">
+    <h2>2. Tests à lancer en cliquant</h2>
+    <p class="petit">Cliquez sur chaque bouton : le résultat s'ajoute au tableau ci-dessus.</p>
+    <button type="button" id="bAlert">Boîte de dialogue (confirm)</button>
+    <button type="button" id="bDl">Téléchargement d'un fichier</button>
+    <button type="button" id="bOpen">Ouvrir un nouvel onglet (window.open)</button>
+    <button type="button" id="bPrint">Impression (window.print)</button>
+    <button type="button" id="bClip">Copier dans le presse-papiers</button>
+    <label style="display:inline-block;margin:4px 0;"><span class="petit">Lire un fichier : </span><input type="file" id="bFile"></label>
+  </section>
+
+  <section class="bloc">
+    <h2>3. Liens à tester à la main</h2>
+    <p class="petit">Cliquez sur chaque lien et notez s'il s'ouvre (✅) ou non (❌).</p>
+    <ul class="liens">
+      <li><a href="#fin">Ancre dans la page</a> — attendu : ✅</li>
+      <!-- À MODIFIER : une page de VOTRE site -->
+      <li><a href="https://villedequebec.sharepoint.com/sites/SandBoxAnnieAudet" target="_blank" rel="noopener">Même site (accueil du sandbox)</a> — attendu : ✅</li>
+      <!-- À MODIFIER : un autre site de votre organisation -->
+      <li><a href="https://villedequebec.sharepoint.com/" target="_blank" rel="noopener">Même locataire (accueil SharePoint)</a> — attendu : ✅</li>
+      <li><a href="https://learn.microsoft.com/fr-fr/" target="_blank" rel="noopener">Site externe, nouvel onglet (_blank)</a> — attendu : ❌ tant que le domaine n'est pas autorisé</li>
+      <li><a href="https://villedequebec.sharepoint.com/" target="_top">Même locataire, même onglet (_top)</a> — attendu : ❌ probablement</li>
+      <li><a href="mailto:test@example.com">Lien courriel (mailto)</a> — à tester</li>
+    </ul>
+  </section>
+
+  <section class="bloc">
+    <h2>4. Résumé à copier</h2>
+    <p class="petit">Copiez ce texte et conservez-le (ou envoyez-le à votre équipe) : il décrit les règles réelles de votre locataire.</p>
+    <textarea id="resume" readonly></textarea>
+    <button type="button" id="bCopie">Copier le résumé</button>
+  </section>
+  <p id="fin" class="petit">Fin de la page.</p>
+</main>
+
+<script>
+(function () {
+  document.getElementById("jsKo").remove();
+  var resultats = [];
+  var tbody = document.getElementById("auto");
+
+  function ajouter(nom, statut, detail) {
+    resultats.push({ nom: nom, statut: statut, detail: detail });
+    var tr = document.createElement("tr");
+    var cls = statut === "OUI" ? "ok" : (statut === "NON" ? "ko" : "na");
+    var icone = statut === "OUI" ? "✅ " : (statut === "NON" ? "❌ " : "⚠️ ");
+    tr.innerHTML = "<td></td><td class='" + cls + "'></td><td></td>";
+    tr.children[0].textContent = nom;
+    tr.children[1].textContent = icone + statut;
+    tr.children[2].textContent = detail;
+    tbody.appendChild(tr);
+    majResume();
+  }
+  function majResume() {
+    var lignes = ["Test du bac à sable SharePoint — " + new Date().toLocaleString("fr-CA"), "Navigateur : " + navigator.userAgent, ""];
+    resultats.forEach(function (r) { lignes.push("[" + r.statut + "] " + r.nom + " — " + r.detail); });
+    document.getElementById("resume").value = lignes.join("\n");
+  }
+  function essai(fn) { try { return fn(); } catch (e) { return e; } }
+
+  // --- Tests automatiques ---
+  ajouter("JavaScript intégré", "OUI", "Le script de cette page s'exécute.");
+
+  var dansCadre = essai(function () { return window.self !== window.top; });
+  ajouter("Affichée dans un cadre (iframe)", dansCadre === true ? "OUI" : (dansCadre === false ? "NON" : "OUI"),
+    dansCadre === true || dansCadre instanceof Error ? "La page est isolée de SharePoint (comportement attendu)." : "La page n'est pas dans un cadre.");
+
+  ajouter("Origine de la page", "INFO", "window.origin = " + (window.origin || "?") + " · contexte sécurisé = " + (window.isSecureContext ? "oui" : "non"));
+
+  var ls = essai(function () { localStorage.setItem("__t", "1"); localStorage.removeItem("__t"); return true; });
+  ajouter("localStorage (brouillon dans le navigateur)", ls === true ? "OUI" : "NON",
+    ls === true ? "Les brouillons peuvent être gardés dans le navigateur." : "Bloqué : " + (ls && ls.message ? ls.message : ls) + " → prévoir une copie .json.");
+
+  var ss = essai(function () { sessionStorage.setItem("__t", "1"); sessionStorage.removeItem("__t"); return true; });
+  ajouter("sessionStorage", ss === true ? "OUI" : "NON", ss === true ? "Disponible." : "Bloqué.");
+
+  var ck = essai(function () { document.cookie = "t31=1; SameSite=None; Secure"; return document.cookie.indexOf("t31=1") !== -1; });
+  ajouter("Cookies", ck === true ? "OUI" : "NON", ck === true ? "Disponibles." : "Bloqués ou inaccessibles.");
+
+  var idb = essai(function () { return !!window.indexedDB; });
+  if (idb === true) {
+    var req = essai(function () { return indexedDB.open("test31"); });
+    if (req instanceof Error) ajouter("IndexedDB", "NON", "Bloqué : " + req.message);
+    else { req.onsuccess = function () { ajouter("IndexedDB", "OUI", "Disponible."); }; req.onerror = function () { ajouter("IndexedDB", "NON", "Bloqué."); }; }
+  } else ajouter("IndexedDB", "NON", "Absent.");
+
+  var cs = !!(window.crypto && window.crypto.subtle);
+  if (cs) {
+    var enc = new TextEncoder();
+    crypto.subtle.importKey("raw", enc.encode("test"), "PBKDF2", false, ["deriveKey"])
+      .then(function (km) { return crypto.subtle.deriveKey({ name: "PBKDF2", salt: new Uint8Array(16), iterations: 1000, hash: "SHA-256" }, km, { name: "AES-GCM", length: 256 }, false, ["encrypt"]); })
+      .then(function () { ajouter("Chiffrement (crypto.subtle, AES / PBKDF2)", "OUI", "Le chiffrement du brouillon est possible."); })
+      .catch(function (e) { ajouter("Chiffrement (crypto.subtle, AES / PBKDF2)", "NON", "Erreur : " + e.message); });
+  } else ajouter("Chiffrement (crypto.subtle, AES / PBKDF2)", "NON", "crypto.subtle absent.");
+
+  if (window.fetch) {
+    fetch(location.href, { cache: "no-store" })
+      .then(function (r) { ajouter("Appel réseau (fetch)", "OUI", "Réponse HTTP " + r.status + " (inattendu : Microsoft indique que fetch est bloqué)."); })
+      .catch(function (e) { ajouter("Appel réseau (fetch)", "NON", "Bloqué (attendu) : " + e.message); });
+  }
+
+  var accesParent = essai(function () { return window.top.location.href; });
+  ajouter("Accès à la page SharePoint parente", typeof accesParent === "string" ? "OUI" : "NON",
+    typeof accesParent === "string" ? "Accessible : " + accesParent : "Bloqué (attendu) : la page est bien isolée.");
+
+  // --- Tests manuels ---
+  document.getElementById("bAlert").addEventListener("click", function () {
+    var t = Date.now();
+    var r = essai(function () { return window.confirm("Test : cliquez sur OK."); });
+    var duree = Date.now() - t;
+    if (r instanceof Error) ajouter("Boîtes de dialogue (alert / confirm)", "NON", "Erreur : " + r.message);
+    else if (r === true) ajouter("Boîtes de dialogue (alert / confirm)", "OUI", "La boîte s'est affichée et OK a été cliqué.");
+    else if (duree < 50) ajouter("Boîtes de dialogue (alert / confirm)", "NON", "Bloquées : confirm() répond « Non » sans s'afficher → les confirmations de l'application ne passeront pas.");
+    else ajouter("Boîtes de dialogue (alert / confirm)", "OUI", "Affichée (vous avez cliqué sur Annuler).");
+  });
+
+  document.getElementById("bDl").addEventListener("click", function () {
+    var r = essai(function () {
+      var blob = new Blob(["Test de téléchargement " + new Date().toISOString()], { type: "text/plain" });
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(blob); a.download = "test-bac-a-sable.txt";
+      document.body.appendChild(a); a.click(); a.remove();
+      return true;
+    });
+    ajouter("Téléchargement d'un fichier", r === true ? "À VÉRIFIER" : "NON",
+      r === true ? "Regardez vos Téléchargements : si « test-bac-a-sable.txt » n'y est pas, les téléchargements sont bloqués (fichiers de dépôt impossibles)." : "Erreur : " + r.message);
+  });
+
+  document.getElementById("bOpen").addEventListener("click", function () {
+    var w = essai(function () { return window.open("https://www.microsoft365.com/", "_blank", "noopener"); });
+    ajouter("Nouvel onglet (window.open)", w instanceof Error ? "NON" : "À VÉRIFIER",
+      w instanceof Error ? "Erreur : " + w.message : "Un onglet Microsoft 365 s'est-il ouvert ? Sinon, utilisez des liens <a target=\"_blank\">.");
+  });
+
+  document.getElementById("bPrint").addEventListener("click", function () {
+    var t = Date.now();
+    var r = essai(function () { window.print(); return true; });
+    var duree = Date.now() - t;
+    ajouter("Impression (window.print)", r instanceof Error ? "NON" : (duree < 50 ? "À VÉRIFIER" : "OUI"),
+      r instanceof Error ? "Erreur : " + r.message : (duree < 50 ? "La fenêtre d'impression est-elle apparue ? Sinon, l'aperçu PDF de l'application ne fonctionnera pas." : "La fenêtre d'impression s'est affichée."));
+  });
+
+  document.getElementById("bClip").addEventListener("click", function () {
+    if (!navigator.clipboard) { ajouter("Presse-papiers", "NON", "navigator.clipboard absent."); return; }
+    navigator.clipboard.writeText("test").then(function () { ajouter("Presse-papiers", "OUI", "Copie possible."); })
+      .catch(function (e) { ajouter("Presse-papiers", "NON", "Bloqué : " + e.message); });
+  });
+
+  document.getElementById("bFile").addEventListener("change", function (e) {
+    var f = e.target.files[0]; if (!f) return;
+    var r = new FileReader();
+    r.onload = function () { ajouter("Lecture d'un fichier choisi (FileReader)", "OUI", "Lu : " + f.name + " (" + f.size + " octets) → « Charger un dossier » fonctionnera."); };
+    r.onerror = function () { ajouter("Lecture d'un fichier choisi (FileReader)", "NON", "Erreur de lecture."); };
+    r.readAsText(f);
+  });
+
+  document.getElementById("bCopie").addEventListener("click", function () {
+    var zone = document.getElementById("resume");
+    zone.select();
+    var ok = essai(function () { return document.execCommand("copy"); });
+    this.textContent = ok === true ? "Copié !" : "Sélectionnez le texte et faites Ctrl+C";
+  });
+})();
+</script>
+</body>
+</html>

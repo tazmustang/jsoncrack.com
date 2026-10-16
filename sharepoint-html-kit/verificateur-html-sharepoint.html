@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vérificateur HTML SharePoint</title>
+<!--
+  Outil 100 % local : ouvrez ce fichier dans Edge ou Chrome (double-clic).
+  Aucun fichier n'est envoyé sur Internet : tout est analysé dans votre navigateur.
+-->
+<style>
+  :root { --p:#0f6cbd; --ok:#107c10; --warn:#bc4b09; --err:#c50f1f; --info:#5c5c5c; --bord:#e0e0e0; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family:"Segoe UI", system-ui, Arial, sans-serif; background:#f5f5f5; color:#242424; line-height:1.5; }
+  header { background:var(--p); color:#fff; padding:24px 16px; }
+  header h1 { margin:0; font-size:1.6rem; }
+  header p { margin:4px 0 0; opacity:.9; }
+  main { max-width:1000px; margin:0 auto; padding:16px; }
+  .bloc { background:#fff; border:1px solid var(--bord); border-radius:8px; padding:20px; margin:16px 0; }
+  h2 { margin:0 0 12px; font-size:1.25rem; }
+  .depot { border:2px dashed var(--p); border-radius:8px; padding:32px; text-align:center; cursor:pointer; background:#f3f8fd; }
+  .depot.survol { background:#dbeafa; }
+  button { font:inherit; padding:8px 16px; border-radius:6px; border:1px solid var(--p); background:var(--p); color:#fff; cursor:pointer; }
+  button.secondaire { background:#fff; color:var(--p); }
+  button:disabled { opacity:.5; cursor:not-allowed; }
+  .resume { display:flex; gap:12px; flex-wrap:wrap; margin:12px 0; }
+  .pastille { padding:6px 12px; border-radius:99px; font-weight:600; color:#fff; }
+  .err { background:var(--err); } .warn { background:var(--warn); } .ok { background:var(--ok); } .info { background:var(--info); }
+  ul.res { list-style:none; padding:0; margin:0; }
+  ul.res li { border-left:5px solid; padding:8px 12px; margin:8px 0; background:#fafafa; border-radius:0 6px 6px 0; }
+  ul.res li.e { border-color:var(--err); } ul.res li.w { border-color:var(--warn); } ul.res li.i { border-color:var(--info); } ul.res li.o { border-color:var(--ok); }
+  code { background:#eee; padding:1px 5px; border-radius:4px; font-size:.9em; word-break:break-all; }
+  textarea { width:100%; min-height:110px; font-family:Consolas, monospace; font-size:.8rem; }
+  .ligne { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:8px; }
+  img.apercu { max-width:200px; max-height:120px; border:1px solid var(--bord); border-radius:4px; }
+  .petit { color:var(--info); font-size:.9rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Vérificateur de page HTML pour SharePoint</h1>
+  <p>Repère ce qui sera bloqué par le « bac à sable » SharePoint avant de téléverser votre fichier.</p>
+</header>
+<main>
+
+  <section class="bloc">
+    <h2>1. Analyser un fichier HTML</h2>
+    <div class="depot" id="depot" tabindex="0" role="button" aria-label="Choisir un fichier HTML">
+      Glissez votre fichier <strong>.html</strong> ici, ou cliquez pour le choisir.
+      <input type="file" id="fichier" accept=".html,.htm" hidden>
+    </div>
+    <div id="sortie" hidden>
+      <p id="nomFichier" class="petit"></p>
+      <div class="resume" id="resume"></div>
+      <ul class="res" id="resultats"></ul>
+      <div id="domaines"></div>
+      <div class="ligne">
+        <button id="corriger">Corriger les liens et télécharger</button>
+        <span class="petit">Ajoute <code>target="_blank" rel="noopener"</code> aux liens externes et remplace <code>_top</code>/<code>_parent</code>/<code>_self</code>.</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="bloc">
+    <h2>2. Convertir une image en base64</h2>
+    <p class="petit">Les images doivent être intégrées dans le fichier. Choisissez une image (idéalement &lt; 300 Ko), copiez la balise générée et collez-la dans votre HTML.</p>
+    <input type="file" id="image" accept="image/*">
+    <div id="sortieImage" hidden>
+      <div class="ligne"><img class="apercu" id="apercu" alt="Aperçu"><span id="tailleImage" class="petit"></span></div>
+      <label for="altImage">Texte alternatif (accessibilité) :</label>
+      <input id="altImage" type="text" style="width:100%;padding:6px" placeholder="Décrivez l'image">
+      <textarea id="codeImage" readonly></textarea>
+      <div class="ligne"><button id="copierImage">Copier la balise &lt;img&gt;</button><button class="secondaire" id="copierCss">Copier pour CSS (background)</button></div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+(function () {
+  const LIMITE = 10 * 1024 * 1024; // 10 Mo : limite indiquée par Microsoft
+  let texteSource = "", nomSource = "page.html";
+
+  const depot = document.getElementById("depot");
+  const champ = document.getElementById("fichier");
+  depot.addEventListener("click", function () { champ.click(); });
+  depot.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); champ.click(); } });
+  depot.addEventListener("dragover", function (e) { e.preventDefault(); depot.classList.add("survol"); });
+  depot.addEventListener("dragleave", function () { depot.classList.remove("survol"); });
+  depot.addEventListener("drop", function (e) {
+    e.preventDefault(); depot.classList.remove("survol");
+    if (e.dataTransfer.files[0]) lire(e.dataTransfer.files[0]);
+  });
+  champ.addEventListener("change", function () { if (champ.files[0]) lire(champ.files[0]); });
+
+  function lire(f) {
+    nomSource = f.name;
+    const r = new FileReader();
+    r.onload = function () { texteSource = r.result; analyser(texteSource, f.size); };
+    r.readAsText(f);
+  }
+
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function court(s) { s = String(s); return s.length > 90 ? s.slice(0, 87) + "…" : s; }
+  function estExterne(u) { return /^(https?:)?\/\//i.test(u); }
+  function hote(u) { try { return new URL(u, "https://x.invalid").hostname; } catch (e) { return ""; } }
+
+  function analyser(html, taille) {
+    const res = []; // {n: 'e'|'w'|'i'|'o', t: texte}
+    const add = function (n, t) { res.push({ n: n, t: t }); };
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    const domaines = new Set();
+
+    // Taille
+    const mo = (taille / 1024 / 1024).toFixed(2);
+    if (taille > LIMITE) add("e", "Fichier de " + mo + " Mo : dépasse la limite de 10 Mo. Compressez ou réduisez les images base64.");
+    else if (taille > 5 * 1024 * 1024) add("w", "Fichier de " + mo + " Mo : proche de la limite de 10 Mo, la page risque d'être lente.");
+    else add("o", "Taille du fichier : " + mo + " Mo (limite : 10 Mo).");
+
+    // Scripts externes
+    doc.querySelectorAll("script[src]").forEach(function (s) {
+      const src = s.getAttribute("src");
+      add("e", "Script externe <code>" + esc(court(src)) + "</code> : non chargé par SharePoint. Copiez le code dans un bloc &lt;script&gt; du fichier (seules quelques bibliothèques hébergées par Microsoft sont prévues : Chart.js, Mermaid, React, Fluent UI, Babylon).");
+    });
+    // Feuilles de style / polices externes
+    doc.querySelectorAll('link[rel~="stylesheet"], link[rel="preconnect"], link[rel="preload"]').forEach(function (l) {
+      add("e", "Feuille de style ou ressource externe <code>" + esc(court(l.getAttribute("href") || "")) + "</code> : bloquée. Mettez le CSS dans une balise &lt;style&gt;.");
+    });
+    let css = ""; doc.querySelectorAll("style").forEach(function (s) { css += s.textContent; });
+    (css.match(/@import[^;]+;/g) || []).forEach(function (m) { add("e", "<code>" + esc(court(m)) + "</code> : @import externe bloqué."); });
+    (css.match(/url\(\s*['"]?https?:[^)]+\)/gi) || []).forEach(function (m) {
+      add("w", "Ressource CSS externe <code>" + esc(court(m)) + "</code> : risque d'être bloquée (polices, images de fond). Préférez le base64 ou les polices système.");
+    });
+
+    // JavaScript interdit
+    let js = ""; doc.querySelectorAll("script:not([src])").forEach(function (s) { js += s.textContent + "\n"; });
+    // Retire les commentaires pour éviter les fausses alertes
+    js = js.replace(/\/\*[\s\S]*?\*\//g, "").replace(/(^|[^:"'])\/\/.*$/gm, "$1");
+    const interdits = [
+      [/\bfetch\s*\(/, "fetch()", "Les appels réseau sont bloqués. Intégrez les données directement dans le fichier."],
+      [/XMLHttpRequest|\$\.ajax|\$\.get\(|axios\./, "XMLHttpRequest / AJAX", "Les appels réseau et d'API (REST, Graph) sont bloqués."],
+      [/\blocalStorage\b|\bsessionStorage\b|\bindexedDB\b/, "stockage du navigateur", "localStorage / sessionStorage / IndexedDB ne sont pas accessibles."],
+      [/document\.cookie/, "document.cookie", "Les cookies ne sont pas accessibles dans le bac à sable."],
+      [/\bwindow\.(top|parent)\b|\btop\.location|\bparent\.(location|document)/, "window.top / parent", "La page est isolée de SharePoint : impossible d'accéder à la page parente."],
+      [/_spPageContextInfo|SP\.SOD|SP\.ClientContext|_api\//, "API SharePoint (JSOM/REST)", "Le contexte SharePoint n'est pas disponible dans une page HTML."],
+      [/\bwindow\.open\s*\(/, "window.open()", "Peut être bloqué ; préférez un lien <a target=\"_blank\">."],
+      [/\balert\s*\(|\bconfirm\s*\(|\bprompt\s*\(/, "alert/confirm/prompt", "Les boîtes de dialogue modales sont souvent bloquées dans un iframe isolé."]
+    ];
+    interdits.forEach(function (r) {
+      if (r[0].test(js)) add(r[1] === "window.open()" || r[1].indexOf("alert") === 0 ? "w" : "e", "<code>" + esc(r[1]) + "</code> détecté : " + esc(r[2]));
+    });
+    if (js.trim()) add("o", "JavaScript intégré dans le fichier : autorisé.");
+
+    // Liens
+    let nbExtSansBlank = 0, nbCibleTop = 0, nbRelatifs = 0;
+    doc.querySelectorAll("a[href]").forEach(function (a) {
+      const href = a.getAttribute("href").trim();
+      const cible = (a.getAttribute("target") || "").toLowerCase();
+      if (/^javascript:/i.test(href)) { add("e", "Lien <code>" + esc(court(href)) + "</code> : les liens javascript: ne fonctionnent pas."); return; }
+      if (/^(mailto|tel):/i.test(href) || href.indexOf("#") === 0) return;
+      const cibleBloquee = cible === "_top" || cible === "_parent" || cible === "_self";
+      if (cibleBloquee) nbCibleTop++;
+      if (estExterne(href)) {
+        const h = hote(href); if (h) domaines.add(h);
+        if (cible !== "_blank" && !cibleBloquee) nbExtSansBlank++;
+      } else {
+        nbRelatifs++;
+      }
+    });
+    if (nbExtSansBlank) add("w", nbExtSansBlank + " lien(s) absolu(s) sans <code>target=\"_blank\"</code> : ajoutez-le pour qu'ils s'ouvrent dans un nouvel onglet (bouton « Corriger » ci-dessous).");
+    if (nbCibleTop) add("w", nbCibleTop + " lien(s) avec target _top / _parent / _self : la navigation de la page parente est bloquée par le bac à sable. Utilisez _blank.");
+    if (nbRelatifs) add("w", nbRelatifs + " lien(s) relatif(s) (ex. <code>autre-page.html</code>) : à tester après téléversement. Plus sûr : URL complète https://VOTRE-LOCATAIRE.sharepoint.com/sites/… avec target=\"_blank\".");
+
+    // Images
+    let imgExt = 0, imgSansAlt = 0, imgRel = 0;
+    doc.querySelectorAll("img").forEach(function (i) {
+      const src = i.getAttribute("src") || "";
+      if (!i.hasAttribute("alt")) imgSansAlt++;
+      if (/^data:/i.test(src)) return;
+      if (estExterne(src)) { imgExt++; const h = hote(src); if (h) domaines.add(h); }
+      else if (src) imgRel++;
+    });
+    if (imgExt) add("w", imgExt + " image(s) hébergée(s) sur un autre domaine : peuvent être bloquées. Convertissez-les en base64 (outil n° 2).");
+    if (imgRel) add("w", imgRel + " image(s) avec chemin relatif : à tester. Microsoft accepte les images du même domaine, mais le base64 est le plus fiable.");
+    if (imgSansAlt) add("w", imgSansAlt + " image(s) sans attribut <code>alt</code> : ajoutez un texte alternatif (accessibilité).");
+
+    // Autres éléments
+    if (doc.querySelector("iframe")) add("w", "Balise &lt;iframe&gt; détectée : contenu externe probablement bloqué (iframe dans un iframe isolé).");
+    if (doc.querySelector("form[action]")) add("w", "Formulaire avec action détecté : l'envoi de données est bloqué. Utilisez plutôt un lien vers Microsoft Forms.");
+    if (doc.querySelector("video[src^='http'], audio[src^='http'], source[src^='http']")) add("w", "Média externe détecté : risque de blocage. Utilisez un lien vers Stream à la place.");
+    if (!doc.documentElement.getAttribute("lang")) add("i", "Ajoutez <code>&lt;html lang=\"fr\"&gt;</code> pour les lecteurs d'écran.");
+    if (!doc.querySelector("meta[charset]")) add("i", "Ajoutez <code>&lt;meta charset=\"UTF-8\"&gt;</code> pour que les accents s'affichent correctement.");
+    if (!doc.querySelector("meta[name=viewport]")) add("i", "Ajoutez la balise meta viewport pour l'affichage mobile (application SharePoint).");
+    if (!doc.querySelector("h1")) add("i", "Aucun titre &lt;h1&gt; : ajoutez-en un pour la structure et l'accessibilité.");
+
+    afficher(res, domaines);
+  }
+
+  function afficher(res, domaines) {
+    document.getElementById("sortie").hidden = false;
+    document.getElementById("nomFichier").textContent = "Fichier analysé : " + nomSource;
+    const c = { e: 0, w: 0, i: 0, o: 0 };
+    res.forEach(function (r) { c[r.n]++; });
+    document.getElementById("resume").innerHTML =
+      '<span class="pastille err">' + c.e + ' bloquant(s)</span>' +
+      '<span class="pastille warn">' + c.w + ' avertissement(s)</span>' +
+      '<span class="pastille info">' + c.i + ' conseil(s)</span>' +
+      (c.e === 0 ? '<span class="pastille ok">Prêt à téléverser</span>' : '');
+    const ordre = { e: 0, w: 1, i: 2, o: 3 };
+    res.sort(function (a, b) { return ordre[a.n] - ordre[b.n]; });
+    document.getElementById("resultats").innerHTML = res.map(function (r) { return '<li class="' + r.n + '">' + r.t + "</li>"; }).join("");
+    const d = Array.from(domaines).filter(function (h) { return !/\.sharepoint\.com$/i.test(h); }).sort();
+    document.getElementById("domaines").innerHTML = d.length
+      ? "<h3>Domaines externes à faire autoriser</h3><p class='petit'>Paramètres du site › Sécurité des champs HTML (sans https://) :</p><textarea readonly>" + esc(d.join("\n")) + "</textarea>"
+      : "";
+  }
+
+  // Correction automatique des liens
+  document.getElementById("corriger").addEventListener("click", function () {
+    let n = 0;
+    const corrige = texteSource.replace(/<a\b[^>]*>/gi, function (balise) {
+      const m = balise.match(/href\s*=\s*["']([^"']*)["']/i);
+      if (!m) return balise;
+      const href = m[1].trim();
+      if (href.indexOf("#") === 0 || /^(mailto|tel|javascript):/i.test(href)) return balise;
+      let b = balise;
+      if (/target\s*=\s*["']?_(top|parent|self)["']?/i.test(b)) { b = b.replace(/target\s*=\s*["']?_(top|parent|self)["']?/i, 'target="_blank"'); n++; }
+      else if (!/target\s*=/i.test(b)) { b = b.replace(/<a\b/i, '<a target="_blank"'); n++; }
+      if (!/rel\s*=/i.test(b)) b = b.replace(/<a\b/i, '<a rel="noopener"');
+      return b;
+    });
+    const blob = new Blob([corrige], { type: "text/html;charset=utf-8" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = nomSource.replace(/\.html?$/i, "") + "-corrige.html";
+    document.body.appendChild(a); a.click(); a.remove();
+    alert(n + " lien(s) corrigé(s). Fichier téléchargé : " + a.download);
+  });
+
+  // Convertisseur d'image
+  let dataUrl = "";
+  const altImage = document.getElementById("altImage");
+  function majCode() {
+    document.getElementById("codeImage").value = '<img src="' + dataUrl + '" alt="' + esc(altImage.value) + '" style="max-width:100%;height:auto">';
+  }
+  document.getElementById("image").addEventListener("change", function (e) {
+    const f = e.target.files[0]; if (!f) return;
+    const r = new FileReader();
+    r.onload = function () {
+      dataUrl = r.result;
+      document.getElementById("sortieImage").hidden = false;
+      document.getElementById("apercu").src = dataUrl;
+      const ko = Math.round(dataUrl.length / 1024);
+      document.getElementById("tailleImage").textContent = "Taille une fois intégrée : " + ko + " Ko" + (ko > 500 ? " — trop lourd, réduisez l'image (ex. squoosh.app, gratuit)." : "");
+      majCode();
+    };
+    r.readAsDataURL(f);
+  });
+  altImage.addEventListener("input", majCode);
+  function copier(t, bouton) {
+    navigator.clipboard.writeText(t).then(function () {
+      const o = bouton.textContent; bouton.textContent = "Copié !"; setTimeout(function () { bouton.textContent = o; }, 1500);
+    });
+  }
+  document.getElementById("copierImage").addEventListener("click", function () { copier(document.getElementById("codeImage").value, this); });
+  document.getElementById("copierCss").addEventListener("click", function () { copier("background-image: url('" + dataUrl + "');", this); });
+})();
+</script>
+</body>
+</html>
