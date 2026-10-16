@@ -9,6 +9,7 @@ Résumé de tout ce qui a été trouvé, testé et décidé. **Commencez par ce 
 | Sujet | État | Prochaine action |
 |---|---|---|
 | Fonctionnalité « Page HTML » dans SharePoint | ⏳ **Pas encore activée** dans le site SandBox Annie Audet | Refaire le test rapide (section 4) de temps en temps |
+| Fichier `.html` dans une **bibliothèque de documents** | ✅ **S'affiche et fonctionne** dans la visionneuse (constat du 16 octobre, v3.3) | Utiliser cette voie dès maintenant (`appreciation/VERSION-3.3.md`, section 3 b) |
 | Structure technique (type de contenu « Page Html ») | ✅ Déjà présente dans Pages du site | Ne rien modifier |
 | Votre navigateur (HTML, CSS, JavaScript) | ✅ Fonctionne (test du 14 octobre) | — |
 | Application « Appréciation de la contribution » | ✅ **v3.3** (16 oct.) : les 3 formulaires du 15 octobre 2026 ; ne bloque plus dans la page HTML SharePoint | Inscrire les adresses dans le fichier puis tester dans SharePoint (`appreciation/VERSION-3.3.md`) |

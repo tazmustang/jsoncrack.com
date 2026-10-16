@@ -51,7 +51,24 @@ const CONFIG_DEFAUT = {
 
 Ce ne sont pas des secrets : sans compte de la Ville, ces pages ne s'ouvrent pas.
 
+## 3 b. Où déposer le fichier : la bibliothèque de documents suffit
+
+Constat du 16 octobre 2026 : un fichier `.html` déposé dans une **bibliothèque de documents** du site s'affiche dans la visionneuse SharePoint. L'application démarre, sans écran de mot de passe et avec le bandeau. **Pages du site** refuse encore le fichier, parce que l'option « Page HTML » n'est pas encore activée (déploiement prévu jusqu'à fin décembre 2026). Il n'est pas nécessaire de l'attendre.
+
+1. Créez un dossier « Application » dans la bibliothèque (ou une bibliothèque dédiée).
+2. **Permissions** : vous en **modification**, les utilisateurs en **lecture seule**. Ainsi, personne ne remplace ni ne supprime le fichier par erreur.
+3. Déposez `appreciation-cadres-v3.3.html`, avec les adresses inscrites (section 3).
+4. Copiez le lien du fichier (… › Copier le lien). C'est ce lien que vous :
+   - inscrivez dans `lienApplication` (section 3) ;
+   - mettez dans un composant **Liens rapides** ou un bouton d'une page du site ;
+   - envoyez aux utilisateurs.
+5. **Mise à jour** : déposez la nouvelle version **sous le même nom de fichier** et choisissez « Remplacer ». Le lien reste le même et l'historique des versions garde l'ancienne.
+
+> Le bouton **« Ouvrez »** de la visionneuse (en haut à droite) peut télécharger le fichier ou l'ouvrir hors de SharePoint. C'est sans risque : le fichier fonctionne aussi sur le poste, avec le mot de passe et le brouillon chiffré.
+
 ## 4. Test dans SharePoint (10 minutes)
+
+Faites-le dans la visionneuse de la bibliothèque (section 3 b), puis de nouveau le jour où « Page HTML » apparaîtra dans Pages du site.
 
 | # | Action | Résultat attendu | ✅ / ❌ |
 |---|---|---|---|
