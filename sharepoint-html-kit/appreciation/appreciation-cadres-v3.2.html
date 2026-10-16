@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Appréciation de la contribution</title>
-<!-- Version 3.2 — formulaire « cadre avec équipe » du 15 octobre 2026 (introduction, type de rencontre, sections A, C, D, E, F) -->
+<!-- Version 3.2 — les 3 formulaires du 15 octobre 2026 (introduction, type de rencontre, sections A à F) -->
 <!-- Version 3.1 — correctifs de compatibilité « page HTML SharePoint » (stockage bloqué, bandeau, message si script bloqué) -->
 <!-- Version 3.0 — dépôt authentifié par SharePoint (aucune URL de flux dans ce fichier) -->
 <style>
@@ -584,12 +584,12 @@
       <button type="button" class="poste-card" data-poste="sans_equipe" onclick="setPoste('sans_equipe')">
         <strong>Cadre sans équipe</strong>
         <span>Postures de leadership adaptées à une personne cadre sans équipe, cotées sur 5 niveaux.</span>
-        <em>Version du 28 septembre 2026</em>
+        <em>Version du 15 octobre 2026</em>
       </button>
       <button type="button" class="poste-card" data-poste="professionnel" onclick="setPoste('professionnel')">
         <strong>Professionnel non syndiqué</strong>
         <span>Compétences décrites par des exemples d’application (pas de cotation).</span>
-        <em>Version du 17 septembre 2026</em>
+        <em>Version du 15 octobre 2026</em>
       </button>
     </div>
   </div>
@@ -681,7 +681,7 @@
 
   <section class="card" id="sectionCompetences" style="display:none;">
     <h2>Section B — Les compétences</h2>
-    <p class="q-text">Pour les compétences suivantes, donnez des exemples d’application.</p>
+    <p class="q-text">Pour chacune des compétences suivantes, donnez des exemples d’application.</p>
     <fieldset id="fieldsetSectionComp">
     <div id="competenceContainer"></div>
     </fieldset>
@@ -949,7 +949,7 @@ function storageDispo(){ try{ localStorage.setItem('__t','1'); localStorage.remo
 })();
 
 /* ---------- Données de référence ---------- */
-/* ---------- Échelle de démonstration des comportements (formulaires cadres, 28 septembre 2026) ---------- */
+/* ---------- Échelle de démonstration des comportements (formulaires cadres, 15 octobre 2026) ---------- */
 const ECHELLE_NIVEAUX = [
   {label:"Non démontré", desc:"Comportement non observé ou très rarement observé."},
   {label:"Partiellement démontré", desc:"Comportement démontré de façon occasionnelle nécessitant de l’accompagnement pour être maintenu."},
@@ -971,19 +971,19 @@ const FORMS = {
   },
   sans_equipe:{
     label:"Cadre sans équipe", title:"personnel cadre sans équipe",
-    versionLabel:"28 septembre 2026", versionNote:"Version intégrant le PBRI adapté",
+    versionLabel:"15 octobre 2026", versionNote:"Version intégrant le PBRI adapté",
     hasPostures:true,
-    valeursIntro:"Pour l’année en cours, choisissez les thèmes pour lesquels des efforts ont été investis par la personne en appréciation.",
+    valeursIntro:"Pour l’année en cours, choisissez les thèmes ayant fait l’objet d’actions ou d’efforts particuliers de la part de la personne en appréciation.",
     valeursNote:"",
-    valeursCols:[{key:'individuel', label:"Exemple d’application"},{key:'commentaires', label:"Commentaires"}]
+    valeursCols:[{key:'individuel', label:"Exemples d’application"},{key:'commentaires', label:"Commentaires"}]
   },
   professionnel:{
     label:"Professionnel non syndiqué", title:"personnel professionnel non syndiqué",
-    versionLabel:"17 septembre 2026", versionNote:"Version intégrant les commentaires",
+    versionLabel:"15 octobre 2026", versionNote:"Version intégrant les commentaires",
     hasPostures:false,
-    valeursIntro:"Pour l’année en cours, choisissez les thèmes pour lesquels des efforts ont été investis par la personne en appréciation.",
+    valeursIntro:"Pour l’année en cours, choisissez les thèmes ayant fait l’objet d’actions ou d’efforts particuliers de la part de la personne en appréciation.",
     valeursNote:"",
-    valeursCols:[{key:'individuel', label:"Exemple d’application"},{key:'commentaires', label:"Commentaires"}]
+    valeursCols:[{key:'individuel', label:"Exemples d’application"},{key:'commentaires', label:"Commentaires"}]
   }
 };
 
@@ -1041,14 +1041,14 @@ const POSTURES_SANS = [
 const POSTURES = POSTURES_AVEC; // modèle de l'état : mêmes identifiants et même nombre de comportements pour les deux versions
 function getPostures(){ return (state.identification.typePoste === 'sans_equipe') ? POSTURES_SANS : POSTURES_AVEC; }
 
-/* ---------- Compétences (professionnel non syndiqué, 17 septembre 2026) ---------- */
+/* ---------- Compétences (professionnel non syndiqué, 15 octobre 2026) ---------- */
 const COMPETENCES = [
   {id:'autonomie', label:"Autonomie", desc:"Je réalise mes mandats et mes responsabilités avec le niveau d’autonomie attendu."},
   {id:'efficacite', label:"Efficacité au travail", desc:"J’effectue une gestion efficace des priorités en fonction des attentes et de la charge de travail."},
   {id:'collaboration', label:"Collaboration – Mobilisation", desc:"Je travaille en partenariat avec les autres, favorise la collaboration et contribue activement à l’atteinte des objectifs communs."},
-  {id:'ecoute', label:"Faire preuve d’écoute", desc:"Je fais preuve d’ouverture et d’écoute afin de comprendre les besoins de mes partenaires et de mes collaborateurs et d’y répondre de façon appropriée."},
+  {id:'ecoute', label:"Faire preuve d’écoute", desc:"Je fais preuve d’ouverture et d’écoute afin de comprendre les besoins de mes partenaires et collaborateurs et d’y répondre de façon appropriée."},
   {id:'agilite', label:"Agilité – créativité", desc:"Je prends les décisions requises et m’ajuste en fonction du contexte."},
-  {id:'autre', label:"Autre (si jugé opportun)", desc:""}
+  {id:'autre', label:"Autres (si jugé opportun)", desc:""}
 ];
 
 
@@ -1275,7 +1275,7 @@ function renderCompetences(){
   if(!c) return;
   c.innerHTML = `
     <table class="data-table">
-      <thead><tr><th style="width:42%;">Compétence</th><th>Exemple d’application / commentaire</th></tr></thead>
+      <thead><tr><th style="width:42%;">Compétence</th><th>Exemples d’application / commentaires</th></tr></thead>
       <tbody>
         ${COMPETENCES.map(comp=>`
           <tr>
@@ -2209,7 +2209,7 @@ function buildPrintHTML(){
     <p class="meta-line"><em>Exemples de comportements observés / commentaires : ${esc(state.leadershipCommentaires[p.id]) || '—'}</em></p>`;
   }).join('')}`
     : `<h2>Section B — Les compétences</h2>
-  <table><tr><th>Compétence</th><th>Exemple d’application / commentaire</th></tr>
+  <table><tr><th>Compétence</th><th>Exemples d’application / commentaires</th></tr>
   ${COMPETENCES.map(c=>{
     const d = state.competences[c.id] || {};
     return `<tr><td><strong>${esc(c.label)}</strong>${c.desc ? `<br><span style="font-weight:normal;">${esc(c.desc)}</span>` : ''}</td><td>${esc(d.exemple) || '—'}</td></tr>`;
