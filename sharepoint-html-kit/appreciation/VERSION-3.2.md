@@ -1,4 +1,4 @@
-# Version 3.2 — formulaire « cadre avec équipe » du 15 octobre 2026
+# Version 3.2 — les trois formulaires du 15 octobre 2026
 
 Fichier : `appreciation-cadres-v3.2.html` (remplace `appreciation-cadres_-v3.1.html`).
 Gratuit, rien à installer : il s'ouvre par double-clic dans Edge, comme avant.
@@ -18,16 +18,19 @@ Gratuit, rien à installer : il s'ouvre par double-clic dans Edge, comme avant.
 | Section E | « …et l'atteinte des attentes de l'organisation » | « …et **les attentes de l'organisation** » |
 | Section F | « …Exemple : les défis à venir, les besoins de soutien… » | L'exemple est **retiré** |
 | Échelle des postures | « de façon constance » (coquille) | « de façon **constante** » |
-| Carte de choix, en-tête, pied de page, PDF | Version du 28 septembre 2026 | **Version du 15 octobre 2026** |
+| Section C (sans équipe et professionnel) | « …thèmes pour lesquels des efforts ont été investis… » · « Exemple d'application » | « …thèmes **ayant fait l'objet d'actions ou d'efforts particuliers** de la part de la personne en appréciation » · « **Exemples** d'application » |
+| Section B (professionnel) | « Pour les compétences suivantes… » · « Exemple d'application / commentaire » | « Pour **chacune des** compétences suivantes, donnez des exemples d'application » · « **Exemples** d'application / **commentaires** » |
+| Compétences (professionnel) | « …de mes partenaires et de mes collaborateurs… » · « Autre (si jugé opportun) » | « …de mes partenaires et collaborateurs… » · « **Autres** (si jugé opportun) » |
+| Carte de choix, en-tête, pied de page, PDF | 28 septembre 2026 (cadres) · 17 septembre 2026 (professionnel) | **Version du 15 octobre 2026 pour les trois formulaires** |
 
 Rien d'autre ne change : mot de passe, brouillon chiffré, dépôt SharePoint, approbations, aperçu PDF et correctifs v3.1 sont identiques.
 
-> **À savoir :** les sections A (Q2), D, E et F et le type de rencontre sont communs aux trois formulaires. Ces nouveaux libellés s'affichent donc aussi pour le cadre sans équipe et le professionnel. Leurs changements propres (postures, compétences, section C) et leur nouvelle date de version viendront à la prochaine étape.
+> Les postures du cadre sans équipe (description de « Leader performant(e) », « Mettre à profit les expertises… », « …ajuster ses pratiques en conséquence ») étaient déjà conformes au formulaire du 15 octobre.
 
 ## 2. Les dossiers déjà commencés
 
 - Un **brouillon** (fichier `.json` ou copie locale) s'ouvre sans perte et passe automatiquement à la version du 15 octobre 2026.
-- Un dossier **déjà certifié ou en approbation** garde sa version d'origine (28 septembre 2026), puisque son contenu a été figé à cette date.
+- Un **dossier déjà certifié ou en approbation** garde sa version d'origine (28 ou 17 septembre 2026), puisque son contenu a été figé à cette date.
 - Une case cochée « Rencontre statutaire ou bilan de mi-année » devient « **Bilan de mi-année** ». Si c'était une rencontre statutaire, décochez-la et cochez « Autre (ex. : statutaire) ».
 - Le circuit SharePoint (fichier de dépôt, Power Automate) **n'a pas à être modifié** : les noms des champs du fichier `.json` sont les mêmes.
 
@@ -35,7 +38,7 @@ Rien d'autre ne change : mot de passe, brouillon chiffré, dépôt SharePoint, a
 
 1. Téléchargez `appreciation-cadres-v3.2.html`.
 2. Ouvrez-le dans Edge (double-clic) et vérifiez :
-   - la carte « Cadre avec équipe » affiche **Version du 15 octobre 2026** ;
+   - les trois cartes de choix affichent **Version du 15 octobre 2026** ;
    - la carte **Introduction** apparaît en haut du formulaire ;
    - le type de rencontre suit le nouvel ordre.
 3. Si les adresses SharePoint étaient inscrites dans votre ancien fichier (⚙️ Configuration), elles sont gardées par le navigateur. Sinon, inscrivez-les de nouveau dans ⚙️ Configuration.
@@ -52,9 +55,11 @@ Rien d'autre ne change : mot de passe, brouillon chiffré, dépôt SharePoint, a
 | 4 | Section A : remplir « Indicateurs de mesure » | Le texte reste en place | |
 | 5 | Section C : cocher un thème | Colonnes « Exemples d'application à titre individuel » et « … auprès de l'équipe » | |
 | 6 | « 🖨️ Aperçu PDF » | Type de rencontre : « Bilan de mi-année, Autre : statutaire » ; nouveaux libellés | |
-| 7 | « 📁 Charger un dossier » avec un ancien brouillon `.json` | Les données reviennent ; version du 15 octobre 2026 | |
+| 7 | Nouveau formulaire › « Cadre sans équipe », section C | « Exemples d'application » et « Commentaires » | |
+| 8 | Nouveau formulaire › « Professionnel non syndiqué », section B | « Pour chacune des compétences suivantes… » et « Exemples d'application / commentaires » | |
+| 9 | « 📁 Charger un dossier » avec un ancien brouillon `.json` | Les données reviennent ; version du 15 octobre 2026 | |
 
-Ce test a été fait en navigateur automatisé le 16 octobre 2026 (étapes 1 à 7) : aucune erreur.
+Ce test a été fait en navigateur automatisé le 16 octobre 2026 (étapes 1 à 9, pour les trois formulaires) : aucune erreur.
 
 ## 5. Points à valider avec les RH
 

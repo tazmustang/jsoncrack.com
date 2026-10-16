@@ -8,12 +8,12 @@ Ce dossier contient tout ce qu'il faut pour :
 
 Tout est gratuit, rien à installer : les outils s'ouvrent par double-clic dans Edge.
 
-> **Nouveau (16 octobre 2026) : version 3.2.** `appreciation-cadres-v3.2.html` intègre déjà les correctifs v3.1 et le formulaire « cadre avec équipe » du 15 octobre 2026. Utilisez-la directement : l'outil de correctifs (section 2) n'est plus nécessaire. Détails, installation et test : `appreciation/VERSION-3.2.md`.
+> **Nouveau (16 octobre 2026) : version 3.2.** `appreciation-cadres-v3.2.html` intègre déjà les correctifs v3.1 et les trois formulaires du 15 octobre 2026. Utilisez-la directement : l'outil de correctifs (section 2) n'est plus nécessaire. Détails, installation et test : `appreciation/VERSION-3.2.md`.
 
 | Fichier | Rôle |
 |---|---|
 | `appreciation/GUIDE-APPRECIATION.md` | Ce guide |
-| `appreciation/appreciation-cadres-v3.2.html` | **L'application, version 3.2** (formulaire du 15 octobre 2026) |
+| `appreciation/appreciation-cadres-v3.2.html` | **L'application, version 3.2** (formulaires du 15 octobre 2026) |
 | `appreciation/VERSION-3.2.md` | Changements de la v3.2, installation et test rapide |
 | `appreciation/appliquer-correctifs.html` | Outil qui corrige **votre** fichier `appreciation.html` (sans toucher aux images) |
 | `test-bac-a-sable.html` | Page de diagnostic à téléverser comme « Page HTML » le jour J |
