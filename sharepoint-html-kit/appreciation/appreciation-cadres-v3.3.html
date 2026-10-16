@@ -1105,9 +1105,9 @@ const SIGNERS = [
 /* Modifiez ces 3 adresses UNE FOIS avant de distribuer le fichier (voir le guide d'installation, étape « Configurer la page »).
    Ce ne sont pas des secrets : sans compte de la Ville, ces pages SharePoint ne s'ouvrent pas. */
 const CONFIG_DEFAUT = {
-  depotNewFormUrl: '',   // ex. https://villedequebec.sharepoint.com/sites/AppreciationContribution/Lists/Depot_Appreciations/NewForm.aspx
-  mesDossiersUrl: '',    // ex. https://villedequebec.sharepoint.com/sites/AppreciationContribution/Dossiers_Appreciations
-  lienApplication: ''    // ex. lien vers l'endroit où les gens récupèrent ce fichier HTML (page SharePoint, dossier partagé)
+  depotNewFormUrl: 'https://villedequebec.sharepoint.com/sites/SandBoxAnnieAudet/Lists/AppreciationsCadres_Suivi/NewForm.aspx',   // ex. https://villedequebec.sharepoint.com/sites/AppreciationContribution/Lists/Depot_Appreciations/NewForm.aspx
+  mesDossiersUrl: 'https://villedequebec.sharepoint.com/sites/SandBoxAnnieAudet/Apprciation%20de%20la%20contribution%20des%20cadres/Forms/AllItems.aspx',    // ex. https://villedequebec.sharepoint.com/sites/AppreciationContribution/Dossiers_Appreciations
+  lienApplication: 'https://villedequebec.sharepoint.com/sites/SandBoxAnnieAudet/Apprciation%20de%20la%20contribution%20des%20cadres/Forms/AllItems.aspx'    // ex. lien vers l'endroit où les gens récupèrent ce fichier HTML (page SharePoint, dossier partagé)
 };
 const CONFIG_KEY = 'appreciationConfig_v2';
 let configSession = null; /* v3.3 : configuration gardée pour la session quand le navigateur ne peut rien conserver */
