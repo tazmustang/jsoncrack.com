@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Appréciation de la contribution</title>
+<!-- Version 3.6 — « Qui êtes-vous ? » d'abord, puis le type de poste -->
 <!-- Version 3.5 — affichage allégé : choix du rôle qui filtre les sections, aide fusionnée et mise en évidence, version au pied de page seulement -->
 <!-- Version 3.4 — visionneuse SharePoint : téléchargements bloqués → fenêtre « Copier le contenu » et consigne d'ouvrir le fichier sur le poste -->
 <!-- Version 3.3 — stockage du navigateur vérifié réellement (SharePoint peut l'imiter) ; lectures JSON sécurisées -->
@@ -522,7 +523,7 @@
 <header class="app-header">
   <div class="header-titles">
     <h1>Appréciation de la contribution</h1>
-    <div class="sub" id="headerSub">Choisissez d’abord votre type de poste</div>
+    <div class="sub" id="headerSub">Indiquez d’abord qui vous êtes</div>
   </div>
   <span class="current-role-badge" id="currentRoleBadge">👤 Personne en appréciation</span>
 </header>
@@ -532,17 +533,7 @@
   <aside class="app-sidebar">
     <button class="btn gold sidebar-help-btn sidebar-help-top" type="button" onclick="openHelp()">❓ Comment remplir ce formulaire</button>
     <hr class="sidebar-divider">
-    <div class="sidebar-label">1. Type de poste</div>
-    <div class="poste-btn-group" id="posteBtnGroup">
-      <button type="button" class="poste-btn" data-poste="avec_equipe" onclick="setPoste('avec_equipe')">Cadre avec équipe</button>
-      <button type="button" class="poste-btn" data-poste="sans_equipe" onclick="setPoste('sans_equipe')">Cadre sans équipe</button>
-      <button type="button" class="poste-btn" data-poste="professionnel" onclick="setPoste('professionnel')">Professionnel non syndiqué</button>
-    </div>
-    <button type="button" class="poste-change-link" id="posteChangeBtn" onclick="changePoste()" style="display:none;">🔓 Changer de type de poste</button>
-
-    <hr class="sidebar-divider">
-
-    <div class="sidebar-label">2. Vous êtes :</div>
+    <div class="sidebar-label">1. Vous êtes :</div>
     <div class="role-btn-group" id="roleBtnGroup">
       <button type="button" class="role-btn" data-role-btn="cadre" onclick="setRole('cadre')">Personne en appréciation</button>
       <button type="button" class="role-btn" data-role-btn="superieur_immediat" onclick="setRole('superieur_immediat')">Supérieur(e) immédiat(e)</button>
@@ -552,6 +543,16 @@
 
     <button type="button" class="poste-change-link" id="roleChangeBtn" onclick="changeRole()" style="display:none;">🔓 Changer de rôle</button>
     <p class="role-note">Vous ne voyez que ce qui concerne votre rôle. Le rôle choisi ici adapte l’affichage. C’est <strong>SharePoint</strong> qui vérifie votre identité et votre rôle au moment du dépôt.</p>
+
+    <hr class="sidebar-divider">
+
+    <div class="sidebar-label">2. Type de poste</div>
+    <div class="poste-btn-group" id="posteBtnGroup">
+      <button type="button" class="poste-btn" data-poste="avec_equipe" onclick="setPoste('avec_equipe')">Cadre avec équipe</button>
+      <button type="button" class="poste-btn" data-poste="sans_equipe" onclick="setPoste('sans_equipe')">Cadre sans équipe</button>
+      <button type="button" class="poste-btn" data-poste="professionnel" onclick="setPoste('professionnel')">Professionnel non syndiqué</button>
+    </div>
+    <button type="button" class="poste-change-link" id="posteChangeBtn" onclick="changePoste()" style="display:none;">🔓 Changer de type de poste</button>
 
 
     <hr class="sidebar-divider">
@@ -583,6 +584,17 @@
   <div id="sendStatus" style="margin:0 0 10px;"></div>
   <div class="depot-pending" id="depotPendingBanner" style="display:none;"></div>
 
+  <div class="poste-gate" id="roleGate" style="display:none;">
+    <h2>Qui êtes-vous dans cette appréciation ?</h2>
+    <p>Commencez par cocher votre rôle : vous ne verrez que ce qui vous concerne. Votre choix est gardé jusqu’à la fin ou jusqu’à « Nouveau formulaire ».</p>
+    <div class="poste-gate-cards">
+      <button type="button" class="role-card-btn" onclick="setRole('cadre')"><strong>☐ Personne en appréciation</strong><span>Je remplis ma partie, mon autoévaluation et mon bilan, puis je certifie.</span></button>
+      <button type="button" class="role-card-btn" onclick="setRole('superieur_immediat')"><strong>☐ Supérieur(e) immédiat(e)</strong><span>Je remplis mes observations, le bilan annuel et l’évaluation globale, puis j’approuve.</span></button>
+      <button type="button" class="role-card-btn" onclick="setRole('superieur_hierarchique')"><strong>☐ Supérieur(e) hiérarchique</strong><span>Je prends connaissance du dossier et j’approuve.</span></button>
+      <button type="button" class="role-card-btn" onclick="setRole('directeur')"><strong>☐ Directeur / directrice</strong><span>J’approuve en dernier, si mon approbation est requise.</span></button>
+    </div>
+  </div>
+
   <div class="poste-gate" id="posteGate">
     <h2>Quel est le type de poste de la personne en appréciation ?</h2>
     <p>Choisissez le formulaire qui correspond à son poste. Une fois le choix fait, les deux autres formulaires sont verrouillés et seuls les champs de ce formulaire sont disponibles.</p>
@@ -599,17 +611,6 @@
         <strong>Professionnel non syndiqué</strong>
         <span>Compétences décrites par des exemples d’application (pas de cotation).</span>
       </button>
-    </div>
-  </div>
-
-  <div class="poste-gate" id="roleGate" style="display:none;">
-    <h2>Qui êtes-vous dans cette appréciation ?</h2>
-    <p>Cochez votre rôle : vous ne verrez que ce qui vous concerne. Votre choix est gardé jusqu’à la fin ou jusqu’à « Nouveau formulaire ».</p>
-    <div class="poste-gate-cards">
-      <button type="button" class="role-card-btn" onclick="setRole('cadre')"><strong>☐ Personne en appréciation</strong><span>Je remplis ma partie, mon autoévaluation et mon bilan, puis je certifie.</span></button>
-      <button type="button" class="role-card-btn" onclick="setRole('superieur_immediat')"><strong>☐ Supérieur(e) immédiat(e)</strong><span>Je remplis mes observations, le bilan annuel et l’évaluation globale, puis j’approuve.</span></button>
-      <button type="button" class="role-card-btn" onclick="setRole('superieur_hierarchique')"><strong>☐ Supérieur(e) hiérarchique</strong><span>Je prends connaissance du dossier et j’approuve.</span></button>
-      <button type="button" class="role-card-btn" onclick="setRole('directeur')"><strong>☐ Directeur / directrice</strong><span>J’approuve en dernier, si mon approbation est requise.</span></button>
     </div>
   </div>
 
@@ -802,8 +803,8 @@
 
     <h3 style="font-size:.95em; color:var(--navy);">Pour commencer</h3>
     <div class="aide-step"><div class="num">A</div><div class="txt"><h4>Ouvrez le fichier sur votre poste</h4><p>Dans la bibliothèque SharePoint, cliquez sur <strong>⤓ Télécharger</strong>, puis ouvrez le fichier téléchargé. L'aperçu SharePoint ne permet ni d'enregistrer ni de télécharger.</p></div></div>
-    <div class="aide-step"><div class="num">B</div><div class="txt"><h4>Choisissez le type de poste</h4><p>Celui de la personne en appréciation. Les deux autres formulaires se verrouillent.</p></div></div>
-    <div class="aide-step"><div class="num">C</div><div class="txt"><h4>Indiquez qui vous êtes</h4><p>Personne en appréciation, supérieur(e) immédiat(e), hiérarchique ou directeur. Vous ne voyez alors que ce qui vous concerne : les sections réservées aux autres restent cachées tant qu'elles sont vides. Votre choix est gardé jusqu'à « Nouveau formulaire ». C'est SharePoint qui vérifie votre identité au dépôt.</p></div></div>
+    <div class="aide-step"><div class="num">B</div><div class="txt"><h4>Indiquez qui vous êtes</h4><p>Personne en appréciation, supérieur(e) immédiat(e), hiérarchique ou directeur. Vous ne voyez alors que ce qui vous concerne : les sections réservées aux autres restent cachées tant qu'elles sont vides. Votre choix est gardé jusqu'à « Nouveau formulaire ». C'est SharePoint qui vérifie votre identité au dépôt.</p></div></div>
+    <div class="aide-step"><div class="num">C</div><div class="txt"><h4>Choisissez le type de poste</h4><p>Celui de la personne en appréciation. Les deux autres formulaires se verrouillent.</p></div></div>
 
     <h3 style="font-size:.95em; color:var(--navy);">Qui fait quoi</h3>
     <div class="role-grid">
@@ -1578,6 +1579,7 @@ function printPlanPDF(){
 /* ---------- Type de poste : choix, verrouillage des autres choix, thème de couleur ---------- */
 function setPoste(type){
   if(!FORMS[type]) return;
+  if(!currentRole) return;                                     // v3.6 : on choisit d'abord son rôle
   if(state.workflow.status !== 'brouillon') return;           // après la certification, le type de poste est figé
   const cur = state.identification.typePoste;
   if(cur && cur !== type) return;                              // les autres choix sont verrouillés
@@ -1610,8 +1612,9 @@ function applyPosteTheme(){
   document.querySelectorAll('.poste-btn').forEach(b=>{
     const chosen = (type === b.dataset.poste);
     b.classList.toggle('active', chosen);
-    b.classList.toggle('locked', !!type && !chosen);
-    b.disabled = !!type && !chosen;
+    const bloque = (!!type && !chosen) || !currentRole; /* v3.6 : le rôle d'abord */
+    b.classList.toggle('locked', bloque);
+    b.disabled = bloque;
     b.setAttribute('aria-pressed', chosen ? 'true' : 'false');
   });
   const chg = document.getElementById('posteChangeBtn');
@@ -1619,14 +1622,14 @@ function applyPosteTheme(){
 
   // Tant qu'aucun poste n'est choisi : écran de choix, formulaire inaccessible
   const gate = document.getElementById('posteGate');
-  if(gate) gate.style.display = type ? 'none' : 'block';
+  if(gate) gate.style.display = (currentRole && !type) ? 'block' : 'none'; /* v3.6 : après le rôle */
   const panel = document.getElementById('tabpanel-formulaire');
-  if(panel){ panel.inert = !type; panel.classList.toggle('poste-pending', !type); }
+  if(panel){ const attente = !type || !currentRole; panel.inert = attente; panel.classList.toggle('poste-pending', attente); }
 
   // En-tête, pastille, pied de page, titre de l'onglet du navigateur
   const ver = f ? (state.identification.versionFormulaire || f.versionLabel) : '';
   const sub = document.getElementById('headerSub');
-  if(sub) sub.textContent = f ? (f.title.charAt(0).toUpperCase() + f.title.slice(1)) : 'Choisissez d’abord votre type de poste';
+  if(sub) sub.textContent = f ? (f.title.charAt(0).toUpperCase() + f.title.slice(1)) : (currentRole ? 'Choisissez le type de poste' : 'Indiquez d’abord qui vous êtes');
   const pill = document.getElementById('postePill');
   if(pill){ pill.style.display = f ? 'inline-block' : 'none'; pill.textContent = f ? f.label : ''; }
   const fv = document.getElementById('footerVersion');
@@ -1678,9 +1681,7 @@ function applyRoleGate(){
   const badge = document.getElementById('currentRoleBadge');
   if(badge) badge.textContent = currentRole ? '👤 ' + ROLE_LABELS[currentRole] : '👤 Qui êtes-vous ?';
   const gate = document.getElementById('roleGate');
-  if(gate) gate.style.display = (posteChoisi && !currentRole) ? 'block' : 'none';
-  const panel = document.getElementById('tabpanel-formulaire');
-  if(panel && posteChoisi){ panel.inert = !currentRole; panel.classList.toggle('poste-pending', !currentRole); }
+  if(gate) gate.style.display = !currentRole ? 'block' : 'none'; /* v3.6 : le rôle d'abord */
 }
 /* Sections réservées à un autre rôle : cachées tant qu'elles sont vides */
 function applyRoleVisibility(){
