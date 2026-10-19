@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Appréciation de la contribution</title>
+<!-- Version 3.4 — visionneuse SharePoint : téléchargements bloqués → fenêtre « Copier le contenu » et consigne d'ouvrir le fichier sur le poste -->
 <!-- Version 3.3 — stockage du navigateur vérifié réellement (SharePoint peut l'imiter) ; lectures JSON sécurisées -->
 <!-- Version 3.2 — les 3 formulaires du 15 octobre 2026 (introduction, type de rencontre, sections A à F) -->
 <!-- Version 3.1 — correctifs de compatibilité « page HTML SharePoint » (stockage bloqué, bandeau, message si script bloqué) -->
@@ -872,6 +873,23 @@
   </div>
 </div>
 
+<div class="modal-overlay" id="copieModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>📋 SharePoint bloque le téléchargement ici</h3>
+      <button class="modal-close" type="button" onclick="fermerCopieModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:.88em;"><strong>Le plus simple :</strong> ouvrez l'application sur votre poste. Dans la barre SharePoint en haut, cliquez sur <strong>⤓ Télécharger</strong>, puis ouvrez le fichier téléchargé : tout y fonctionne (téléchargements, brouillon protégé, PDF).</p>
+      <p style="font-size:.88em;"><strong>Sinon, pour ne rien perdre maintenant :</strong> copiez le contenu ci-dessous, collez-le dans le Bloc-notes et enregistrez-le sous le nom <strong id="copieNom"></strong> (type : « Tous les fichiers »).</p>
+      <textarea id="copieTexte" rows="8" readonly style="width:100%; font-family:monospace; font-size:.75em;"></textarea>
+      <p id="copieStatut" class="flow-status ok" style="margin:6px 0;"></p>
+      <button class="btn green" type="button" onclick="copierContenu()">📋 Copier le contenu</button>
+      <button class="btn secondary" type="button" onclick="fermerCopieModal()">Fermer</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="depotModal">
   <div class="modal-box">
     <div class="modal-header">
@@ -945,6 +963,43 @@ function lireStockage(k){
   if(!storageDispo()) return null;
   try{ const v = localStorage.getItem(k); return typeof v === 'string' ? v : null; }catch(e){ return null; }
 }
+/* v3.4 : la visionneuse SharePoint (iframe isolée, sans stockage) bloque aussi les téléchargements, sans erreur visible */
+function modeVisionneuse(){
+  let integre = false;
+  try{ integre = window.self !== window.top; }catch(e){ integre = true; }
+  return integre && !storageDispo();
+}
+function livrerFichier(nom, texte){
+  try{
+    const blob = new Blob([texte], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = nom;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url), 1000);
+  }catch(e){}
+  if(modeVisionneuse()) ouvrirCopieModal(nom, texte);
+}
+function ouvrirCopieModal(nom, texte){
+  document.getElementById('copieNom').textContent = nom;
+  const ta = document.getElementById('copieTexte');
+  ta.value = texte;
+  document.getElementById('copieStatut').textContent = '';
+  document.getElementById('copieModal').classList.add('open');
+}
+function copierContenu(){
+  const ta = document.getElementById('copieTexte');
+  const st = document.getElementById('copieStatut');
+  const ok = () => { st.textContent = '✔ Copié. Collez-le dans le Bloc-notes (Ctrl+V), puis enregistrez-le sous le nom indiqué.'; };
+  ta.focus(); ta.select();
+  let reussi = false;
+  try{ reussi = document.execCommand('copy'); }catch(e){}
+  if(reussi){ ok(); return; }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(ta.value).then(ok, ()=>{ st.textContent = 'Copie automatique bloquée : le texte est sélectionné, faites Ctrl+C.'; });
+  }else{ st.textContent = 'Copie automatique bloquée : le texte est sélectionné, faites Ctrl+C.'; }
+}
+function fermerCopieModal(){ document.getElementById('copieModal').classList.remove('open'); }
 /* Lit du JSON sans jamais planter : accepte un objet déjà lu, renvoie null si illisible */
 function lireJSON(v){
   if(v && typeof v === 'object') return v;
@@ -1456,12 +1511,7 @@ function deposer(action){
   };
   delete depot.formulaire.workflow.dernierDepot;
   const fichier = nomFichierDepot(action);
-  const blob = new Blob([JSON.stringify(depot, null, 2)], {type:'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = fichier;
-  document.body.appendChild(a); a.click(); a.remove();
-  setTimeout(()=>URL.revokeObjectURL(url), 1000);
+  livrerFichier(fichier, JSON.stringify(depot, null, 2)); /* v3.4 */
 
   state.workflow.dernierDepot = {action, date: new Date().toLocaleString('fr-CA')};
   saveLocal(false);
@@ -2191,16 +2241,7 @@ function lockVault(){
   initVault();
 }
 function exportJSON(){
-  const blob = new Blob([JSON.stringify(state,null,2)], {type:'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  const nomFichier = buildSaveFileBaseName();
-  a.href = url;
-  a.download = `${nomFichier}.json`;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
+  livrerFichier(buildSaveFileBaseName() + '.json', JSON.stringify(state,null,2)); /* v3.4 */
 }
 function buildSaveFileBaseName(){
   const nom = (state.identification.nom || 'brouillon').replace(/[^\w\-]+/g,'_');
@@ -2389,7 +2430,7 @@ function saveSpConfigAndClose(){
 }
 
 document.addEventListener('keydown', function(e){
-  if(e.key === 'Escape'){ closeHelp(); closeSpConfig(); closeDepotModal(); }
+  if(e.key === 'Escape'){ closeHelp(); closeSpConfig(); closeDepotModal(); fermerCopieModal(); }
 });
 /* ---------- Détection d'affichage en aperçu intégré (ex. SharePoint) ---------- */
 function checkEmbeddedContext(){
@@ -2398,7 +2439,7 @@ function checkEmbeddedContext(){
   if(embedded && !storageDispo()){ /* v3.1 */
     const banner = document.createElement('div');
     banner.className = 'embed-banner';
-    banner.innerHTML = "ℹ️ Formulaire affiché dans une page SharePoint. <strong>Votre brouillon ne peut pas être conservé dans ce navigateur</strong> : utilisez régulièrement « 💾 Copie locale » (fichier .json) ou « ☁️ Déposer sur SharePoint ». Pour reprendre plus tard, utilisez « 📁 Charger un dossier ».";
+    banner.innerHTML = "ℹ️ Vous êtes dans l'aperçu SharePoint : <strong>rien ne peut y être enregistré ni téléchargé</strong>. Pour travailler, cliquez sur <strong>⤓ Télécharger</strong> dans la barre SharePoint en haut, puis ouvrez le fichier téléchargé.";
     document.body.insertBefore(banner, document.body.firstChild);
   }
 }

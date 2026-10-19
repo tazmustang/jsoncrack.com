@@ -9,7 +9,7 @@ Résumé de tout ce qui a été trouvé, testé et décidé. **Commencez par ce 
 | Sujet | État | Prochaine action |
 |---|---|---|
 | Fonctionnalité « Page HTML » dans SharePoint | ⏳ **Pas encore activée** dans le site SandBox Annie Audet | Refaire le test rapide (section 4) de temps en temps |
-| Fichier `.html` dans une **bibliothèque de documents** | ✅ **S'affiche et fonctionne** dans la visionneuse (constat du 16 octobre, v3.3) | Utiliser cette voie dès maintenant (`appreciation/VERSION-3.3.md`, section 3 b) |
+| Fichier `.html` dans une **bibliothèque de documents** | ✅ S'affiche dans l'aperçu, mais ❌ **téléchargements bloqués** (constat du 19 octobre) | La bibliothèque sert à distribuer ; on travaille dans le fichier téléchargé et ouvert sur le poste (`appreciation/VERSION-3.4.md`) |
 | Structure technique (type de contenu « Page Html ») | ✅ Déjà présente dans Pages du site | Ne rien modifier |
 | Votre navigateur (HTML, CSS, JavaScript) | ✅ Fonctionne (test du 14 octobre) | — |
 | Application « Appréciation de la contribution » | ✅ **v3.3** (16 oct.) : les 3 formulaires du 15 octobre 2026 ; ne bloque plus dans la page HTML SharePoint | Inscrire les adresses dans le fichier puis tester dans SharePoint (`appreciation/VERSION-3.3.md`) |
@@ -67,7 +67,7 @@ Résumé de tout ce qui a été trouvé, testé et décidé. **Commencez par ce 
 | `ETAT-DU-PROJET.md` | Ce résumé | Maintenant |
 | `README.md` | Guide complet sur les pages HTML SharePoint (règles, liens, installation, dépannage, sources) | Pour comprendre |
 | `test.html` | Petit fichier de test (fond bleu + bouton) | Test rapide (section 4) |
-| `appreciation/appreciation-cadres-v3.3.html` | L'application à jour (les 3 formulaires du 15 octobre 2026, compatible page HTML) | **Maintenant** |
+| `appreciation/appreciation-cadres-v3.4.html` | L'application à jour (les 3 formulaires du 15 octobre 2026, compatible page HTML) | **Maintenant** |
 | `appreciation/VERSION-3.3.md` | Correctif SharePoint, adresses à inscrire, test | Maintenant |
 | `appreciation/VERSION-3.2.md` | Changements des formulaires du 15 octobre 2026 | Pour information |
 | `appreciation/appliquer-correctifs.html` | Transforme votre `appreciation.html` v3.0 en **v3.1** | **Aujourd'hui** |
