@@ -1,4 +1,4 @@
-# Guide d'installation — Appréciation de la contribution (version 3.6)
+# Guide d'installation — Appréciation de la contribution (version 3.7)
 
 Pour la personne qui installe et entretient l'outil. Mis à jour le 19 octobre 2026.
 
@@ -10,7 +10,7 @@ Tout est gratuit, sans aucune installation sur les postes. Le site de test est *
 
 | Élément | Rôle |
 |---|---|
-| `appreciation-cadres-v3.6.html` | L'application : un seul fichier qui contient les 3 formulaires du 15 octobre 2026 |
+| `appreciation-cadres-v3.7.html` | L'application : un seul fichier qui contient les 3 formulaires du 15 octobre 2026 |
 | Bibliothèque « Appréciation de la contribution des cadres » | L'endroit où les gens **trouvent et téléchargent** l'application |
 | Liste **Depot_Appreciations** | La porte d'entrée : chacun y joint son fichier de dépôt. SharePoint note qui l'a déposé |
 | Bibliothèque **Dossiers_Appreciations** | Les dossiers officiels (« Mes dossiers ») |
@@ -51,14 +51,14 @@ Pour mémoire, si elle est à refaire :
 
 1. Dans la bibliothèque « Appréciation de la contribution des cadres », créez si vous le voulez un dossier **Application**.
 2. **Permissions** : vous en modification, les utilisateurs en **lecture seule**.
-3. Cliquez sur **Charger › Fichiers** › `appreciation-cadres-v3.6.html`.
+3. Cliquez sur **Charger › Fichiers** › `appreciation-cadres-v3.7.html`.
 4. Supprimez les anciennes versions (v3.3, v3.4, v3.5).
 
 **Les adresses SharePoint sont déjà inscrites dans le fichier** : formulaire de dépôt, « Mes dossiers » et lien de la bibliothèque. Il n'y a rien à modifier dans le Bloc-notes.
 
 > Si un jour une adresse change, ouvrez le fichier dans le Bloc-notes et cherchez `const CONFIG_DEFAUT`. Collez la nouvelle adresse **entre les deux apostrophes** de la bonne ligne, puis enregistrez.
 
-**Mises à jour :** déposez la nouvelle version. Si elle porte le **même nom** que l'ancienne, choisissez **Remplacer** : le lien reste le même et l'historique garde l'ancienne. Si le nom change (par exemple v3.6 → v3.7), supprimez l'ancienne.
+**Mises à jour :** déposez la nouvelle version. Si elle porte le **même nom** que l'ancienne, choisissez **Remplacer** : le lien reste le même et l'historique garde l'ancienne. Si le nom change (par exemple v3.7 → v3.7), supprimez l'ancienne.
 
 ## 5. Tester (15 minutes)
 

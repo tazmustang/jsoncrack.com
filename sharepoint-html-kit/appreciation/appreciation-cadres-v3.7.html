@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Appréciation de la contribution</title>
+<!-- Version 3.7 — seule la personne en appréciation choisit le type de poste ; les gestionnaires chargent son dossier -->
 <!-- Version 3.6 — « Qui êtes-vous ? » d'abord, puis le type de poste -->
 <!-- Version 3.5 — affichage allégé : choix du rôle qui filtre les sections, aide fusionnée et mise en évidence, version au pied de page seulement -->
 <!-- Version 3.4 — visionneuse SharePoint : téléchargements bloqués → fenêtre « Copier le contenu » et consigne d'ouvrir le fichier sur le poste -->
@@ -595,9 +596,20 @@
     </div>
   </div>
 
+  <div class="poste-gate" id="chargerGate" style="display:none;">
+    <h2>Ouvrez le dossier de la personne en appréciation</h2>
+    <p>C’est la personne en appréciation qui choisit le type de poste et qui dépose son dossier. Vous le retrouvez ensuite dans « Mes dossiers », avec le bon formulaire déjà choisi.</p>
+    <ol class="intro-list">
+      <li>Cliquez sur <strong>📂 Ouvrir « Mes dossiers »</strong> et téléchargez le dossier de la personne.</li>
+      <li>Cliquez sur <strong>📁 Charger un dossier</strong> et choisissez ce fichier.</li>
+    </ol>
+    <button class="btn secondary" type="button" onclick="ouvrirMesDossiers()">📂 Ouvrir « Mes dossiers »</button>
+    <button class="btn" type="button" onclick="document.getElementById('fileInput').click()">📁 Charger un dossier</button>
+  </div>
+
   <div class="poste-gate" id="posteGate">
-    <h2>Quel est le type de poste de la personne en appréciation ?</h2>
-    <p>Choisissez le formulaire qui correspond à son poste. Une fois le choix fait, les deux autres formulaires sont verrouillés et seuls les champs de ce formulaire sont disponibles.</p>
+    <h2>Quel est votre type de poste ?</h2>
+    <p>Choisissez le formulaire qui correspond à votre poste. Une fois le choix fait, les deux autres formulaires sont verrouillés et seuls les champs de ce formulaire sont disponibles.</p>
     <div class="poste-gate-cards">
       <button type="button" class="poste-card" data-poste="avec_equipe" onclick="setPoste('avec_equipe')">
         <strong>Cadre avec équipe</strong>
@@ -804,7 +816,7 @@
     <h3 style="font-size:.95em; color:var(--navy);">Pour commencer</h3>
     <div class="aide-step"><div class="num">A</div><div class="txt"><h4>Ouvrez le fichier sur votre poste</h4><p>Dans la bibliothèque SharePoint, cliquez sur <strong>⤓ Télécharger</strong>, puis ouvrez le fichier téléchargé. L'aperçu SharePoint ne permet ni d'enregistrer ni de télécharger.</p></div></div>
     <div class="aide-step"><div class="num">B</div><div class="txt"><h4>Indiquez qui vous êtes</h4><p>Personne en appréciation, supérieur(e) immédiat(e), hiérarchique ou directeur. Vous ne voyez alors que ce qui vous concerne : les sections réservées aux autres restent cachées tant qu'elles sont vides. Votre choix est gardé jusqu'à « Nouveau formulaire ». C'est SharePoint qui vérifie votre identité au dépôt.</p></div></div>
-    <div class="aide-step"><div class="num">C</div><div class="txt"><h4>Choisissez le type de poste</h4><p>Celui de la personne en appréciation. Les deux autres formulaires se verrouillent.</p></div></div>
+    <div class="aide-step"><div class="num">C</div><div class="txt"><h4>Personne en appréciation : choisissez votre type de poste</h4><p>Vous seule ou seul faites ce choix ; les deux autres formulaires se verrouillent. <strong>Gestionnaires :</strong> vous ne choisissez pas le type de poste ; ouvrez le dossier de la personne avec « 📂 Mes dossiers », puis « 📁 Charger un dossier ».</p></div></div>
 
     <h3 style="font-size:.95em; color:var(--navy);">Qui fait quoi</h3>
     <div class="role-grid">
@@ -1579,7 +1591,7 @@ function printPlanPDF(){
 /* ---------- Type de poste : choix, verrouillage des autres choix, thème de couleur ---------- */
 function setPoste(type){
   if(!FORMS[type]) return;
-  if(!currentRole) return;                                     // v3.6 : on choisit d'abord son rôle
+  if(currentRole !== 'cadre') return;                          // v3.7 : seule la personne en appréciation choisit le type de poste
   if(state.workflow.status !== 'brouillon') return;           // après la certification, le type de poste est figé
   const cur = state.identification.typePoste;
   if(cur && cur !== type) return;                              // les autres choix sont verrouillés
@@ -1591,6 +1603,7 @@ function setPoste(type){
   pushHistory();
 }
 function changePoste(){
+  if(currentRole !== 'cadre') return;                          // v3.7
   if(state.workflow.status !== 'brouillon') return;
   if(!state.identification.typePoste) return;
   if(!confirm("Changer le type de poste ?\n\nLe formulaire affiché va changer. Les champs propres à l'autre formulaire seront masqués (ils ne sont pas effacés, mais ne figureront ni dans le PDF ni dans le tableau Excel).")) return;
@@ -1612,24 +1625,26 @@ function applyPosteTheme(){
   document.querySelectorAll('.poste-btn').forEach(b=>{
     const chosen = (type === b.dataset.poste);
     b.classList.toggle('active', chosen);
-    const bloque = (!!type && !chosen) || !currentRole; /* v3.6 : le rôle d'abord */
+    const bloque = (!!type && !chosen) || currentRole !== 'cadre'; /* v3.7 : choix réservé à la personne en appréciation */
     b.classList.toggle('locked', bloque);
     b.disabled = bloque;
     b.setAttribute('aria-pressed', chosen ? 'true' : 'false');
   });
   const chg = document.getElementById('posteChangeBtn');
-  if(chg) chg.style.display = (type && brouillon) ? 'block' : 'none';
+  if(chg) chg.style.display = (type && brouillon && currentRole === 'cadre') ? 'block' : 'none';
 
   // Tant qu'aucun poste n'est choisi : écran de choix, formulaire inaccessible
   const gate = document.getElementById('posteGate');
-  if(gate) gate.style.display = (currentRole && !type) ? 'block' : 'none'; /* v3.6 : après le rôle */
+  if(gate) gate.style.display = (currentRole === 'cadre' && !type) ? 'block' : 'none'; /* v3.7 */
+  const gc = document.getElementById('chargerGate');
+  if(gc) gc.style.display = (currentRole && currentRole !== 'cadre' && !type) ? 'block' : 'none';
   const panel = document.getElementById('tabpanel-formulaire');
   if(panel){ const attente = !type || !currentRole; panel.inert = attente; panel.classList.toggle('poste-pending', attente); }
 
   // En-tête, pastille, pied de page, titre de l'onglet du navigateur
   const ver = f ? (state.identification.versionFormulaire || f.versionLabel) : '';
   const sub = document.getElementById('headerSub');
-  if(sub) sub.textContent = f ? (f.title.charAt(0).toUpperCase() + f.title.slice(1)) : (currentRole ? 'Choisissez le type de poste' : 'Indiquez d’abord qui vous êtes');
+  if(sub) sub.textContent = f ? (f.title.charAt(0).toUpperCase() + f.title.slice(1)) : (!currentRole ? 'Indiquez d’abord qui vous êtes' : (currentRole === 'cadre' ? 'Choisissez le type de poste' : 'Ouvrez le dossier de la personne en appréciation'));
   const pill = document.getElementById('postePill');
   if(pill){ pill.style.display = f ? 'inline-block' : 'none'; pill.textContent = f ? f.label : ''; }
   const fv = document.getElementById('footerVersion');
