@@ -2,7 +2,8 @@
 
 | Version | Date | Changements |
 |---|---|---|
-| **3.6** | 19 oct. 2026 | **« Qui êtes-vous ? » d'abord**, puis le type de poste (écran de départ et barre de gauche) |
+| **3.7** | 19 oct. 2026 | **Seule la personne en appréciation choisit le type de poste.** Les gestionnaires voient « Ouvrez le dossier de la personne en appréciation » (📂 Mes dossiers, puis 📁 Charger un dossier) |
+| 3.6 | 19 oct. 2026 | « Qui êtes-vous ? » d'abord, puis le type de poste (écran de départ et barre de gauche) |
 | 3.5 | 19 oct. 2026 | Choix du rôle qui ne montre que ce qui vous concerne (sections des autres cachées tant qu'elles sont vides), gardé jusqu'à « Nouveau formulaire ». Aide-mémoire et « Comment remplir » fusionnés et mis en évidence. Rappel de l'échelle retiré de l'aide. Numéro de dossier caché sur un formulaire neuf. Bouton Configuration retiré. Version affichée au bas de la page et au bas du PDF seulement |
 | 3.4 | 19 oct. 2026 | Aperçu SharePoint : bandeau « ⤓ Télécharger » et fenêtre « Copier le contenu », parce que l'aperçu bloque les téléchargements |
 | 3.3 | 16 oct. 2026 | Ne bloque plus dans SharePoint (« Mot de passe incorrect ») : stockage vérifié réellement, lectures JSON sécurisées. Adresses SharePoint inscrites dans le fichier |

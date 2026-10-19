@@ -1,13 +1,13 @@
 # Guide d'utilisation — Appréciation de la contribution
 
-Pour les personnes en appréciation et les gestionnaires. Version 3.6, formulaires du 15 octobre 2026.
+Pour les personnes en appréciation et les gestionnaires. Version 3.7, formulaires du 15 octobre 2026.
 
 ---
 
 ## 1. Ouvrir l'application
 
 1. Ouvrez la bibliothèque SharePoint « Appréciation de la contribution des cadres ».
-2. Cliquez sur le fichier `appreciation-cadres-v3.6.html`, puis sur **⤓ Télécharger** (en haut à gauche).
+2. Cliquez sur le fichier `appreciation-cadres-v3.7.html`, puis sur **⤓ Télécharger** (en haut à gauche).
 3. Ouvrez le fichier téléchargé (double-clic) : il s'ouvre dans Edge.
 
 > Ne travaillez pas dans l'aperçu SharePoint : rien ne peut y être enregistré ni téléchargé. L'application vous le rappelle dans un bandeau.
@@ -25,9 +25,15 @@ Pour les personnes en appréciation et les gestionnaires. Version 3.6, formulair
 | Supérieur(e) hiérarchique | Vous prenez connaissance du dossier et vous approuvez |
 | Directeur / directrice | Vous approuvez en dernier, si votre approbation est requise |
 
-**2. Type de poste** de la personne en appréciation : cadre avec équipe, cadre sans équipe ou professionnel non syndiqué.
+**2. Type de poste — seulement pour la personne en appréciation.** C'est elle qui choisit son formulaire : cadre avec équipe, cadre sans équipe ou professionnel non syndiqué.
 
-Une fois faits, les deux choix se verrouillent et restent gardés jusqu'à **« 🗑️ Nouveau formulaire »**. En cas d'erreur, utilisez les liens « 🔓 Changer de rôle » ou « 🔓 Changer de type de poste », dans la barre de gauche.
+**Gestionnaires** (supérieur immédiat, hiérarchique, directeur) : vous ne choisissez pas le type de poste. L'application vous demande d'ouvrir le dossier de la personne :
+1. **📂 Ouvrir « Mes dossiers »** et téléchargez son dossier ;
+2. **📁 Charger un dossier** et choisissez ce fichier.
+
+Le formulaire s'ouvre alors avec le type de poste qu'elle a choisi.
+
+Une fois faits, les choix se verrouillent et restent gardés jusqu'à **« 🗑️ Nouveau formulaire »**. En cas d'erreur, utilisez le lien « 🔓 Changer de rôle » ou, pour la personne en appréciation, « 🔓 Changer de type de poste », dans la barre de gauche.
 
 **Vous ne voyez que ce qui vous concerne.** Les sections réservées à un autre rôle restent cachées **tant qu'elles sont vides**. Dès qu'elles sont remplies, elles apparaissent en lecture seule. Par exemple, la personne en appréciation voit le bilan du supérieur avant de certifier.
 
@@ -75,7 +81,8 @@ La barre d'étapes, en haut du formulaire, montre où en est le dossier. Après 
 |---|---|
 | Rien n'est téléchargé quand je clique sur « Copie locale » | Vous êtes dans l'aperçu SharePoint. Téléchargez le fichier (⤓) et ouvrez-le sur votre poste. Une fenêtre « Copier le contenu » vous permet de ne rien perdre en attendant |
 | J'ai oublié mon mot de passe | Sur l'écran du mot de passe, cliquez sur « Mot de passe oublié ? Recommencer à neuf ». Le brouillon de ce poste est effacé ; rechargez votre dernière copie `.json` ou votre dossier depuis « Mes dossiers » |
-| Je me suis trompé de rôle ou de type de poste | Utilisez « 🔓 Changer de rôle » ou « 🔓 Changer de type de poste », dans la barre de gauche |
+| Je me suis trompé de rôle ou de type de poste | Utilisez « 🔓 Changer de rôle » ou « 🔓 Changer de type de poste » (personne en appréciation seulement), dans la barre de gauche |
+| Je suis gestionnaire et je ne peux pas choisir le type de poste | C'est normal : ouvrez le dossier de la personne avec « 📂 Mes dossiers », puis « 📁 Charger un dossier » |
 | Je ne vois pas la section E (ou F) | Elle est réservée à un autre rôle et reste cachée tant qu'elle est vide |
 | Mon dépôt a été refusé | Le courriel en donne la raison (par exemple : ce n'est pas votre étape). Rechargez la dernière version depuis « Mes dossiers » et recommencez |
 | Que faire des fichiers `depot-….json` ? | Supprimez-les une fois le dépôt confirmé : ils contiennent les données de l'appréciation |

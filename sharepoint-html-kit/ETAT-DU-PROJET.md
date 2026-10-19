@@ -6,11 +6,11 @@
 
 | Sujet | État | Prochaine action |
 |---|---|---|
-| Application | ✅ **v3.6** : les 3 formulaires du 15 octobre 2026, affichage allégé, compatible SharePoint | La déposer et la tester (guide d'installation, sections 4 et 5) |
+| Application | ✅ **v3.7** : les 3 formulaires du 15 octobre 2026, affichage allégé, compatible SharePoint ; seule la personne en appréciation choisit le type de poste | La déposer et la tester (guide d'installation, sections 4 et 5) |
 | Distribution | ✅ Bibliothèque « Appréciation de la contribution des cadres ». L'aperçu affiche l'application, mais bloque l'enregistrement et les téléchargements : **on travaille dans le fichier téléchargé** | — |
 | Liste Depot_Appreciations | ✅ Créée ; le formulaire de dépôt s'ouvre | — |
 | Bibliothèque Dossiers_Appreciations | ⬜ À créer | Guide d'installation, section 3 |
-| Flux « AC - Traiter un dépôt » | ⬜ À construire | Après le test de la v3.6 |
+| Flux « AC - Traiter un dépôt » | ⬜ À construire | Après le test de la v3.7 |
 | « Page HTML » dans Pages du site | ⏳ Pas encore activée (Microsoft, jusqu'à fin décembre 2026) | Rien à faire : la bibliothèque suffit |
 | Ancienne liste AppreciationsCadres_Suivi et ses flux | ✅ Supprimée | — |
 | Solution durable à plus long terme | SPFx (avec le TI) ou l'application Power Apps EVAL déjà construite | À discuter avec le TI |
@@ -19,7 +19,7 @@
 
 | Fichier | Pour qui | À quoi il sert |
 |---|---|---|
-| `appreciation-cadres-v3.6.html` | Tous | L'application |
+| `appreciation-cadres-v3.7.html` | Tous | L'application |
 | `1-GUIDE-INSTALLATION` (.docx) | Vous | Créer la liste et la bibliothèque, déposer le fichier, tester, prochaine étape (flux) |
 | `2-GUIDE-UTILISATION` (.docx) | Les utilisateurs | Ouvrir, choisir son rôle et le type de poste, remplir, enregistrer, déposer, questions fréquentes |
 | `3-A-FAIRE` (.docx) | Vous | Les tâches dans l'ordre |

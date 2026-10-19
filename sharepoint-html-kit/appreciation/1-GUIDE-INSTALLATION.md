@@ -52,7 +52,7 @@ Pour mémoire, si elle est à refaire :
 1. Dans la bibliothèque « Appréciation de la contribution des cadres », créez si vous le voulez un dossier **Application**.
 2. **Permissions** : vous en modification, les utilisateurs en **lecture seule**.
 3. Cliquez sur **Charger › Fichiers** › `appreciation-cadres-v3.7.html`.
-4. Supprimez les anciennes versions (v3.3, v3.4, v3.5).
+4. Supprimez les anciennes versions (v3.3 à v3.6).
 
 **Les adresses SharePoint sont déjà inscrites dans le fichier** : formulaire de dépôt, « Mes dossiers » et lien de la bibliothèque. Il n'y a rien à modifier dans le Bloc-notes.
 
@@ -79,6 +79,8 @@ Faites le test **sur le poste** :
 | 9 | « 📂 Ouvrir Mes dossiers » | La bibliothèque Dossiers_Appreciations s'ouvre | |
 | 10 | « 🖨️ Aperçu PDF » | La fenêtre d'impression s'affiche ; la version est au bas | |
 | 11 | « 🗑️ Nouveau formulaire » | Tout est vidé ; « Qui êtes-vous ? » est redemandé | |
+| 12 | Cocher « Supérieur(e) immédiat(e) » | Pas de choix du type de poste : « Ouvrez le dossier de la personne en appréciation » | |
+| 13 | « 📁 Charger un dossier » avec le fichier de l'étape 4 | Le formulaire s'ouvre avec le type de poste choisi par la personne | |
 
 Ensuite, ouvrez le fichier **dans l'aperçu SharePoint** (simple clic dans la bibliothèque). Résultat attendu : pas de mot de passe, et un bandeau qui demande de cliquer sur ⤓ Télécharger.
 
