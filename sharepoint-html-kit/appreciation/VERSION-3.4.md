@@ -1,6 +1,6 @@
 # Version 3.4 — la façon de travailler
 
-Fichier : `appreciation-cadres-v3.4.html` (remplace la v3.3, mêmes formulaires et mêmes adresses).
+Fichier : `appreciation-cadres-v3.4.html` (remplacé depuis par la v3.5 ; remplaçait la v3.3, mêmes formulaires et mêmes adresses).
 
 ## Ce qu'on a constaté le 19 octobre 2026
 - Ouvert depuis la bibliothèque, le fichier **s'affiche** dans l'aperçu SharePoint. ✅

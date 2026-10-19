@@ -8,14 +8,14 @@ Ce dossier contient tout ce qu'il faut pour :
 
 Tout est gratuit, rien à installer : les outils s'ouvrent par double-clic dans Edge.
 
-> **Version 3.4 (19 octobre 2026)** : voir `VERSION-3.4.md`, qui explique la façon de travailler dans SharePoint. Ce qui suit concerne la v3.3.
+> **Version 3.5 (19 octobre 2026)** : affichage allégé, voir `VERSION-3.5.md`. **Version 3.4** : voir `VERSION-3.4.md`, qui explique la façon de travailler dans SharePoint. Ce qui suit concerne la v3.3.
 >
 > **Version 3.3 (16 octobre 2026).** `appreciation-cadres-v3.3.html` intègre les correctifs v3.1, les trois formulaires du 15 octobre 2026 (`VERSION-3.2.md`) et le correctif du blocage « Mot de passe incorrect » dans la page HTML SharePoint (`VERSION-3.3.md`). Utilisez-la directement : l'outil de correctifs (section 2) n'est plus nécessaire.
 
 | Fichier | Rôle |
 |---|---|
 | `appreciation/GUIDE-APPRECIATION.md` | Ce guide |
-| `appreciation/appreciation-cadres-v3.4.html` | **L'application, version 3.4** (formulaires du 15 octobre 2026, compatible page HTML SharePoint) |
+| `appreciation/appreciation-cadres-v3.5.html` | **L'application, version 3.5** (formulaires du 15 octobre 2026, compatible page HTML SharePoint) |
 | `appreciation/VERSION-3.3.md` | Correctif SharePoint, adresses à inscrire, test, avis sur les conseils de Copilot |
 | `appreciation/VERSION-3.2.md` | Changements des formulaires du 15 octobre 2026 |
 | `appreciation/appliquer-correctifs.html` | Outil qui corrige **votre** fichier `appreciation.html` (sans toucher aux images) |

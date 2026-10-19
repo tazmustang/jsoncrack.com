@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Appréciation de la contribution</title>
+<!-- Version 3.5 — affichage allégé : choix du rôle qui filtre les sections, aide fusionnée et mise en évidence, version au pied de page seulement -->
 <!-- Version 3.4 — visionneuse SharePoint : téléchargements bloqués → fenêtre « Copier le contenu » et consigne d'ouvrir le fichier sur le poste -->
 <!-- Version 3.3 — stockage du navigateur vérifié réellement (SharePoint peut l'imiter) ; lectures JSON sécurisées -->
 <!-- Version 3.2 — les 3 formulaires du 15 octobre 2026 (introduction, type de rencontre, sections A à F) -->
@@ -146,6 +147,12 @@
   }
   .role-btn:hover{border-color:var(--brand-primary);}
   .role-btn.active{background:var(--positif); border-color:var(--positif); color:#fff;}
+  .role-btn.locked{opacity:.45; cursor:not-allowed;}
+  .role-card-btn{font-family:inherit; text-align:left; background:#fff; border:1px solid var(--border); border-top:6px solid var(--positif); border-radius:8px; padding:14px; cursor:pointer;}
+  .role-card-btn strong{display:block; color:var(--navy); margin-bottom:4px;}
+  .role-card-btn span{display:block; font-size:.8em; color:var(--text-secondary); line-height:1.4;}
+  .role-card-btn:hover{box-shadow:0 4px 14px rgba(0,0,0,.14);}
+  .sidebar-help-top{margin-top:0 !important; font-size:.95em; padding:12px 14px;}
   .sidebar-help-btn{width:100%; margin-top:16px; justify-content:center; white-space:normal; line-height:1.3;}
   .sidebar-actions{display:flex; flex-direction:column; gap:8px;}
   .sidebar-actions .btn{width:100%; text-align:left; justify-content:flex-start;}
@@ -448,6 +455,7 @@
   #tabpanel-formulaire.poste-pending{opacity:.4; pointer-events:none; user-select:none;}
   /* --- Textes des questions (comme dans les formulaires officiels) --- */
   .q-text{font-size:.9em; margin:10px 0 4px; color:var(--text-primary);}
+  .aide-callout{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; background:var(--blue-light); border:1px solid var(--brand-primary); border-radius:8px; padding:12px 16px; margin:0 0 16px; font-size:.9em;}
   .intro-list{font-size:.88em; margin:4px 0 10px; padding-left:22px;}
   .intro-list li{margin-bottom:4px;}
   .q-note{font-size:.82em; font-style:italic; color:var(--text-secondary); margin:2px 0 8px;}
@@ -522,7 +530,9 @@
 <div class="app-body">
 
   <aside class="app-sidebar">
-    <div class="sidebar-label">Type de poste</div>
+    <button class="btn gold sidebar-help-btn sidebar-help-top" type="button" onclick="openHelp()">❓ Comment remplir ce formulaire</button>
+    <hr class="sidebar-divider">
+    <div class="sidebar-label">1. Type de poste</div>
     <div class="poste-btn-group" id="posteBtnGroup">
       <button type="button" class="poste-btn" data-poste="avec_equipe" onclick="setPoste('avec_equipe')">Cadre avec équipe</button>
       <button type="button" class="poste-btn" data-poste="sans_equipe" onclick="setPoste('sans_equipe')">Cadre sans équipe</button>
@@ -532,17 +542,17 @@
 
     <hr class="sidebar-divider">
 
-    <div class="sidebar-label">Vous êtes :</div>
+    <div class="sidebar-label">2. Vous êtes :</div>
     <div class="role-btn-group" id="roleBtnGroup">
-      <button type="button" class="role-btn active" data-role-btn="cadre" onclick="setRole('cadre')">Personne en appréciation</button>
+      <button type="button" class="role-btn" data-role-btn="cadre" onclick="setRole('cadre')">Personne en appréciation</button>
       <button type="button" class="role-btn" data-role-btn="superieur_immediat" onclick="setRole('superieur_immediat')">Supérieur(e) immédiat(e)</button>
       <button type="button" class="role-btn" data-role-btn="superieur_hierarchique" onclick="setRole('superieur_hierarchique')">Supérieur(e) hiérarchique</button>
       <button type="button" class="role-btn" data-role-btn="directeur" onclick="setRole('directeur')">Directeur / directrice</button>
     </div>
 
-    <p class="role-note">Le rôle choisi ici adapte l’affichage. C’est <strong>SharePoint</strong> qui vérifie votre identité et votre rôle au moment du dépôt.</p>
+    <button type="button" class="poste-change-link" id="roleChangeBtn" onclick="changeRole()" style="display:none;">🔓 Changer de rôle</button>
+    <p class="role-note">Vous ne voyez que ce qui concerne votre rôle. Le rôle choisi ici adapte l’affichage. C’est <strong>SharePoint</strong> qui vérifie votre identité et votre rôle au moment du dépôt.</p>
 
-    <button class="btn gold sidebar-help-btn" type="button" onclick="openHelp()">❓ Comment remplir ce formulaire ?</button>
 
     <hr class="sidebar-divider">
 
@@ -556,7 +566,6 @@
       <button class="btn secondary" type="button" onclick="generatePDF()">🖨️ Aperçu PDF (non officiel)</button>
       <button class="btn secondary" type="button" id="undoBtn" onclick="undo()" disabled>↶ Annuler</button>
       <button class="btn secondary" type="button" id="redoBtn" onclick="redo()" disabled>↷ Refaire</button>
-      <button class="btn secondary" type="button" onclick="openSpConfig()">⚙️ Configuration</button>
       <button class="btn secondary" type="button" title="Verrouiller le brouillon local (redemande le mot de passe)" onclick="lockVault()">🔒 Verrouiller</button>
       <button class="btn red" type="button" onclick="resetForm()">🗑️ Nouveau formulaire</button>
     </div>
@@ -581,18 +590,26 @@
       <button type="button" class="poste-card" data-poste="avec_equipe" onclick="setPoste('avec_equipe')">
         <strong>Cadre avec équipe</strong>
         <span>Postures de leadership cotées sur 5 niveaux ; valeurs « à titre individuel » et « auprès de l’équipe ».</span>
-        <em>Version du 15 octobre 2026</em>
       </button>
       <button type="button" class="poste-card" data-poste="sans_equipe" onclick="setPoste('sans_equipe')">
         <strong>Cadre sans équipe</strong>
         <span>Postures de leadership adaptées à une personne cadre sans équipe, cotées sur 5 niveaux.</span>
-        <em>Version du 15 octobre 2026</em>
       </button>
       <button type="button" class="poste-card" data-poste="professionnel" onclick="setPoste('professionnel')">
         <strong>Professionnel non syndiqué</strong>
         <span>Compétences décrites par des exemples d’application (pas de cotation).</span>
-        <em>Version du 15 octobre 2026</em>
       </button>
+    </div>
+  </div>
+
+  <div class="poste-gate" id="roleGate" style="display:none;">
+    <h2>Qui êtes-vous dans cette appréciation ?</h2>
+    <p>Cochez votre rôle : vous ne verrez que ce qui vous concerne. Votre choix est gardé jusqu’à la fin ou jusqu’à « Nouveau formulaire ».</p>
+    <div class="poste-gate-cards">
+      <button type="button" class="role-card-btn" onclick="setRole('cadre')"><strong>☐ Personne en appréciation</strong><span>Je remplis ma partie, mon autoévaluation et mon bilan, puis je certifie.</span></button>
+      <button type="button" class="role-card-btn" onclick="setRole('superieur_immediat')"><strong>☐ Supérieur(e) immédiat(e)</strong><span>Je remplis mes observations, le bilan annuel et l’évaluation globale, puis j’approuve.</span></button>
+      <button type="button" class="role-card-btn" onclick="setRole('superieur_hierarchique')"><strong>☐ Supérieur(e) hiérarchique</strong><span>Je prends connaissance du dossier et j’approuve.</span></button>
+      <button type="button" class="role-card-btn" onclick="setRole('directeur')"><strong>☐ Directeur / directrice</strong><span>J’approuve en dernier, si mon approbation est requise.</span></button>
     </div>
   </div>
 
@@ -600,12 +617,17 @@
 
   <div class="tab-bar">
     <button class="tab-btn active" type="button" onclick="showTab('formulaire')">📝 Formulaire</button>
-    <button class="tab-btn" type="button" onclick="showTab('aide')">📖 Aide-mémoire</button>
+    <button class="tab-btn" type="button" onclick="showTab('aide')">❓ Comment remplir</button>
     <button class="tab-btn" type="button" onclick="showTab('synthese')">📊 Synthèse</button>
     <button class="tab-btn" type="button" onclick="showTab('plan')">🎯 Plan de développement</button>
   </div>
 
   <div id="tabpanel-formulaire" class="tab-panel active">
+
+  <div class="aide-callout">
+    <span>👋 <strong>Première fois ?</strong> Voyez en 2 minutes comment remplir ce formulaire.</span>
+    <button class="btn gold" type="button" onclick="openHelp()">❓ Comment remplir</button>
+  </div>
 
   <section class="card" id="sectionIntro">
     <h2>Introduction</h2>
@@ -775,8 +797,13 @@
   <!-- fin tabpanel-formulaire -->
 
   <div id="tabpanel-aide" class="tab-panel">
-    <h2 style="color:var(--navy); margin-top:0;">📖 Aide-mémoire — comment compléter ce formulaire</h2>
-    <p style="font-size:.9em; color:var(--text-secondary); margin-bottom:24px;">Un guide rapide pour s'orienter, que ce soit pour remplir votre première appréciation ou pour vous rafraîchir la mémoire avant une rencontre.</p>
+    <h2 style="color:var(--navy); margin-top:0;">❓ Comment remplir ce formulaire</h2>
+    <p style="font-size:.9em; color:var(--text-secondary); margin-bottom:18px;">Deux minutes de lecture, pour une première appréciation ou pour vous rafraîchir la mémoire avant une rencontre.</p>
+
+    <h3 style="font-size:.95em; color:var(--navy);">Pour commencer</h3>
+    <div class="aide-step"><div class="num">A</div><div class="txt"><h4>Ouvrez le fichier sur votre poste</h4><p>Dans la bibliothèque SharePoint, cliquez sur <strong>⤓ Télécharger</strong>, puis ouvrez le fichier téléchargé. L'aperçu SharePoint ne permet ni d'enregistrer ni de télécharger.</p></div></div>
+    <div class="aide-step"><div class="num">B</div><div class="txt"><h4>Choisissez le type de poste</h4><p>Celui de la personne en appréciation. Les deux autres formulaires se verrouillent.</p></div></div>
+    <div class="aide-step"><div class="num">C</div><div class="txt"><h4>Indiquez qui vous êtes</h4><p>Personne en appréciation, supérieur(e) immédiat(e), hiérarchique ou directeur. Vous ne voyez alors que ce qui vous concerne : les sections réservées aux autres restent cachées tant qu'elles sont vides. Votre choix est gardé jusqu'à « Nouveau formulaire ». C'est SharePoint qui vérifie votre identité au dépôt.</p></div></div>
 
     <h3 style="font-size:.95em; color:var(--navy);">Qui fait quoi</h3>
     <div class="role-grid">
@@ -793,8 +820,6 @@
     <div class="aide-step"><div class="num">4</div><div class="txt"><h4>Approuver</h4><p>Chaque approbateur, à son tour, charge la version officielle depuis « Mes dossiers », coche « J'approuve » et dépose. SharePoint inscrit son nom et l'heure.</p></div></div>
     <div class="aide-step"><div class="num">5</div><div class="txt"><h4>Approbation finale et archivage</h4><p>Après la dernière étape, chaque participant reçoit le document final pour une approbation finale (Outlook ou Teams). Il est ensuite archivé automatiquement en lecture seule.</p></div></div>
 
-    <h3 style="font-size:.95em; color:var(--navy);" id="aideEchelleTitle">Rappel — échelle de démonstration des comportements</h3>
-    <div id="aideEchelleContainer"></div>
 
     <h3 style="font-size:.95em; color:var(--navy); margin-top:22px;">Questions fréquentes</h3>
     <div class="faq-item"><h4>Pourquoi dois-je déposer un fichier dans SharePoint ?</h4><p>Parce que c'est SharePoint qui vous identifie avec votre compte de la Ville. La page seule ne peut pas savoir qui vous êtes : le dépôt garantit que personne ne peut agir à votre place.</p></div>
@@ -913,31 +938,6 @@
   </div>
 </div>
 
-<div class="modal-overlay" id="helpModal">
-  <div class="modal-box">
-    <div class="modal-header">
-      <h3>❓ Comment remplir ce formulaire</h3>
-      <button class="modal-close" type="button" onclick="closeHelp()">✕</button>
-    </div>
-    <div class="modal-body">
-      <h4>1. Choisissez le type de poste, puis votre rôle</h4>
-      <p>Dans la barre de gauche, cliquez sur le <strong>type de poste</strong> de la personne en appréciation, puis sur <strong>votre rôle</strong>. Le rôle adapte l'affichage : c'est SharePoint qui vérifie votre identité au dépôt.</p>
-
-      <h4>2. Remplissez vos sections</h4>
-      <p>Les sections réservées à un autre rôle sont grisées. Votre brouillon est sauvegardé automatiquement, chiffré, dans ce navigateur.</p>
-
-      <h4>3. Déposez sur SharePoint</h4>
-      <p>Chaque bouton « déposer » télécharge un petit fichier et vous guide pour le joindre au formulaire de dépôt SharePoint. Un courriel confirme le traitement.</p>
-      <div class="help-tip">📂 Pour reprendre un dossier ou voir la version officielle : « Ouvrir Mes dossiers », téléchargez le fichier du dossier, puis « 📁 Charger un dossier ».</div>
-
-      <h4>4. Certification et approbations</h4>
-      <p>La personne en appréciation certifie, puis le supérieur immédiat, le supérieur hiérarchique et, si applicable, le directeur approuvent à tour de rôle. SharePoint inscrit le nom et l'heure de chacun.</p>
-
-      <h4>5. Approbation finale</h4>
-      <p>Après la dernière étape, chacun reçoit le document final dans Outlook ou Teams et clique sur « Approuver ». Le document est ensuite archivé automatiquement, en lecture seule.</p>
-    </div>
-  </div>
-</div>
 
 <div id="printArea"></div>
 
@@ -1319,6 +1319,7 @@ function renderPostures(){
   const cadreEditable = peutModifierCadre();
   const supEditable = peutModifierSup();
   const comEditable = peutModifierPartage();
+  const montrerColSup = currentRole !== 'cadre' || Object.values(state.leadershipSup || {}).some(a => (a||[]).some(Boolean)); /* v3.5 */
   const lockIcon = ok => ok ? '<span class="mini-lock editable">✏️</span>' : '<span class="mini-lock locked">🔒</span>';
   const options = cur => {
     const list = (cur && ECHELLE.indexOf(cur) === -1) ? ECHELLE.concat([cur]) : ECHELLE;
@@ -1338,7 +1339,7 @@ function renderPostures(){
               <label>Personne en appréciation ${lockIcon(cadreEditable)}</label>
               <select data-path="leadershipCadre.${p.id}.${i}" ${cadreEditable ? '' : 'disabled'}>${options(cad[i])}</select>
             </div>
-            <div>
+            <div${montrerColSup ? '' : ' style="display:none"'}>
               <label>Supérieur(e) immédiat(e) ${lockIcon(supEditable)}</label>
               <select data-path="leadershipSup.${p.id}.${i}" ${supEditable ? '' : 'disabled'}>${options(sup[i])}</select>
             </div>
@@ -1625,11 +1626,11 @@ function applyPosteTheme(){
   // En-tête, pastille, pied de page, titre de l'onglet du navigateur
   const ver = f ? (state.identification.versionFormulaire || f.versionLabel) : '';
   const sub = document.getElementById('headerSub');
-  if(sub) sub.textContent = f ? (f.title.charAt(0).toUpperCase() + f.title.slice(1) + ' · Version du ' + ver) : 'Choisissez d’abord votre type de poste';
+  if(sub) sub.textContent = f ? (f.title.charAt(0).toUpperCase() + f.title.slice(1)) : 'Choisissez d’abord votre type de poste';
   const pill = document.getElementById('postePill');
-  if(pill){ pill.style.display = f ? 'inline-block' : 'none'; pill.textContent = f ? (f.label + ' · version du ' + ver) : ''; }
+  if(pill){ pill.style.display = f ? 'inline-block' : 'none'; pill.textContent = f ? f.label : ''; }
   const fv = document.getElementById('footerVersion');
-  if(fv) fv.textContent = f ? ('Formulaire : ' + f.title + ' — ' + f.versionNote + ' – ' + ver) : 'Appréciation de la contribution';
+  if(fv) fv.textContent = f ? ('Formulaire : ' + f.title + ' — Version du ' + ver) : 'Appréciation de la contribution';
   document.title = f ? ('Appréciation de la contribution — ' + f.title) : 'Appréciation de la contribution';
 
   // Section B : postures de leadership (cadres) ou compétences (professionnel)
@@ -1640,7 +1641,18 @@ function applyPosteTheme(){
 }
 
 /* ---------- Rôle (sert à l'affichage ; SharePoint vérifie l'identité au dépôt) ---------- */
-let currentRole = 'cadre';
+/* v3.5 : le rôle est choisi une fois, gardé dans ce navigateur (si possible) jusqu'à « Nouveau formulaire » */
+const ROLE_KEY = 'appreciationRole_v1';
+let currentRole = (function(){ const r = lireStockage(ROLE_KEY); return ['cadre','superieur_immediat','superieur_hierarchique','directeur'].indexOf(r) !== -1 ? r : ''; })();
+function memoriserRole(){
+  if(!storageDispo()) return;
+  try{ if(currentRole) localStorage.setItem(ROLE_KEY, currentRole); else localStorage.removeItem(ROLE_KEY); }catch(e){}
+}
+function changeRole(){
+  if(!currentRole) return;
+  if(!confirm("Changer de rôle ?\n\nL’affichage va s’adapter au nouveau rôle choisi.")) return;
+  currentRole = ''; memoriserRole(); renderAll();
+}
 const ROLE_LABELS = {
   cadre: 'Personne en appréciation',
   superieur_immediat: 'Supérieur(e) immédiat(e)',
@@ -1648,13 +1660,40 @@ const ROLE_LABELS = {
   directeur: 'Directeur / directrice'
 };
 function setRole(role){
+  if(!ROLE_LABELS[role]) return;
+  if(currentRole && currentRole !== role) return;   // les autres choix sont verrouillés
   currentRole = role;
-  document.querySelectorAll('.role-btn').forEach(b => b.classList.toggle('active', b.dataset.roleBtn === role));
-  document.getElementById('currentRoleBadge').textContent = '👤 ' + (ROLE_LABELS[role] || role);
-  renderPostures();
-  renderApprovals();
-  populateForm(document);
-  applyLockState();
+  memoriserRole();
+  renderAll();
+}
+function applyRoleGate(){
+  const posteChoisi = !!FORMS[state.identification.typePoste];
+  document.querySelectorAll('.role-btn').forEach(b=>{
+    const actif = b.dataset.roleBtn === currentRole;
+    b.classList.toggle('active', actif);
+    b.classList.toggle('locked', !!currentRole && !actif);
+    b.disabled = !!currentRole && !actif;
+  });
+  const chg = document.getElementById('roleChangeBtn'); if(chg) chg.style.display = currentRole ? 'block' : 'none';
+  const badge = document.getElementById('currentRoleBadge');
+  if(badge) badge.textContent = currentRole ? '👤 ' + ROLE_LABELS[currentRole] : '👤 Qui êtes-vous ?';
+  const gate = document.getElementById('roleGate');
+  if(gate) gate.style.display = (posteChoisi && !currentRole) ? 'block' : 'none';
+  const panel = document.getElementById('tabpanel-formulaire');
+  if(panel && posteChoisi){ panel.inert = !currentRole; panel.classList.toggle('poste-pending', !currentRole); }
+}
+/* Sections réservées à un autre rôle : cachées tant qu'elles sont vides */
+function applyRoleVisibility(){
+  const r = currentRole;
+  const plein = v => !!(v && String(v).trim());
+  const montrer = (id, ok) => { const el = document.getElementById(id); if(el) el.style.display = ok ? '' : 'none'; };
+  montrer('sectionE', r === 'superieur_immediat' || plein(state.bilanSuperieur));
+  montrer('sectionEval', r === 'superieur_immediat' || plein(state.evaluationGlobale));
+  montrer('sectionF', r === 'cadre' || plein(state.bilanCadre));
+  const avis = document.getElementById('avisBlock');
+  if(avis && r !== 'cadre') avis.style.display = 'none';
+  const cert = state.workflow.certification || {};
+  montrer('certBlock', r === 'cadre' || !!cert.signed);
 }
 
 function applyLockState(){
@@ -1710,6 +1749,11 @@ function applyRoleSectionLock(fieldsetId, badgeId, isRoleOwner, isEditable){
   badge.className = 'role-lock-badge ' + (isEditable ? 'editable' : 'locked');
 }
 
+/* v3.5 : le dossier existe pour SharePoint après un premier dépôt traité (participants inscrits par le flux) */
+function dossierConnu(){
+  const w = state.workflow;
+  return w.status !== 'brouillon' || !!w.version || Object.values(w.participants || {}).some(Boolean);
+}
 function updateStatusBar(){
   const badge = document.getElementById('statusBadge');
   const map = {
@@ -1723,7 +1767,7 @@ function updateStatusBar(){
   badge.textContent = s.label;
 
   const idBadge = document.getElementById('trackingIdBadge');
-  idBadge.style.display = 'inline-block';
+  idBadge.style.display = dossierConnu() ? 'inline-block' : 'none'; /* v3.5 : pas de numéro pour un formulaire neuf */
   idBadge.textContent = '🔗 Dossier ' + String(state.workflow.dossierId || '').slice(0,8);
   idBadge.title = 'Identifiant complet du dossier : ' + state.workflow.dossierId;
 
@@ -1768,6 +1812,7 @@ document.addEventListener('change', function(e){
 
 function renderAll(){
   applyPosteTheme();
+  applyRoleGate();
   renderEchelleLegend();
   renderObjectifsActuels();
   renderObjectifsAvenir();
@@ -1787,6 +1832,7 @@ function renderAll(){
   renderTabSynthese();
   renderTabPlan();
   renderApprovalStepper();
+  applyRoleVisibility();
 }
 /* ---------- Cheminement visuel ---------- */
 function renderApprovalStepper(){
@@ -1831,7 +1877,7 @@ function renderTabSynthese(){
   const statutLabel = {brouillon:'Brouillon', approbation:'En approbation', signature:'En approbation finale', complete:'Approuvé et archivé'}[state.workflow.status] || 'Brouillon';
 
   cardsEl.innerHTML = `
-    <div class="synth-card"><div class="v" style="font-size:1.05em;">${f ? esc(f.label) : '—'}</div><div class="l">Type de poste${f ? ' · version du ' + esc(ver) : ''}</div></div>
+    <div class="synth-card"><div class="v" style="font-size:1.05em;">${f ? esc(f.label) : '—'}</div><div class="l">Type de poste</div></div>
     <div class="synth-card"><div class="v">${statutLabel}</div><div class="l">Statut</div></div>
     <div class="synth-card"><div class="v">${evalLabel}</div><div class="l">Évaluation globale</div></div>
     <div class="synth-card"><div class="v">${nbValeurs}</div><div class="l">Valeurs retenues</div></div>
@@ -2217,6 +2263,7 @@ document.getElementById('fileInput').addEventListener('change', function(e){
 function resetForm(){
   if(confirm("Créer un nouveau formulaire vide ? Le brouillon actuel non enregistré sera perdu.")){
     state = emptyState();
+    currentRole = ''; memoriserRole(); /* v3.5 */
     renderAll();
     saveLocal(false);
     history = []; historyIndex = -1; pushHistory();
@@ -2297,7 +2344,6 @@ function buildPrintHTML(){
 
   return `${printLogoHTML()}
   <h1>Appréciation de la contribution${chosen ? ' — ' + esc(f.title) : ''}</h1>
-  ${chosen ? `<p class="meta-line" style="text-align:center; margin:0;">${esc(f.versionNote)} – ${esc(ver)}</p>` : ''}
   <p class="meta-line" style="text-align:center;">Imprimé le ${new Date().toLocaleString('fr-CA')} · Dossier ${esc(w.dossierId)}</p>
   ${filigrane}
   <h2>Identification de la personne en appréciation et du type de rencontre</h2>
@@ -2338,6 +2384,7 @@ function buildPrintHTML(){
 
   <h2>Section G — Certification et approbations (enregistrées par SharePoint)</h2>
   <div class="sig-line"><strong>Personne en appréciation :</strong> ${w.certification.signed ? esc(w.certification.nom) + ' — ' + esc(w.certification.date) : 'non certifié'}</div>
+  ${chosen ? `<p class="meta-line" style="text-align:center; margin-top:18px;">Formulaire : ${esc(f.title)} — Version du ${esc(ver)}</p>` : ''}
   ${signersApplicables().map(s=>{ const a = w.approbations[s.role]; return `<div class="sig-line"><strong>${esc(s.label)} :</strong> ${a.signed ? esc(a.nom) + ' — ' + esc(a.date) : 'en attente'}</div>`; }).join('')}
   `;
 }
@@ -2386,7 +2433,7 @@ function updateUndoRedoButtons(){
 }
 
 /* ---------- Aide ---------- */
-function openHelp(){ document.getElementById('helpModal').classList.add('open'); }
+function openHelp(){ showTab('aide'); const t = document.querySelector('.tab-bar'); if(t) t.scrollIntoView({behavior:'smooth', block:'start'}); }
 
 /* ---------- Contacter l'équipe ---------- */
 function contacterEquipe(){
@@ -2403,7 +2450,7 @@ ${message}
 `);
   window.location.href = `mailto:annie.audet@ville.quebec.qc.ca?subject=${subject}&body=${body}`;
 }
-function closeHelp(){ document.getElementById('helpModal').classList.remove('open'); }
+function closeHelp(){}
 
 /* ---------- Configuration SharePoint (adresses des pages, aucun secret) ---------- */
 function openSpConfig(){

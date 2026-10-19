@@ -67,7 +67,7 @@ Résumé de tout ce qui a été trouvé, testé et décidé. **Commencez par ce 
 | `ETAT-DU-PROJET.md` | Ce résumé | Maintenant |
 | `README.md` | Guide complet sur les pages HTML SharePoint (règles, liens, installation, dépannage, sources) | Pour comprendre |
 | `test.html` | Petit fichier de test (fond bleu + bouton) | Test rapide (section 4) |
-| `appreciation/appreciation-cadres-v3.4.html` | L'application à jour (les 3 formulaires du 15 octobre 2026, compatible page HTML) | **Maintenant** |
+| `appreciation/appreciation-cadres-v3.5.html` | L'application à jour (les 3 formulaires du 15 octobre 2026, compatible page HTML) | **Maintenant** |
 | `appreciation/VERSION-3.3.md` | Correctif SharePoint, adresses à inscrire, test | Maintenant |
 | `appreciation/VERSION-3.2.md` | Changements des formulaires du 15 octobre 2026 | Pour information |
 | `appreciation/appliquer-correctifs.html` | Transforme votre `appreciation.html` v3.0 en **v3.1** | **Aujourd'hui** |
