@@ -1,18 +1,17 @@
 # Guide d'utilisation — Appréciation de la contribution
 
-Pour les personnes en appréciation et les gestionnaires. Version 3.7, formulaires du 15 octobre 2026.
+Pour les personnes en appréciation et les gestionnaires. Version 3.8, formulaires du 15 octobre 2026.
 
 ---
 
 ## 1. Ouvrir l'application
 
-1. Ouvrez la bibliothèque SharePoint « Appréciation de la contribution des cadres ».
-2. Cliquez sur le fichier `appreciation-cadres-v3.7.html`, puis sur **⤓ Télécharger** (en haut à gauche).
-3. Ouvrez le fichier téléchargé (double-clic) : il s'ouvre dans Edge.
+Ouvrez la bibliothèque SharePoint « Appréciation de la contribution des cadres », puis choisissez une des deux façons de travailler.
 
-> Ne travaillez pas dans l'aperçu SharePoint : rien ne peut y être enregistré ni téléchargé. L'application vous le rappelle dans un bandeau.
+**A. Dans SharePoint (le plus simple)** : cliquez sur le fichier `appreciation-cadres-v3.8.html`. L'application s'ouvre directement, sans mot de passe.
+> ⚠️ Dans SharePoint, **votre saisie n'est pas conservée** si vous fermez ou actualisez la page. **Déposez** votre travail (section 5) avant de partir, même s'il n'est pas terminé. Pour reprendre : 📂 Mes dossiers, puis 📁 Charger un dossier.
 
-**Première ouverture :** créez un mot de passe d'au moins 4 caractères. Il protège votre brouillon sur ce poste. Il n'est jamais envoyé, ni à SharePoint ni ailleurs. Aux ouvertures suivantes, entrez-le pour retrouver votre brouillon.
+**B. Sur votre poste** : cliquez sur le fichier, puis sur **⤓ Télécharger** (en haut à gauche), et ouvrez le fichier téléchargé (double-clic : il s'ouvre dans Edge). La première fois, créez un mot de passe d'au moins 4 caractères. Il protège votre brouillon, qui est conservé sur ce poste. Il n'est jamais envoyé, ni à SharePoint ni ailleurs.
 
 ## 2. Commencer : deux choix
 
@@ -54,18 +53,27 @@ Le bouton **❓ Comment remplir** (en haut à gauche, et en haut du formulaire) 
 
 | Bouton | Ce qu'il fait |
 |---|---|
-| (automatique) | Le brouillon est sauvegardé, protégé par votre mot de passe, sur ce poste |
-| **💾 Copie locale** | Télécharge une copie `.json` de votre travail. Faites-le avant de changer d'ordinateur |
+| (automatique, sur le poste seulement) | Le brouillon est sauvegardé, protégé par votre mot de passe |
+| **☁️ Déposer sur SharePoint** | **Dans SharePoint, c'est la seule façon de garder votre travail** : il devient votre dossier dans « Mes dossiers » |
+| **💾 Copie locale** | Sur le poste : télécharge une copie `.json`. Dans SharePoint : affiche le contenu à copier pour une copie personnelle |
 | **📁 Charger un dossier** | Rouvre une copie `.json` ou un dossier officiel téléchargé depuis « Mes dossiers » |
 | **↶ Annuler / ↷ Refaire** | Annule ou rétablit la dernière modification |
 
 ## 5. Déposer sur SharePoint (sauvegarder, aviser, certifier, approuver)
 
-1. Cliquez sur le bouton de dépôt de votre étape (« ☁️ Déposer sur SharePoint », « 📨 Aviser le supérieur immédiat », « ✔ Certifier et soumettre », « Approuver — déposer sur SharePoint »). Un fichier `depot-….json` est téléchargé.
-2. Cliquez sur **Ouvrir le formulaire de dépôt** : SharePoint s'ouvre avec votre compte de la Ville.
-3. Cliquez sur **Ajouter des pièces jointes**, choisissez le fichier `depot-….json` le plus récent, puis **Enregistrer**.
-4. Vous recevrez un courriel de confirmation ou de refus (avec la raison).
-5. Pour continuer, rechargez la version officielle depuis **📂 Mes dossiers**, puis supprimez le fichier `depot-….json` de vos Téléchargements.
+Cliquez sur le bouton de dépôt de votre étape : « ☁️ Déposer sur SharePoint », « 📨 Aviser le supérieur immédiat », « ✔ Certifier et soumettre » ou « Approuver — déposer sur SharePoint ». Une fenêtre vous guide.
+
+**Dans SharePoint (copier-coller) :**
+1. Cliquez sur **📋 Copier le contenu du dépôt**.
+2. Cliquez sur **🔗 Ouvrir le formulaire de dépôt** : il s'ouvre dans un nouvel onglet, avec votre compte de la Ville.
+3. Cliquez dans le champ **Contenu**, collez (**Ctrl+V**), puis **Enregistrer**.
+
+**Sur le poste (fichier) :**
+1. Un fichier `depot-….json` est téléchargé.
+2. Cliquez sur **🔗 Ouvrir le formulaire de dépôt**, puis **Ajouter des pièces jointes**, choisissez ce fichier et **Enregistrez**.
+3. Supprimez ensuite le fichier de vos Téléchargements.
+
+**Dans les deux cas :** vous recevrez un courriel de confirmation ou de refus (avec la raison). Pour continuer, rechargez la version officielle depuis **📂 Mes dossiers**, puis **📁 Charger un dossier**.
 
 > Le traitement automatique des dépôts (courriels, dossier officiel) sera actif dès que le flux Power Automate sera en place. D'ici là, le dépôt est enregistré dans la liste, sans autre effet.
 
@@ -79,7 +87,9 @@ La barre d'étapes, en haut du formulaire, montre où en est le dossier. Après 
 
 | Question | Réponse |
 |---|---|
-| Rien n'est téléchargé quand je clique sur « Copie locale » | Vous êtes dans l'aperçu SharePoint. Téléchargez le fichier (⤓) et ouvrez-le sur votre poste. Une fenêtre « Copier le contenu » vous permet de ne rien perdre en attendant |
+| Rien n'est téléchargé quand je clique sur « Copie locale » | C'est normal dans SharePoint. Pour garder votre travail, utilisez « ☁️ Déposer sur SharePoint » (copier-coller) |
+| J'ai actualisé la page dans SharePoint et ma saisie a disparu | Dans SharePoint, rien n'est conservé avant le dépôt. Rechargez votre dernier dépôt depuis « Mes dossiers ». À l'avenir, déposez avant de quitter (le navigateur vous avertit si vous fermez la page avec des changements non déposés) |
+| Le bouton « Copier » ne fonctionne pas | Utilisez « 💾 Copie locale » : le contenu s'affiche ; sélectionnez-le (Ctrl+A) et copiez-le (Ctrl+C) |
 | J'ai oublié mon mot de passe | Sur l'écran du mot de passe, cliquez sur « Mot de passe oublié ? Recommencer à neuf ». Le brouillon de ce poste est effacé ; rechargez votre dernière copie `.json` ou votre dossier depuis « Mes dossiers » |
 | Je me suis trompé de rôle ou de type de poste | Utilisez « 🔓 Changer de rôle » ou « 🔓 Changer de type de poste » (personne en appréciation seulement), dans la barre de gauche |
 | Je suis gestionnaire et je ne peux pas choisir le type de poste | C'est normal : ouvrez le dossier de la personne avec « 📂 Mes dossiers », puis « 📁 Charger un dossier » |

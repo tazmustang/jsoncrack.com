@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Appréciation de la contribution</title>
+<!-- Version 3.8 — mode SharePoint : dépôt par copier-coller dans le champ « Contenu », sans téléchargement -->
 <!-- Version 3.7 — seule la personne en appréciation choisit le type de poste ; les gestionnaires chargent son dossier -->
 <!-- Version 3.6 — « Qui êtes-vous ? » d'abord, puis le type de poste -->
 <!-- Version 3.5 — affichage allégé : choix du rôle qui filtre les sections, aide fusionnée et mise en évidence, version au pied de page seulement -->
@@ -814,7 +815,7 @@
     <p style="font-size:.9em; color:var(--text-secondary); margin-bottom:18px;">Deux minutes de lecture, pour une première appréciation ou pour vous rafraîchir la mémoire avant une rencontre.</p>
 
     <h3 style="font-size:.95em; color:var(--navy);">Pour commencer</h3>
-    <div class="aide-step"><div class="num">A</div><div class="txt"><h4>Ouvrez le fichier sur votre poste</h4><p>Dans la bibliothèque SharePoint, cliquez sur <strong>⤓ Télécharger</strong>, puis ouvrez le fichier téléchargé. L'aperçu SharePoint ne permet ni d'enregistrer ni de télécharger.</p></div></div>
+    <div class="aide-step"><div class="num">A</div><div class="txt"><h4>Ouvrez l'application</h4><p>Cliquez sur le fichier dans la bibliothèque SharePoint : il s'ouvre directement. Dans SharePoint, votre saisie n'est pas conservée si vous fermez la page : déposez-la (☁️) avant de partir. Vous pouvez aussi la télécharger (⤓) pour travailler sur votre poste, avec un brouillon protégé par mot de passe.</p></div></div>
     <div class="aide-step"><div class="num">B</div><div class="txt"><h4>Indiquez qui vous êtes</h4><p>Personne en appréciation, supérieur(e) immédiat(e), hiérarchique ou directeur. Vous ne voyez alors que ce qui vous concerne : les sections réservées aux autres restent cachées tant qu'elles sont vides. Votre choix est gardé jusqu'à « Nouveau formulaire ». C'est SharePoint qui vérifie votre identité au dépôt.</p></div></div>
     <div class="aide-step"><div class="num">C</div><div class="txt"><h4>Personne en appréciation : choisissez votre type de poste</h4><p>Vous seule ou seul faites ce choix ; les deux autres formulaires se verrouillent. <strong>Gestionnaires :</strong> vous ne choisissez pas le type de poste ; ouvrez le dossier de la personne avec « 📂 Mes dossiers », puis « 📁 Charger un dossier ».</p></div></div>
 
@@ -914,12 +915,12 @@
 <div class="modal-overlay" id="copieModal">
   <div class="modal-box">
     <div class="modal-header">
-      <h3>📋 SharePoint bloque le téléchargement ici</h3>
+      <h3>📋 Copie de votre travail</h3>
       <button class="modal-close" type="button" onclick="fermerCopieModal()">✕</button>
     </div>
     <div class="modal-body">
-      <p style="font-size:.88em;"><strong>Le plus simple :</strong> ouvrez l'application sur votre poste. Dans la barre SharePoint en haut, cliquez sur <strong>⤓ Télécharger</strong>, puis ouvrez le fichier téléchargé : tout y fonctionne (téléchargements, brouillon protégé, PDF).</p>
-      <p style="font-size:.88em;"><strong>Sinon, pour ne rien perdre maintenant :</strong> copiez le contenu ci-dessous, collez-le dans le Bloc-notes et enregistrez-le sous le nom <strong id="copieNom"></strong> (type : « Tous les fichiers »).</p>
+      <p style="font-size:.88em;"><strong>Pour conserver votre travail dans SharePoint :</strong> utilisez plutôt <strong>☁️ Déposer sur SharePoint</strong>. Le contenu est copié et collé dans le formulaire de dépôt, et il devient votre dossier dans « Mes dossiers ».</p>
+      <p style="font-size:.88em;"><strong>Pour une copie personnelle :</strong> copiez le contenu ci-dessous, collez-le dans le Bloc-notes et enregistrez-le sous le nom <strong id="copieNom"></strong> (type : « Tous les fichiers »).</p>
       <textarea id="copieTexte" rows="8" readonly style="width:100%; font-family:monospace; font-size:.75em;"></textarea>
       <p id="copieStatut" class="flow-status ok" style="margin:6px 0;"></p>
       <button class="btn green" type="button" onclick="copierContenu()">📋 Copier le contenu</button>
@@ -935,6 +936,19 @@
       <button class="modal-close" type="button" onclick="closeDepotModal()">✕</button>
     </div>
     <div class="modal-body">
+      <div id="depotEtapesSP" style="display:none;">
+        <p>Dans SharePoint, rien n'est téléchargé : vous <strong>copiez</strong> le contenu, puis vous le <strong>collez</strong> dans le formulaire de dépôt.</p>
+        <ol class="depot-steps">
+          <li>Cliquez sur <strong>« 📋 Copier le contenu du dépôt »</strong>. <button class="btn green" type="button" onclick="copierDepot()" style="margin-left:6px;">📋 Copier le contenu du dépôt</button>
+            <p id="depotCopieStatut" class="flow-status" style="margin:6px 0 0;"></p></li>
+          <li>Cliquez sur <strong>« 🔗 Ouvrir le formulaire de dépôt »</strong> (plus bas). SharePoint s'ouvre avec votre compte de la Ville.</li>
+          <li>Cliquez dans le champ <strong>Contenu</strong>, collez (<strong>Ctrl+V</strong>), puis cliquez sur <strong>« Enregistrer »</strong>.</li>
+          <li>Dans quelques minutes, vous recevez un courriel de <strong>confirmation</strong> ou de <strong>refus</strong> (avec la raison).</li>
+          <li>Pour continuer plus tard : <strong>« 📂 Mes dossiers »</strong>, téléchargez le dossier, puis <strong>« 📁 Charger un dossier »</strong>.</li>
+        </ol>
+        <p id="depotTropLong" class="flow-status err" style="display:none;">⚠️ Ce dépôt est très long : le champ « Contenu » pourrait le couper. Collez plutôt le contenu dans le Bloc-notes, enregistrez-le sous le nom <em>depot.json</em> (type : « Tous les fichiers ») et joignez ce fichier avec « Ajouter des pièces jointes ».</p>
+      </div>
+      <div id="depotEtapesFichier">
       <p>Le fichier <strong id="depotFichier"></strong> vient d'être enregistré dans vos <strong>Téléchargements</strong>.</p>
       <ol class="depot-steps">
         <li>Cliquez sur <strong>« Ouvrir le formulaire de dépôt »</strong>. SharePoint s'ouvre avec votre compte de la Ville.</li>
@@ -943,6 +957,7 @@
         <li>Dans quelques minutes, vous recevez un courriel de <strong>confirmation</strong> ou de <strong>refus</strong> (avec la raison).</li>
         <li>Rechargez ensuite la version officielle depuis <strong>« 📂 Mes dossiers »</strong>, puis supprimez le fichier de vos Téléchargements.</li>
       </ol>
+      </div>
       <div class="help-tip">🔐 Pourquoi cette étape ? C'est SharePoint qui confirme votre identité. Personne ne peut déposer en votre nom, et le dépôt n'est visible que par vous.</div>
       <p id="depotConfigManquante" class="flow-status err" style="display:none;">L'adresse du formulaire de dépôt n'est pas configurée. Ouvrez ⚙️ Configuration.</p>
       <button class="btn green" type="button" id="depotOuvrirBtn" onclick="ouvrirFormulaireDepot()">🔗 Ouvrir le formulaire de dépôt</button>
@@ -1525,7 +1540,9 @@ function deposer(action){
   };
   delete depot.formulaire.workflow.dernierDepot;
   const fichier = nomFichierDepot(action);
-  livrerFichier(fichier, JSON.stringify(depot, null, 2)); /* v3.4 */
+  if(modeVisionneuse()){ depotTexteSP = JSON.stringify(depot); }   /* v3.8 : rien à télécharger, on copiera */
+  else{ depotTexteSP = ''; livrerFichier(fichier, JSON.stringify(depot, null, 2)); }
+  modifsNonDeposees = false;
 
   state.workflow.dernierDepot = {action, date: new Date().toLocaleString('fr-CA')};
   saveLocal(false);
@@ -1533,7 +1550,34 @@ function deposer(action){
   openDepotModal(action, fichier, cfg);
 }
 
+/* v3.8 : mode SharePoint (aperçu sans téléchargement) — copier-coller dans le champ « Contenu » */
+let depotTexteSP = '';
+let modifsNonDeposees = false;
+const LIMITE_CONTENU = 60000;   // une colonne « Plusieurs lignes de texte » accepte environ 63 999 caractères
+function copierTexte(texte, st){
+  const ta = document.createElement('textarea');
+  ta.value = texte; ta.setAttribute('readonly',''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+  document.body.appendChild(ta); ta.focus(); ta.select();
+  let ok = false; try{ ok = document.execCommand('copy'); }catch(e){}
+  ta.remove();
+  const fini = () => { st.className = 'flow-status ok'; st.textContent = '✔ Copié. Ouvrez le formulaire de dépôt et collez (Ctrl+V) dans le champ « Contenu ».'; };
+  if(ok){ fini(); return; }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(texte).then(fini, ()=>{ st.className = 'flow-status err'; st.textContent = 'La copie automatique est bloquée. Utilisez « 💾 Copie locale » pour afficher le contenu, sélectionnez-le, puis Ctrl+C.'; });
+  }else{ st.className = 'flow-status err'; st.textContent = 'La copie automatique est bloquée. Utilisez « 💾 Copie locale » pour afficher le contenu, sélectionnez-le, puis Ctrl+C.'; }
+}
+function copierDepot(){ copierTexte(depotTexteSP, document.getElementById('depotCopieStatut')); }
+window.addEventListener('beforeunload', function(e){
+  if(modeVisionneuse() && modifsNonDeposees){ e.preventDefault(); e.returnValue = ''; }
+});
 function openDepotModal(action, fichier, cfg){
+  const sp = modeVisionneuse() && !!depotTexteSP;
+  document.getElementById('depotEtapesFichier').style.display = sp ? 'none' : '';
+  document.getElementById('depotEtapesSP').style.display = sp ? '' : 'none';
+  if(sp){
+    const st = document.getElementById('depotCopieStatut'); st.className = 'flow-status'; st.textContent = '';
+    document.getElementById('depotTropLong').style.display = depotTexteSP.length > LIMITE_CONTENU ? 'block' : 'none';
+  }
   document.getElementById('depotTitre').textContent = (ACTIONS_DEPOT[action] || {}).label || 'Dépôt';
   document.getElementById('depotFichier').textContent = fichier || 'depot-… .json le plus récent';
   const btn = document.getElementById('depotOuvrirBtn');
@@ -2014,6 +2058,7 @@ const VAULT_SALT_KEY = STORAGE_KEY + '_vaultSalt';
 const VAULT_DATA_KEY = STORAGE_KEY + '_vaultData';
 
 function scheduleAutosave(){
+  modifsNonDeposees = true; /* v3.8 */
   clearTimeout(autosaveTimer);
   autosaveTimer = setTimeout(()=>{ saveLocal(false); pushHistory(); }, 800);
 }
@@ -2502,7 +2547,7 @@ function checkEmbeddedContext(){
   if(embedded && !storageDispo()){ /* v3.1 */
     const banner = document.createElement('div');
     banner.className = 'embed-banner';
-    banner.innerHTML = "ℹ️ Vous êtes dans l'aperçu SharePoint : <strong>rien ne peut y être enregistré ni téléchargé</strong>. Pour travailler, cliquez sur <strong>⤓ Télécharger</strong> dans la barre SharePoint en haut, puis ouvrez le fichier téléchargé.";
+    banner.innerHTML = "ℹ️ Vous travaillez dans SharePoint : <strong>votre saisie n'est pas conservée si vous fermez ou actualisez la page</strong>. Pour la garder, utilisez <strong>☁️ Déposer sur SharePoint</strong> (copier-coller). Pour reprendre : <strong>📂 Mes dossiers</strong>, puis <strong>📁 Charger un dossier</strong>.";
     document.body.insertBefore(banner, document.body.firstChild);
   }
 }

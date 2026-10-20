@@ -2,7 +2,8 @@
 
 | Version | Date | Changements |
 |---|---|---|
-| **3.7** | 19 oct. 2026 | **Seule la personne en appréciation choisit le type de poste.** Les gestionnaires voient « Ouvrez le dossier de la personne en appréciation » (📂 Mes dossiers, puis 📁 Charger un dossier) |
+| **3.8** | 20 oct. 2026 | **On peut tout faire dans SharePoint** : le dépôt se fait par copier-coller dans le champ « Contenu » du formulaire de dépôt, sans téléchargement. Bandeau et aide adaptés ; avertissement si on ferme la page avec des changements non déposés |
+| 3.7 | 19 oct. 2026 | **Seule la personne en appréciation choisit le type de poste.** Les gestionnaires voient « Ouvrez le dossier de la personne en appréciation » (📂 Mes dossiers, puis 📁 Charger un dossier) |
 | 3.6 | 19 oct. 2026 | « Qui êtes-vous ? » d'abord, puis le type de poste (écran de départ et barre de gauche) |
 | 3.5 | 19 oct. 2026 | Choix du rôle qui ne montre que ce qui vous concerne (sections des autres cachées tant qu'elles sont vides), gardé jusqu'à « Nouveau formulaire ». Aide-mémoire et « Comment remplir » fusionnés et mis en évidence. Rappel de l'échelle retiré de l'aide. Numéro de dossier caché sur un formulaire neuf. Bouton Configuration retiré. Version affichée au bas de la page et au bas du PDF seulement |
 | 3.4 | 19 oct. 2026 | Aperçu SharePoint : bandeau « ⤓ Télécharger » et fenêtre « Copier le contenu », parce que l'aperçu bloque les téléchargements |
