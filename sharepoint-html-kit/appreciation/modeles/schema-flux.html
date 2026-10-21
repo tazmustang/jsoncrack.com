@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Schéma du flux AC - Traiter un dépôt</title>
+<style>
+  :root{
+    --texte:#1d2633; --gris:#5b6675; --fond:#ffffff;
+    --decl:#0b5cad; --decl-bg:#e6f0fb;
+    --var:#5d4a8f; --var-bg:#f0ecf8;
+    --act:#2f3b4c; --act-bg:#f4f6f9;
+    --cond:#9a5b00; --cond-bg:#fff4e0;
+    --oui:#1d7a3c; --oui-bg:#e8f6ec;
+    --non:#b3261e; --non-bg:#fdecea;
+    --mail:#00707a; --mail-bg:#e3f5f6;
+    --sp:#036c70;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--fond); color:var(--texte); font-family:"Segoe UI", Arial, sans-serif; font-size:14px;}
+  .page{width:1500px; padding:28px 32px 36px;}
+  h1{margin:0 0 4px; font-size:24px;}
+  .sous{margin:0 0 18px; color:var(--gris); font-size:14px;}
+  .col{display:flex; flex-direction:column; align-items:center; gap:0;}
+  .fleche{width:2px; height:18px; background:#8a96a6; position:relative; margin:0 auto;}
+  .fleche::after{content:""; position:absolute; bottom:-5px; left:-4px; border:5px solid transparent; border-top:6px solid #8a96a6;}
+  .boite{border-radius:8px; padding:8px 12px; border:1.5px solid; text-align:center; line-height:1.3; min-width:220px;}
+  .boite small{display:block; color:var(--gris); font-size:12px;}
+  .boite code{font-family:Consolas, monospace; font-size:12.5px; font-weight:700;}
+  .decl{border-color:var(--decl); background:var(--decl-bg);}
+  .var{border-color:var(--var); background:var(--var-bg);}
+  .act{border-color:#9aa6b6; background:var(--act-bg);}
+  .cond{border-color:var(--cond); background:var(--cond-bg); border-style:dashed;}
+  .mail{border-color:var(--mail); background:var(--mail-bg);}
+  .refus{border-color:var(--non); background:var(--non-bg);}
+  .ok{border-color:var(--oui); background:var(--oui-bg);}
+  .etendue{border:2px solid var(--decl); border-radius:12px; padding:22px 18px 18px; position:relative; width:100%; background:#fbfdff;}
+  .etendue > .titre-et{position:absolute; top:-12px; left:18px; background:var(--decl); color:#fff; padding:2px 10px; border-radius:6px; font-weight:700; font-size:13px;}
+  .branches{display:flex; gap:16px; width:100%; align-items:flex-start;}
+  .branche{flex:1; border-radius:10px; padding:16px 10px 12px; position:relative; display:flex; flex-direction:column; align-items:center;}
+  .branche > .etq{position:absolute; top:-10px; left:12px; padding:1px 8px; border-radius:5px; font-weight:700; font-size:12px; color:#fff;}
+  .b-oui{border:1.5px solid var(--oui); background:#f6fcf8;} .b-oui > .etq{background:var(--oui);}
+  .b-non{border:1.5px solid var(--non); background:#fffafa;} .b-non > .etq{background:var(--non);}
+  .b-neutre{border:1.5px solid #9aa6b6; background:#fbfcfd;} .b-neutre > .etq{background:#5b6675;}
+  .grille-var{display:grid; grid-template-columns:repeat(4, auto); gap:4px 14px; text-align:left; margin-top:4px;}
+  .grille-var code{font-weight:600;}
+  .switch{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; width:100%;}
+  .cas{border:1.5px solid #9aa6b6; border-radius:8px; padding:8px; background:#fff; font-size:12.5px; line-height:1.35;}
+  .cas b{display:block; font-family:Consolas, monospace; margin-bottom:4px; color:var(--decl);}
+  .legende{display:flex; gap:14px; flex-wrap:wrap; margin:0 0 16px; font-size:12.5px;}
+  .legende span{display:inline-flex; align-items:center; gap:6px;}
+  .legende i{width:16px; height:12px; border-radius:3px; border:1.5px solid; display:inline-block;}
+  .note{font-size:12px; color:var(--gris); margin-top:6px; text-align:center;}
+  .apres{display:flex; gap:16px; width:100%; justify-content:center; align-items:flex-start;}
+  .num{display:inline-block; background:#1d2633; color:#fff; border-radius:9px; min-width:18px; height:18px; padding:0 5px; font-size:11px; line-height:18px; text-align:center; margin-right:5px;}
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>Flux Power Automate « AC - Traiter un dépôt » — version pilote</h1>
+  <p class="sous">Les numéros renvoient aux sections du guide 5-GUIDE-FLUX-DEPOT. Les noms en <code>gras</code> sont les noms exacts à donner aux actions (… › Renommer).</p>
+
+  <div class="legende">
+    <span><i style="border-color:var(--decl);background:var(--decl-bg)"></i>Déclencheur / étendue</span>
+    <span><i style="border-color:var(--var);background:var(--var-bg)"></i>Variables</span>
+    <span><i style="border-color:#9aa6b6;background:var(--act-bg)"></i>Action</span>
+    <span><i style="border-color:var(--cond);background:var(--cond-bg);border-style:dashed"></i>Condition</span>
+    <span><i style="border-color:var(--mail);background:var(--mail-bg)"></i>Courriel</span>
+    <span><i style="border-color:var(--non);background:var(--non-bg)"></i>Refus (motifRefus)</span>
+  </div>
+
+  <div class="col">
+    <div class="boite decl"><span class="num">2</span><b>SharePoint — Lorsqu'un élément est créé</b><small>Liste Depot_Appreciations · simultanéité = 1</small></div>
+    <div class="fleche"></div>
+    <div class="boite var"><span class="num">3</span><b>8 variables</b>
+      <div class="grille-var">
+        <code>modeTest</code><code>deposant</code><code>nomDeposant</code><code>maintenant</code>
+        <code>texteDepot</code><code>dossier</code><code>motifRefus</code><code>message</code>
+      </div>
+    </div>
+    <div class="fleche"></div>
+
+    <div class="etendue">
+      <span class="titre-et">Étendue « Traitement »</span>
+      <div class="col">
+        <div class="boite act"><span class="num">4.1</span><code>PJ</code><small>Obtenir les pièces jointes</small></div>
+        <div class="fleche"></div>
+        <div class="boite cond"><span class="num">4.2</span><code>ContenuVide</code> ?<small>le champ « Contenu » est-il vide ?</small></div>
+        <div class="fleche"></div>
+        <div class="branches" style="width:70%;">
+          <div class="branche b-oui"><span class="etq">Oui — fichier joint</span>
+            <div class="boite act"><code>ContenuPJ</code><small>Obtenir le contenu de la pièce jointe</small></div>
+            <div class="fleche"></div>
+            <div class="boite var">texteDepot = contenu du fichier</div>
+          </div>
+          <div class="branche b-non" style="border-color:#9aa6b6;background:#fbfcfd;"><span class="etq" style="background:#5b6675;">Non — copier-coller</span>
+            <div class="boite var">texteDepot = champ « Contenu »</div>
+          </div>
+        </div>
+        <div class="fleche"></div>
+        <div class="boite act"><span class="num">4.3</span><code>Depot</code><small>Composer : json(texteDepot)</small></div>
+        <div class="fleche"></div>
+        <div class="boite cond"><span class="num">4.4</span><code>DepotValide</code> ?<small>format appreciation-depot-v1 et dossierId présent</small></div>
+        <div class="fleche"></div>
+        <div class="branches">
+          <div class="branche b-non" style="flex:0 0 200px;"><span class="etq">Non</span>
+            <div class="boite refus" style="min-width:160px;">motifRefus =<br>« pas un dépôt »</div>
+          </div>
+          <div class="branche b-oui"><span class="etq">Oui</span>
+            <div class="boite act"><span class="num">4.5</span><code>ChercherDossier</code><small>Obtenir les fichiers · Dossiers_Appreciations · DossierId eq …</small></div>
+            <div class="fleche"></div>
+            <div class="boite cond"><span class="num">4.6</span><code>NouveauDossier</code> ?<small>aucun fichier trouvé ?</small></div>
+            <div class="fleche"></div>
+            <div class="branches">
+              <div class="branche b-oui" style="flex:0 0 330px;"><span class="etq">Oui — premier dépôt (section 5)</span>
+                <div class="boite cond"><code>ActionPermiseNouveau</code> ?<small>sauvegarder ou aviser</small></div>
+                <div class="note" style="color:var(--non)">Non → motifRefus « le dossier n'existe pas encore »</div>
+                <div class="fleche"></div>
+                <div class="boite act"><code>ResponsableSI</code> → <code>ResponsableSH</code><small>Office 365 Utilisateurs · Obtenir le responsable (V2)</small></div>
+                <div class="fleche"></div>
+                <div class="boite act"><code>Participants</code> · <code>NouveauWorkflow</code><small>Composer (en mode test : votre adresse partout)</small></div>
+                <div class="fleche"></div>
+                <div class="boite var">dossier = formulaire + workflow<small>sections du supérieur vidées</small></div>
+                <div class="fleche"></div>
+                <div class="boite act"><code>CreerDossier</code><small>Créer un fichier &lt;dossierId&gt;.json</small></div>
+                <div class="fleche"></div>
+                <div class="boite act"><code>ProprietesNouveau</code><small>DossierId, NomPersonne, TypePoste, Statut…</small></div>
+                <div class="fleche"></div>
+                <div class="boite mail">si « aviser » : courriel<br><b>Avis au supérieur</b></div>
+              </div>
+              <div class="branche b-non"><span class="etq">Non — dossier existant (section 6)</span>
+                <div class="boite act"><span class="num">6.1</span><code>LireDossier</code><small>Obtenir le contenu du fichier → dossier</small></div>
+                <div class="fleche"></div>
+                <div class="boite act"><span class="num">6.2–6.4</span><code>Role</code> · <code>Statut</code> · <code>Etape</code><small>qui dépose ? quel statut ? qui doit approuver ?</small></div>
+                <div class="fleche"></div>
+                <div class="boite cond"><span class="num">6.5</span><code>RoleConnu</code> ?</div>
+                <div class="note" style="color:var(--non)">aucun rôle → motifRefus « aucun rôle dans ce dossier »</div>
+                <div class="fleche"></div>
+                <div class="boite act"><span class="num">6.6</span><code>ClesPermises</code><small>sections que ce rôle peut modifier à cette étape</small></div>
+                <div class="fleche"></div>
+                <div class="boite act"><span class="num">6.7</span>Boucle <code>Fusionner</code><small>Composer <code>Fusion</code> → dossier (simultanéité 1)</small></div>
+                <div class="fleche"></div>
+                <div class="boite cond"><span class="num">6.8</span>Commutateur <code>Action</code></div>
+                <div class="fleche"></div>
+                <div class="switch">
+                  <div class="cas"><b>sauvegarder</b>au moins une section permise<br>→ « version enregistrée »</div>
+                  <div class="cas"><b>aviser</b>personne + brouillon<br>→ date de l'avis<br><span style="color:var(--mail)">✉ Avis au supérieur</span></div>
+                  <div class="cas"><b>certifier</b>personne + brouillon + poste<br>→ certification, statut « approbation »<br><span style="color:var(--mail)">✉ Approbation requise</span></div>
+                  <div class="cas"><b>approuver</b>rôle = étape en cours<br>→ <code>AvecSignature</code>, <code>Suivant</code><br><span style="color:var(--mail)">✉ suivant, ou « approbations complétées »</span></div>
+                </div>
+                <div class="note" style="color:var(--non)">contrôle non respecté → motifRefus</div>
+                <div class="fleche"></div>
+                <div class="boite cond"><span class="num">6.9</span>aucun refus ?</div>
+                <div class="fleche"></div>
+                <div class="boite act"><code>Versionne</code> → Mettre à jour le fichier → Mettre à jour les propriétés<small>version + 1, date, statut</small></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fleche"></div>
+    <div class="apres">
+      <div class="boite refus" style="max-width:300px;"><span class="num">7.1</span>Étendue <code>EnCasErreur</code><small>seulement si « Traitement » a échoué → motifRefus « dépôt illisible »</small></div>
+    </div>
+    <div class="fleche"></div>
+    <div class="boite cond"><span class="num">7.2</span><code>Accepte</code> ?<small>motifRefus est vide ?</small></div>
+    <div class="fleche"></div>
+    <div class="branches" style="width:60%;">
+      <div class="branche b-oui"><span class="etq">Oui</span><div class="boite mail">✉ <b>Dépôt accepté</b><small>au déposant · texte = message</small></div></div>
+      <div class="branche b-non"><span class="etq">Non</span><div class="boite mail">✉ <b>Dépôt refusé</b><small>au déposant · raison = motifRefus</small></div></div>
+    </div>
+    <div class="fleche"></div>
+    <div class="boite act"><span class="num">7.3</span><b>Supprimer l'élément</b> de Depot_Appreciations<small>toujours exécuté (toutes les cases de « Configurer l'exécution après »)</small></div>
+  </div>
+</div>
+</body>
+</html>

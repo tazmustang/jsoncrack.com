@@ -10,6 +10,11 @@ Connecteurs utilisés : **SharePoint**, **Office 365 Outlook** et **Office 365 U
 
 ## 0. Ce que fait le flux
 
+![Schéma du flux « AC - Traiter un dépôt »](modeles/schema-flux.png)
+
+*Le schéma est aussi fourni à part : `modeles/schema-flux.jpg`.*
+
+
 À chaque nouvel élément dans **Depot_Appreciations**, le flux :
 
 1. lit le dépôt : le champ **Contenu**, ou sinon le fichier joint ;
