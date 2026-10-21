@@ -125,7 +125,7 @@ Sans ce flux, un dépôt reste dans la liste : aucun courriel n'est envoyé et a
 - avise la personne suivante ;
 - supprime l'élément de dépôt.
 
-Il n'utilise que des connecteurs standard (SharePoint, Office 365 Outlook, Office 365 Users), donc **aucune licence Premium**. Prévoyez 2 à 3 jours avec les tests. Dans le site de test, il peut être construit avec votre propre compte. Pour le site officiel, il faudra un compte de service fourni par le TI. Le guide pas à pas sera fourni à cette étape.
+Il n'utilise que des connecteurs standard (SharePoint, Office 365 Outlook, Office 365 Users), donc **aucune licence Premium**. Le guide pas à pas est **5-GUIDE-FLUX-DEPOT**. Dans le site de test, construisez-le avec votre propre compte : son mode test vous permet de jouer les 4 rôles seule. Pour le site officiel, il faudra un compte de service fourni par le TI.
 
 ## 7. Ce qu'il ne faut pas faire
 
