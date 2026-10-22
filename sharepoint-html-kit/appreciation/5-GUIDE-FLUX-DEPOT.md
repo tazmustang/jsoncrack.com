@@ -12,7 +12,7 @@ Connecteurs utilisés : **SharePoint**, **Office 365 Outlook** et **Office 365 U
 
 ![Schéma du flux « AC - Traiter un dépôt »](modeles/schema-flux.png)
 
-*Le schéma est aussi fourni à part : `modeles/schema-flux.jpg`.*
+*Le schéma est aussi fourni à part : `modeles/schema-flux.jpg`. Le détail de chaque action, avec les flux 2, 3 et 4 de la phase 2, est dans `schemas/Schemas-flux-Power-Automate-v3.8.pdf`.*
 
 
 À chaque nouvel élément dans **Depot_Appreciations**, le flux :
@@ -46,9 +46,14 @@ C'est la phase 2, avant le déploiement réel (section 9). D'ici là, **utilisez
 ## 2. Créer le flux et son déclencheur
 
 1. Ouvrez **Power Automate** › **+ Créer** › **Flux de cloud automatisé**.
-2. Nom : `AC - Traiter un dépôt`. Déclencheur : **SharePoint — Lorsqu'un élément est créé**.
+2. Nom : `AC - Traiter un dépôt`. Déclencheur : **SharePoint — Lorsqu'un élément est créé ou modifié**.
 3. Adresse du site : **SandBox Annie Audet**. Nom de la liste : **Depot_Appreciations**.
-4. Dans le déclencheur, ouvrez **… › Paramètres** : activez **Contrôle de la simultanéité**, avec un **degré de parallélisme de 1**. Les dépôts sont ainsi traités un à la fois.
+4. Dans le déclencheur, ouvrez **… › Paramètres** :
+   - activez **Contrôle de la simultanéité**, avec un **degré de parallélisme de 1**, pour traiter les dépôts un à la fois ;
+   - dans **Conditions de déclenchement**, ajoutez :
+     `@or(not(empty(triggerOutputs()?['body/Contenu'])), equals(triggerOutputs()?['body/Attachments'], true))`
+
+   > Pourquoi « créé **ou modifié** » ? Avec une pièce jointe, SharePoint crée d'abord l'élément, puis ajoute le fichier. La condition fait attendre le flux jusqu'à ce qu'il y ait un contenu collé ou une pièce jointe.
 
 ## 3. Les variables (8 actions « Initialiser une variable »)
 
