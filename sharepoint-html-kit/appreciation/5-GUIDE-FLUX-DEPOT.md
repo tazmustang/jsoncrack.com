@@ -84,6 +84,16 @@ Ajoutez une action **Étendue** et renommez-la `Traitement`. Toutes les actions 
 - **Si non** : **Définir une variable** `motifRefus` = `Le contenu collé n'est pas un dépôt de l'application. Recommencez avec le bouton « Copier le contenu du dépôt ».`
 - **Si oui** : toutes les étapes suivantes (4.5 à 7) vont **dans cette branche**.
 
+**4.4 (variante recommandée) — Composer `Controle`.** Elle remplace la condition `DepotValide` et donne une raison de refus précise. Expression, sur une seule ligne :
+```
+if(and(empty(coalesce(triggerBody()?['Contenu'],'')), not(equals(length(body('PJ')),1))), 'Collez le contenu du dépôt dans le champ « Contenu », ou joignez exactement UN fichier de dépôt.', if(not(equals(outputs('Depot')?['format'],'appreciation-depot-v1')), 'Ce contenu n''est pas un dépôt de l''application. Recommencez avec le bouton « Copier le contenu du dépôt ».', if(not(contains(createArray('sauvegarder','aviser','certifier','approuver'), coalesce(outputs('Depot')?['action'],''))), 'Action de dépôt inconnue.', if(empty(coalesce(outputs('Depot')?['dossierId'],'')), 'Le dépôt ne contient pas d''identifiant de dossier.', ''))))
+```
+Ensuite :
+- **Définir une variable** `motifRefus` = `outputs('Controle')` ;
+- **Condition** `empty(variables('motifRefus'))`, **est égal à** `true` : toutes les étapes suivantes vont dans la branche **Oui**.
+
+Les apostrophes doublées (`n''est`) sont voulues : c'est ainsi qu'on écrit une apostrophe dans une expression Power Automate.
+
 **4.5 — Chercher le dossier.** Action SharePoint **Obtenir les fichiers (propriétés uniquement)**, renommée `ChercherDossier`. Bibliothèque : **Dossiers_Appreciations**. Requête de filtre : `DossierId eq '` puis le contenu dynamique `@{outputs('Depot')?['dossierId']}`, puis `'`. Nombre maximal : `1`.
 
 **4.6 — Condition `NouveauDossier`.** Expression `length(body('ChercherDossier')?['value'])`, **est égal à** `0`.
