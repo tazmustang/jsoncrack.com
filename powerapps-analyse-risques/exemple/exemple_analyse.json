@@ -1,0 +1,47 @@
+{
+    "version": "1.0",
+    "meta": {
+        "service": "Gestion des équipements motorisés",
+        "division": "Entretien parc véhiculaire",
+        "localisation": "52, Marie-de-l'Incarnation",
+        "participants": "J. Dupont, M. Tremblay",
+        "date": "2026-03-25",
+        "commentaires": "Exemple de test pour l'importation"
+    },
+    "rows": [
+        {
+            "id": "ex-1",
+            "environnement": "Garage",
+            "activite": "Travail en hauteur, inspection, réparation",
+            "tache": "Accéder et descendre de la plate-forme",
+            "categorie_danger": "Physique",
+            "risque": "Chute au niveau du sol",
+            "consequence": "Foulure",
+            "blessure": "Foulure",
+            "mesures_existantes": "3 points d'appui",
+            "g1": 5,
+            "mp1": 20,
+            "mesures_suggerees": "",
+            "cout": "",
+            "g2": 5,
+            "mp2": 0
+        },
+        {
+            "id": "ex-2",
+            "environnement": "Garage",
+            "activite": "Travail en hauteur, inspection, réparation",
+            "tache": "Utiliser la plate-forme avec une planche",
+            "categorie_danger": "Physique",
+            "risque": "Chute en hauteur de moins de 3 m",
+            "consequence": "Foulure cheville, fracture",
+            "blessure": "Fracture",
+            "mesures_existantes": "Aucune",
+            "g1": 25,
+            "mp1": 50,
+            "mesures_suggerees": "PST + passerelle avec garde-corps en aluminium approuvé",
+            "cout": "",
+            "g2": 25,
+            "mp2": 20
+        }
+    ]
+}

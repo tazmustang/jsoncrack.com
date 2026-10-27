@@ -1,0 +1,122 @@
+- recBarre_Imp:
+    Control: Rectangle
+    Properties:
+      X: =0
+      Y: =0
+      Width: =1366
+      Height: =56
+      Fill: =ColorValue("#1e293b")
+- lblTitre_Imp:
+    Control: Label
+    Properties:
+      X: =16
+      Y: =0
+      Width: =1000
+      Height: =56
+      Text: |-
+        ="Importer une analyse (fichier .json de l'application HTML)"
+      Size: =17
+      Color: =ColorValue("#ffffff")
+      FontWeight: =FontWeight.Bold
+- lblInstructions_Imp:
+    Control: Label
+    Properties:
+      X: =16
+      Y: =64
+      Width: =1334
+      Height: =80
+      Text: |-
+        ="1. Ouvrez le fichier .json (ex. : AR_SST_Maintenance_2026-04-15.json) avec le Bloc-notes." & Char(10) & "2. Sélectionnez tout (Ctrl+A), copiez (Ctrl+C) et collez (Ctrl+V) dans la zone ci-dessous." & Char(10) & "3. Cliquez sur « Importer », vérifiez l'analyse, puis cliquez sur « Enregistrer » pour la créer dans SharePoint."
+      Size: =11
+      Color: =ColorValue("#334155")
+- txtJSON:
+    Control: Classic/TextInput
+    Properties:
+      X: =16
+      Y: =150
+      Width: =1334
+      Height: =520
+      Default: =""
+      OnChange: =false
+      HintText: ="Collez ici le contenu du fichier .json…"
+      Size: =10
+      BorderColor: =ColorValue("#cbd5e1")
+      Mode: =TextMode.MultiLine
+- btnImporter:
+    Control: Classic/Button
+    Properties:
+      X: =16
+      Y: =684
+      Width: =220
+      Height: =44
+      Text: ="Importer"
+      OnSelect: |-
+        =IfError(
+            With({j: ParseJSON(txtJSON.Text)},
+                With({r: Table(j.rows)},
+                    Set(gblAnalyseID, Blank());
+                    Set(gblMeta, {Service: Text(j.meta.service), Division: Text(j.meta.division), Localisation: Text(j.meta.localisation), Participants: Text(j.meta.participants), DateAnalyse: IfError(DateValue(Text(j.meta.date)), Today()), Commentaires: Text(j.meta.commentaires)});
+                    ClearCollect(
+                        colLignes,
+                        ForAll(
+                            Sequence(CountRows(r)) As i,
+                            With({x: Index(r, i.Value).Value},
+                                {
+                                    LigneID: 0,
+                                    Cle: Coalesce(Text(x.id), Text(GUID())),
+                                    Ordre: i.Value,
+                                    Environnement: Text(x.environnement),
+                                    Activite: Text(x.activite),
+                                    Tache: Text(x.tache),
+                                    CategorieDanger: Text(x.categorie_danger),
+                                    Risque: Text(x.risque),
+                                    Consequence: Text(x.consequence),
+                                    Blessure: Text(x.blessure),
+                                    MesuresExistantes: Text(x.mesures_existantes),
+                                    G1: Coalesce(Value(x.g1), 0),
+                                    MP1: Coalesce(Value(x.mp1), 0),
+                                    MesuresSuggerees: Text(x.mesures_suggerees),
+                                    Cout: Text(x.cout),
+                                    G2: Coalesce(Value(x.g2), 0),
+                                    MP2: Coalesce(Value(x.mp2), 0)
+                                }
+                            )
+                        )
+                    );
+                    Clear(colSupprimes);
+                    Set(gblModifie, true);
+                    Set(gblAvertiQuitter, false);
+                    Reset(txtJSON);
+                    Notify("Analyse importée (" & CountRows(colLignes) & " ligne(s)). Vérifiez puis cliquez sur « Enregistrer ».", NotificationType.Success);
+                    Navigate(scrAnalyse, ScreenTransition.None)
+                )
+            ),
+            Notify("Le texte collé n'est pas un fichier JSON valide de l'application Analyse de risques.", NotificationType.Error)
+        )
+      Fill: =ColorValue("#16a34a")
+      Color: =ColorValue("#ffffff")
+      HoverFill: =ColorFade(ColorValue("#16a34a"), -15%)
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- btnRetourImp:
+    Control: Classic/Button
+    Properties:
+      X: =244
+      Y: =684
+      Width: =160
+      Height: =44
+      Text: ="Retour"
+      OnSelect: =Reset(txtJSON); Navigate(scrAccueil, ScreenTransition.None)
+      Fill: =ColorValue("#475569")
+      Color: =ColorValue("#ffffff")
+      HoverFill: =ColorFade(ColorValue("#475569"), -15%)
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4

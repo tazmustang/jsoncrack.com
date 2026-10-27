@@ -1,0 +1,331 @@
+- recBarre_Acc:
+    Control: Rectangle
+    Properties:
+      X: =0
+      Y: =0
+      Width: =1366
+      Height: =56
+      Fill: =ColorValue("#1e293b")
+- lblTitre_Acc:
+    Control: Label
+    Properties:
+      X: =16
+      Y: =0
+      Width: =700
+      Height: =56
+      Text: ="Analyses de risques SST — DSST"
+      Size: =17
+      Color: =ColorValue("#ffffff")
+      FontWeight: =FontWeight.Bold
+- btnNouvelleAnalyse:
+    Control: Classic/Button
+    Properties:
+      X: =1004
+      Y: =10
+      Width: =180
+      Height: =36
+      Text: ="+ Nouvelle analyse"
+      OnSelect: |-
+        =Set(gblAnalyseID, Blank());
+        Set(gblMeta, {Service: "", Division: "", Localisation: "", Participants: "", DateAnalyse: Today(), Commentaires: ""});
+        Clear(colLignes);
+        Clear(colSupprimes);
+        Set(gblModifie, false);
+        Set(gblAvertiQuitter, false);
+        Navigate(scrAnalyse, ScreenTransition.None)
+      Fill: =ColorValue("#16a34a")
+      Color: =ColorValue("#ffffff")
+      HoverFill: =ColorFade(ColorValue("#16a34a"), -15%)
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- btnAllerImport:
+    Control: Classic/Button
+    Properties:
+      X: =1192
+      Y: =10
+      Width: =158
+      Height: =36
+      Text: ="Importer un JSON"
+      OnSelect: =Navigate(scrImport, ScreenTransition.None)
+      Fill: =ColorValue("#475569")
+      Color: =ColorValue("#ffffff")
+      HoverFill: =ColorFade(ColorValue("#475569"), -15%)
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- lblAccAide:
+    Control: Label
+    Properties:
+      X: =16
+      Y: =64
+      Width: =1000
+      Height: =28
+      Text: |-
+        ="Cliquez sur une analyse pour l'ouvrir. Les analyses sont enregistrées dans la liste SharePoint AR_Analyses."
+      Size: =10
+      Color: =ColorValue("#64748b")
+- txtRechAccueil:
+    Control: Classic/TextInput
+    Properties:
+      X: =16
+      Y: =96
+      Width: =420
+      Height: =36
+      Default: =""
+      OnChange: =false
+      HintText: ="Rechercher (début du service, de la division ou de la localisation)…"
+      Size: =10
+      BorderColor: =ColorValue("#cbd5e1")
+- lblAccNombre:
+    Control: Label
+    Properties:
+      X: =450
+      Y: =96
+      Width: =400
+      Height: =36
+      Text: =CountRows(galAnalyses.AllItems) & " analyse(s)"
+      Size: =10
+      Color: =ColorValue("#64748b")
+- recAccEntetes:
+    Control: Rectangle
+    Properties:
+      X: =16
+      Y: =140
+      Width: =1334
+      Height: =30
+      Fill: =ColorValue("#f1f5f9")
+- lblAccH1:
+    Control: Label
+    Properties:
+      X: =28
+      Y: =140
+      Width: =560
+      Height: =30
+      Text: ="Service / Division · Localisation"
+      Size: =10
+      Color: =ColorValue("#475569")
+      FontWeight: =FontWeight.Bold
+- lblAccH2:
+    Control: Label
+    Properties:
+      X: =606
+      Y: =140
+      Width: =480
+      Height: =30
+      Text: ="Date / Résumé"
+      Size: =10
+      Color: =ColorValue("#475569")
+      FontWeight: =FontWeight.Bold
+- lblAccH3:
+    Control: Label
+    Properties:
+      X: =1096
+      Y: =140
+      Width: =150
+      Height: =30
+      Text: ="Statut"
+      Size: =10
+      Color: =ColorValue("#475569")
+      FontWeight: =FontWeight.Bold
+- galAnalyses:
+    Control: Gallery
+    Variant: Vertical
+    Properties:
+      X: =16
+      Y: =172
+      Width: =1334
+      Height: =586
+      Items: =Sort(Filter(AR_Analyses, IsBlank(txtRechAccueil.Text) || StartsWith(Title, txtRechAccueil.Text) || StartsWith(Division, txtRechAccueil.Text) || StartsWith(Localisation, txtRechAccueil.Text)), DateAnalyse, SortOrder.Descending)
+      TemplateSize: =76
+      TemplatePadding: =0
+      OnSelect: |-
+        =Set(gblAnalyseID, ThisItem.ID);
+        Set(gblMeta, {Service: ThisItem.Title, Division: ThisItem.Division, Localisation: ThisItem.Localisation, Participants: ThisItem.Participants, DateAnalyse: Coalesce(ThisItem.DateAnalyse, Today()), Commentaires: ThisItem.Commentaires});
+        ClearCollect(
+            colLignes,
+            ForAll(
+                Sort(Filter(AR_Lignes, AnalyseID = gblAnalyseID), Ordre),
+                {
+                    LigneID: ThisRecord.ID,
+                    Cle: Coalesce(ThisRecord.Cle, Text(GUID())),
+                    Ordre: Coalesce(ThisRecord.Ordre, 0),
+                    Environnement: ThisRecord.Environnement,
+                    Activite: ThisRecord.Title,
+                    Tache: ThisRecord.Tache,
+                    CategorieDanger: ThisRecord.CategorieDanger,
+                    Risque: ThisRecord.Risque,
+                    Consequence: ThisRecord.Consequence,
+                    Blessure: ThisRecord.Blessure,
+                    MesuresExistantes: ThisRecord.MesuresExistantes,
+                    G1: Coalesce(ThisRecord.G1, 0),
+                    MP1: Coalesce(ThisRecord.MP1, 0),
+                    MesuresSuggerees: ThisRecord.MesuresSuggerees,
+                    Cout: ThisRecord.Cout,
+                    G2: Coalesce(ThisRecord.G2, 0),
+                    MP2: Coalesce(ThisRecord.MP2, 0)
+                }
+            )
+        );
+        Clear(colSupprimes);
+        Set(gblModifie, false);
+        Set(gblAvertiQuitter, false);
+        Navigate(scrAnalyse, ScreenTransition.None)
+      ShowScrollbar: =true
+    Children:
+    - lblAccService:
+        Control: Label
+        Properties:
+          X: =12
+          Y: =6
+          Width: =560
+          Height: =30
+          Text: =Coalesce(ThisItem.Title, "(sans service)")
+          Size: =13
+          Color: =ColorValue("#1f2937")
+          FontWeight: =FontWeight.Bold
+    - lblAccDivision:
+        Control: Label
+        Properties:
+          X: =12
+          Y: =38
+          Width: =560
+          Height: =28
+          Text: =ThisItem.Division & If(IsBlank(ThisItem.Localisation), "", "  ·  " & ThisItem.Localisation)
+          Size: =10
+          Color: =ColorValue("#64748b")
+    - lblAccDate:
+        Control: Label
+        Properties:
+          X: =590
+          Y: =6
+          Width: =160
+          Height: =30
+          Text: =Text(ThisItem.DateAnalyse, "yyyy-mm-dd")
+          Size: =11
+          Color: =ColorValue("#1f2937")
+          FontWeight: =FontWeight.Bold
+    - lblAccStats:
+        Control: Label
+        Properties:
+          X: =590
+          Y: =38
+          Width: =480
+          Height: =28
+          Text: =Coalesce(ThisItem.NbRisques, 0) & " risque(s)  ·  " & Coalesce(ThisItem.NbCritiques, 0) & " critique(s)  ·  " & Coalesce(ThisItem.NbEleves, 0) & " élevé(s)  ·  IR max " & Coalesce(ThisItem.IRMax, 0)
+          Size: =10
+          Color: =ColorValue("#64748b")
+    - lblAccStatut:
+        Control: Label
+        Properties:
+          X: =1080
+          Y: =20
+          Width: =150
+          Height: =32
+          Text: =Coalesce(ThisItem.Statut, "Enregistrée")
+          Size: =10
+          Color: =ColorValue("#ffffff")
+          FontWeight: =FontWeight.Bold
+          Fill: =If(ThisItem.Statut = "Envoyée", ColorValue("#16a34a"), ColorValue("#2563eb"))
+          Align: =Align.Center
+    - icoAccSupprimer:
+        Control: Classic/Icon
+        Properties:
+          X: =1250
+          Y: =16
+          Width: =44
+          Height: =44
+          Icon: =Icon.Trash
+          OnSelect: =Set(gblASupprimer, ThisItem)
+          Color: =ColorValue("#dc2626")
+          Tooltip: ="Supprimer cette analyse"
+          PaddingTop: =6
+          PaddingBottom: =6
+          PaddingLeft: =6
+          PaddingRight: =6
+    - recAccSeparateur:
+        Control: Rectangle
+        Properties:
+          X: =0
+          Y: =Parent.TemplateHeight - 1
+          Width: =Parent.TemplateWidth
+          Height: =1
+          Fill: =ColorValue("#e2e8f0")
+- recVoile_Acc:
+    Control: Rectangle
+    Properties:
+      X: =0
+      Y: =0
+      Width: =1366
+      Height: =768
+      Fill: =RGBA(0, 0, 0, 0.45)
+      Visible: =!IsBlank(gblASupprimer)
+- recDialogue_Acc:
+    Control: Rectangle
+    Properties:
+      X: =403
+      Y: =244
+      Width: =560
+      Height: =230
+      Fill: =ColorValue("#ffffff")
+      Visible: =!IsBlank(gblASupprimer)
+- lblDialogue_Acc:
+    Control: Label
+    Properties:
+      X: =427
+      Y: =260
+      Width: =512
+      Height: =120
+      Text: |-
+        ="Supprimer définitivement l'analyse « " & gblASupprimer.Title & " » du " & Text(gblASupprimer.DateAnalyse, "yyyy-mm-dd") & " ainsi que toutes ses lignes ?"
+      Size: =12
+      Color: =ColorValue("#1f2937")
+      Visible: =!IsBlank(gblASupprimer)
+- btnConfirmerSuppr:
+    Control: Classic/Button
+    Properties:
+      X: =427
+      Y: =400
+      Width: =240
+      Height: =44
+      Text: ="Supprimer"
+      OnSelect: |-
+        =Remove(AR_Lignes, Filter(AR_Lignes, AnalyseID = gblASupprimer.ID));
+        Remove(AR_Analyses, gblASupprimer);
+        Set(gblASupprimer, Blank());
+        Notify("Analyse supprimée.", NotificationType.Success)
+      Fill: =ColorValue("#dc2626")
+      Color: =ColorValue("#ffffff")
+      HoverFill: =ColorFade(ColorValue("#dc2626"), -15%)
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+      Visible: =!IsBlank(gblASupprimer)
+- btnAnnulerSuppr:
+    Control: Classic/Button
+    Properties:
+      X: =699
+      Y: =400
+      Width: =240
+      Height: =44
+      Text: ="Annuler"
+      OnSelect: =Set(gblASupprimer, Blank())
+      Fill: =ColorValue("#e2e8f0")
+      Color: =ColorValue("#1e293b")
+      HoverFill: =ColorFade(ColorValue("#e2e8f0"), -15%)
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+      Visible: =!IsBlank(gblASupprimer)

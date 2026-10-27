@@ -1,0 +1,223 @@
+- recBarre_Syn:
+    Control: Rectangle
+    Properties:
+      X: =0
+      Y: =0
+      Width: =1366
+      Height: =56
+      Fill: =ColorValue("#1e293b")
+- lblTitre_Syn:
+    Control: Label
+    Properties:
+      X: =16
+      Y: =0
+      Width: =600
+      Height: =56
+      Text: ="Synthèse"
+      Size: =17
+      Color: =ColorValue("#ffffff")
+      FontWeight: =FontWeight.Bold
+- lblInfo_Syn:
+    Control: Label
+    Properties:
+      X: =620
+      Y: =0
+      Width: =730
+      Height: =56
+      Text: =If(IsBlank(gblMeta.Service), "", gblMeta.Service & "  ·  " & Text(gblMeta.DateAnalyse, "yyyy-mm-dd") & "  ·  " & CountRows(colLignes) & " ligne(s)")
+      Size: =11
+      Color: =ColorValue("#cbd5e1")
+      Align: =Align.Right
+      PaddingRight: =16
+- recOnglets_Syn:
+    Control: Rectangle
+    Properties:
+      X: =0
+      Y: =56
+      Width: =1366
+      Height: =48
+      Fill: =ColorValue("#e2e8f0")
+- btnOngGrille_Syn:
+    Control: Classic/Button
+    Properties:
+      X: =16
+      Y: =62
+      Width: =170
+      Height: =36
+      Text: |-
+        ="Grille d'analyse"
+      OnSelect: =Navigate(scrAnalyse, ScreenTransition.None)
+      Fill: =If(App.ActiveScreen.Name = "scrAnalyse", ColorValue("#2563eb"), ColorValue("#ffffff"))
+      Color: =If(App.ActiveScreen.Name = "scrAnalyse", ColorValue("#ffffff"), ColorValue("#1e293b"))
+      HoverFill: =ColorValue("#bfdbfe")
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- btnOngMatrice_Syn:
+    Control: Classic/Button
+    Properties:
+      X: =194
+      Y: =62
+      Width: =170
+      Height: =36
+      Text: ="Matrice de risque"
+      OnSelect: =Navigate(scrMatrice, ScreenTransition.None)
+      Fill: =If(App.ActiveScreen.Name = "scrMatrice", ColorValue("#2563eb"), ColorValue("#ffffff"))
+      Color: =If(App.ActiveScreen.Name = "scrMatrice", ColorValue("#ffffff"), ColorValue("#1e293b"))
+      HoverFill: =ColorValue("#bfdbfe")
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- btnOngAide_Syn:
+    Control: Classic/Button
+    Properties:
+      X: =372
+      Y: =62
+      Width: =170
+      Height: =36
+      Text: ="Aide-mémoire"
+      OnSelect: =Navigate(scrAideMemoire, ScreenTransition.None)
+      Fill: =If(App.ActiveScreen.Name = "scrAideMemoire", ColorValue("#2563eb"), ColorValue("#ffffff"))
+      Color: =If(App.ActiveScreen.Name = "scrAideMemoire", ColorValue("#ffffff"), ColorValue("#1e293b"))
+      HoverFill: =ColorValue("#bfdbfe")
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- btnOngSynthese_Syn:
+    Control: Classic/Button
+    Properties:
+      X: =550
+      Y: =62
+      Width: =170
+      Height: =36
+      Text: ="Synthèse"
+      OnSelect: =Navigate(scrSynthese, ScreenTransition.None)
+      Fill: =If(App.ActiveScreen.Name = "scrSynthese", ColorValue("#2563eb"), ColorValue("#ffffff"))
+      Color: =If(App.ActiveScreen.Name = "scrSynthese", ColorValue("#ffffff"), ColorValue("#1e293b"))
+      HoverFill: =ColorValue("#bfdbfe")
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- btnOngPlan_Syn:
+    Control: Classic/Button
+    Properties:
+      X: =728
+      Y: =62
+      Width: =170
+      Height: =36
+      Text: |-
+        ="Plan d'action"
+      OnSelect: =Navigate(scrPlanAction, ScreenTransition.None)
+      Fill: =If(App.ActiveScreen.Name = "scrPlanAction", ColorValue("#2563eb"), ColorValue("#ffffff"))
+      Color: =If(App.ActiveScreen.Name = "scrPlanAction", ColorValue("#ffffff"), ColorValue("#1e293b"))
+      HoverFill: =ColorValue("#bfdbfe")
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- lblCarteTotal:
+    Control: Label
+    Properties:
+      X: =16
+      Y: =112
+      Width: =254
+      Height: =80
+      Text: =CountRows(colLignes) & Char(10) & "Total des risques"
+      Size: =15
+      Color: =ColorValue("#ffffff")
+      FontWeight: =FontWeight.Bold
+      Fill: =ColorValue("#1e293b")
+      Align: =Align.Center
+- lblCarteCritique:
+    Control: Label
+    Properties:
+      X: =286
+      Y: =112
+      Width: =254
+      Height: =80
+      Text: =CountIf(colLignes, G1 * MP1 > 1250) & Char(10) & "Critique (> 1250)"
+      Size: =15
+      Color: =ColorValue("#ffffff")
+      FontWeight: =FontWeight.Bold
+      Fill: =ColorValue("#ef4444")
+      Align: =Align.Center
+- lblCarteEleve:
+    Control: Label
+    Properties:
+      X: =556
+      Y: =112
+      Width: =254
+      Height: =80
+      Text: =CountIf(colLignes, G1 * MP1 > 750 && G1 * MP1 <= 1250) & Char(10) & "Élevé (751–1250)"
+      Size: =15
+      Color: =ColorValue("#ffffff")
+      FontWeight: =FontWeight.Bold
+      Fill: =ColorValue("#f97316")
+      Align: =Align.Center
+- lblCarteModere:
+    Control: Label
+    Properties:
+      X: =826
+      Y: =112
+      Width: =254
+      Height: =80
+      Text: =CountIf(colLignes, G1 * MP1 > 250 && G1 * MP1 <= 750) & Char(10) & "Modéré (251–750)"
+      Size: =15
+      Color: =ColorValue("#1f2937")
+      FontWeight: =FontWeight.Bold
+      Fill: =ColorValue("#fbbf24")
+      Align: =Align.Center
+- lblCarteFaible:
+    Control: Label
+    Properties:
+      X: =1096
+      Y: =112
+      Width: =254
+      Height: =80
+      Text: =CountIf(colLignes, G1 * MP1 <= 250) & Char(10) & "Faible (≤ 250)"
+      Size: =15
+      Color: =ColorValue("#ffffff")
+      FontWeight: =FontWeight.Bold
+      Fill: =ColorValue("#22c55e")
+      Align: =Align.Center
+- htmSyntheseNiveaux:
+    Control: HtmlViewer
+    Properties:
+      X: =16
+      Y: =202
+      Width: =660
+      Height: =262
+      HtmlText: |-
+        ="<div style='height:250px;overflow-y:auto;font-family:Segoe UI,Arial,sans-serif'><h3 style='font-size:13px;color:#1e293b;margin:6px 0'>Niveau de risque — AVANT mesures correctives</h3>" & With({t: ForAll(Sort(nfNiveaux, Seuil, SortOrder.Descending) As n, {Libelle: n.Libelle, Couleur: n.Couleur, N: CountIf(colLignes, G1 * MP1 > n.Plancher && G1 * MP1 <= n.Seuil)})}, With({m: Max(1, Max(t, N))}, If(CountRows(t) = 0, "<p style='color:#6b7280'>Aucune donnée</p>", "<table style='width:100%;border-collapse:collapse'>" & Concat(t, "<tr><td style='width:120px;font-size:12px;padding:3px'>" & Libelle & "</td><td style='padding:3px'><div style='background:" & Couleur & ";height:16px;width:" & Round(N / m * 100, 0) & "%'></div></td><td style='width:36px;text-align:right;font-size:12px;font-weight:bold'>" & N & "</td></tr>") & "</table>"))) & "<h3 style='font-size:13px;color:#1e293b;margin:6px 0'>Niveau de risque — APRÈS mesures correctives</h3>" & With({t: ForAll(Sort(nfNiveaux, Seuil, SortOrder.Descending) As n, {Libelle: n.Libelle, Couleur: n.Couleur, N: CountIf(colLignes, G2 * MP2 > n.Plancher && G2 * MP2 <= n.Seuil)})}, With({m: Max(1, Max(t, N))}, If(CountRows(t) = 0, "<p style='color:#6b7280'>Aucune donnée</p>", "<table style='width:100%;border-collapse:collapse'>" & Concat(t, "<tr><td style='width:120px;font-size:12px;padding:3px'>" & Libelle & "</td><td style='padding:3px'><div style='background:" & Couleur & ";height:16px;width:" & Round(N / m * 100, 0) & "%'></div></td><td style='width:36px;text-align:right;font-size:12px;font-weight:bold'>" & N & "</td></tr>") & "</table>"))) & "</div>"
+- htmSyntheseRepartition:
+    Control: HtmlViewer
+    Properties:
+      X: =690
+      Y: =202
+      Width: =660
+      Height: =262
+      HtmlText: |-
+        ="<div style='height:250px;overflow-y:auto;font-family:Segoe UI,Arial,sans-serif'><h3 style='font-size:13px;color:#1e293b;margin:6px 0'>Par environnement</h3>" & With({t: ForAll(Distinct(Filter(colLignes, !IsBlank(Environnement)), Environnement) As e, {Libelle: e.Value, Couleur: "#3b82f6", N: CountIf(colLignes, Environnement = e.Value)})}, With({m: Max(1, Max(t, N))}, If(CountRows(t) = 0, "<p style='color:#6b7280'>Aucune donnée</p>", "<table style='width:100%;border-collapse:collapse'>" & Concat(t, "<tr><td style='width:120px;font-size:12px;padding:3px'>" & Libelle & "</td><td style='padding:3px'><div style='background:" & Couleur & ";height:16px;width:" & Round(N / m * 100, 0) & "%'></div></td><td style='width:36px;text-align:right;font-size:12px;font-weight:bold'>" & N & "</td></tr>") & "</table>"))) & "<h3 style='font-size:13px;color:#1e293b;margin:6px 0'>Par catégorie de danger</h3>" & With({t: ForAll(Distinct(Filter(colLignes, !IsBlank(CategorieDanger)), CategorieDanger) As d, {Libelle: d.Value, Couleur: Coalesce(LookUp(nfCategories, Categorie = d.Value).Couleur, "#6b7280"), N: CountIf(colLignes, CategorieDanger = d.Value)})}, With({m: Max(1, Max(t, N))}, If(CountRows(t) = 0, "<p style='color:#6b7280'>Aucune donnée</p>", "<table style='width:100%;border-collapse:collapse'>" & Concat(t, "<tr><td style='width:120px;font-size:12px;padding:3px'>" & Libelle & "</td><td style='padding:3px'><div style='background:" & Couleur & ";height:16px;width:" & Round(N / m * 100, 0) & "%'></div></td><td style='width:36px;text-align:right;font-size:12px;font-weight:bold'>" & N & "</td></tr>") & "</table>"))) & "</div>"
+- htmTop10:
+    Control: HtmlViewer
+    Properties:
+      X: =16
+      Y: =474
+      Width: =1334
+      Height: =284
+      HtmlText: |-
+        =With({t: FirstN(Sort(AddColumns(colLignes, IR1, G1 * MP1, IR2, G2 * MP2), IR1, SortOrder.Descending), 10)}, "<div style='height:270px;overflow-y:auto;font-family:Segoe UI,Arial,sans-serif'><h3 style='font-size:13px;color:#1e293b;margin:6px 0'>Top 10 des risques (IR initial)</h3><table style='border-collapse:collapse;width:100%'><tr><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'># ligne</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Activité</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Risque</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>IR initial</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>IR résiduel</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Réduction</th></tr>" & Concat(t, With({n1: LookUp(nfNiveaux, IR1 <= Seuil), n2: LookUp(nfNiveaux, IR2 <= Seuil)}, "<tr><td style='border-bottom:1px solid #e2e8f0;padding:6px;font-size:12px;vertical-align:top'>" & Ordre & "</td><td style='border-bottom:1px solid #e2e8f0;padding:6px;font-size:12px;vertical-align:top'>" & Coalesce(Activite, "(vide)") & "</td><td style='border-bottom:1px solid #e2e8f0;padding:6px;font-size:12px;vertical-align:top'>" & Coalesce(Risque, "(vide)") & "</td><td style='border-bottom:1px solid #e2e8f0;padding:6px;font-size:12px;vertical-align:top'>" & "<span style='background:" & n1.Couleur & ";color:" & n1.Texte & ";padding:2px 8px;border-radius:4px;font-weight:bold'>" & IR1 & "</span>" & "</td><td style='border-bottom:1px solid #e2e8f0;padding:6px;font-size:12px;vertical-align:top'>" & "<span style='background:" & n2.Couleur & ";color:" & n2.Texte & ";padding:2px 8px;border-radius:4px;font-weight:bold'>" & IR2 & "</span>" & "</td><td style='border-bottom:1px solid #e2e8f0;padding:6px;font-size:12px;vertical-align:top'>" & If(IR1 > 0, Round((1 - IR2 / IR1) * 100, 0) & " %", "—") & "</td></tr>")) & "</table></div>")

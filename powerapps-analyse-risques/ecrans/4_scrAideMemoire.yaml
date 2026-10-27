@@ -1,0 +1,192 @@
+- recBarre_Aide:
+    Control: Rectangle
+    Properties:
+      X: =0
+      Y: =0
+      Width: =1366
+      Height: =56
+      Fill: =ColorValue("#1e293b")
+- lblTitre_Aide:
+    Control: Label
+    Properties:
+      X: =16
+      Y: =0
+      Width: =600
+      Height: =56
+      Text: ="Aide-mémoire SST"
+      Size: =17
+      Color: =ColorValue("#ffffff")
+      FontWeight: =FontWeight.Bold
+- lblInfo_Aide:
+    Control: Label
+    Properties:
+      X: =620
+      Y: =0
+      Width: =730
+      Height: =56
+      Text: =If(IsBlank(gblMeta.Service), "", gblMeta.Service & "  ·  " & Text(gblMeta.DateAnalyse, "yyyy-mm-dd") & "  ·  " & CountRows(colLignes) & " ligne(s)")
+      Size: =11
+      Color: =ColorValue("#cbd5e1")
+      Align: =Align.Right
+      PaddingRight: =16
+- recOnglets_Aide:
+    Control: Rectangle
+    Properties:
+      X: =0
+      Y: =56
+      Width: =1366
+      Height: =48
+      Fill: =ColorValue("#e2e8f0")
+- btnOngGrille_Aide:
+    Control: Classic/Button
+    Properties:
+      X: =16
+      Y: =62
+      Width: =170
+      Height: =36
+      Text: |-
+        ="Grille d'analyse"
+      OnSelect: =Navigate(scrAnalyse, ScreenTransition.None)
+      Fill: =If(App.ActiveScreen.Name = "scrAnalyse", ColorValue("#2563eb"), ColorValue("#ffffff"))
+      Color: =If(App.ActiveScreen.Name = "scrAnalyse", ColorValue("#ffffff"), ColorValue("#1e293b"))
+      HoverFill: =ColorValue("#bfdbfe")
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- btnOngMatrice_Aide:
+    Control: Classic/Button
+    Properties:
+      X: =194
+      Y: =62
+      Width: =170
+      Height: =36
+      Text: ="Matrice de risque"
+      OnSelect: =Navigate(scrMatrice, ScreenTransition.None)
+      Fill: =If(App.ActiveScreen.Name = "scrMatrice", ColorValue("#2563eb"), ColorValue("#ffffff"))
+      Color: =If(App.ActiveScreen.Name = "scrMatrice", ColorValue("#ffffff"), ColorValue("#1e293b"))
+      HoverFill: =ColorValue("#bfdbfe")
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- btnOngAide_Aide:
+    Control: Classic/Button
+    Properties:
+      X: =372
+      Y: =62
+      Width: =170
+      Height: =36
+      Text: ="Aide-mémoire"
+      OnSelect: =Navigate(scrAideMemoire, ScreenTransition.None)
+      Fill: =If(App.ActiveScreen.Name = "scrAideMemoire", ColorValue("#2563eb"), ColorValue("#ffffff"))
+      Color: =If(App.ActiveScreen.Name = "scrAideMemoire", ColorValue("#ffffff"), ColorValue("#1e293b"))
+      HoverFill: =ColorValue("#bfdbfe")
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- btnOngSynthese_Aide:
+    Control: Classic/Button
+    Properties:
+      X: =550
+      Y: =62
+      Width: =170
+      Height: =36
+      Text: ="Synthèse"
+      OnSelect: =Navigate(scrSynthese, ScreenTransition.None)
+      Fill: =If(App.ActiveScreen.Name = "scrSynthese", ColorValue("#2563eb"), ColorValue("#ffffff"))
+      Color: =If(App.ActiveScreen.Name = "scrSynthese", ColorValue("#ffffff"), ColorValue("#1e293b"))
+      HoverFill: =ColorValue("#bfdbfe")
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- btnOngPlan_Aide:
+    Control: Classic/Button
+    Properties:
+      X: =728
+      Y: =62
+      Width: =170
+      Height: =36
+      Text: |-
+        ="Plan d'action"
+      OnSelect: =Navigate(scrPlanAction, ScreenTransition.None)
+      Fill: =If(App.ActiveScreen.Name = "scrPlanAction", ColorValue("#2563eb"), ColorValue("#ffffff"))
+      Color: =If(App.ActiveScreen.Name = "scrPlanAction", ColorValue("#ffffff"), ColorValue("#1e293b"))
+      HoverFill: =ColorValue("#bfdbfe")
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- lblAM_Cat:
+    Control: Label
+    Properties:
+      X: =16
+      Y: =112
+      Width: =220
+      Height: =16
+      Text: ="Catégorie"
+      Size: =8
+      Color: =ColorValue("#64748b")
+      FontWeight: =FontWeight.Bold
+      PaddingLeft: =0
+      PaddingTop: =0
+      PaddingBottom: =0
+- ddAMCategorie:
+    Control: Classic/DropDown
+    Properties:
+      X: =16
+      Y: =128
+      Width: =220
+      Height: =34
+      Items: =["Toutes", "Physique", "Mécanique", "Électrique", "Chimique", "Biologique", "Humain", "Ergonomique"]
+      Default: ="Toutes"
+      AllowEmptySelection: =false
+      Size: =10
+- lblAM_Rech:
+    Control: Label
+    Properties:
+      X: =252
+      Y: =112
+      Width: =400
+      Height: =16
+      Text: ="Recherche"
+      Size: =8
+      Color: =ColorValue("#64748b")
+      FontWeight: =FontWeight.Bold
+      PaddingLeft: =0
+      PaddingTop: =0
+      PaddingBottom: =0
+- txtAMRecherche:
+    Control: Classic/TextInput
+    Properties:
+      X: =252
+      Y: =128
+      Width: =400
+      Height: =34
+      Default: =""
+      OnChange: =false
+      HintText: |-
+        ="Ex. : chute, bruit, coupure…"
+      Size: =10
+      BorderColor: =ColorValue("#cbd5e1")
+- htmAideMemoire:
+    Control: HtmlViewer
+    Properties:
+      X: =16
+      Y: =172
+      Width: =1334
+      Height: =590
+      HtmlText: |-
+        ="<div style='height:580px;overflow-y:auto;font-family:Segoe UI,Arial,sans-serif'>" & Concat(Filter(nfCategories, ddAMCategorie.Selected.Value = "Toutes" || Categorie = ddAMCategorie.Selected.Value) As c, With({lst: Filter(nfAideMemoire As a, a.Categorie = c.Categorie && (IsBlank(txtAMRecherche.Text) || txtAMRecherche.Text in a.Danger || txtAMRecherche.Text in a.Risque || txtAMRecherche.Text in a.Consequence))}, If(CountRows(lst) = 0, "", "<h3 style='color:#fff;background:" & c.Couleur & ";padding:6px 10px;margin:14px 0 0 0'>" & c.Categorie & "</h3><table style='border-collapse:collapse;width:100%'><tr><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Danger</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Risque</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Conséquence</th></tr>" & Concat(lst, "<tr><td style='border-bottom:1px solid #e2e8f0;padding:6px;font-size:12px;vertical-align:top'>" & Danger & "</td><td style='border-bottom:1px solid #e2e8f0;padding:6px;font-size:12px;vertical-align:top'>" & Risque & "</td><td style='border-bottom:1px solid #e2e8f0;padding:6px;font-size:12px;vertical-align:top'>" & Consequence & "</td></tr>") & "</table>"))) & "</div>"

@@ -1,0 +1,83 @@
+// ===== Échelles de cotation (identiques à l'application HTML) =====
+nfGravite = Table(
+    {Valeur: 5, Libelle: "Mineure", Description: "1ers soins, contusion, éraflure"},
+    {Valeur: 25, Libelle: "Majeure", Description: "Blessure réversible avec perte de temps"},
+    {Valeur: 35, Libelle: "Grave", Description: "Blessure/maladie irréversible"},
+    {Valeur: 40, Libelle: "Décès", Description: "Décès ou tolérance zéro CNESST"}
+);
+
+nfMP = Table(
+    {Valeur: 0, Libelle: "Élimination à la source"},
+    {Valeur: 10, Libelle: "Contrôle technique"},
+    {Valeur: 20, Libelle: "PST + Audit documenté"},
+    {Valeur: 30, Libelle: "PST ou Formation"},
+    {Valeur: 40, Libelle: "Affichage + EPI"},
+    {Valeur: 50, Libelle: "Aucune mesure"}
+);
+
+// Niveau de risque selon l'IR (IR = G x MP) : Plancher < IR <= Seuil
+nfNiveaux = Table(
+    {Plancher: -1, Seuil: 250, Libelle: "Faible", Couleur: "#22c55e", Texte: "#ffffff"},
+    {Plancher: 250, Seuil: 750, Libelle: "Modéré", Couleur: "#fbbf24", Texte: "#1f2937"},
+    {Plancher: 750, Seuil: 1250, Libelle: "Élevé", Couleur: "#f97316", Texte: "#ffffff"},
+    {Plancher: 1250, Seuil: 999999, Libelle: "Critique", Couleur: "#ef4444", Texte: "#ffffff"}
+);
+
+nfEnvironnements = ["Garage", "Atelier", "Bureau", "Extérieur", "Autre"];
+
+// ===== Aide-mémoire SST =====
+nfCategories = Table(
+    {Categorie: "Physique", Couleur: "#3b82f6"},
+    {Categorie: "Mécanique", Couleur: "#8b5cf6"},
+    {Categorie: "Électrique", Couleur: "#eab308"},
+    {Categorie: "Chimique", Couleur: "#ef4444"},
+    {Categorie: "Biologique", Couleur: "#22c55e"},
+    {Categorie: "Humain", Couleur: "#f97316"},
+    {Categorie: "Ergonomique", Couleur: "#06b6d4"}
+);
+
+nfAideMemoire = Table(
+    {Categorie: "Physique", Danger: "Bruit", Risque: "Travail dans un milieu bruyant", Consequence: "Surdité"},
+    {Categorie: "Physique", Danger: "Travail en hauteur", Risque: "Chute (absence de moyens de protection)", Consequence: "Lésion traumatique (écorchure, égratignure, contusion, ecchymose, fracture, entorse, foulure)"},
+    {Categorie: "Physique", Danger: "Ouverture verticale ou horizontale", Risque: "Exposition à un rayonnement", Consequence: "Brûlure"},
+    {Categorie: "Physique", Danger: "Surface de travail glissante, encombrée", Risque: "Travail dans un état d'éclairage insuffisant", Consequence: "Hyperthermie (crampe, épuisement, coup de chaleur)"},
+    {Categorie: "Physique", Danger: "Rayonnement (ionisant, non-ionisant)", Risque: "Travail à une température chaude ou froide", Consequence: "Troubles de circulation"},
+    {Categorie: "Physique", Danger: "Température ambiance froide ou chaude", Risque: "Contact avec le corps", Consequence: "Engelure / hypothermie"},
+    {Categorie: "Physique", Danger: "Thermique : objet/matériel/produit à température extrême, flamme", Risque: "Utilisation de machine / outil vibrant", Consequence: "Insolation (coup de soleil)"},
+    {Categorie: "Physique", Danger: "Vibration", Risque: "Travail sous un éclairage insuffisant ou trop intense", Consequence: "Lombalgie"},
+    {Categorie: "Physique", Danger: "Éclairage", Risque: "Travaux sur la voie publique", Consequence: "Mutations génétiques (cancer, tumeur)"},
+    {Categorie: "Physique", Danger: "Circulation véhicule", Risque: "Chute ou décrochage de la charge", Consequence: "Décès"},
+    {Categorie: "Physique", Danger: "Charge suspendue", Risque: "", Consequence: ""},
+    {Categorie: "Mécanique", Danger: "Énergie accumulée (mécanique, gaz, vapeur, etc.)", Risque: "Travail près des sources d'énergie mécanique", Consequence: "Amputation"},
+    {Categorie: "Mécanique", Danger: "Angles rentrants", Risque: "Travail près d'une pièce ou matériel en mouvement non-protégé", Consequence: "Coupure / lacération"},
+    {Categorie: "Mécanique", Danger: "Ampleur de la force", Risque: "Travail dans/près de zones de : Happement / enroulement", Consequence: "Contusion / ecchymose"},
+    {Categorie: "Mécanique", Danger: "Objet, pièce en mouvement", Risque: "Travail dans/près de zones de : Frottement / abrasion", Consequence: "Écorchure / égratignure"},
+    {Categorie: "Mécanique", Danger: "Formes ou caractéristiques physiques", Risque: "Travail dans/près de zones de : Coupure / sectionnement / cisaillement", Consequence: "Fracture / entorse / foulure"},
+    {Categorie: "Mécanique", Danger: "Particules en suspension ou en mouvement", Risque: "Travail dans/près de zones de : Écrasement / choc", Consequence: "Écrasement"},
+    {Categorie: "Mécanique", Danger: "", Risque: "Travail dans/près de zones de : Perforation / piqûre", Consequence: "Piqûre / perforation"},
+    {Categorie: "Mécanique", Danger: "", Risque: "Travail en présence ou avec un outil dangereux (tranchant, pointu, etc.)", Consequence: "Décès"},
+    {Categorie: "Mécanique", Danger: "", Risque: "Travail en présence de particules en suspension ou en mouvement", Consequence: ""},
+    {Categorie: "Électrique", Danger: "Conducteur sous tension", Risque: "Possibilité de court-circuit", Consequence: "Brûlure interne/externe"},
+    {Categorie: "Électrique", Danger: "Élément ou composante sous tension", Risque: "Travail près de conducteurs ou de pièces sous tension", Consequence: "Électrisation (sans décès)"},
+    {Categorie: "Électrique", Danger: "Défectuosité d'une composante électrique", Risque: "Travail à proximité d'une composante défectueuse", Consequence: "Électrocution (avec décès)"},
+    {Categorie: "Électrique", Danger: "Électricité statique", Risque: "Possibilité d'entrer en contact avec des charges électrostatiques", Consequence: ""},
+    {Categorie: "Chimique", Danger: "Contaminants aéroportés (gaz, fumée, vapeur, brouillard, poussière, etc.)", Risque: "Travail en présence de contaminants chimiques dans l'air", Consequence: "Brûlure thermique ou chimique"},
+    {Categorie: "Chimique", Danger: "Matière dangereuse (gaz comprimé, toxique, corrosive, réactive)", Risque: "Possibilité de contact cutané avec une matière dangereuse", Consequence: "Irritation, dermatite"},
+    {Categorie: "Chimique", Danger: "Matière dangereuse inflammable, combustible, comburante et explosive", Risque: "Possibilité d'ingérer une matière dangereuse", Consequence: "Intoxication"},
+    {Categorie: "Chimique", Danger: "", Risque: "Possibilité d'un incendie ou d'explosion", Consequence: "Atteinte à la santé (pulmonaire, rénale, digestive, neurologique)"},
+    {Categorie: "Chimique", Danger: "", Risque: "", Consequence: "Cancer"},
+    {Categorie: "Chimique", Danger: "", Risque: "", Consequence: "Maladies professionnelles (silicose, saturnisme, amiantose, etc.)"},
+    {Categorie: "Chimique", Danger: "", Risque: "", Consequence: "Décès"},
+    {Categorie: "Biologique", Danger: "Animaux, insectes", Risque: "Possibilité d'être piqué ou mordu par des animaux, insectes", Consequence: "Infection"},
+    {Categorie: "Biologique", Danger: "Plante", Risque: "Possibilité d'entrer en contact direct avec des plantes vénéneuses", Consequence: "Atteinte à la santé (pulmonaire, rénale, digestive, neurologique)"},
+    {Categorie: "Biologique", Danger: "Virus, bactérie", Risque: "Possibilité d'entrer en contact avec un organisme porteur de virus ou bactéries", Consequence: "Irritation, dermatites, allergies"},
+    {Categorie: "Biologique", Danger: "Champignon, moisissure", Risque: "Travailler dans un environnement propice aux champignons ou moisissures", Consequence: "Décès"},
+    {Categorie: "Humain", Danger: "Facteurs humains", Risque: "Altercation, intoxication, fatigue, distraction, maladie", Consequence: "Blessures multiples"},
+    {Categorie: "Ergonomique", Danger: "Allure, cadence, fréquence de travail", Risque: "Travail avec allure, cadence ou fréquence imposée", Consequence: "Troubles musculo-squelettiques (tendinite, bursite, douleur musculaire, etc.)"},
+    {Categorie: "Ergonomique", Danger: "Mauvais aménagement du poste de travail", Risque: "Poste de travail inadapté à l'individu ou au travail à exécuter", Consequence: "Blessures traumatiques (dorsalgie, déchirure ligamentaire, etc.)"},
+    {Categorie: "Ergonomique", Danger: "Charge lourde", Risque: "Soulèvement et/ou déplacement de charge lourde", Consequence: "Fatigue visuelle, maux de tête"},
+    {Categorie: "Ergonomique", Danger: "Posture de travail", Risque: "Mauvaise posture de travail ou posture de travail imposée", Consequence: ""}
+);
+
+// ===== Modèle d'une ligne vide de la grille =====
+nfLigneVide = {LigneID: 0, Cle: "", Ordre: 0, Environnement: "", Activite: "", Tache: "", CategorieDanger: "", Risque: "", Consequence: "", Blessure: "", MesuresExistantes: "", G1: 0, MP1: 0, MesuresSuggerees: "", Cout: "", G2: 0, MP2: 0};

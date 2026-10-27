@@ -1,0 +1,1079 @@
+- recBarre_Ana:
+    Control: Rectangle
+    Properties:
+      X: =0
+      Y: =0
+      Width: =1366
+      Height: =56
+      Fill: =ColorValue("#1e293b")
+- lblTitre_Ana:
+    Control: Label
+    Properties:
+      X: =16
+      Y: =0
+      Width: =400
+      Height: =56
+      Text: |-
+        ="Grille d'analyse de risques SST"
+      Size: =17
+      Color: =ColorValue("#ffffff")
+      FontWeight: =FontWeight.Bold
+- lblEtat_Ana:
+    Control: Label
+    Properties:
+      X: =420
+      Y: =0
+      Width: =360
+      Height: =56
+      Text: =If(gblModifie, "● Modifications non enregistrées", If(IsBlank(gblAnalyseID), "Nouvelle analyse", "✔ Enregistrée dans SharePoint"))
+      Size: =10
+      Color: =If(gblModifie, ColorValue("#fbbf24"), ColorValue("#86efac"))
+      FontWeight: =FontWeight.Bold
+- btnAccueil:
+    Control: Classic/Button
+    Properties:
+      X: =790
+      Y: =10
+      Width: =110
+      Height: =36
+      Text: ="Accueil"
+      OnSelect: |-
+        =If(
+            gblModifie && !gblAvertiQuitter,
+            Set(gblAvertiQuitter, true);
+            Notify("Modifications non enregistrées ! Cliquez sur « Enregistrer », ou cliquez de nouveau sur « Accueil » pour quitter sans enregistrer.", NotificationType.Warning),
+            Set(gblAvertiQuitter, false);
+            Set(gblModifie, false);
+            Navigate(scrAccueil, ScreenTransition.None)
+        )
+      Fill: =ColorValue("#475569")
+      Color: =ColorValue("#ffffff")
+      HoverFill: =ColorFade(ColorValue("#475569"), -15%)
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- btnEnregistrer:
+    Control: Classic/Button
+    Properties:
+      X: =908
+      Y: =10
+      Width: =140
+      Height: =36
+      Text: ="Enregistrer"
+      OnSelect: |-
+        =If(
+            IsBlank(Trim(gblMeta.Service)),
+            Notify("Le champ « Service » est obligatoire avant d'enregistrer.", NotificationType.Error),
+            Set(
+                gblEnreg,
+                Patch(
+                    AR_Analyses,
+                    If(IsBlank(gblAnalyseID), Defaults(AR_Analyses), LookUp(AR_Analyses, ID = gblAnalyseID)),
+                    {
+                        Title: gblMeta.Service,
+                        Division: gblMeta.Division,
+                        Localisation: gblMeta.Localisation,
+                        Participants: gblMeta.Participants,
+                        DateAnalyse: gblMeta.DateAnalyse,
+                        Commentaires: gblMeta.Commentaires,
+                        Statut: "Enregistrée",
+                        NbRisques: CountRows(colLignes),
+                        NbCritiques: CountIf(colLignes, G1 * MP1 > 1250),
+                        NbEleves: CountIf(colLignes, G1 * MP1 > 750 && G1 * MP1 <= 1250),
+                        NbModeres: CountIf(colLignes, G1 * MP1 > 250 && G1 * MP1 <= 750),
+                        NbFaibles: CountIf(colLignes, G1 * MP1 <= 250),
+                        IRMax: Coalesce(Max(colLignes, G1 * MP1), 0)
+                    }
+                )
+            );
+            Set(gblAnalyseID, gblEnreg.ID);
+            ForAll(colSupprimes As s, Remove(AR_Lignes, LookUp(AR_Lignes, ID = s.LigneID)));
+            Clear(colSupprimes);
+            ForAll(
+                colLignes As l,
+                Patch(
+                    AR_Lignes,
+                    If(l.LigneID = 0, Defaults(AR_Lignes), LookUp(AR_Lignes, ID = l.LigneID)),
+                    {
+                        Title: l.Activite,
+                        AnalyseID: gblAnalyseID,
+                        Ordre: l.Ordre,
+                        Cle: l.Cle,
+                        Environnement: l.Environnement,
+                        Tache: l.Tache,
+                        CategorieDanger: l.CategorieDanger,
+                        Risque: l.Risque,
+                        Consequence: l.Consequence,
+                        Blessure: l.Blessure,
+                        MesuresExistantes: l.MesuresExistantes,
+                        G1: l.G1,
+                        MP1: l.MP1,
+                        MesuresSuggerees: l.MesuresSuggerees,
+                        Cout: l.Cout,
+                        G2: l.G2,
+                        MP2: l.MP2
+                    }
+                )
+            );
+            ClearCollect(
+                colLignes,
+                ForAll(
+                    Sort(Filter(AR_Lignes, AnalyseID = gblAnalyseID), Ordre),
+                    {
+                        LigneID: ThisRecord.ID,
+                        Cle: Coalesce(ThisRecord.Cle, Text(GUID())),
+                        Ordre: Coalesce(ThisRecord.Ordre, 0),
+                        Environnement: ThisRecord.Environnement,
+                        Activite: ThisRecord.Title,
+                        Tache: ThisRecord.Tache,
+                        CategorieDanger: ThisRecord.CategorieDanger,
+                        Risque: ThisRecord.Risque,
+                        Consequence: ThisRecord.Consequence,
+                        Blessure: ThisRecord.Blessure,
+                        MesuresExistantes: ThisRecord.MesuresExistantes,
+                        G1: Coalesce(ThisRecord.G1, 0),
+                        MP1: Coalesce(ThisRecord.MP1, 0),
+                        MesuresSuggerees: ThisRecord.MesuresSuggerees,
+                        Cout: ThisRecord.Cout,
+                        G2: Coalesce(ThisRecord.G2, 0),
+                        MP2: Coalesce(ThisRecord.MP2, 0)
+                    }
+                )
+            );
+            Set(gblModifie, false);
+            Set(gblAvertiQuitter, false);
+            Notify("Analyse enregistrée dans SharePoint (" & CountRows(colLignes) & " ligne(s)).", NotificationType.Success)
+        )
+      Fill: =ColorValue("#16a34a")
+      Color: =ColorValue("#ffffff")
+      HoverFill: =ColorFade(ColorValue("#16a34a"), -15%)
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- btnEnvoyerSP:
+    Control: Classic/Button
+    Properties:
+      X: =1056
+      Y: =10
+      Width: =294
+      Height: =36
+      Text: ="Envoyer à SharePoint (PDF/Excel)"
+      OnSelect: |-
+        =If(
+            IsBlank(gblAnalyseID) || gblModifie,
+            Notify("Enregistrez d'abord l'analyse (bouton « Enregistrer ») avant de l'envoyer.", NotificationType.Warning),
+            With(
+                {
+                    nom: "AR_SST_" & Substitute(Substitute(Substitute(Trim(gblMeta.Service), " ", "_"), "/", "-"), "\", "-") & "_" & Text(gblMeta.DateAnalyse, "yyyy-mm-dd"),
+                    lignes: Sort(AddColumns(colLignes, IR1, G1 * MP1, IR2, G2 * MP2), Ordre)
+                },
+                Notify("Envoi vers SharePoint en cours…", NotificationType.Information);
+                IfError(
+                    ARExporterAnalyse.Run(
+                        nom,
+                        "<html><head><meta charset='utf-8'><title>Analyse de risques SST</title></head><body style='font-family:Segoe UI,Arial,sans-serif;font-size:9px;color:#1f2937'><h1 style='font-size:18px;color:#1e293b;margin:0 0 4px 0'>Grille d'analyse de risques SST</h1><p style='margin:0 0 10px 0;color:#64748b'>Division de la santé et de la sécurité au travail — Ville de Québec</p><table style='border-collapse:collapse;width:100%;font-size:10px'><tr>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & "<b>Service</b>" & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & gblMeta.Service & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & "<b>Division</b>" & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & gblMeta.Division & "</td>" & "</tr><tr>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & "<b>Localisation</b>" & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & gblMeta.Localisation & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & "<b>Date</b>" & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & Text(gblMeta.DateAnalyse, "yyyy-mm-dd") & "</td>" & "</tr><tr>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & "<b>Participants</b>" & "</td>" & "<td colspan='3' style='border:1px solid #cbd5e1;padding:3px'>" & gblMeta.Participants & "</td></tr><tr>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & "<b>Commentaires</b>" & "</td>" & "<td colspan='3' style='border:1px solid #cbd5e1;padding:3px'>" & gblMeta.Commentaires & "</td></tr></table><h2 style='font-size:13px;color:#1e293b;border-bottom:2px solid #2563eb'>Synthèse</h2><table style='border-collapse:collapse;font-size:11px'><tr><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Total</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Critique</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Élevé</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Modéré</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Faible</th></tr><tr>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & CountRows(lignes) & "</td>" & Concat(Sort(nfNiveaux, Seuil, SortOrder.Descending) As n, "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & CountIf(lignes, IR1 > n.Plancher && IR1 <= n.Seuil) & "</td>") & "</tr></table><h2 style='font-size:13px;color:#1e293b;border-bottom:2px solid #2563eb'>Grille d'analyse</h2><table style='border-collapse:collapse;width:100%'><tr><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>#</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Env.</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Activité</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Tâches</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Catégorie</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Risques</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Conséquences</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Blessures / Maladie</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Mesures en place</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>G</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>MP</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>IR</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Mesures suggérées</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Coûts</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>G</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>MP</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>IR rés.</th></tr>" & Concat(lignes, With({n1: LookUp(nfNiveaux, IR1 <= Seuil), n2: LookUp(nfNiveaux, IR2 <= Seuil)}, "<tr>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & Ordre & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & Environnement & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & Activite & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & Tache & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & CategorieDanger & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & Risque & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & Consequence & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & Blessure & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & MesuresExistantes & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & G1 & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & MP1 & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;text-align:center;font-weight:bold;background:" & n1.Couleur & ";color:" & n1.Texte & "'>" & IR1 & "<br>" & n1.Libelle & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & MesuresSuggerees & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & Cout & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & G2 & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & MP2 & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;text-align:center;font-weight:bold;background:" & n2.Couleur & ";color:" & n2.Texte & "'>" & IR2 & "<br>" & n2.Libelle & "</td>" & "</tr>")) & "</table><h2 style='font-size:13px;color:#1e293b;border-bottom:2px solid #2563eb'>Plan d'action (par IR décroissant)</h2><table style='border-collapse:collapse;width:100%'><tr><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'># ligne</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Env.</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Activité</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Risque</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>IR</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Mesures suggérées</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Coûts</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>IR rés.</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Réduction</th></tr>" & Concat(Sort(lignes, IR1, SortOrder.Descending), With({n1: LookUp(nfNiveaux, IR1 <= Seuil), n2: LookUp(nfNiveaux, IR2 <= Seuil)}, "<tr>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & Ordre & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & Environnement & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & Activite & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & Risque & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;text-align:center;font-weight:bold;background:" & n1.Couleur & ";color:" & n1.Texte & "'>" & IR1 & "<br>" & n1.Libelle & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & MesuresSuggerees & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & Cout & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;text-align:center;font-weight:bold;background:" & n2.Couleur & ";color:" & n2.Texte & "'>" & IR2 & "<br>" & n2.Libelle & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & If(IR1 > 0, Round((1 - IR2 / IR1) * 100, 0) & " %", "—") & "</td>" & "</tr>")) & "</table><p style='margin-top:12px;color:#64748b'>IR = G × MP · Faible ≤ 250 · Modéré 251–750 · Élevé 751–1250 · Critique > 1250</p></body></html>",
+                        UniChar(65279) & "Service;" & Char(34) & Substitute(gblMeta.Service, Char(34), "'") & Char(34) & Char(13) & Char(10) & "Division;" & Char(34) & Substitute(gblMeta.Division, Char(34), "'") & Char(34) & Char(13) & Char(10) & "Localisation;" & Char(34) & Substitute(gblMeta.Localisation, Char(34), "'") & Char(34) & Char(13) & Char(10) & "Participants;" & Char(34) & Substitute(gblMeta.Participants, Char(34), "'") & Char(34) & Char(13) & Char(10) & "Date;" & Text(gblMeta.DateAnalyse, "yyyy-mm-dd") & Char(13) & Char(10) & Char(13) & Char(10) & "No;Environnement;Activité de travail;Tâches;Catégorie de danger;Risques;Conséquences;Blessures / Maladie;Mesures préventives en place;G;MP;IR;Niveau;Mesures préventives suggérées;Coûts approx.;G résiduel;MP résiduel;IR résiduel;Niveau résiduel" & Char(13) & Char(10) & Concat(lignes, Ordre & ";" & Char(34) & Substitute(Environnement, Char(34), "'") & Char(34) & ";" & Char(34) & Substitute(Activite, Char(34), "'") & Char(34) & ";" & Char(34) & Substitute(Tache, Char(34), "'") & Char(34) & ";" & Char(34) & Substitute(CategorieDanger, Char(34), "'") & Char(34) & ";" & Char(34) & Substitute(Risque, Char(34), "'") & Char(34) & ";" & Char(34) & Substitute(Consequence, Char(34), "'") & Char(34) & ";" & Char(34) & Substitute(Blessure, Char(34), "'") & Char(34) & ";" & Char(34) & Substitute(MesuresExistantes, Char(34), "'") & Char(34) & ";" & G1 & ";" & MP1 & ";" & IR1 & ";" & LookUp(nfNiveaux, IR1 <= Seuil).Libelle & ";" & Char(34) & Substitute(MesuresSuggerees, Char(34), "'") & Char(34) & ";" & Char(34) & Substitute(Cout, Char(34), "'") & Char(34) & ";" & G2 & ";" & MP2 & ";" & IR2 & ";" & LookUp(nfNiveaux, IR2 <= Seuil).Libelle & Char(13) & Char(10)),
+                        JSON(
+                            {
+                                version: "1.0",
+                                meta: {service: gblMeta.Service, division: gblMeta.Division, localisation: gblMeta.Localisation, participants: gblMeta.Participants, date: Text(gblMeta.DateAnalyse, "yyyy-mm-dd"), commentaires: gblMeta.Commentaires},
+                                rows: ForAll(lignes, {id: Cle, environnement: Environnement, activite: Activite, tache: Tache, categorie_danger: CategorieDanger, risque: Risque, consequence: Consequence, blessure: Blessure, mesures_existantes: MesuresExistantes, g1: G1, mp1: MP1, mesures_suggerees: MesuresSuggerees, cout: Cout, g2: G2, mp2: MP2})
+                            },
+                            JSONFormat.IndentFour
+                        )
+                    );
+                    Patch(AR_Analyses, LookUp(AR_Analyses, ID = gblAnalyseID), {Statut: "Envoyée"});
+                    Notify("Analyse envoyée : PDF, Excel (CSV) et JSON déposés dans SharePoint, courriel transmis.", NotificationType.Success),
+                    Notify("L'envoi a échoué : " & FirstError.Message, NotificationType.Error)
+                )
+            )
+        )
+      Fill: =ColorValue("#2563eb")
+      Color: =ColorValue("#ffffff")
+      HoverFill: =ColorFade(ColorValue("#2563eb"), -15%)
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- recOnglets_Ana:
+    Control: Rectangle
+    Properties:
+      X: =0
+      Y: =56
+      Width: =1366
+      Height: =48
+      Fill: =ColorValue("#e2e8f0")
+- btnOngGrille_Ana:
+    Control: Classic/Button
+    Properties:
+      X: =16
+      Y: =62
+      Width: =170
+      Height: =36
+      Text: |-
+        ="Grille d'analyse"
+      OnSelect: =Navigate(scrAnalyse, ScreenTransition.None)
+      Fill: =If(App.ActiveScreen.Name = "scrAnalyse", ColorValue("#2563eb"), ColorValue("#ffffff"))
+      Color: =If(App.ActiveScreen.Name = "scrAnalyse", ColorValue("#ffffff"), ColorValue("#1e293b"))
+      HoverFill: =ColorValue("#bfdbfe")
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- btnOngMatrice_Ana:
+    Control: Classic/Button
+    Properties:
+      X: =194
+      Y: =62
+      Width: =170
+      Height: =36
+      Text: ="Matrice de risque"
+      OnSelect: =Navigate(scrMatrice, ScreenTransition.None)
+      Fill: =If(App.ActiveScreen.Name = "scrMatrice", ColorValue("#2563eb"), ColorValue("#ffffff"))
+      Color: =If(App.ActiveScreen.Name = "scrMatrice", ColorValue("#ffffff"), ColorValue("#1e293b"))
+      HoverFill: =ColorValue("#bfdbfe")
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- btnOngAide_Ana:
+    Control: Classic/Button
+    Properties:
+      X: =372
+      Y: =62
+      Width: =170
+      Height: =36
+      Text: ="Aide-mémoire"
+      OnSelect: =Navigate(scrAideMemoire, ScreenTransition.None)
+      Fill: =If(App.ActiveScreen.Name = "scrAideMemoire", ColorValue("#2563eb"), ColorValue("#ffffff"))
+      Color: =If(App.ActiveScreen.Name = "scrAideMemoire", ColorValue("#ffffff"), ColorValue("#1e293b"))
+      HoverFill: =ColorValue("#bfdbfe")
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- btnOngSynthese_Ana:
+    Control: Classic/Button
+    Properties:
+      X: =550
+      Y: =62
+      Width: =170
+      Height: =36
+      Text: ="Synthèse"
+      OnSelect: =Navigate(scrSynthese, ScreenTransition.None)
+      Fill: =If(App.ActiveScreen.Name = "scrSynthese", ColorValue("#2563eb"), ColorValue("#ffffff"))
+      Color: =If(App.ActiveScreen.Name = "scrSynthese", ColorValue("#ffffff"), ColorValue("#1e293b"))
+      HoverFill: =ColorValue("#bfdbfe")
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- btnOngPlan_Ana:
+    Control: Classic/Button
+    Properties:
+      X: =728
+      Y: =62
+      Width: =170
+      Height: =36
+      Text: |-
+        ="Plan d'action"
+      OnSelect: =Navigate(scrPlanAction, ScreenTransition.None)
+      Fill: =If(App.ActiveScreen.Name = "scrPlanAction", ColorValue("#2563eb"), ColorValue("#ffffff"))
+      Color: =If(App.ActiveScreen.Name = "scrPlanAction", ColorValue("#ffffff"), ColorValue("#1e293b"))
+      HoverFill: =ColorValue("#bfdbfe")
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- lblM_Service:
+    Control: Label
+    Properties:
+      X: =16
+      Y: =110
+      Width: =320
+      Height: =16
+      Text: ="Service *"
+      Size: =8
+      Color: =ColorValue("#64748b")
+      FontWeight: =FontWeight.Bold
+      PaddingLeft: =0
+      PaddingTop: =0
+      PaddingBottom: =0
+- txtService:
+    Control: Classic/TextInput
+    Properties:
+      X: =16
+      Y: =126
+      Width: =320
+      Height: =34
+      Default: =gblMeta.Service
+      OnChange: |-
+        =If(Self.Text <> gblMeta.Service, Set(gblMeta, Patch(gblMeta, {Service: Self.Text})); Set(gblModifie, true))
+      HintText: |-
+        ="Ex. : Maintenance"
+      Size: =10
+      BorderColor: =ColorValue("#cbd5e1")
+- lblM_Division:
+    Control: Label
+    Properties:
+      X: =344
+      Y: =110
+      Width: =320
+      Height: =16
+      Text: ="Division"
+      Size: =8
+      Color: =ColorValue("#64748b")
+      FontWeight: =FontWeight.Bold
+      PaddingLeft: =0
+      PaddingTop: =0
+      PaddingBottom: =0
+- txtDivision:
+    Control: Classic/TextInput
+    Properties:
+      X: =344
+      Y: =126
+      Width: =320
+      Height: =34
+      Default: =gblMeta.Division
+      OnChange: |-
+        =If(Self.Text <> gblMeta.Division, Set(gblMeta, Patch(gblMeta, {Division: Self.Text})); Set(gblModifie, true))
+      HintText: |-
+        ="Ex. : Atelier mécanique"
+      Size: =10
+      BorderColor: =ColorValue("#cbd5e1")
+- lblM_Local:
+    Control: Label
+    Properties:
+      X: =672
+      Y: =110
+      Width: =320
+      Height: =16
+      Text: ="Localisation"
+      Size: =8
+      Color: =ColorValue("#64748b")
+      FontWeight: =FontWeight.Bold
+      PaddingLeft: =0
+      PaddingTop: =0
+      PaddingBottom: =0
+- txtLocalisation:
+    Control: Classic/TextInput
+    Properties:
+      X: =672
+      Y: =126
+      Width: =320
+      Height: =34
+      Default: =gblMeta.Localisation
+      OnChange: |-
+        =If(Self.Text <> gblMeta.Localisation, Set(gblMeta, Patch(gblMeta, {Localisation: Self.Text})); Set(gblModifie, true))
+      HintText: |-
+        ="Ex. : Garage principal"
+      Size: =10
+      BorderColor: =ColorValue("#cbd5e1")
+- lblM_Date:
+    Control: Label
+    Properties:
+      X: =1000
+      Y: =110
+      Width: =200
+      Height: =16
+      Text: ="Date"
+      Size: =8
+      Color: =ColorValue("#64748b")
+      FontWeight: =FontWeight.Bold
+      PaddingLeft: =0
+      PaddingTop: =0
+      PaddingBottom: =0
+- dpDate:
+    Control: Classic/DatePicker
+    Properties:
+      X: =1000
+      Y: =126
+      Width: =200
+      Height: =34
+      DefaultDate: =gblMeta.DateAnalyse
+      Format: ="yyyy-mm-dd"
+      Size: =10
+      OnChange: |-
+        =If(Self.SelectedDate <> gblMeta.DateAnalyse, Set(gblMeta, Patch(gblMeta, {DateAnalyse: Self.SelectedDate})); Set(gblModifie, true))
+- lblM_Part:
+    Control: Label
+    Properties:
+      X: =16
+      Y: =164
+      Width: =648
+      Height: =16
+      Text: ="Participants"
+      Size: =8
+      Color: =ColorValue("#64748b")
+      FontWeight: =FontWeight.Bold
+      PaddingLeft: =0
+      PaddingTop: =0
+      PaddingBottom: =0
+- txtParticipants:
+    Control: Classic/TextInput
+    Properties:
+      X: =16
+      Y: =180
+      Width: =648
+      Height: =34
+      Default: =gblMeta.Participants
+      OnChange: |-
+        =If(Self.Text <> gblMeta.Participants, Set(gblMeta, Patch(gblMeta, {Participants: Self.Text})); Set(gblModifie, true))
+      HintText: |-
+        ="Ex. : J. Dupont, M. Tremblay"
+      Size: =10
+      BorderColor: =ColorValue("#cbd5e1")
+- lblM_Comm:
+    Control: Label
+    Properties:
+      X: =672
+      Y: =164
+      Width: =678
+      Height: =16
+      Text: ="Commentaires / Notes spéciales"
+      Size: =8
+      Color: =ColorValue("#64748b")
+      FontWeight: =FontWeight.Bold
+      PaddingLeft: =0
+      PaddingTop: =0
+      PaddingBottom: =0
+- txtCommentaires:
+    Control: Classic/TextInput
+    Properties:
+      X: =672
+      Y: =180
+      Width: =678
+      Height: =34
+      Default: =gblMeta.Commentaires
+      OnChange: |-
+        =If(Self.Text <> gblMeta.Commentaires, Set(gblMeta, Patch(gblMeta, {Commentaires: Self.Text})); Set(gblModifie, true))
+      HintText: ="Notes supplémentaires…"
+      Size: =10
+      BorderColor: =ColorValue("#cbd5e1")
+- btnAjouterLigne:
+    Control: Classic/Button
+    Properties:
+      X: =16
+      Y: =224
+      Width: =170
+      Height: =34
+      Text: ="+ Ajouter une ligne"
+      OnSelect: |-
+        =Collect(colLignes, Patch(nfLigneVide, {Cle: Text(GUID()), Ordre: CountRows(colLignes) + 1}));
+        Set(gblModifie, true)
+      Fill: =ColorValue("#2563eb")
+      Color: =ColorValue("#ffffff")
+      HoverFill: =ColorFade(ColorValue("#2563eb"), -15%)
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- btnAjouter5:
+    Control: Classic/Button
+    Properties:
+      X: =194
+      Y: =224
+      Width: =100
+      Height: =34
+      Text: ="+ 5 lignes"
+      OnSelect: |-
+        =With({n: CountRows(colLignes)},
+            ForAll(Sequence(5) As i, Collect(colLignes, Patch(nfLigneVide, {Cle: Text(GUID()), Ordre: n + i.Value})))
+        );
+        Set(gblModifie, true)
+      Fill: =ColorValue("#2563eb")
+      Color: =ColorValue("#ffffff")
+      HoverFill: =ColorFade(ColorValue("#2563eb"), -15%)
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- lblNbLignes:
+    Control: Label
+    Properties:
+      X: =302
+      Y: =224
+      Width: =110
+      Height: =34
+      Text: |-
+        ="Lignes : " & CountRows(colLignes)
+      Size: =10
+      Color: =ColorValue("#475569")
+- txtFiltre:
+    Control: Classic/TextInput
+    Properties:
+      X: =412
+      Y: =224
+      Width: =240
+      Height: =34
+      Default: =""
+      OnChange: =false
+      HintText: ="Rechercher…"
+      Size: =10
+      BorderColor: =ColorValue("#cbd5e1")
+- ddFiltreEnv:
+    Control: Classic/DropDown
+    Properties:
+      X: =660
+      Y: =224
+      Width: =150
+      Height: =34
+      Items: =["Tous", "Garage", "Atelier", "Bureau", "Extérieur", "Autre"]
+      Default: ="Tous"
+      AllowEmptySelection: =false
+      Size: =10
+- lblLegende:
+    Control: Label
+    Properties:
+      X: =820
+      Y: =218
+      Width: =530
+      Height: =46
+      Text: |-
+        ="G : 5 Mineure · 25 Majeure · 35 Grave · 40 Décès" & Char(10) & "MP : 0 Élimination · 10 Contrôle technique · 20 PST+Audit · 30 PST/Formation · 40 Affichage+EPI · 50 Aucune"
+      Size: =8
+      Color: =ColorValue("#475569")
+- galLignes:
+    Control: Gallery
+    Variant: Vertical
+    Properties:
+      X: =8
+      Y: =268
+      Width: =1350
+      Height: =496
+      Items: |-
+        =Sort(
+            Filter(
+                colLignes,
+                (ddFiltreEnv.Selected.Value = "Tous" || Environnement = ddFiltreEnv.Selected.Value) &&
+                (IsBlank(txtFiltre.Text) || txtFiltre.Text in Activite || txtFiltre.Text in Tache || txtFiltre.Text in Risque || txtFiltre.Text in Consequence || txtFiltre.Text in MesuresSuggerees)
+            ),
+            Ordre
+        )
+      TemplateSize: =220
+      TemplatePadding: =0
+      ShowScrollbar: =true
+    Children:
+    - recCarte:
+        Control: Rectangle
+        Properties:
+          X: =0
+          Y: =0
+          Width: =Parent.TemplateWidth
+          Height: =Parent.TemplateHeight - 8
+          Fill: =ColorValue("#f8fafc")
+          BorderColor: =ColorValue("#cbd5e1")
+          BorderThickness: =1
+    - lblNo:
+        Control: Label
+        Properties:
+          X: =4
+          Y: =8
+          Width: =46
+          Height: =40
+          Text: =ThisItem.Ordre
+          Size: =16
+          Color: =ColorValue("#1e293b")
+          FontWeight: =FontWeight.Bold
+          Align: =Align.Center
+    - lblC_Env:
+        Control: Label
+        Properties:
+          X: =56
+          Y: =4
+          Width: =150
+          Height: =16
+          Text: ="Environnement"
+          Size: =8
+          Color: =ColorValue("#64748b")
+          FontWeight: =FontWeight.Bold
+          PaddingLeft: =0
+          PaddingTop: =0
+          PaddingBottom: =0
+    - ddEnv:
+        Control: Classic/DropDown
+        Properties:
+          X: =56
+          Y: =20
+          Width: =150
+          Height: =34
+          Items: =nfEnvironnements
+          Default: =ThisItem.Environnement
+          OnChange: |-
+            =If(Self.Selected.Value <> ThisItem.Environnement, Patch(colLignes, LookUp(colLignes, Cle = ThisItem.Cle), {Environnement: Self.Selected.Value}); Set(gblModifie, true))
+          AllowEmptySelection: =true
+          Size: =10
+    - lblC_Act:
+        Control: Label
+        Properties:
+          X: =214
+          Y: =4
+          Width: =330
+          Height: =16
+          Text: ="Activité de travail"
+          Size: =8
+          Color: =ColorValue("#64748b")
+          FontWeight: =FontWeight.Bold
+          PaddingLeft: =0
+          PaddingTop: =0
+          PaddingBottom: =0
+    - txtActivite:
+        Control: Classic/TextInput
+        Properties:
+          X: =214
+          Y: =20
+          Width: =330
+          Height: =34
+          Default: =ThisItem.Activite
+          OnChange: |-
+            =If(Self.Text <> ThisItem.Activite, Patch(colLignes, LookUp(colLignes, Cle = ThisItem.Cle), {Activite: Self.Text}); Set(gblModifie, true))
+          HintText: |-
+            ="Ex. : Travail en hauteur"
+          Size: =10
+          BorderColor: =ColorValue("#cbd5e1")
+    - lblC_Tache:
+        Control: Label
+        Properties:
+          X: =552
+          Y: =4
+          Width: =330
+          Height: =16
+          Text: ="Tâches"
+          Size: =8
+          Color: =ColorValue("#64748b")
+          FontWeight: =FontWeight.Bold
+          PaddingLeft: =0
+          PaddingTop: =0
+          PaddingBottom: =0
+    - txtTache:
+        Control: Classic/TextInput
+        Properties:
+          X: =552
+          Y: =20
+          Width: =330
+          Height: =34
+          Default: =ThisItem.Tache
+          OnChange: |-
+            =If(Self.Text <> ThisItem.Tache, Patch(colLignes, LookUp(colLignes, Cle = ThisItem.Cle), {Tache: Self.Text}); Set(gblModifie, true))
+          HintText: |-
+            ="Ex. : Monter sur la plateforme"
+          Size: =10
+          BorderColor: =ColorValue("#cbd5e1")
+    - lblC_Cat:
+        Control: Label
+        Properties:
+          X: =890
+          Y: =4
+          Width: =190
+          Height: =16
+          Text: ="Catégorie de danger"
+          Size: =8
+          Color: =ColorValue("#64748b")
+          FontWeight: =FontWeight.Bold
+          PaddingLeft: =0
+          PaddingTop: =0
+          PaddingBottom: =0
+    - ddCategorie:
+        Control: Classic/DropDown
+        Properties:
+          X: =890
+          Y: =20
+          Width: =190
+          Height: =34
+          Items: =ForAll(nfCategories, Categorie)
+          Default: =ThisItem.CategorieDanger
+          OnChange: |-
+            =If(Self.Selected.Value <> ThisItem.CategorieDanger, Patch(colLignes, LookUp(colLignes, Cle = ThisItem.Cle), {CategorieDanger: Self.Selected.Value}); Set(gblModifie, true))
+          AllowEmptySelection: =true
+          Size: =10
+    - icoMonter:
+        Control: Classic/Icon
+        Properties:
+          X: =1140
+          Y: =16
+          Width: =40
+          Height: =40
+          Icon: =Icon.ChevronUp
+          OnSelect: |-
+            =With({o: ThisItem.Ordre, k: ThisItem.Cle},
+                If(o > 1,
+                    Patch(colLignes, LookUp(colLignes, Ordre = o - 1), {Ordre: o});
+                    Patch(colLignes, LookUp(colLignes, Cle = k), {Ordre: o - 1});
+                    Set(gblModifie, true)
+                )
+            )
+          Color: =ColorValue("#475569")
+          Tooltip: ="Monter la ligne"
+          PaddingTop: =6
+          PaddingBottom: =6
+          PaddingLeft: =6
+          PaddingRight: =6
+    - icoDescendre:
+        Control: Classic/Icon
+        Properties:
+          X: =1184
+          Y: =16
+          Width: =40
+          Height: =40
+          Icon: =Icon.ChevronDown
+          OnSelect: |-
+            =With({o: ThisItem.Ordre, k: ThisItem.Cle},
+                If(o < CountRows(colLignes),
+                    Patch(colLignes, LookUp(colLignes, Ordre = o + 1), {Ordre: o});
+                    Patch(colLignes, LookUp(colLignes, Cle = k), {Ordre: o + 1});
+                    Set(gblModifie, true)
+                )
+            )
+          Color: =ColorValue("#475569")
+          Tooltip: ="Descendre la ligne"
+          PaddingTop: =6
+          PaddingBottom: =6
+          PaddingLeft: =6
+          PaddingRight: =6
+    - icoSupprimerLigne:
+        Control: Classic/Icon
+        Properties:
+          X: =1262
+          Y: =16
+          Width: =40
+          Height: =40
+          Icon: =Icon.Trash
+          OnSelect: |-
+            =With({k: ThisItem.Cle, id: ThisItem.LigneID},
+                If(id > 0, Collect(colSupprimes, {LigneID: id}));
+                Remove(colLignes, LookUp(colLignes, Cle = k));
+                ClearCollect(colTmp, Sort(colLignes, Ordre));
+                ClearCollect(colLignes, ForAll(Sequence(CountRows(colTmp)) As i, Patch(Index(colTmp, i.Value), {Ordre: i.Value})));
+                Set(gblModifie, true)
+            )
+          Color: =ColorValue("#dc2626")
+          Tooltip: ="Supprimer la ligne"
+          PaddingTop: =6
+          PaddingBottom: =6
+          PaddingLeft: =6
+          PaddingRight: =6
+    - lblC_Risque:
+        Control: Label
+        Properties:
+          X: =56
+          Y: =58
+          Width: =250
+          Height: =16
+          Text: ="Risques"
+          Size: =8
+          Color: =ColorValue("#64748b")
+          FontWeight: =FontWeight.Bold
+          PaddingLeft: =0
+          PaddingTop: =0
+          PaddingBottom: =0
+    - txtRisque:
+        Control: Classic/TextInput
+        Properties:
+          X: =56
+          Y: =74
+          Width: =250
+          Height: =56
+          Default: =ThisItem.Risque
+          OnChange: |-
+            =If(Self.Text <> ThisItem.Risque, Patch(colLignes, LookUp(colLignes, Cle = ThisItem.Cle), {Risque: Self.Text}); Set(gblModifie, true))
+          HintText: ="Risque"
+          Size: =10
+          BorderColor: =ColorValue("#cbd5e1")
+          Mode: =TextMode.MultiLine
+    - lblC_Cons:
+        Control: Label
+        Properties:
+          X: =314
+          Y: =58
+          Width: =250
+          Height: =16
+          Text: ="Conséquences"
+          Size: =8
+          Color: =ColorValue("#64748b")
+          FontWeight: =FontWeight.Bold
+          PaddingLeft: =0
+          PaddingTop: =0
+          PaddingBottom: =0
+    - txtConsequence:
+        Control: Classic/TextInput
+        Properties:
+          X: =314
+          Y: =74
+          Width: =250
+          Height: =56
+          Default: =ThisItem.Consequence
+          OnChange: |-
+            =If(Self.Text <> ThisItem.Consequence, Patch(colLignes, LookUp(colLignes, Cle = ThisItem.Cle), {Consequence: Self.Text}); Set(gblModifie, true))
+          HintText: ="Conséquences"
+          Size: =10
+          BorderColor: =ColorValue("#cbd5e1")
+          Mode: =TextMode.MultiLine
+    - lblC_Bless:
+        Control: Label
+        Properties:
+          X: =572
+          Y: =58
+          Width: =250
+          Height: =16
+          Text: ="Blessures / Maladie (pire scénario)"
+          Size: =8
+          Color: =ColorValue("#64748b")
+          FontWeight: =FontWeight.Bold
+          PaddingLeft: =0
+          PaddingTop: =0
+          PaddingBottom: =0
+    - txtBlessure:
+        Control: Classic/TextInput
+        Properties:
+          X: =572
+          Y: =74
+          Width: =250
+          Height: =56
+          Default: =ThisItem.Blessure
+          OnChange: |-
+            =If(Self.Text <> ThisItem.Blessure, Patch(colLignes, LookUp(colLignes, Cle = ThisItem.Cle), {Blessure: Self.Text}); Set(gblModifie, true))
+          HintText: ="Blessure / maladie"
+          Size: =10
+          BorderColor: =ColorValue("#cbd5e1")
+          Mode: =TextMode.MultiLine
+    - lblC_MesEx:
+        Control: Label
+        Properties:
+          X: =830
+          Y: =58
+          Width: =240
+          Height: =16
+          Text: ="Mesures préventives en place"
+          Size: =8
+          Color: =ColorValue("#64748b")
+          FontWeight: =FontWeight.Bold
+          PaddingLeft: =0
+          PaddingTop: =0
+          PaddingBottom: =0
+    - txtMesuresExistantes:
+        Control: Classic/TextInput
+        Properties:
+          X: =830
+          Y: =74
+          Width: =240
+          Height: =56
+          Default: =ThisItem.MesuresExistantes
+          OnChange: |-
+            =If(Self.Text <> ThisItem.MesuresExistantes, Patch(colLignes, LookUp(colLignes, Cle = ThisItem.Cle), {MesuresExistantes: Self.Text}); Set(gblModifie, true))
+          HintText: ="Mesures en place"
+          Size: =10
+          BorderColor: =ColorValue("#cbd5e1")
+          Mode: =TextMode.MultiLine
+    - lblC_G1:
+        Control: Label
+        Properties:
+          X: =1078
+          Y: =58
+          Width: =64
+          Height: =16
+          Text: ="G"
+          Size: =8
+          Color: =ColorValue("#64748b")
+          FontWeight: =FontWeight.Bold
+          PaddingLeft: =0
+          PaddingTop: =0
+          PaddingBottom: =0
+    - ddG1:
+        Control: Classic/DropDown
+        Properties:
+          X: =1078
+          Y: =74
+          Width: =64
+          Height: =34
+          Items: =[0, 5, 25, 35, 40]
+          Default: =ThisItem.G1
+          OnChange: |-
+            =If(Self.Selected.Value <> ThisItem.G1, Patch(colLignes, LookUp(colLignes, Cle = ThisItem.Cle), {G1: Self.Selected.Value}); Set(gblModifie, true))
+          AllowEmptySelection: =false
+          Size: =10
+    - lblC_MP1:
+        Control: Label
+        Properties:
+          X: =1148
+          Y: =58
+          Width: =64
+          Height: =16
+          Text: ="MP"
+          Size: =8
+          Color: =ColorValue("#64748b")
+          FontWeight: =FontWeight.Bold
+          PaddingLeft: =0
+          PaddingTop: =0
+          PaddingBottom: =0
+    - ddMP1:
+        Control: Classic/DropDown
+        Properties:
+          X: =1148
+          Y: =74
+          Width: =64
+          Height: =34
+          Items: =[0, 10, 20, 30, 40, 50]
+          Default: =ThisItem.MP1
+          OnChange: |-
+            =If(Self.Selected.Value <> ThisItem.MP1, Patch(colLignes, LookUp(colLignes, Cle = ThisItem.Cle), {MP1: Self.Selected.Value}); Set(gblModifie, true))
+          AllowEmptySelection: =false
+          Size: =10
+    - lblIR1:
+        Control: Label
+        Properties:
+          X: =1218
+          Y: =74
+          Width: =104
+          Height: =56
+          Text: |-
+            =With({ir: ThisItem.G1 * ThisItem.MP1}, "IR " & ir & Char(10) & LookUp(nfNiveaux, ir <= Seuil).Libelle)
+          Size: =10
+          Color: =ColorValue(LookUp(nfNiveaux, ThisItem.G1 * ThisItem.MP1 <= Seuil).Texte)
+          FontWeight: =FontWeight.Bold
+          Align: =Align.Center
+          Fill: =ColorValue(LookUp(nfNiveaux, ThisItem.G1 * ThisItem.MP1 <= Seuil).Couleur)
+    - lblC_MesSug:
+        Control: Label
+        Properties:
+          X: =56
+          Y: =134
+          Width: =766
+          Height: =16
+          Text: ="Mesures préventives suggérées"
+          Size: =8
+          Color: =ColorValue("#64748b")
+          FontWeight: =FontWeight.Bold
+          PaddingLeft: =0
+          PaddingTop: =0
+          PaddingBottom: =0
+    - txtMesuresSuggerees:
+        Control: Classic/TextInput
+        Properties:
+          X: =56
+          Y: =150
+          Width: =766
+          Height: =56
+          Default: =ThisItem.MesuresSuggerees
+          OnChange: |-
+            =If(Self.Text <> ThisItem.MesuresSuggerees, Patch(colLignes, LookUp(colLignes, Cle = ThisItem.Cle), {MesuresSuggerees: Self.Text}); Set(gblModifie, true))
+          HintText: ="Mesures correctives proposées"
+          Size: =10
+          BorderColor: =ColorValue("#cbd5e1")
+          Mode: =TextMode.MultiLine
+    - lblC_Cout:
+        Control: Label
+        Properties:
+          X: =830
+          Y: =134
+          Width: =240
+          Height: =16
+          Text: ="Coûts approx."
+          Size: =8
+          Color: =ColorValue("#64748b")
+          FontWeight: =FontWeight.Bold
+          PaddingLeft: =0
+          PaddingTop: =0
+          PaddingBottom: =0
+    - txtCout:
+        Control: Classic/TextInput
+        Properties:
+          X: =830
+          Y: =150
+          Width: =240
+          Height: =56
+          Default: =ThisItem.Cout
+          OnChange: |-
+            =If(Self.Text <> ThisItem.Cout, Patch(colLignes, LookUp(colLignes, Cle = ThisItem.Cle), {Cout: Self.Text}); Set(gblModifie, true))
+          HintText: ="Coût"
+          Size: =10
+          BorderColor: =ColorValue("#cbd5e1")
+    - lblC_G2:
+        Control: Label
+        Properties:
+          X: =1078
+          Y: =134
+          Width: =64
+          Height: =16
+          Text: ="G rés."
+          Size: =8
+          Color: =ColorValue("#64748b")
+          FontWeight: =FontWeight.Bold
+          PaddingLeft: =0
+          PaddingTop: =0
+          PaddingBottom: =0
+    - ddG2:
+        Control: Classic/DropDown
+        Properties:
+          X: =1078
+          Y: =150
+          Width: =64
+          Height: =34
+          Items: =[0, 5, 25, 35, 40]
+          Default: =ThisItem.G2
+          OnChange: |-
+            =If(Self.Selected.Value <> ThisItem.G2, Patch(colLignes, LookUp(colLignes, Cle = ThisItem.Cle), {G2: Self.Selected.Value}); Set(gblModifie, true))
+          AllowEmptySelection: =false
+          Size: =10
+    - lblC_MP2:
+        Control: Label
+        Properties:
+          X: =1148
+          Y: =134
+          Width: =64
+          Height: =16
+          Text: ="MP rés."
+          Size: =8
+          Color: =ColorValue("#64748b")
+          FontWeight: =FontWeight.Bold
+          PaddingLeft: =0
+          PaddingTop: =0
+          PaddingBottom: =0
+    - ddMP2:
+        Control: Classic/DropDown
+        Properties:
+          X: =1148
+          Y: =150
+          Width: =64
+          Height: =34
+          Items: =[0, 10, 20, 30, 40, 50]
+          Default: =ThisItem.MP2
+          OnChange: |-
+            =If(Self.Selected.Value <> ThisItem.MP2, Patch(colLignes, LookUp(colLignes, Cle = ThisItem.Cle), {MP2: Self.Selected.Value}); Set(gblModifie, true))
+          AllowEmptySelection: =false
+          Size: =10
+    - lblIR2:
+        Control: Label
+        Properties:
+          X: =1218
+          Y: =150
+          Width: =104
+          Height: =56
+          Text: |-
+            =With({ir: ThisItem.G2 * ThisItem.MP2}, "IR rés. " & ir & Char(10) & LookUp(nfNiveaux, ir <= Seuil).Libelle)
+          Size: =10
+          Color: =ColorValue(LookUp(nfNiveaux, ThisItem.G2 * ThisItem.MP2 <= Seuil).Texte)
+          FontWeight: =FontWeight.Bold
+          Align: =Align.Center
+          Fill: =ColorValue(LookUp(nfNiveaux, ThisItem.G2 * ThisItem.MP2 <= Seuil).Couleur)

@@ -1,0 +1,12 @@
+// Initialise les collections (structure) et les variables globales
+ClearCollect(colLignes, nfLigneVide);
+Clear(colLignes);
+ClearCollect(colTmp, nfLigneVide);
+Clear(colTmp);
+ClearCollect(colSupprimes, {LigneID: 0});
+Clear(colSupprimes);
+Set(gblAnalyseID, Blank());
+Set(gblASupprimer, Blank());
+Set(gblMeta, {Service: "", Division: "", Localisation: "", Participants: "", DateAnalyse: Today(), Commentaires: ""});
+Set(gblModifie, false);
+Set(gblAvertiQuitter, false)

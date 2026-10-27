@@ -1,0 +1,219 @@
+- recBarre_Plan:
+    Control: Rectangle
+    Properties:
+      X: =0
+      Y: =0
+      Width: =1366
+      Height: =56
+      Fill: =ColorValue("#1e293b")
+- lblTitre_Plan:
+    Control: Label
+    Properties:
+      X: =16
+      Y: =0
+      Width: =600
+      Height: =56
+      Text: |-
+        ="Plan d'action"
+      Size: =17
+      Color: =ColorValue("#ffffff")
+      FontWeight: =FontWeight.Bold
+- lblInfo_Plan:
+    Control: Label
+    Properties:
+      X: =620
+      Y: =0
+      Width: =730
+      Height: =56
+      Text: =If(IsBlank(gblMeta.Service), "", gblMeta.Service & "  ·  " & Text(gblMeta.DateAnalyse, "yyyy-mm-dd") & "  ·  " & CountRows(colLignes) & " ligne(s)")
+      Size: =11
+      Color: =ColorValue("#cbd5e1")
+      Align: =Align.Right
+      PaddingRight: =16
+- recOnglets_Plan:
+    Control: Rectangle
+    Properties:
+      X: =0
+      Y: =56
+      Width: =1366
+      Height: =48
+      Fill: =ColorValue("#e2e8f0")
+- btnOngGrille_Plan:
+    Control: Classic/Button
+    Properties:
+      X: =16
+      Y: =62
+      Width: =170
+      Height: =36
+      Text: |-
+        ="Grille d'analyse"
+      OnSelect: =Navigate(scrAnalyse, ScreenTransition.None)
+      Fill: =If(App.ActiveScreen.Name = "scrAnalyse", ColorValue("#2563eb"), ColorValue("#ffffff"))
+      Color: =If(App.ActiveScreen.Name = "scrAnalyse", ColorValue("#ffffff"), ColorValue("#1e293b"))
+      HoverFill: =ColorValue("#bfdbfe")
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- btnOngMatrice_Plan:
+    Control: Classic/Button
+    Properties:
+      X: =194
+      Y: =62
+      Width: =170
+      Height: =36
+      Text: ="Matrice de risque"
+      OnSelect: =Navigate(scrMatrice, ScreenTransition.None)
+      Fill: =If(App.ActiveScreen.Name = "scrMatrice", ColorValue("#2563eb"), ColorValue("#ffffff"))
+      Color: =If(App.ActiveScreen.Name = "scrMatrice", ColorValue("#ffffff"), ColorValue("#1e293b"))
+      HoverFill: =ColorValue("#bfdbfe")
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- btnOngAide_Plan:
+    Control: Classic/Button
+    Properties:
+      X: =372
+      Y: =62
+      Width: =170
+      Height: =36
+      Text: ="Aide-mémoire"
+      OnSelect: =Navigate(scrAideMemoire, ScreenTransition.None)
+      Fill: =If(App.ActiveScreen.Name = "scrAideMemoire", ColorValue("#2563eb"), ColorValue("#ffffff"))
+      Color: =If(App.ActiveScreen.Name = "scrAideMemoire", ColorValue("#ffffff"), ColorValue("#1e293b"))
+      HoverFill: =ColorValue("#bfdbfe")
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- btnOngSynthese_Plan:
+    Control: Classic/Button
+    Properties:
+      X: =550
+      Y: =62
+      Width: =170
+      Height: =36
+      Text: ="Synthèse"
+      OnSelect: =Navigate(scrSynthese, ScreenTransition.None)
+      Fill: =If(App.ActiveScreen.Name = "scrSynthese", ColorValue("#2563eb"), ColorValue("#ffffff"))
+      Color: =If(App.ActiveScreen.Name = "scrSynthese", ColorValue("#ffffff"), ColorValue("#1e293b"))
+      HoverFill: =ColorValue("#bfdbfe")
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- btnOngPlan_Plan:
+    Control: Classic/Button
+    Properties:
+      X: =728
+      Y: =62
+      Width: =170
+      Height: =36
+      Text: |-
+        ="Plan d'action"
+      OnSelect: =Navigate(scrPlanAction, ScreenTransition.None)
+      Fill: =If(App.ActiveScreen.Name = "scrPlanAction", ColorValue("#2563eb"), ColorValue("#ffffff"))
+      Color: =If(App.ActiveScreen.Name = "scrPlanAction", ColorValue("#ffffff"), ColorValue("#1e293b"))
+      HoverFill: =ColorValue("#bfdbfe")
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- lblPA_Niv:
+    Control: Label
+    Properties:
+      X: =16
+      Y: =112
+      Width: =180
+      Height: =16
+      Text: ="Niveau (IR initial)"
+      Size: =8
+      Color: =ColorValue("#64748b")
+      FontWeight: =FontWeight.Bold
+      PaddingLeft: =0
+      PaddingTop: =0
+      PaddingBottom: =0
+- ddPANiveau:
+    Control: Classic/DropDown
+    Properties:
+      X: =16
+      Y: =128
+      Width: =180
+      Height: =34
+      Items: =["Tous", "Critique", "Élevé", "Modéré", "Faible"]
+      Default: ="Tous"
+      AllowEmptySelection: =false
+      Size: =10
+- lblPA_Env:
+    Control: Label
+    Properties:
+      X: =210
+      Y: =112
+      Width: =180
+      Height: =16
+      Text: ="Environnement"
+      Size: =8
+      Color: =ColorValue("#64748b")
+      FontWeight: =FontWeight.Bold
+      PaddingLeft: =0
+      PaddingTop: =0
+      PaddingBottom: =0
+- ddPAEnv:
+    Control: Classic/DropDown
+    Properties:
+      X: =210
+      Y: =128
+      Width: =180
+      Height: =34
+      Items: =["Tous", "Garage", "Atelier", "Bureau", "Extérieur", "Autre"]
+      Default: ="Tous"
+      AllowEmptySelection: =false
+      Size: =10
+- lblPACompte:
+    Control: Label
+    Properties:
+      X: =404
+      Y: =128
+      Width: =300
+      Height: =34
+      Text: =CountRows(Filter(Sort(AddColumns(colLignes, IR1, G1 * MP1, IR2, G2 * MP2, Niv1, LookUp(nfNiveaux, G1 * MP1 <= Seuil).Libelle), IR1, SortOrder.Descending), (ddPANiveau.Selected.Value = "Tous" || Niv1 = ddPANiveau.Selected.Value) && (ddPAEnv.Selected.Value = "Tous" || Environnement = ddPAEnv.Selected.Value))) & " élément(s) — triés du risque le plus élevé au plus faible"
+      Size: =10
+      Color: =ColorValue("#475569")
+- btnImprimerPlan:
+    Control: Classic/Button
+    Properties:
+      X: =1190
+      Y: =126
+      Width: =160
+      Height: =36
+      Text: ="Imprimer"
+      OnSelect: =Print()
+      Fill: =ColorValue("#475569")
+      Color: =ColorValue("#ffffff")
+      HoverFill: =ColorFade(ColorValue("#475569"), -15%)
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- htmPlanAction:
+    Control: HtmlViewer
+    Properties:
+      X: =16
+      Y: =172
+      Width: =1334
+      Height: =590
+      HtmlText: |-
+        =With({t: Filter(Sort(AddColumns(colLignes, IR1, G1 * MP1, IR2, G2 * MP2, Niv1, LookUp(nfNiveaux, G1 * MP1 <= Seuil).Libelle), IR1, SortOrder.Descending), (ddPANiveau.Selected.Value = "Tous" || Niv1 = ddPANiveau.Selected.Value) && (ddPAEnv.Selected.Value = "Tous" || Environnement = ddPAEnv.Selected.Value))}, "<div style='height:580px;overflow-y:auto;font-family:Segoe UI,Arial,sans-serif'>" & If(CountRows(t) = 0, "<p style='color:#6b7280;padding:20px'>Aucun élément à afficher.</p>", "<table style='border-collapse:collapse;width:100%'><tr>" & "<th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Priorité</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Env.</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Activité</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Risque / Conséquences</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>IR</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Niveau</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Mesures préventives suggérées</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Coûts</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>IR rés.</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Niveau rés.</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Réduction</th></tr>" & Concat(Sequence(CountRows(t)) As i, With({r: Index(t, i.Value)}, With({n1: LookUp(nfNiveaux, r.IR1 <= Seuil), n2: LookUp(nfNiveaux, r.IR2 <= Seuil)}, "<tr><td style='border-bottom:1px solid #e2e8f0;padding:6px;font-size:12px;vertical-align:top'><b>" & i.Value & "</b></td><td style='border-bottom:1px solid #e2e8f0;padding:6px;font-size:12px;vertical-align:top'>" & r.Environnement & "</td><td style='border-bottom:1px solid #e2e8f0;padding:6px;font-size:12px;vertical-align:top'>" & Coalesce(r.Activite, "(vide)") & "</td><td style='border-bottom:1px solid #e2e8f0;padding:6px;font-size:12px;vertical-align:top'>" & Coalesce(r.Risque, "(vide)") & If(IsBlank(r.Consequence), "", "<br><span style='color:#6b7280'>" & r.Consequence & "</span>") & "</td><td style='border-bottom:1px solid #e2e8f0;padding:6px;font-size:12px;vertical-align:top'>" & "<span style='background:" & n1.Couleur & ";color:" & n1.Texte & ";padding:2px 8px;border-radius:4px;font-weight:bold'>" & r.IR1 & "</span>" & "</td><td style='border-bottom:1px solid #e2e8f0;padding:6px;font-size:12px;vertical-align:top'>" & n1.Libelle & "</td><td style='border-bottom:1px solid #e2e8f0;padding:6px;font-size:12px;vertical-align:top'>" & r.MesuresSuggerees & "</td><td style='border-bottom:1px solid #e2e8f0;padding:6px;font-size:12px;vertical-align:top'>" & r.Cout & "</td><td style='border-bottom:1px solid #e2e8f0;padding:6px;font-size:12px;vertical-align:top'>" & "<span style='background:" & n2.Couleur & ";color:" & n2.Texte & ";padding:2px 8px;border-radius:4px;font-weight:bold'>" & r.IR2 & "</span>" & "</td><td style='border-bottom:1px solid #e2e8f0;padding:6px;font-size:12px;vertical-align:top'>" & n2.Libelle & "</td><td style='border-bottom:1px solid #e2e8f0;padding:6px;font-size:12px;vertical-align:top'><b>" & If(r.IR1 > 0, Round((1 - r.IR2 / r.IR1) * 100, 0) & " %", "—") & "</b></td></tr>"))) & "</table>") & "</div>")

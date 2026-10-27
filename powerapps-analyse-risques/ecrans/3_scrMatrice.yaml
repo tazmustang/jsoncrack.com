@@ -1,0 +1,140 @@
+- recBarre_Mat:
+    Control: Rectangle
+    Properties:
+      X: =0
+      Y: =0
+      Width: =1366
+      Height: =56
+      Fill: =ColorValue("#1e293b")
+- lblTitre_Mat:
+    Control: Label
+    Properties:
+      X: =16
+      Y: =0
+      Width: =600
+      Height: =56
+      Text: ="Matrice de risque"
+      Size: =17
+      Color: =ColorValue("#ffffff")
+      FontWeight: =FontWeight.Bold
+- lblInfo_Mat:
+    Control: Label
+    Properties:
+      X: =620
+      Y: =0
+      Width: =730
+      Height: =56
+      Text: =If(IsBlank(gblMeta.Service), "", gblMeta.Service & "  ·  " & Text(gblMeta.DateAnalyse, "yyyy-mm-dd") & "  ·  " & CountRows(colLignes) & " ligne(s)")
+      Size: =11
+      Color: =ColorValue("#cbd5e1")
+      Align: =Align.Right
+      PaddingRight: =16
+- recOnglets_Mat:
+    Control: Rectangle
+    Properties:
+      X: =0
+      Y: =56
+      Width: =1366
+      Height: =48
+      Fill: =ColorValue("#e2e8f0")
+- btnOngGrille_Mat:
+    Control: Classic/Button
+    Properties:
+      X: =16
+      Y: =62
+      Width: =170
+      Height: =36
+      Text: |-
+        ="Grille d'analyse"
+      OnSelect: =Navigate(scrAnalyse, ScreenTransition.None)
+      Fill: =If(App.ActiveScreen.Name = "scrAnalyse", ColorValue("#2563eb"), ColorValue("#ffffff"))
+      Color: =If(App.ActiveScreen.Name = "scrAnalyse", ColorValue("#ffffff"), ColorValue("#1e293b"))
+      HoverFill: =ColorValue("#bfdbfe")
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- btnOngMatrice_Mat:
+    Control: Classic/Button
+    Properties:
+      X: =194
+      Y: =62
+      Width: =170
+      Height: =36
+      Text: ="Matrice de risque"
+      OnSelect: =Navigate(scrMatrice, ScreenTransition.None)
+      Fill: =If(App.ActiveScreen.Name = "scrMatrice", ColorValue("#2563eb"), ColorValue("#ffffff"))
+      Color: =If(App.ActiveScreen.Name = "scrMatrice", ColorValue("#ffffff"), ColorValue("#1e293b"))
+      HoverFill: =ColorValue("#bfdbfe")
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- btnOngAide_Mat:
+    Control: Classic/Button
+    Properties:
+      X: =372
+      Y: =62
+      Width: =170
+      Height: =36
+      Text: ="Aide-mémoire"
+      OnSelect: =Navigate(scrAideMemoire, ScreenTransition.None)
+      Fill: =If(App.ActiveScreen.Name = "scrAideMemoire", ColorValue("#2563eb"), ColorValue("#ffffff"))
+      Color: =If(App.ActiveScreen.Name = "scrAideMemoire", ColorValue("#ffffff"), ColorValue("#1e293b"))
+      HoverFill: =ColorValue("#bfdbfe")
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- btnOngSynthese_Mat:
+    Control: Classic/Button
+    Properties:
+      X: =550
+      Y: =62
+      Width: =170
+      Height: =36
+      Text: ="Synthèse"
+      OnSelect: =Navigate(scrSynthese, ScreenTransition.None)
+      Fill: =If(App.ActiveScreen.Name = "scrSynthese", ColorValue("#2563eb"), ColorValue("#ffffff"))
+      Color: =If(App.ActiveScreen.Name = "scrSynthese", ColorValue("#ffffff"), ColorValue("#1e293b"))
+      HoverFill: =ColorValue("#bfdbfe")
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- btnOngPlan_Mat:
+    Control: Classic/Button
+    Properties:
+      X: =728
+      Y: =62
+      Width: =170
+      Height: =36
+      Text: |-
+        ="Plan d'action"
+      OnSelect: =Navigate(scrPlanAction, ScreenTransition.None)
+      Fill: =If(App.ActiveScreen.Name = "scrPlanAction", ColorValue("#2563eb"), ColorValue("#ffffff"))
+      Color: =If(App.ActiveScreen.Name = "scrPlanAction", ColorValue("#ffffff"), ColorValue("#1e293b"))
+      HoverFill: =ColorValue("#bfdbfe")
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- htmMatrice:
+    Control: HtmlViewer
+    Properties:
+      X: =16
+      Y: =112
+      Width: =1334
+      Height: =646
+      HtmlText: |-
+        ="<div style='height:600px;overflow-y:auto;font-family:Segoe UI,Arial,sans-serif'><h3 style='margin:4px 0 4px 0;color:#1e293b'>Matrice de risque — IR = Gravité (G) × Mesure préventive (MP)</h3><table style='border-collapse:collapse;width:100%'><tr><th style='background:#1e293b;color:#fff;padding:8px'>Gravité \ MP</th>" & Concat(nfMP, "<th style='background:#334155;color:#fff;padding:8px;font-size:12px'>" & Libelle & "<br>(" & Valeur & ")</th>") & "</tr>" & Concat(nfGravite As g, "<tr><td style='background:#f1f5f9;padding:8px;font-size:12px'><b>" & g.Libelle & " (" & g.Valeur & ")</b><br><span style='color:#64748b'>" & g.Description & "</span></td>" & Concat(nfMP As m, With({ir: g.Valeur * m.Valeur}, With({n: LookUp(nfNiveaux, ir <= Seuil)}, "<td style='padding:14px;text-align:center;font-weight:bold;font-size:15px;border:2px solid #fff;background:" & n.Couleur & ";color:" & n.Texte & "'>" & ir & "</td>"))) & "</tr>") & "</table><h4 style='margin:18px 0 6px 0;color:#1e293b'>Niveaux de risque</h4><table style='border-collapse:collapse'>" & Concat(nfNiveaux, "<tr><td style='background:" & Couleur & ";color:" & Texte & ";padding:6px 14px;font-weight:bold;width:120px'>" & Libelle & "</td><td style='padding:6px 14px'>" & If(Plancher < 0, "IR ≤ " & Seuil, If(Seuil > 99999, "IR > " & Plancher, (Plancher + 1) & " ≤ IR ≤ " & Seuil)) & "</td></tr>") & "</table></div>"
