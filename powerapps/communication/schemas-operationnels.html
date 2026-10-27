@@ -1,0 +1,192 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>Schémas opérationnels</title>
+<style>
+:root{--marine:#00285e;--bleu:#074b98;--or:#857650;--vert:#009e49;--vert2:#00796b;--mauve:#6b3fa0;--gris:#6b7280;--fond:#f8fafc}
+*{box-sizing:border-box}
+body{font-family:"Segoe UI",Arial,sans-serif;margin:0;color:#1f2937;background:#fff}
+section.page{width:1600px;padding:34px 40px 40px}
+.bandeau{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:4px solid var(--or);padding-bottom:10px;margin-bottom:22px}
+h1{margin:0;font-size:32px;color:var(--marine)}
+.sous{color:var(--gris);font-size:16px;margin-top:4px}
+.ville{font-weight:800;color:var(--or);letter-spacing:.08em;font-size:14px;text-align:right}
+/* page 1 : swimlanes */
+.lanes{display:grid;grid-template-columns:190px repeat(7,1fr);border:2px solid #d1d5db;border-radius:12px;overflow:hidden}
+.lanes>div{border-right:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb;min-height:118px;padding:8px}
+.hd{background:var(--marine)!important;color:#fff;font-weight:700;font-size:14px;min-height:auto!important;text-align:center;display:flex;flex-direction:column;justify-content:center}
+.hd small{font-weight:400;opacity:.85;font-size:12px}
+.role{font-weight:700;color:var(--marine);display:flex;flex-direction:column;justify-content:center;gap:4px;background:#f1f5fb}
+.role span{font-weight:400;font-size:12px;color:var(--gris)}
+.c{border-radius:9px;padding:8px 10px;font-size:13px;line-height:1.35;color:#1f2937}
+.c b{display:block;color:var(--marine);margin-bottom:2px}
+.p{background:#e8f6ee;border:1.5px solid var(--vert)}
+.s{background:#eaf1fb;border:1.5px solid var(--bleu)}
+.h{background:#f3eefb;border:1.5px solid var(--mauve)}
+.d{background:#fbf6ea;border:1.5px dashed var(--or)}
+.auto{background:#fff;border:1.5px solid #9ca3af;color:#4b5563}
+.auto b{color:#4b5563}
+.leg{display:flex;gap:18px;margin-top:14px;font-size:13px;color:var(--gris);flex-wrap:wrap}
+.leg i{display:inline-block;width:14px;height:14px;border-radius:4px;margin-right:6px;vertical-align:-2px}
+/* page 2 */
+table{border-collapse:collapse;width:100%;font-size:15px}
+th{background:var(--marine);color:#fff;padding:10px;text-align:left}
+td{border:1px solid #d1d5db;padding:9px 10px;vertical-align:top}
+td.sec{font-weight:700;color:var(--marine);background:#f1f5fb;width:250px}
+.ok{color:var(--vert);font-weight:700}.lec{color:var(--gris)}.non{color:#b91c1c}
+/* page 3 */
+.flow{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.card{border:2px solid #d1d5db;border-radius:14px;padding:18px 20px;background:var(--fond)}
+.card h3{margin:0 0 10px;color:var(--marine);font-size:20px}
+.card ul{margin:0;padding-left:20px;line-height:1.55;font-size:15px}
+.ico{font-size:34px}
+.mail{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:22px}
+.m{border-radius:10px;padding:10px;background:#fff;border:1.5px solid #c7d2e3;font-size:13px}
+.m b{display:block;color:var(--marine)}
+/* page 4 */
+.vs{display:grid;grid-template-columns:1fr 70px 1fr;gap:0;align-items:stretch}
+.col{border-radius:16px;padding:22px 24px}
+.avant{background:#fdf2f2;border:2px solid #f3c4c4}
+.apres{background:#ecf8f1;border:2px solid #9bd8b4}
+.col h2{margin:0 0 14px;font-size:24px}
+.avant h2{color:#b91c1c}.apres h2{color:#047a3a}
+.it{display:flex;gap:12px;margin-bottom:13px;font-size:16px;line-height:1.4}
+.it .e{font-size:24px;line-height:1}
+.fl{display:flex;align-items:center;justify-content:center;font-size:44px;color:var(--or)}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:24px}
+.k{border-radius:14px;background:var(--marine);color:#fff;padding:16px 18px}
+.k .n{font-size:30px;font-weight:800;color:#ffd98a}
+.k .t{font-size:14px;opacity:.95;margin-top:4px}
+.pied{margin-top:18px;color:var(--gris);font-size:13px}
+</style></head><body>
+
+<!-- PAGE 1 : CIRCUIT -->
+<section class="page">
+ <div class="bandeau"><div><h1>Le circuit d'une appréciation, étape par étape</h1>
+ <div class="sous">Qui fait quoi, et à quel moment — l'application avise automatiquement la bonne personne à chaque étape</div></div>
+ <div class="ville">VILLE DE QUÉBEC<br>Ressources humaines</div></div>
+ <div class="lanes">
+  <div class="hd">Rôle</div>
+  <div class="hd">1 · Préparer<small>Brouillon</small></div>
+  <div class="hd">2 · Aviser<small>Avisé au supérieur</small></div>
+  <div class="hd">3 · Rencontre<small>échanges</small></div>
+  <div class="hd">4 · Certifier<small>Certifié</small></div>
+  <div class="hd">5 · Approuver<small>Approuvé SI</small></div>
+  <div class="hd">6 · Approuver<small>Approuvé SH</small></div>
+  <div class="hd">7 · Terminé<small>Complété</small></div>
+
+  <div class="role">Personne en appréciation<span>cadre ou professionnel</span></div>
+  <div><div class="c p"><b>Remplit sa partie</b>Type de poste, identification, sections A à D, bilan F. Enregistre autant de fois que voulu.</div></div>
+  <div><div class="c p"><b>Avise son supérieur</b>Un clic : le dossier est prêt à consulter.</div></div>
+  <div><div class="c p"><b>Échange avec son supérieur</b>Ajuste au besoin.</div></div>
+  <div><div class="c p"><b>Certifie et soumet</b>Coche la confirmation. Son contenu se verrouille.</div></div>
+  <div></div><div></div>
+  <div><div class="c p"><b>Consulte et télécharge le PDF</b></div></div>
+
+  <div class="role">Supérieur(e) immédiat(e)<span>SI</span></div>
+  <div><div class="c s"><b>Peut commencer</b>Cotes, section E.</div></div>
+  <div><div class="c auto"><b>✉ Reçoit un courriel</b>« prête pour votre consultation »</div></div>
+  <div><div class="c s"><b>Planifie la rencontre</b></div></div>
+  <div><div class="c auto"><b>✉ Reçoit « À approuver »</b></div></div>
+  <div><div class="c s"><b>Complète et approuve</b>Cotes, bilan E, évaluation globale, puis approuve.</div></div>
+  <div></div>
+  <div><div class="c s"><b>Lecture seule</b></div></div>
+
+  <div class="role">Supérieur(e) hiérarchique<span>SH</span></div>
+  <div></div><div></div><div></div><div></div>
+  <div><div class="c auto"><b>✉ Reçoit « À approuver »</b></div></div>
+  <div><div class="c h"><b>Prend connaissance et approuve</b></div></div>
+  <div><div class="c h"><b>Lecture seule</b></div></div>
+
+  <div class="role">Directeur / directrice<span>seulement si requis</span></div>
+  <div></div><div></div><div></div><div></div><div></div>
+  <div><div class="c d"><b>Si requis : reçoit « À approuver » et approuve</b>Sinon, l'étape est sautée.</div></div>
+  <div><div class="c d"><b>Lecture seule</b></div></div>
+
+  <div class="role">Automatique<span>l'application</span></div>
+  <div><div class="c auto"><b>🔒 Accès limités</b>Seules les personnes du dossier y ont accès.</div></div>
+  <div><div class="c auto"><b>✉ Courriel au SI</b></div></div>
+  <div></div>
+  <div><div class="c auto"><b>✉ Courriel au SI</b>Barre d'étapes à jour.</div></div>
+  <div><div class="c auto"><b>✉ Courriel au SH</b></div></div>
+  <div><div class="c auto"><b>✉ Courriel au directeur</b>(si requis)</div></div>
+  <div><div class="c auto"><b>✉ Paie avisée · tous avisés</b>Dossier archivé en lecture seule.</div></div>
+ </div>
+ <div class="leg"><span><i style="background:#e8f6ee;border:1.5px solid #009e49"></i>Personne en appréciation</span><span><i style="background:#eaf1fb;border:1.5px solid #074b98"></i>Supérieur(e) immédiat(e)</span><span><i style="background:#f3eefb;border:1.5px solid #6b3fa0"></i>Supérieur(e) hiérarchique</span><span><i style="background:#fbf6ea;border:1.5px dashed #857650"></i>Directeur (si requis)</span><span><i style="background:#fff;border:1.5px solid #9ca3af"></i>Fait automatiquement</span></div>
+</section>
+
+<!-- PAGE 2 : QUI REMPLIT QUOI -->
+<section class="page">
+ <div class="bandeau"><div><h1>Qui remplit quoi dans le formulaire</h1>
+ <div class="sous">Chacun ne peut modifier que sa partie, et seulement à son étape — le reste est en lecture</div></div>
+ <div class="ville">VILLE DE QUÉBEC<br>Ressources humaines</div></div>
+ <table>
+  <tr><th>Partie du formulaire</th><th>Personne en appréciation</th><th>Supérieur(e) immédiat(e)</th><th>Supérieur(e) hiérarchique / directeur</th></tr>
+  <tr><td class="sec">Type de poste</td><td class="ok">Choisit (cadre avec équipe, cadre sans équipe, professionnel)</td><td class="lec">Lecture</td><td class="lec">Lecture</td></tr>
+  <tr><td class="sec">Identification et type de rencontre</td><td class="ok">Remplit</td><td class="ok">Peut compléter avant la certification</td><td class="lec">Lecture</td></tr>
+  <tr><td class="sec">A — Objectifs annuels</td><td class="ok">Remplit</td><td class="ok">Peut compléter avant la certification</td><td class="lec">Lecture</td></tr>
+  <tr><td class="sec">B — Postures (cadres) ou compétences (professionnels)</td><td class="ok">Ses cotes et exemples</td><td class="ok">Ses propres cotes (colonne du supérieur)</td><td class="lec">Lecture</td></tr>
+  <tr><td class="sec">C — Valeurs organisationnelles</td><td class="ok">Coche les thèmes, donne des exemples</td><td class="ok">Peut compléter avant la certification</td><td class="lec">Lecture</td></tr>
+  <tr><td class="sec">D — Développement des compétences</td><td class="ok">Remplit</td><td class="ok">Peut compléter avant la certification</td><td class="lec">Lecture</td></tr>
+  <tr><td class="sec">E — Bilan du supérieur</td><td class="lec">Lecture (une fois rempli)</td><td class="ok">Remplit, jusqu'à son approbation</td><td class="lec">Lecture</td></tr>
+  <tr><td class="sec">F — Bilan de la personne</td><td class="ok">Remplit, jusqu'à la certification</td><td class="lec">Lecture</td><td class="lec">Lecture</td></tr>
+  <tr><td class="sec">Évaluation globale</td><td class="lec">Lecture (une fois remplie)</td><td class="ok">Choisit, jusqu'à son approbation</td><td class="lec">Lecture</td></tr>
+  <tr><td class="sec">G — Avis, certification, approbations</td><td class="ok">Aviser · Certifier · indiquer si un directeur est requis</td><td class="ok">Approuver · indiquer si un directeur est requis</td><td class="ok">Approuver (chacun à son tour)</td></tr>
+  <tr><td class="sec">Aperçu PDF</td><td class="ok">Oui, en tout temps</td><td class="ok">Oui</td><td class="ok">Oui</td></tr>
+  <tr><td class="sec">Voir le dossier d'un collègue</td><td class="non">Non</td><td class="non">Non, sauf s'il ou elle y est nommé(e)</td><td class="non">Non, sauf s'il ou elle y est nommé(e)</td></tr>
+ </table>
+ <p class="pied">Après la certification, le contenu de la personne est verrouillé. Après « Complété », tout le dossier passe en lecture seule pour tout le monde. Les RH (groupe RH – Appréciations) peuvent consulter les dossiers.</p>
+</section>
+
+<!-- PAGE 3 : EN COULISSES -->
+<section class="page">
+ <div class="bandeau"><div><h1>Ce que l'outil fait pour vous, en coulisses</h1>
+ <div class="sous">Plus de courriels à écrire, de fichiers à transférer ni de signatures à courir</div></div>
+ <div class="ville">VILLE DE QUÉBEC<br>Ressources humaines</div></div>
+ <div class="flow">
+  <div class="card"><div class="ico">🔒</div><h3>Confidentialité automatique</h3><ul><li>Dès la création, le dossier n'est visible que par la personne, ses supérieurs et les RH.</li><li>Un collègue ne voit jamais le dossier d'un autre.</li><li>À la fin, tout passe en lecture seule.</li></ul></div>
+  <div class="card"><div class="ico">✉️</div><h3>Courriels automatiques</h3><ul><li>À chaque étape, la bonne personne est avisée, avec un lien direct vers le dossier.</li><li>Le supérieur immédiat et hiérarchique sont trouvés automatiquement dans l'annuaire.</li><li>Aucun contenu d'évaluation dans les courriels.</li></ul></div>
+  <div class="card"><div class="ico">📊</div><h3>Suivi et documents</h3><ul><li>Barre d'étapes : on sait toujours où en est le dossier, avec les dates.</li><li>Synthèse et plan de développement calculés automatiquement.</li><li>PDF complet en un clic.</li><li>Évaluation globale transmise à la paie à la fin.</li></ul></div>
+ </div>
+ <div class="mail">
+  <div class="m"><b>Aviser</b>→ courriel au SI : « prête pour votre consultation »</div>
+  <div class="m"><b>Certifier</b>→ courriel au SI : « À approuver »</div>
+  <div class="m"><b>Approuvé SI</b>→ courriel au SH : « À approuver »</div>
+  <div class="m"><b>Approuvé SH</b>→ courriel au directeur (si requis)</div>
+  <div class="m"><b>Complété</b>→ courriel à la paie (évaluation globale)</div>
+  <div class="m"><b>Complété</b>→ avis à tous + lecture seule</div>
+ </div>
+ <p class="pied">Tout se passe dans Microsoft 365 de la Ville (Power Apps et SharePoint). Aucun fichier n'est envoyé par courriel ; les données restent dans l'environnement sécurisé de la Ville.</p>
+</section>
+
+<!-- PAGE 4 : AVANTAGES -->
+<section class="page">
+ <div class="bandeau"><div><h1>Pourquoi passer du Word à l'application ?</h1>
+ <div class="sous">Le même contenu (formulaires du 15 octobre 2026), une façon beaucoup plus simple de le remplir et de le faire circuler</div></div>
+ <div class="ville">VILLE DE QUÉBEC<br>Ressources humaines</div></div>
+ <div class="vs">
+  <div class="col avant"><h2>📄 Avant : le document Word</h2>
+   <div class="it"><span class="e">📧</span><span>Le fichier fait l'aller-retour par courriel ; on ne sait plus quelle est la <b>bonne version</b>.</span></div>
+   <div class="it"><span class="e">🔓</span><span>Copies dans les boîtes courriel et les ordinateurs : <b>risque pour la confidentialité</b>.</span></div>
+   <div class="it"><span class="e">✍️</span><span>Signatures à obtenir une à une ; il faut <b>relancer</b> chaque personne.</span></div>
+   <div class="it"><span class="e">❓</span><span>Impossible de savoir <b>où en est</b> une appréciation sans demander.</span></div>
+   <div class="it"><span class="e">🧮</span><span>Moyennes, synthèse et plan de développement <b>à faire à la main</b>.</span></div>
+   <div class="it"><span class="e">📨</span><span>Évaluation globale <b>retranscrite</b> pour la paie.</span></div>
+   <div class="it"><span class="e">🗂️</span><span>Mauvais gabarit, cases oubliées, mise en forme qui se brise.</span></div>
+  </div>
+  <div class="fl">➜</div>
+  <div class="col apres"><h2>📱 Maintenant : l'application</h2>
+   <div class="it"><span class="e">✅</span><span><b>Un seul dossier</b>, toujours à jour, que chacun ouvre au bon moment.</span></div>
+   <div class="it"><span class="e">🔒</span><span><b>Accès limité automatiquement</b> aux personnes concernées et aux RH.</span></div>
+   <div class="it"><span class="e">🖱️</span><span>Certifier et approuver <b>en un clic</b>, avec date et nom enregistrés.</span></div>
+   <div class="it"><span class="e">📍</span><span><b>Barre d'étapes</b> et « Mes dossiers » : on voit l'avancement en un coup d'œil.</span></div>
+   <div class="it"><span class="e">📊</span><span><b>Synthèse et plan</b> de développement générés automatiquement.</span></div>
+   <div class="it"><span class="e">💼</span><span>Évaluation globale <b>envoyée à la paie</b> automatiquement.</span></div>
+   <div class="it"><span class="e">🎯</span><span>Le <b>bon formulaire</b> selon le type de poste, et un <b>PDF</b> propre en un clic.</span></div>
+  </div>
+ </div>
+ <div class="kpis">
+  <div class="k"><div class="n">0</div><div class="t">fichier envoyé par courriel</div></div>
+  <div class="k"><div class="n">1 clic</div><div class="t">pour aviser, certifier, approuver ou produire le PDF</div></div>
+  <div class="k"><div class="n">6</div><div class="t">courriels de suivi envoyés automatiquement</div></div>
+  <div class="k"><div class="n">100 %</div><div class="t">dans Microsoft 365 de la Ville, accès contrôlés</div></div>
+ </div>
+</section>
+</body></html>
