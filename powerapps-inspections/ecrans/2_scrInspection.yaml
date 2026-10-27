@@ -1,0 +1,996 @@
+- recBarre_Ins:
+    Control: Rectangle
+    Properties:
+      X: =0
+      Y: =0
+      Width: =1366
+      Height: =56
+      Fill: =ColorValue("#1e293b")
+- lblTitre_Ins:
+    Control: Label
+    Properties:
+      X: =16
+      Y: =0
+      Width: =520
+      Height: =56
+      Text: ="Inspection — Bâtiments, cours et accès"
+      Size: =16
+      Color: =ColorValue("#ffffff")
+      FontWeight: =FontWeight.Bold
+- lblEtat_Ins:
+    Control: Label
+    Properties:
+      X: =540
+      Y: =0
+      Width: =380
+      Height: =56
+      Text: =If(gblModifie, "● Modifications non enregistrées", If(IsBlank(gblInspID), "Nouvelle inspection", "✔ Enregistrée dans SharePoint"))
+      Size: =10
+      Color: =If(gblModifie, ColorValue("#fbbf24"), ColorValue("#86efac"))
+      FontWeight: =FontWeight.Bold
+- btnAccueil_Ins:
+    Control: Classic/Button
+    Properties:
+      X: =1072
+      Y: =10
+      Width: =120
+      Height: =36
+      Text: ="Accueil"
+      OnSelect: |-
+        =If(
+            gblModifie && !gblAvertiQuitter,
+            Set(gblAvertiQuitter, true);
+            Notify("Modifications non enregistrées ! Cliquez sur « Enregistrer », ou cliquez de nouveau sur « Accueil » pour quitter sans enregistrer.", NotificationType.Warning),
+            Set(gblAvertiQuitter, false);
+            Set(gblModifie, false);
+            Navigate(scrAccueil, ScreenTransition.None)
+        )
+      Fill: =ColorValue("#475569")
+      Color: =ColorValue("#ffffff")
+      HoverFill: =ColorFade(ColorValue("#475569"), -15%)
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- btnEnregistrer_Ins:
+    Control: Classic/Button
+    Properties:
+      X: =1200
+      Y: =10
+      Width: =150
+      Height: =36
+      Text: ="Enregistrer"
+      OnSelect: |-
+        =If(
+            IsBlank(Trim(gblInfo.Endroit)),
+            Notify("Le champ « Endroit » est obligatoire avant d'enregistrer.", NotificationType.Error),
+            With({nonNA: Filter(colReponses, !(("|" & SectionNo & "|") in gblNA))},
+                Set(
+                    gblEnreg,
+                    Patch(
+                        INS_Inspections,
+                        If(IsBlank(gblInspID), Defaults(INS_Inspections), LookUp(INS_Inspections, ID = gblInspID)),
+                        {
+                            Title: gblInfo.Endroit,
+                            Service: gblInfo.Service,
+                            Inspecteur: gblInfo.Inspecteur,
+                            DateInspection: gblInfo.DateInspection,
+                            Participants: gblInfo.Participants,
+                            SectionsNA: gblNA,
+                            Signature: gblSignature,
+                            IdInspection: gblInspCle,
+                            NbApplicables: CountRows(nonNA),
+                            NbRepondus: CountIf(nonNA, !IsBlank(Reponse)),
+                            NbNonConformes: CountIf(nonNA, Reponse = "N"),
+                            NbGraviteElevee: CountIf(nonNA, Reponse = "N" && Gravite = "E"),
+                            CorrectifsOuverts: CountIf(nonNA, Reponse = "N" && Statut <> "Réalisé"),
+                            ProchaineEcheance: Min(Filter(nonNA, Reponse = "N" && Statut <> "Réalisé" && !IsBlank(Echeance)), Echeance),
+                            StatutSuivi: If(
+                                CountIf(nonNA, Reponse = "N") = 0, "Aucun correctif",
+                                CountIf(nonNA, Reponse = "N" && Statut <> "Réalisé") = 0, "Fermé",
+                                CountIf(nonNA, Reponse = "N" && (Statut = "En cours" || Statut = "Réalisé")) > 0, "En cours",
+                                "Ouvert"
+                            )
+                        }
+                    )
+                )
+            );
+            Set(gblInspID, gblEnreg.ID);
+            ForAll(colSupprimes As d, Remove(INS_Reponses, LookUp(INS_Reponses, ID = d.LigneID)));
+            Clear(colSupprimes);
+            // Mise à jour des réponses déjà enregistrées
+            ForAll(
+                Filter(colReponses, LigneID > 0) As r,
+                Patch(INS_Reponses, LookUp(INS_Reponses, ID = r.LigneID), {
+                        Title: r.Element,
+                        InspectionID: gblInspID,
+                        IdInspection: gblInspCle,
+                        ItemID: r.Cle,
+                        SectionNo: r.SectionNo,
+                        Sujet: LookUp(nfSections, Numero = r.SectionNo).Titre,
+                        Reponse: r.Reponse,
+                        Applicable: If(("|" & r.SectionNo & "|") in gblNA, "Non", "Oui"),
+                        Gravite: r.Gravite,
+                        Commentaire: r.Commentaire,
+                        Emplacement: r.Emplacement,
+                        Responsable: r.Responsable,
+                        Echeance: r.Echeance,
+                        StatutCorrectif: r.Statut,
+                        DateRealise: r.DateRealise,
+                        Endroit: gblInfo.Endroit,
+                        Service: gblInfo.Service,
+                        DateInspection: gblInfo.DateInspection
+                    })
+            );
+            // Création des nouvelles réponses (en un seul envoi)
+            With(
+                {nouv: ForAll(Filter(colReponses, LigneID = 0 && (!IsBlank(Reponse) || !IsBlank(Commentaire) || EstAutre)) As r, {
+                            Title: r.Element,
+                            InspectionID: gblInspID,
+                            IdInspection: gblInspCle,
+                            ItemID: r.Cle,
+                            SectionNo: r.SectionNo,
+                            Sujet: LookUp(nfSections, Numero = r.SectionNo).Titre,
+                            Reponse: r.Reponse,
+                            Applicable: If(("|" & r.SectionNo & "|") in gblNA, "Non", "Oui"),
+                            Gravite: r.Gravite,
+                            Commentaire: r.Commentaire,
+                            Emplacement: r.Emplacement,
+                            Responsable: r.Responsable,
+                            Echeance: r.Echeance,
+                            StatutCorrectif: r.Statut,
+                            DateRealise: r.DateRealise,
+                            Endroit: gblInfo.Endroit,
+                            Service: gblInfo.Service,
+                            DateInspection: gblInfo.DateInspection
+                        })},
+                If(CountRows(nouv) > 0, Patch(INS_Reponses, ForAll(nouv, Defaults(INS_Reponses)), nouv))
+            );
+            ClearCollect(colSaved, Filter(INS_Reponses, InspectionID = gblInspID));
+            ClearCollect(
+                colReponses,
+                ForAll(
+                    nfItems As it,
+                    With({s: LookUp(colSaved, ItemID = it.Cle)},
+                        {LigneID: Coalesce(s.ID, 0), Cle: it.Cle, SectionNo: it.SectionNo, Element: it.Element, EstAutre: false, Reponse: s.Reponse, Gravite: s.Gravite, Commentaire: s.Commentaire, Emplacement: s.Emplacement, Responsable: s.Responsable, Echeance: s.Echeance, Statut: s.StatutCorrectif, DateRealise: s.DateRealise}
+                    )
+                )
+            );
+            Collect(
+                colReponses,
+                ForAll(
+                    Sort(Filter(colSaved, SectionNo = 21), ID) As s,
+                    {LigneID: s.ID, Cle: s.ItemID, SectionNo: 21, Element: s.Title, EstAutre: true, Reponse: s.Reponse, Gravite: s.Gravite, Commentaire: s.Commentaire, Emplacement: s.Emplacement, Responsable: s.Responsable, Echeance: s.Echeance, Statut: s.StatutCorrectif, DateRealise: s.DateRealise}
+                )
+            );
+            Set(gblModifie, false);
+            Set(gblAvertiQuitter, false);
+            Notify("Inspection enregistrée dans SharePoint.", NotificationType.Success)
+        )
+      Fill: =ColorValue("#16a34a")
+      Color: =ColorValue("#ffffff")
+      HoverFill: =ColorFade(ColorValue("#16a34a"), -15%)
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- recOnglets_Ins:
+    Control: Rectangle
+    Properties:
+      X: =0
+      Y: =56
+      Width: =1366
+      Height: =48
+      Fill: =ColorValue("#e2e8f0")
+- btnOngInsp_Ins:
+    Control: Classic/Button
+    Properties:
+      X: =16
+      Y: =62
+      Width: =210
+      Height: =36
+      Text: ="Inspection"
+      OnSelect: =Navigate(scrInspection, ScreenTransition.None)
+      Fill: =If(App.ActiveScreen.Name = "scrInspection", ColorValue("#2563eb"), ColorValue("#ffffff"))
+      Color: =If(App.ActiveScreen.Name = "scrInspection", ColorValue("#ffffff"), ColorValue("#1e293b"))
+      HoverFill: =ColorValue("#bfdbfe")
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- btnOngResume_Ins:
+    Control: Classic/Button
+    Properties:
+      X: =234
+      Y: =62
+      Width: =210
+      Height: =36
+      Text: ="Résumé et envoi"
+      OnSelect: =Navigate(scrResume, ScreenTransition.None)
+      Fill: =If(App.ActiveScreen.Name = "scrResume", ColorValue("#2563eb"), ColorValue("#ffffff"))
+      Color: =If(App.ActiveScreen.Name = "scrResume", ColorValue("#ffffff"), ColorValue("#1e293b"))
+      HoverFill: =ColorValue("#bfdbfe")
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- btnOngSuivi_Ins:
+    Control: Classic/Button
+    Properties:
+      X: =452
+      Y: =62
+      Width: =210
+      Height: =36
+      Text: ="Suivi des correctifs"
+      OnSelect: =Navigate(scrSuivi, ScreenTransition.None)
+      Fill: =If(App.ActiveScreen.Name = "scrSuivi", ColorValue("#2563eb"), ColorValue("#ffffff"))
+      Color: =If(App.ActiveScreen.Name = "scrSuivi", ColorValue("#ffffff"), ColorValue("#1e293b"))
+      HoverFill: =ColorValue("#bfdbfe")
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- lblI_Endroit:
+    Control: Label
+    Properties:
+      X: =16
+      Y: =108
+      Width: =300
+      Height: =16
+      Text: ="Endroit *"
+      Size: =8
+      Color: =ColorValue("#64748b")
+      FontWeight: =FontWeight.Bold
+      PaddingLeft: =0
+      PaddingTop: =0
+      PaddingBottom: =0
+- txtEndroit:
+    Control: Classic/TextInput
+    Properties:
+      X: =16
+      Y: =124
+      Width: =300
+      Height: =34
+      Default: =gblInfo.Endroit
+      OnChange: |-
+        =If(Self.Text <> gblInfo.Endroit, Set(gblInfo, Patch(gblInfo, {Endroit: Self.Text})); Set(gblModifie, true))
+      HintText: |-
+        ="Ex. : Garage municipal…"
+      Size: =10
+      BorderColor: =ColorValue("#cbd5e1")
+- lblI_Service:
+    Control: Label
+    Properties:
+      X: =324
+      Y: =108
+      Width: =260
+      Height: =16
+      Text: ="Service"
+      Size: =8
+      Color: =ColorValue("#64748b")
+      FontWeight: =FontWeight.Bold
+      PaddingLeft: =0
+      PaddingTop: =0
+      PaddingBottom: =0
+- txtService:
+    Control: Classic/TextInput
+    Properties:
+      X: =324
+      Y: =124
+      Width: =260
+      Height: =34
+      Default: =gblInfo.Service
+      OnChange: |-
+        =If(Self.Text <> gblInfo.Service, Set(gblInfo, Patch(gblInfo, {Service: Self.Text})); Set(gblModifie, true))
+      HintText: ="Service"
+      Size: =10
+      BorderColor: =ColorValue("#cbd5e1")
+- lblI_Insp:
+    Control: Label
+    Properties:
+      X: =592
+      Y: =108
+      Width: =260
+      Height: =16
+      Text: ="Inspection réalisée par"
+      Size: =8
+      Color: =ColorValue("#64748b")
+      FontWeight: =FontWeight.Bold
+      PaddingLeft: =0
+      PaddingTop: =0
+      PaddingBottom: =0
+- txtInspecteur:
+    Control: Classic/TextInput
+    Properties:
+      X: =592
+      Y: =124
+      Width: =260
+      Height: =34
+      Default: =gblInfo.Inspecteur
+      OnChange: |-
+        =If(Self.Text <> gblInfo.Inspecteur, Set(gblInfo, Patch(gblInfo, {Inspecteur: Self.Text})); Set(gblModifie, true))
+      HintText: |-
+        ="Nom de l'inspecteur"
+      Size: =10
+      BorderColor: =ColorValue("#cbd5e1")
+- lblI_Date:
+    Control: Label
+    Properties:
+      X: =860
+      Y: =108
+      Width: =170
+      Height: =16
+      Text: ="Date"
+      Size: =8
+      Color: =ColorValue("#64748b")
+      FontWeight: =FontWeight.Bold
+      PaddingLeft: =0
+      PaddingTop: =0
+      PaddingBottom: =0
+- dpDateInspection:
+    Control: Classic/DatePicker
+    Properties:
+      X: =860
+      Y: =124
+      Width: =170
+      Height: =34
+      DefaultDate: =gblInfo.DateInspection
+      Format: ="yyyy-mm-dd"
+      Size: =10
+      OnChange: |-
+        =If(Self.SelectedDate <> gblInfo.DateInspection, Set(gblInfo, Patch(gblInfo, {DateInspection: Self.SelectedDate})); Set(gblModifie, true))
+- lblI_Part:
+    Control: Label
+    Properties:
+      X: =1038
+      Y: =108
+      Width: =312
+      Height: =16
+      Text: ="Participants"
+      Size: =8
+      Color: =ColorValue("#64748b")
+      FontWeight: =FontWeight.Bold
+      PaddingLeft: =0
+      PaddingTop: =0
+      PaddingBottom: =0
+- txtParticipants:
+    Control: Classic/TextInput
+    Properties:
+      X: =1038
+      Y: =124
+      Width: =312
+      Height: =34
+      Default: =gblInfo.Participants
+      OnChange: |-
+        =If(Self.Text <> gblInfo.Participants, Set(gblInfo, Patch(gblInfo, {Participants: Self.Text})); Set(gblModifie, true))
+      HintText: ="Autres participants"
+      Size: =10
+      BorderColor: =ColorValue("#cbd5e1")
+- recProgFond:
+    Control: Rectangle
+    Properties:
+      X: =16
+      Y: =170
+      Width: =600
+      Height: =14
+      Fill: =ColorValue("#e2e8f0")
+- recProgBarre:
+    Control: Rectangle
+    Properties:
+      X: =16
+      Y: =170
+      Width: |-
+        =With({a: CountIf(colReponses, !(("|" & SectionNo & "|") in gblNA)), r: CountIf(colReponses, !(("|" & SectionNo & "|") in gblNA) && !IsBlank(Reponse))}, If(a = 0, 0, 600 * r / a))
+      Height: =14
+      Fill: =ColorValue("#2563eb")
+- lblProgression:
+    Control: Label
+    Properties:
+      X: =628
+      Y: =162
+      Width: =720
+      Height: =30
+      Text: |-
+        =With({a: CountIf(colReponses, !(("|" & SectionNo & "|") in gblNA)), r: CountIf(colReponses, !(("|" & SectionNo & "|") in gblNA) && !IsBlank(Reponse))}, "" & r & "/" & a & " éléments répondus (" & If(a = 0, 0, Round(100 * r / a, 0)) & " %)  ·  " & CountIf(colReponses, !(("|" & SectionNo & "|") in gblNA) && Reponse = "N") & " non-conformité(s)")
+      Size: =10
+      Color: =ColorValue("#334155")
+      FontWeight: =FontWeight.Bold
+- galSections:
+    Control: Gallery
+    Variant: Vertical
+    Properties:
+      X: =8
+      Y: =200
+      Width: =370
+      Height: =560
+      Items: =nfSections
+      TemplateSize: =54
+      TemplatePadding: =0
+      ShowScrollbar: =true
+      TemplateFill: =If(ThisItem.Numero = gblSection, ColorValue("#dbeafe"), ColorValue("#ffffff"))
+      OnSelect: =Set(gblSection, ThisItem.Numero)
+    Children:
+    - lblSecTitre:
+        Control: Label
+        Properties:
+          X: =10
+          Y: =2
+          Width: =330
+          Height: =28
+          Text: =ThisItem.Numero & ". " & ThisItem.Titre
+          Size: =11
+          Color: =If((("|" & ThisItem.Numero & "|") in gblNA), ColorValue("#94a3b8"), ColorValue("#1e293b"))
+          FontWeight: =FontWeight.Bold
+    - lblSecCompte:
+        Control: Label
+        Properties:
+          X: =10
+          Y: =28
+          Width: =330
+          Height: =22
+          Text: |-
+            =If((("|" & ThisItem.Numero & "|") in gblNA), "Non applicable", With({n: CountIf(colReponses, SectionNo = ThisItem.Numero), r: CountIf(colReponses, SectionNo = ThisItem.Numero && !IsBlank(Reponse)), nc: CountIf(colReponses, SectionNo = ThisItem.Numero && Reponse = "N")}, r & "/" & n & " répondus" & If(nc > 0, "  ·  " & nc & " non conforme(s)", "")))
+          Size: =9
+          Color: =If(CountIf(colReponses, SectionNo = ThisItem.Numero && Reponse = "N") > 0 && !(("|" & ThisItem.Numero & "|") in gblNA), ColorValue("#b91c1c"), ColorValue("#64748b"))
+    - recSecSep:
+        Control: Rectangle
+        Properties:
+          X: =0
+          Y: =Parent.TemplateHeight - 1
+          Width: =Parent.TemplateWidth
+          Height: =1
+          Fill: =ColorValue("#e2e8f0")
+- lblSujetCourant:
+    Control: Label
+    Properties:
+      X: =392
+      Y: =200
+      Width: =480
+      Height: =40
+      Text: =gblSection & ". " & LookUp(nfSections, Numero = gblSection).Titre
+      Size: =14
+      Color: =ColorValue("#1e293b")
+      FontWeight: =FontWeight.Bold
+- btnApplicable:
+    Control: Classic/Button
+    Properties:
+      X: =880
+      Y: =204
+      Width: =210
+      Height: =34
+      Text: =If((("|" & gblSection & "|") in gblNA), "Non applicable ✔ (rétablir)", "Marquer non applicable")
+      OnSelect: =If((("|" & gblSection & "|") in gblNA), Set(gblNA, Substitute(gblNA, "|" & gblSection & "|", "")), Set(gblNA, gblNA & "|" & gblSection & "|")); Set(gblModifie, true)
+      Fill: =ColorValue("#64748b")
+      Color: =ColorValue("#ffffff")
+      HoverFill: =ColorFade(ColorValue("#64748b"), -15%)
+      Size: =9
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- btnSansReponse:
+    Control: Classic/Button
+    Properties:
+      X: =1098
+      Y: =204
+      Width: =252
+      Height: =34
+      Text: =If(gblSansReponse, "☑ Seulement sans réponse", "☐ Seulement sans réponse")
+      OnSelect: =Set(gblSansReponse, !gblSansReponse)
+      Fill: =ColorValue("#e2e8f0")
+      Color: =ColorValue("#1e293b")
+      HoverFill: =ColorFade(ColorValue("#e2e8f0"), -15%)
+      Size: =9
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- lblSujetNA:
+    Control: Label
+    Properties:
+      X: =392
+      Y: =250
+      Width: =958
+      Height: =60
+      Text: |-
+        ="Ce sujet est marqué « Non applicable » : ses éléments ne sont pas comptés."
+      Size: =11
+      Color: =ColorValue("#64748b")
+      Visible: =(("|" & gblSection & "|") in gblNA)
+- galElements:
+    Control: Gallery
+    Variant: Vertical
+    Properties:
+      X: =386
+      Y: =246
+      Width: =972
+      Height: =470
+      Items: =Filter(colReponses, SectionNo = gblSection && (!gblSansReponse || IsBlank(Reponse)))
+      TemplateSize: =74
+      TemplatePadding: =0
+      ShowScrollbar: =true
+      Visible: =!(("|" & gblSection & "|") in gblNA)
+    Children:
+    - lblElement:
+        Control: Label
+        Properties:
+          X: =12
+          Y: =4
+          Width: =530
+          Height: =46
+          Text: =ThisItem.Element
+          Size: =11
+          Color: =ColorValue("#1f2937")
+          Visible: =!ThisItem.EstAutre
+    - txtAutreElement:
+        Control: Classic/TextInput
+        Properties:
+          X: =12
+          Y: =10
+          Width: =530
+          Height: =36
+          Default: =ThisItem.Element
+          OnChange: |-
+            =If(Self.Text <> ThisItem.Element, Patch(colReponses, LookUp(colReponses, Cle = ThisItem.Cle), {Element: Self.Text}); Set(gblModifie, true))
+          HintText: |-
+            ="Décrire l'élément vérifié"
+          Size: =10
+          BorderColor: =ColorValue("#cbd5e1")
+          Visible: =ThisItem.EstAutre
+    - lblResumeItem:
+        Control: Label
+        Properties:
+          X: =12
+          Y: =50
+          Width: =530
+          Height: =22
+          Text: |-
+            =If(ThisItem.Reponse = "N", "Gravité : " & Coalesce(ThisItem.Gravite, "—") & If(IsBlank(ThisItem.Responsable), "", " · " & ThisItem.Responsable) & If(IsBlank(ThisItem.Echeance), "", " · éch. " & Text(ThisItem.Echeance, "yyyy-mm-dd")) & " · " & ThisItem.Statut, "") & If(IsBlank(ThisItem.Commentaire), "", "   💬 " & Left(ThisItem.Commentaire, 70))
+          Size: =9
+          Color: =ColorValue("#b91c1c")
+    - btnOui:
+        Control: Classic/Button
+        Properties:
+          X: =560
+          Y: =14
+          Width: =80
+          Height: =40
+          Text: ="Oui"
+          OnSelect: |-
+            =With({k: ThisItem.Cle, nv: If(ThisItem.Reponse = "O", "", "O"), st: ThisItem.Statut},
+                Patch(colReponses, LookUp(colReponses, Cle = k), {Reponse: nv, Statut: If(nv = "N" && IsBlank(st), "À faire", st)});
+                If(nv = "N", Set(gblDetail, k));
+                Set(gblModifie, true)
+            )
+          Fill: =If(ThisItem.Reponse = "O", ColorValue("#16a34a"), ColorValue("#ffffff"))
+          Color: =If(ThisItem.Reponse = "O", ColorValue("#ffffff"), ColorValue("#334155"))
+          HoverFill: =ColorValue("#e2e8f0")
+          Size: =11
+          BorderThickness: =1
+          RadiusTopLeft: =4
+          RadiusTopRight: =4
+          RadiusBottomLeft: =4
+          RadiusBottomRight: =4
+          BorderColor: =ColorValue("#94a3b8")
+          DisplayMode: =If((("|" & ThisItem.SectionNo & "|") in gblNA), DisplayMode.View, DisplayMode.Edit)
+    - btnNon:
+        Control: Classic/Button
+        Properties:
+          X: =646
+          Y: =14
+          Width: =80
+          Height: =40
+          Text: ="Non"
+          OnSelect: |-
+            =With({k: ThisItem.Cle, nv: If(ThisItem.Reponse = "N", "", "N"), st: ThisItem.Statut},
+                Patch(colReponses, LookUp(colReponses, Cle = k), {Reponse: nv, Statut: If(nv = "N" && IsBlank(st), "À faire", st)});
+                If(nv = "N", Set(gblDetail, k));
+                Set(gblModifie, true)
+            )
+          Fill: =If(ThisItem.Reponse = "N", ColorValue("#dc2626"), ColorValue("#ffffff"))
+          Color: =If(ThisItem.Reponse = "N", ColorValue("#ffffff"), ColorValue("#334155"))
+          HoverFill: =ColorValue("#e2e8f0")
+          Size: =11
+          BorderThickness: =1
+          RadiusTopLeft: =4
+          RadiusTopRight: =4
+          RadiusBottomLeft: =4
+          RadiusBottomRight: =4
+          BorderColor: =ColorValue("#94a3b8")
+          DisplayMode: =If((("|" & ThisItem.SectionNo & "|") in gblNA), DisplayMode.View, DisplayMode.Edit)
+    - btnNA:
+        Control: Classic/Button
+        Properties:
+          X: =732
+          Y: =14
+          Width: =80
+          Height: =40
+          Text: ="N/A"
+          OnSelect: |-
+            =With({k: ThisItem.Cle, nv: If(ThisItem.Reponse = "NA", "", "NA"), st: ThisItem.Statut},
+                Patch(colReponses, LookUp(colReponses, Cle = k), {Reponse: nv, Statut: If(nv = "N" && IsBlank(st), "À faire", st)});
+                If(nv = "N", Set(gblDetail, k));
+                Set(gblModifie, true)
+            )
+          Fill: =If(ThisItem.Reponse = "NA", ColorValue("#64748b"), ColorValue("#ffffff"))
+          Color: =If(ThisItem.Reponse = "NA", ColorValue("#ffffff"), ColorValue("#334155"))
+          HoverFill: =ColorValue("#e2e8f0")
+          Size: =11
+          BorderThickness: =1
+          RadiusTopLeft: =4
+          RadiusTopRight: =4
+          RadiusBottomLeft: =4
+          RadiusBottomRight: =4
+          BorderColor: =ColorValue("#94a3b8")
+          DisplayMode: =If((("|" & ThisItem.SectionNo & "|") in gblNA), DisplayMode.View, DisplayMode.Edit)
+    - icoDetail:
+        Control: Classic/Icon
+        Properties:
+          X: =826
+          Y: =14
+          Width: =44
+          Height: =44
+          Icon: =Icon.Edit
+          OnSelect: =Set(gblDetail, ThisItem.Cle)
+          Color: =ColorValue("#475569")
+          Tooltip: ="Commentaire, correctif et photos"
+          PaddingTop: =6
+          PaddingBottom: =6
+          PaddingLeft: =6
+          PaddingRight: =6
+    - icoSupprAutre:
+        Control: Classic/Icon
+        Properties:
+          X: =880
+          Y: =14
+          Width: =44
+          Height: =44
+          Icon: =Icon.Trash
+          OnSelect: |-
+            =With({k: ThisItem.Cle, id: ThisItem.LigneID},
+                If(id > 0, Collect(colSupprimes, {LigneID: id}));
+                Remove(colReponses, LookUp(colReponses, Cle = k));
+                Set(gblModifie, true)
+            )
+          Color: =ColorValue("#dc2626")
+          Tooltip: ="Retirer cet élément"
+          PaddingTop: =6
+          PaddingBottom: =6
+          PaddingLeft: =6
+          PaddingRight: =6
+          Visible: =ThisItem.EstAutre
+    - recItemSep:
+        Control: Rectangle
+        Properties:
+          X: =0
+          Y: =Parent.TemplateHeight - 1
+          Width: =Parent.TemplateWidth
+          Height: =1
+          Fill: =ColorValue("#e2e8f0")
+- btnAjouterAutre:
+    Control: Classic/Button
+    Properties:
+      X: =392
+      Y: =722
+      Width: =220
+      Height: =36
+      Text: ="+ Ajouter un élément"
+      OnSelect: |-
+        =Collect(colReponses, Patch(nfReponseVide, {Cle: "s21-" & Text(GUID()), SectionNo: 21, EstAutre: true, Echeance: Blank(), DateRealise: Blank()}));
+        Set(gblModifie, true)
+      Fill: =ColorValue("#2563eb")
+      Color: =ColorValue("#ffffff")
+      HoverFill: =ColorFade(ColorValue("#2563eb"), -15%)
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+      Visible: =gblSection = 21 && !(("|" & gblSection & "|") in gblNA)
+- recVoile_Det:
+    Control: Rectangle
+    Properties:
+      X: =0
+      Y: =0
+      Width: =1366
+      Height: =768
+      Fill: =RGBA(0, 0, 0, 0.45)
+      Visible: =!IsBlank(gblDetail)
+- recDialogue_Det:
+    Control: Rectangle
+    Properties:
+      X: =183
+      Y: =40
+      Width: =1000
+      Height: =690
+      Fill: =ColorValue("#ffffff")
+      Visible: =!IsBlank(gblDetail)
+- lblDTitre:
+    Control: Label
+    Properties:
+      X: =207
+      Y: =52
+      Width: =952
+      Height: =60
+      Text: |-
+        =With({r: LookUp(colReponses, Cle = gblDetail)}, LookUp(nfSections, Numero = r.SectionNo).Titre & " — " & r.Element & If(r.Reponse = "N", "   (NON CONFORME)", ""))
+      Size: =13
+      Color: =ColorValue("#1e293b")
+      FontWeight: =FontWeight.Bold
+      Visible: =!IsBlank(gblDetail)
+- lblDGravite:
+    Control: Label
+    Properties:
+      X: =207
+      Y: =120
+      Width: =400
+      Height: =26
+      Text: ="Potentiel de gravité"
+      Size: =10
+      Color: =ColorValue("#64748b")
+      FontWeight: =FontWeight.Bold
+      Visible: =!IsBlank(gblDetail) && LookUp(colReponses, Cle = gblDetail).Reponse = "N"
+- btnGravE:
+    Control: Classic/Button
+    Properties:
+      X: =207
+      Y: =150
+      Width: =150
+      Height: =36
+      Text: ="Élevé (E)"
+      OnSelect: |-
+        =Patch(colReponses, LookUp(colReponses, Cle = gblDetail), {Gravite: If(LookUp(colReponses, Cle = gblDetail).Gravite = "E", "", "E")}); Set(gblModifie, true)
+      Fill: =If(LookUp(colReponses, Cle = gblDetail).Gravite = "E", ColorValue("#dc2626"), ColorValue("#ffffff"))
+      Color: =If(LookUp(colReponses, Cle = gblDetail).Gravite = "E", ColorValue("#ffffff"), ColorValue("#334155"))
+      HoverFill: =ColorValue("#e2e8f0")
+      Size: =11
+      BorderThickness: =1
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+      Visible: =!IsBlank(gblDetail) && LookUp(colReponses, Cle = gblDetail).Reponse = "N"
+      BorderColor: =ColorValue("#94a3b8")
+- btnGravF:
+    Control: Classic/Button
+    Properties:
+      X: =365
+      Y: =150
+      Width: =150
+      Height: =36
+      Text: ="Faible (F)"
+      OnSelect: |-
+        =Patch(colReponses, LookUp(colReponses, Cle = gblDetail), {Gravite: If(LookUp(colReponses, Cle = gblDetail).Gravite = "F", "", "F")}); Set(gblModifie, true)
+      Fill: =If(LookUp(colReponses, Cle = gblDetail).Gravite = "F", ColorValue("#ea580c"), ColorValue("#ffffff"))
+      Color: =If(LookUp(colReponses, Cle = gblDetail).Gravite = "F", ColorValue("#ffffff"), ColorValue("#334155"))
+      HoverFill: =ColorValue("#e2e8f0")
+      Size: =11
+      BorderThickness: =1
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+      Visible: =!IsBlank(gblDetail) && LookUp(colReponses, Cle = gblDetail).Reponse = "N"
+      BorderColor: =ColorValue("#94a3b8")
+- lblDCom:
+    Control: Label
+    Properties:
+      X: =207
+      Y: =194
+      Width: =600
+      Height: =22
+      Text: ="Correctifs et/ou commentaires"
+      Size: =10
+      Color: =ColorValue("#64748b")
+      FontWeight: =FontWeight.Bold
+      Visible: =!IsBlank(gblDetail)
+- txtDCommentaire:
+    Control: Classic/TextInput
+    Properties:
+      X: =207
+      Y: =216
+      Width: =952
+      Height: =90
+      Default: =LookUp(colReponses, Cle = gblDetail).Commentaire
+      OnChange: =false
+      HintText: ="Décrire le correctif ou le commentaire"
+      Size: =10
+      BorderColor: =ColorValue("#cbd5e1")
+      Mode: =TextMode.MultiLine
+      Visible: =!IsBlank(gblDetail)
+- lblDEmpl:
+    Control: Label
+    Properties:
+      X: =207
+      Y: =314
+      Width: =300
+      Height: =22
+      Text: ="Emplacement"
+      Size: =10
+      Color: =ColorValue("#64748b")
+      FontWeight: =FontWeight.Bold
+      Visible: =!IsBlank(gblDetail)
+- txtDEmplacement:
+    Control: Classic/TextInput
+    Properties:
+      X: =207
+      Y: =336
+      Width: =300
+      Height: =36
+      Default: =LookUp(colReponses, Cle = gblDetail).Emplacement
+      OnChange: =false
+      HintText: ="Emplacement"
+      Size: =10
+      BorderColor: =ColorValue("#cbd5e1")
+      Visible: =!IsBlank(gblDetail)
+- lblDResp:
+    Control: Label
+    Properties:
+      X: =515
+      Y: =314
+      Width: =260
+      Height: =22
+      Text: ="Responsable"
+      Size: =10
+      Color: =ColorValue("#64748b")
+      FontWeight: =FontWeight.Bold
+      Visible: =!IsBlank(gblDetail)
+- txtDResponsable:
+    Control: Classic/TextInput
+    Properties:
+      X: =515
+      Y: =336
+      Width: =260
+      Height: =36
+      Default: =LookUp(colReponses, Cle = gblDetail).Responsable
+      OnChange: =false
+      HintText: ="Responsable"
+      Size: =10
+      BorderColor: =ColorValue("#cbd5e1")
+      Visible: =!IsBlank(gblDetail)
+- lblDEch:
+    Control: Label
+    Properties:
+      X: =783
+      Y: =314
+      Width: =180
+      Height: =22
+      Text: ="Échéancier"
+      Size: =10
+      Color: =ColorValue("#64748b")
+      FontWeight: =FontWeight.Bold
+      Visible: =!IsBlank(gblDetail)
+- dpDEcheance:
+    Control: Classic/DatePicker
+    Properties:
+      X: =783
+      Y: =336
+      Width: =180
+      Height: =36
+      Visible: =!IsBlank(gblDetail)
+      DefaultDate: =LookUp(colReponses, Cle = gblDetail).Echeance
+      Format: ="yyyy-mm-dd"
+      Size: =10
+- lblDStatut:
+    Control: Label
+    Properties:
+      X: =971
+      Y: =314
+      Width: =188
+      Height: =22
+      Text: ="Statut du correctif"
+      Size: =10
+      Color: =ColorValue("#64748b")
+      FontWeight: =FontWeight.Bold
+      Visible: =!IsBlank(gblDetail) && LookUp(colReponses, Cle = gblDetail).Reponse = "N"
+- ddDStatut:
+    Control: Classic/DropDown
+    Properties:
+      X: =971
+      Y: =336
+      Width: =188
+      Height: =36
+      Items: =["À faire", "En cours", "Réalisé"]
+      Default: =Coalesce(LookUp(colReponses, Cle = gblDetail).Statut, "À faire")
+      AllowEmptySelection: =false
+      Size: =10
+      Visible: =!IsBlank(gblDetail) && LookUp(colReponses, Cle = gblDetail).Reponse = "N"
+- lblDPhotos:
+    Control: Label
+    Properties:
+      X: =207
+      Y: =384
+      Width: =700
+      Height: =22
+      Text: |-
+        ="Photos (" & CountRows(Filter('Photos inspections', CleReponse = gblInspCle & "_" & gblDetail)) & ")  —  cliquez sur une photo pour l'ouvrir"
+      Size: =10
+      Color: =ColorValue("#64748b")
+      FontWeight: =FontWeight.Bold
+      Visible: =!IsBlank(gblDetail)
+- galDPhotos:
+    Control: Gallery
+    Variant: Horizontal
+    Properties:
+      X: =207
+      Y: =410
+      Width: =952
+      Height: =124
+      Visible: =!IsBlank(gblDetail)
+      Items: |-
+        =Filter('Photos inspections', CleReponse = gblInspCle & "_" & gblDetail)
+      TemplateSize: =120
+      TemplatePadding: =4
+      ShowScrollbar: =true
+    Children:
+    - imgPhoto:
+        Control: Image
+        Properties:
+          X: =4
+          Y: =4
+          Width: =112
+          Height: =112
+          Image: =ThisItem.Thumbnail.Large
+          ImagePosition: =ImagePosition.Fill
+          OnSelect: |-
+            =Launch(ThisItem.'Link to item')
+- lblDPhotoAide:
+    Control: Label
+    Properties:
+      X: =207
+      Y: =540
+      Width: =952
+      Height: =40
+      Text: |-
+        ="Ajouter une photo : bouton « Ajouter une image » ci-dessous (la photo est déposée dans la bibliothèque SharePoint « Photos inspections »)."
+      Size: =9
+      Color: =ColorValue("#64748b")
+      Visible: =!IsBlank(gblDetail)
+- btnDFermer:
+    Control: Classic/Button
+    Properties:
+      X: =959
+      Y: =670
+      Width: =200
+      Height: =44
+      Text: ="Fermer"
+      OnSelect: |-
+        =With({r: LookUp(colReponses, Cle = gblDetail)},
+            Patch(
+                colReponses,
+                r,
+                {
+                    Commentaire: txtDCommentaire.Text,
+                    Emplacement: txtDEmplacement.Text,
+                    Responsable: txtDResponsable.Text,
+                    Echeance: dpDEcheance.SelectedDate,
+                    Statut: If(r.Reponse = "N", ddDStatut.Selected.Value, r.Statut),
+                    DateRealise: If(r.Reponse = "N" && ddDStatut.Selected.Value = "Réalisé", Coalesce(r.DateRealise, Today()), Blank())
+                }
+            )
+        );
+        Set(gblModifie, true);
+        Set(gblDetail, "")
+      Fill: =ColorValue("#2563eb")
+      Color: =ColorValue("#ffffff")
+      HoverFill: =ColorFade(ColorValue("#2563eb"), -15%)
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+      Visible: =!IsBlank(gblDetail)

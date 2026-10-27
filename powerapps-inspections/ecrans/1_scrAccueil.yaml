@@ -1,0 +1,336 @@
+- recBarre_Acc:
+    Control: Rectangle
+    Properties:
+      X: =0
+      Y: =0
+      Width: =1366
+      Height: =56
+      Fill: =ColorValue("#1e293b")
+- lblTitre_Acc:
+    Control: Label
+    Properties:
+      X: =16
+      Y: =0
+      Width: =760
+      Height: =56
+      Text: ="Inspections du milieu de travail — Bâtiments, cours et accès"
+      Size: =16
+      Color: =ColorValue("#ffffff")
+      FontWeight: =FontWeight.Bold
+- btnNouvelleInspection:
+    Control: Classic/Button
+    Properties:
+      X: =968
+      Y: =10
+      Width: =190
+      Height: =36
+      Text: ="+ Nouvelle inspection"
+      OnSelect: |-
+        =Set(gblInspID, Blank());
+        Set(gblInspCle, Text(GUID()));
+        Set(gblInfo, {Endroit: "", Service: "", Inspecteur: User().FullName, DateInspection: Today(), Participants: ""});
+        Set(gblNA, "");
+        Set(gblSignature, "");
+        ClearCollect(colReponses, ForAll(nfItems As it, Patch(nfReponseVide, {Cle: it.Cle, SectionNo: it.SectionNo, Element: it.Element, Echeance: Blank(), DateRealise: Blank()})));
+        Clear(colSupprimes);
+        Set(gblSection, 1);
+        Set(gblDetail, "");
+        Set(gblModifie, false);
+        Set(gblAvertiQuitter, false);
+        Navigate(scrInspection, ScreenTransition.None)
+      Fill: =ColorValue("#16a34a")
+      Color: =ColorValue("#ffffff")
+      HoverFill: =ColorFade(ColorValue("#16a34a"), -15%)
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- btnAllerSuivi:
+    Control: Classic/Button
+    Properties:
+      X: =1166
+      Y: =10
+      Width: =184
+      Height: =36
+      Text: ="Suivi des correctifs"
+      OnSelect: =Navigate(scrSuivi, ScreenTransition.None)
+      Fill: =ColorValue("#475569")
+      Color: =ColorValue("#ffffff")
+      HoverFill: =ColorFade(ColorValue("#475569"), -15%)
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- lblAccAide:
+    Control: Label
+    Properties:
+      X: =16
+      Y: =64
+      Width: =1000
+      Height: =28
+      Text: |-
+        ="Cliquez sur une inspection pour l'ouvrir. Les inspections sont enregistrées dans les listes SharePoint INS_Inspections et INS_Reponses."
+      Size: =10
+      Color: =ColorValue("#64748b")
+- txtRechAccueil:
+    Control: Classic/TextInput
+    Properties:
+      X: =16
+      Y: =96
+      Width: =420
+      Height: =36
+      Default: =""
+      OnChange: =false
+      HintText: |-
+        ="Rechercher (début de l'endroit, du service ou de l'inspecteur)…"
+      Size: =10
+      BorderColor: =ColorValue("#cbd5e1")
+- lblAccNombre:
+    Control: Label
+    Properties:
+      X: =450
+      Y: =96
+      Width: =400
+      Height: =36
+      Text: =CountRows(galInspections.AllItems) & " inspection(s)"
+      Size: =10
+      Color: =ColorValue("#64748b")
+- recAccEntetes:
+    Control: Rectangle
+    Properties:
+      X: =16
+      Y: =140
+      Width: =1334
+      Height: =30
+      Fill: =ColorValue("#f1f5f9")
+- lblAccH1:
+    Control: Label
+    Properties:
+      X: =28
+      Y: =140
+      Width: =560
+      Height: =30
+      Text: ="Endroit / Service · Inspecteur"
+      Size: =10
+      Color: =ColorValue("#475569")
+      FontWeight: =FontWeight.Bold
+- lblAccH2:
+    Control: Label
+    Properties:
+      X: =606
+      Y: =140
+      Width: =480
+      Height: =30
+      Text: ="Date / Suivi"
+      Size: =10
+      Color: =ColorValue("#475569")
+      FontWeight: =FontWeight.Bold
+- lblAccH3:
+    Control: Label
+    Properties:
+      X: =1096
+      Y: =140
+      Width: =150
+      Height: =30
+      Text: ="Statut"
+      Size: =10
+      Color: =ColorValue("#475569")
+      FontWeight: =FontWeight.Bold
+- galInspections:
+    Control: Gallery
+    Variant: Vertical
+    Properties:
+      X: =16
+      Y: =172
+      Width: =1334
+      Height: =586
+      Items: =Sort(Filter(INS_Inspections, IsBlank(txtRechAccueil.Text) || StartsWith(Title, txtRechAccueil.Text) || StartsWith(Service, txtRechAccueil.Text) || StartsWith(Inspecteur, txtRechAccueil.Text)), DateInspection, SortOrder.Descending)
+      TemplateSize: =76
+      TemplatePadding: =0
+      OnSelect: |-
+        =With({i: LookUp(INS_Inspections, ID = ThisItem.ID)},
+            Set(gblInspID, i.ID);
+            Set(gblInspCle, Coalesce(i.IdInspection, Text(GUID())));
+            Set(gblInfo, {Endroit: i.Title, Service: i.Service, Inspecteur: i.Inspecteur, DateInspection: Coalesce(i.DateInspection, Today()), Participants: i.Participants});
+            Set(gblNA, Coalesce(i.SectionsNA, ""));
+            Set(gblSignature, Coalesce(i.Signature, ""))
+        );
+        ClearCollect(colSaved, Filter(INS_Reponses, InspectionID = gblInspID));
+        ClearCollect(
+            colReponses,
+            ForAll(
+                nfItems As it,
+                With({s: LookUp(colSaved, ItemID = it.Cle)},
+                    {LigneID: Coalesce(s.ID, 0), Cle: it.Cle, SectionNo: it.SectionNo, Element: it.Element, EstAutre: false, Reponse: s.Reponse, Gravite: s.Gravite, Commentaire: s.Commentaire, Emplacement: s.Emplacement, Responsable: s.Responsable, Echeance: s.Echeance, Statut: s.StatutCorrectif, DateRealise: s.DateRealise}
+                )
+            )
+        );
+        Collect(
+            colReponses,
+            ForAll(
+                Sort(Filter(colSaved, SectionNo = 21), ID) As s,
+                {LigneID: s.ID, Cle: s.ItemID, SectionNo: 21, Element: s.Title, EstAutre: true, Reponse: s.Reponse, Gravite: s.Gravite, Commentaire: s.Commentaire, Emplacement: s.Emplacement, Responsable: s.Responsable, Echeance: s.Echeance, Statut: s.StatutCorrectif, DateRealise: s.DateRealise}
+            )
+        );
+        Clear(colSupprimes);
+        Set(gblSection, 1);
+        Set(gblDetail, "");
+        Set(gblModifie, false);
+        Set(gblAvertiQuitter, false);
+        Navigate(scrInspection, ScreenTransition.None)
+      ShowScrollbar: =true
+    Children:
+    - lblAccEndroit:
+        Control: Label
+        Properties:
+          X: =12
+          Y: =6
+          Width: =560
+          Height: =30
+          Text: =Coalesce(ThisItem.Title, "(sans endroit)")
+          Size: =13
+          Color: =ColorValue("#1f2937")
+          FontWeight: =FontWeight.Bold
+    - lblAccService:
+        Control: Label
+        Properties:
+          X: =12
+          Y: =38
+          Width: =560
+          Height: =28
+          Text: =ThisItem.Service & If(IsBlank(ThisItem.Inspecteur), "", "  ·  " & ThisItem.Inspecteur)
+          Size: =10
+          Color: =ColorValue("#64748b")
+    - lblAccDate:
+        Control: Label
+        Properties:
+          X: =590
+          Y: =6
+          Width: =160
+          Height: =30
+          Text: =Text(ThisItem.DateInspection, "yyyy-mm-dd")
+          Size: =11
+          Color: =ColorValue("#1f2937")
+          FontWeight: =FontWeight.Bold
+    - lblAccStats:
+        Control: Label
+        Properties:
+          X: =590
+          Y: =38
+          Width: =480
+          Height: =28
+          Text: =Coalesce(ThisItem.NbNonConformes, 0) & " non-conformité(s)  ·  " & Coalesce(ThisItem.NbGraviteElevee, 0) & " gravité E  ·  " & Coalesce(ThisItem.CorrectifsOuverts, 0) & " à réaliser" & If(IsBlank(ThisItem.ProchaineEcheance), "", "  ·  prochaine éch. " & Text(ThisItem.ProchaineEcheance, "yyyy-mm-dd"))
+          Size: =10
+          Color: =ColorValue("#64748b")
+    - lblAccStatut:
+        Control: Label
+        Properties:
+          X: =1080
+          Y: =20
+          Width: =150
+          Height: =32
+          Text: =Coalesce(ThisItem.StatutSuivi, "—")
+          Size: =10
+          Color: =ColorValue("#ffffff")
+          FontWeight: =FontWeight.Bold
+          Fill: =Switch(ThisItem.StatutSuivi, "Ouvert", ColorValue("#dc2626"), "En cours", ColorValue("#ea580c"), "Fermé", ColorValue("#16a34a"), ColorValue("#64748b"))
+          Align: =Align.Center
+    - icoAccSupprimer:
+        Control: Classic/Icon
+        Properties:
+          X: =1250
+          Y: =16
+          Width: =44
+          Height: =44
+          Icon: =Icon.Trash
+          OnSelect: =Set(gblASupprimer, ThisItem)
+          Color: =ColorValue("#dc2626")
+          Tooltip: ="Supprimer cette inspection"
+          PaddingTop: =6
+          PaddingBottom: =6
+          PaddingLeft: =6
+          PaddingRight: =6
+    - recAccSep:
+        Control: Rectangle
+        Properties:
+          X: =0
+          Y: =Parent.TemplateHeight - 1
+          Width: =Parent.TemplateWidth
+          Height: =1
+          Fill: =ColorValue("#e2e8f0")
+- recVoile_Acc:
+    Control: Rectangle
+    Properties:
+      X: =0
+      Y: =0
+      Width: =1366
+      Height: =768
+      Fill: =RGBA(0, 0, 0, 0.45)
+      Visible: =!IsBlank(gblASupprimer)
+- recDialogue_Acc:
+    Control: Rectangle
+    Properties:
+      X: =403
+      Y: =244
+      Width: =560
+      Height: =230
+      Fill: =ColorValue("#ffffff")
+      Visible: =!IsBlank(gblASupprimer)
+- lblDialogue_Acc:
+    Control: Label
+    Properties:
+      X: =427
+      Y: =260
+      Width: =512
+      Height: =120
+      Text: |-
+        ="Supprimer définitivement l'inspection « " & gblASupprimer.Title & " » du " & Text(gblASupprimer.DateInspection, "yyyy-mm-dd") & " et toutes ses réponses ?"
+      Size: =12
+      Color: =ColorValue("#1f2937")
+      Visible: =!IsBlank(gblASupprimer)
+- btnConfirmerSuppr:
+    Control: Classic/Button
+    Properties:
+      X: =427
+      Y: =400
+      Width: =240
+      Height: =44
+      Text: ="Supprimer"
+      OnSelect: |-
+        =Remove(INS_Reponses, Filter(INS_Reponses, InspectionID = gblASupprimer.ID));
+        Remove(INS_Inspections, gblASupprimer);
+        Set(gblASupprimer, Blank());
+        Notify("Inspection supprimée.", NotificationType.Success)
+      Fill: =ColorValue("#dc2626")
+      Color: =ColorValue("#ffffff")
+      HoverFill: =ColorFade(ColorValue("#dc2626"), -15%)
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+      Visible: =!IsBlank(gblASupprimer)
+- btnAnnulerSuppr:
+    Control: Classic/Button
+    Properties:
+      X: =699
+      Y: =400
+      Width: =240
+      Height: =44
+      Text: ="Annuler"
+      OnSelect: =Set(gblASupprimer, Blank())
+      Fill: =ColorValue("#e2e8f0")
+      Color: =ColorValue("#1e293b")
+      HoverFill: =ColorFade(ColorValue("#e2e8f0"), -15%)
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+      Visible: =!IsBlank(gblASupprimer)

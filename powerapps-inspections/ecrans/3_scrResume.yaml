@@ -1,0 +1,628 @@
+- recBarre_Res:
+    Control: Rectangle
+    Properties:
+      X: =0
+      Y: =0
+      Width: =1366
+      Height: =56
+      Fill: =ColorValue("#1e293b")
+- lblTitre_Res:
+    Control: Label
+    Properties:
+      X: =16
+      Y: =0
+      Width: =520
+      Height: =56
+      Text: ="Résumé et envoi"
+      Size: =16
+      Color: =ColorValue("#ffffff")
+      FontWeight: =FontWeight.Bold
+- lblEtat_Res:
+    Control: Label
+    Properties:
+      X: =540
+      Y: =0
+      Width: =380
+      Height: =56
+      Text: =If(gblModifie, "● Modifications non enregistrées", If(IsBlank(gblInspID), "Nouvelle inspection", "✔ Enregistrée dans SharePoint"))
+      Size: =10
+      Color: =If(gblModifie, ColorValue("#fbbf24"), ColorValue("#86efac"))
+      FontWeight: =FontWeight.Bold
+- btnAccueil_Res:
+    Control: Classic/Button
+    Properties:
+      X: =1072
+      Y: =10
+      Width: =120
+      Height: =36
+      Text: ="Accueil"
+      OnSelect: |-
+        =If(
+            gblModifie && !gblAvertiQuitter,
+            Set(gblAvertiQuitter, true);
+            Notify("Modifications non enregistrées ! Cliquez sur « Enregistrer », ou cliquez de nouveau sur « Accueil » pour quitter sans enregistrer.", NotificationType.Warning),
+            Set(gblAvertiQuitter, false);
+            Set(gblModifie, false);
+            Navigate(scrAccueil, ScreenTransition.None)
+        )
+      Fill: =ColorValue("#475569")
+      Color: =ColorValue("#ffffff")
+      HoverFill: =ColorFade(ColorValue("#475569"), -15%)
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- btnEnregistrer_Res:
+    Control: Classic/Button
+    Properties:
+      X: =1200
+      Y: =10
+      Width: =150
+      Height: =36
+      Text: ="Enregistrer"
+      OnSelect: |-
+        =If(
+            IsBlank(Trim(gblInfo.Endroit)),
+            Notify("Le champ « Endroit » est obligatoire avant d'enregistrer.", NotificationType.Error),
+            With({nonNA: Filter(colReponses, !(("|" & SectionNo & "|") in gblNA))},
+                Set(
+                    gblEnreg,
+                    Patch(
+                        INS_Inspections,
+                        If(IsBlank(gblInspID), Defaults(INS_Inspections), LookUp(INS_Inspections, ID = gblInspID)),
+                        {
+                            Title: gblInfo.Endroit,
+                            Service: gblInfo.Service,
+                            Inspecteur: gblInfo.Inspecteur,
+                            DateInspection: gblInfo.DateInspection,
+                            Participants: gblInfo.Participants,
+                            SectionsNA: gblNA,
+                            Signature: gblSignature,
+                            IdInspection: gblInspCle,
+                            NbApplicables: CountRows(nonNA),
+                            NbRepondus: CountIf(nonNA, !IsBlank(Reponse)),
+                            NbNonConformes: CountIf(nonNA, Reponse = "N"),
+                            NbGraviteElevee: CountIf(nonNA, Reponse = "N" && Gravite = "E"),
+                            CorrectifsOuverts: CountIf(nonNA, Reponse = "N" && Statut <> "Réalisé"),
+                            ProchaineEcheance: Min(Filter(nonNA, Reponse = "N" && Statut <> "Réalisé" && !IsBlank(Echeance)), Echeance),
+                            StatutSuivi: If(
+                                CountIf(nonNA, Reponse = "N") = 0, "Aucun correctif",
+                                CountIf(nonNA, Reponse = "N" && Statut <> "Réalisé") = 0, "Fermé",
+                                CountIf(nonNA, Reponse = "N" && (Statut = "En cours" || Statut = "Réalisé")) > 0, "En cours",
+                                "Ouvert"
+                            )
+                        }
+                    )
+                )
+            );
+            Set(gblInspID, gblEnreg.ID);
+            ForAll(colSupprimes As d, Remove(INS_Reponses, LookUp(INS_Reponses, ID = d.LigneID)));
+            Clear(colSupprimes);
+            // Mise à jour des réponses déjà enregistrées
+            ForAll(
+                Filter(colReponses, LigneID > 0) As r,
+                Patch(INS_Reponses, LookUp(INS_Reponses, ID = r.LigneID), {
+                        Title: r.Element,
+                        InspectionID: gblInspID,
+                        IdInspection: gblInspCle,
+                        ItemID: r.Cle,
+                        SectionNo: r.SectionNo,
+                        Sujet: LookUp(nfSections, Numero = r.SectionNo).Titre,
+                        Reponse: r.Reponse,
+                        Applicable: If(("|" & r.SectionNo & "|") in gblNA, "Non", "Oui"),
+                        Gravite: r.Gravite,
+                        Commentaire: r.Commentaire,
+                        Emplacement: r.Emplacement,
+                        Responsable: r.Responsable,
+                        Echeance: r.Echeance,
+                        StatutCorrectif: r.Statut,
+                        DateRealise: r.DateRealise,
+                        Endroit: gblInfo.Endroit,
+                        Service: gblInfo.Service,
+                        DateInspection: gblInfo.DateInspection
+                    })
+            );
+            // Création des nouvelles réponses (en un seul envoi)
+            With(
+                {nouv: ForAll(Filter(colReponses, LigneID = 0 && (!IsBlank(Reponse) || !IsBlank(Commentaire) || EstAutre)) As r, {
+                            Title: r.Element,
+                            InspectionID: gblInspID,
+                            IdInspection: gblInspCle,
+                            ItemID: r.Cle,
+                            SectionNo: r.SectionNo,
+                            Sujet: LookUp(nfSections, Numero = r.SectionNo).Titre,
+                            Reponse: r.Reponse,
+                            Applicable: If(("|" & r.SectionNo & "|") in gblNA, "Non", "Oui"),
+                            Gravite: r.Gravite,
+                            Commentaire: r.Commentaire,
+                            Emplacement: r.Emplacement,
+                            Responsable: r.Responsable,
+                            Echeance: r.Echeance,
+                            StatutCorrectif: r.Statut,
+                            DateRealise: r.DateRealise,
+                            Endroit: gblInfo.Endroit,
+                            Service: gblInfo.Service,
+                            DateInspection: gblInfo.DateInspection
+                        })},
+                If(CountRows(nouv) > 0, Patch(INS_Reponses, ForAll(nouv, Defaults(INS_Reponses)), nouv))
+            );
+            ClearCollect(colSaved, Filter(INS_Reponses, InspectionID = gblInspID));
+            ClearCollect(
+                colReponses,
+                ForAll(
+                    nfItems As it,
+                    With({s: LookUp(colSaved, ItemID = it.Cle)},
+                        {LigneID: Coalesce(s.ID, 0), Cle: it.Cle, SectionNo: it.SectionNo, Element: it.Element, EstAutre: false, Reponse: s.Reponse, Gravite: s.Gravite, Commentaire: s.Commentaire, Emplacement: s.Emplacement, Responsable: s.Responsable, Echeance: s.Echeance, Statut: s.StatutCorrectif, DateRealise: s.DateRealise}
+                    )
+                )
+            );
+            Collect(
+                colReponses,
+                ForAll(
+                    Sort(Filter(colSaved, SectionNo = 21), ID) As s,
+                    {LigneID: s.ID, Cle: s.ItemID, SectionNo: 21, Element: s.Title, EstAutre: true, Reponse: s.Reponse, Gravite: s.Gravite, Commentaire: s.Commentaire, Emplacement: s.Emplacement, Responsable: s.Responsable, Echeance: s.Echeance, Statut: s.StatutCorrectif, DateRealise: s.DateRealise}
+                )
+            );
+            Set(gblModifie, false);
+            Set(gblAvertiQuitter, false);
+            Notify("Inspection enregistrée dans SharePoint.", NotificationType.Success)
+        )
+      Fill: =ColorValue("#16a34a")
+      Color: =ColorValue("#ffffff")
+      HoverFill: =ColorFade(ColorValue("#16a34a"), -15%)
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- recOnglets_Res:
+    Control: Rectangle
+    Properties:
+      X: =0
+      Y: =56
+      Width: =1366
+      Height: =48
+      Fill: =ColorValue("#e2e8f0")
+- btnOngInsp_Res:
+    Control: Classic/Button
+    Properties:
+      X: =16
+      Y: =62
+      Width: =210
+      Height: =36
+      Text: ="Inspection"
+      OnSelect: =Navigate(scrInspection, ScreenTransition.None)
+      Fill: =If(App.ActiveScreen.Name = "scrInspection", ColorValue("#2563eb"), ColorValue("#ffffff"))
+      Color: =If(App.ActiveScreen.Name = "scrInspection", ColorValue("#ffffff"), ColorValue("#1e293b"))
+      HoverFill: =ColorValue("#bfdbfe")
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- btnOngResume_Res:
+    Control: Classic/Button
+    Properties:
+      X: =234
+      Y: =62
+      Width: =210
+      Height: =36
+      Text: ="Résumé et envoi"
+      OnSelect: =Navigate(scrResume, ScreenTransition.None)
+      Fill: =If(App.ActiveScreen.Name = "scrResume", ColorValue("#2563eb"), ColorValue("#ffffff"))
+      Color: =If(App.ActiveScreen.Name = "scrResume", ColorValue("#ffffff"), ColorValue("#1e293b"))
+      HoverFill: =ColorValue("#bfdbfe")
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- btnOngSuivi_Res:
+    Control: Classic/Button
+    Properties:
+      X: =452
+      Y: =62
+      Width: =210
+      Height: =36
+      Text: ="Suivi des correctifs"
+      OnSelect: =Navigate(scrSuivi, ScreenTransition.None)
+      Fill: =If(App.ActiveScreen.Name = "scrSuivi", ColorValue("#2563eb"), ColorValue("#ffffff"))
+      Color: =If(App.ActiveScreen.Name = "scrSuivi", ColorValue("#ffffff"), ColorValue("#1e293b"))
+      HoverFill: =ColorValue("#bfdbfe")
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- lblCRepondus:
+    Control: Label
+    Properties:
+      X: =16
+      Y: =112
+      Width: =324
+      Height: =66
+      Text: |-
+        =With({a: CountIf(colReponses, !(("|" & SectionNo & "|") in gblNA)), r: CountIf(colReponses, !(("|" & SectionNo & "|") in gblNA) && !IsBlank(Reponse))}, r & "/" & a & Char(10) & "éléments répondus")
+      Size: =13
+      Color: =ColorValue("#ffffff")
+      FontWeight: =FontWeight.Bold
+      Fill: =ColorValue("#1e293b")
+      Align: =Align.Center
+- lblCNC:
+    Control: Label
+    Properties:
+      X: =348
+      Y: =112
+      Width: =324
+      Height: =66
+      Text: =CountIf(colReponses, !(("|" & SectionNo & "|") in gblNA) && Reponse = "N") & Char(10) & "non-conformités"
+      Size: =13
+      Color: =ColorValue("#ffffff")
+      FontWeight: =FontWeight.Bold
+      Fill: =ColorValue("#dc2626")
+      Align: =Align.Center
+- lblCGravE:
+    Control: Label
+    Properties:
+      X: =680
+      Y: =112
+      Width: =324
+      Height: =66
+      Text: =CountIf(colReponses, !(("|" & SectionNo & "|") in gblNA) && Reponse = "N" && Gravite = "E") & Char(10) & "gravité élevée (E)"
+      Size: =13
+      Color: =ColorValue("#ffffff")
+      FontWeight: =FontWeight.Bold
+      Fill: =ColorValue("#ea580c")
+      Align: =Align.Center
+- lblCOuverts:
+    Control: Label
+    Properties:
+      X: =1012
+      Y: =112
+      Width: =324
+      Height: =66
+      Text: =CountIf(colReponses, !(("|" & SectionNo & "|") in gblNA) && Reponse = "N" && Statut <> "Réalisé") & Char(10) & "correctifs à réaliser"
+      Size: =13
+      Color: =ColorValue("#ffffff")
+      FontWeight: =FontWeight.Bold
+      Fill: =ColorValue("#2563eb")
+      Align: =Align.Center
+- lblValidation:
+    Control: Label
+    Properties:
+      X: =16
+      Y: =184
+      Width: =1334
+      Height: =34
+      Text: |-
+        =With({a: CountIf(colReponses, !(("|" & SectionNo & "|") in gblNA)), r: CountIf(colReponses, !(("|" & SectionNo & "|") in gblNA) && !IsBlank(Reponse)), sg: CountIf(colReponses, !(("|" & SectionNo & "|") in gblNA) && Reponse = "N" && IsBlank(Gravite))}, With({msg: If(IsBlank(gblInfo.Endroit) || IsBlank(gblInfo.Service) || IsBlank(gblInfo.Inspecteur), "Renseignements incomplets (endroit, service, inspecteur). ", "") & If(r < a, (a - r) & " élément(s) applicable(s) sans réponse. ", "") & If(sg > 0, sg & " non-conformité(s) sans potentiel de gravité. ", "") & If(IsBlank(gblSignature), "Signature non validée.", "")}, If(IsBlank(msg), "✔ Inspection complète.", "⚠ " & msg)))
+      Size: =10
+      Color: =If(StartsWith(Self.Text, "✔"), ColorValue("#16a34a"), ColorValue("#b45309"))
+      FontWeight: =FontWeight.Bold
+- recNCEntetes:
+    Control: Rectangle
+    Properties:
+      X: =16
+      Y: =222
+      Width: =1334
+      Height: =28
+      Fill: =ColorValue("#1e293b")
+- lblNCH1:
+    Control: Label
+    Properties:
+      X: =24
+      Y: =222
+      Width: =380
+      Height: =28
+      Text: ="Sujet — Élément"
+      Size: =9
+      Color: =ColorValue("#ffffff")
+      FontWeight: =FontWeight.Bold
+- lblNCH2:
+    Control: Label
+    Properties:
+      X: =404
+      Y: =222
+      Width: =60
+      Height: =28
+      Text: ="Grav."
+      Size: =9
+      Color: =ColorValue("#ffffff")
+      FontWeight: =FontWeight.Bold
+- lblNCH3:
+    Control: Label
+    Properties:
+      X: =462
+      Y: =222
+      Width: =330
+      Height: =28
+      Text: ="Correctif / commentaire (emplacement)"
+      Size: =9
+      Color: =ColorValue("#ffffff")
+      FontWeight: =FontWeight.Bold
+- lblNCH4:
+    Control: Label
+    Properties:
+      X: =800
+      Y: =222
+      Width: =180
+      Height: =28
+      Text: ="Responsable"
+      Size: =9
+      Color: =ColorValue("#ffffff")
+      FontWeight: =FontWeight.Bold
+- lblNCH5:
+    Control: Label
+    Properties:
+      X: =988
+      Y: =222
+      Width: =160
+      Height: =28
+      Text: ="Échéance"
+      Size: =9
+      Color: =ColorValue("#ffffff")
+      FontWeight: =FontWeight.Bold
+- lblNCH6:
+    Control: Label
+    Properties:
+      X: =1156
+      Y: =222
+      Width: =150
+      Height: =28
+      Text: ="Statut"
+      Size: =9
+      Color: =ColorValue("#ffffff")
+      FontWeight: =FontWeight.Bold
+- lblAucuneNC:
+    Control: Label
+    Properties:
+      X: =24
+      Y: =256
+      Width: =800
+      Height: =40
+      Text: ="Aucune non-conformité."
+      Size: =11
+      Color: =ColorValue("#64748b")
+      Visible: =CountIf(colReponses, !(("|" & SectionNo & "|") in gblNA) && Reponse = "N") = 0
+- galNC:
+    Control: Gallery
+    Variant: Vertical
+    Properties:
+      X: =16
+      Y: =252
+      Width: =1334
+      Height: =308
+      Items: =Sort(Filter(colReponses, Reponse = "N" && !(("|" & SectionNo & "|") in gblNA)), If(Gravite = "E", 0, 1))
+      TemplateSize: =64
+      TemplatePadding: =0
+      ShowScrollbar: =true
+    Children:
+    - lblNCElement:
+        Control: Label
+        Properties:
+          X: =8
+          Y: =4
+          Width: =380
+          Height: =56
+          Text: =LookUp(nfSections, Numero = ThisItem.SectionNo).Titre & " — " & ThisItem.Element
+          Size: =9
+          Color: =ColorValue("#1f2937")
+    - lblNCGravite:
+        Control: Label
+        Properties:
+          X: =394
+          Y: =16
+          Width: =44
+          Height: =32
+          Text: =Coalesce(ThisItem.Gravite, "—")
+          Size: =10
+          Color: =ColorValue("#ffffff")
+          FontWeight: =FontWeight.Bold
+          Fill: =Switch(ThisItem.Gravite, "E", ColorValue("#dc2626"), "F", ColorValue("#ea580c"), ColorValue("#94a3b8"))
+          Align: =Align.Center
+    - lblNCCorrectif:
+        Control: Label
+        Properties:
+          X: =446
+          Y: =4
+          Width: =330
+          Height: =56
+          Text: =ThisItem.Commentaire & If(IsBlank(ThisItem.Emplacement), "", " (" & ThisItem.Emplacement & ")")
+          Size: =9
+          Color: =ColorValue("#334155")
+    - txtNCResp:
+        Control: Classic/TextInput
+        Properties:
+          X: =784
+          Y: =14
+          Width: =180
+          Height: =36
+          Default: =ThisItem.Responsable
+          OnChange: |-
+            =If(Self.Text <> ThisItem.Responsable, Patch(colReponses, LookUp(colReponses, Cle = ThisItem.Cle), {Responsable: Self.Text}); Set(gblModifie, true))
+          HintText: ="Responsable"
+          Size: =10
+          BorderColor: =ColorValue("#cbd5e1")
+    - dpNCEch:
+        Control: Classic/DatePicker
+        Properties:
+          X: =972
+          Y: =14
+          Width: =160
+          Height: =36
+          DefaultDate: =ThisItem.Echeance
+          Format: ="yyyy-mm-dd"
+          Size: =9
+          BorderColor: =If(!IsBlank(ThisItem.Echeance) && ThisItem.Echeance < Today() && ThisItem.Statut <> "Réalisé", ColorValue("#dc2626"), ColorValue("#cbd5e1"))
+          OnChange: |-
+            =If(Self.SelectedDate <> ThisItem.Echeance, Patch(colReponses, LookUp(colReponses, Cle = ThisItem.Cle), {Echeance: Self.SelectedDate}); Set(gblModifie, true))
+    - ddNCStatut:
+        Control: Classic/DropDown
+        Properties:
+          X: =1140
+          Y: =14
+          Width: =150
+          Height: =36
+          Items: =["À faire", "En cours", "Réalisé"]
+          Default: =Coalesce(ThisItem.Statut, "À faire")
+          OnChange: |-
+            =If(Self.Selected.Value <> ThisItem.Statut, Patch(colReponses, LookUp(colReponses, Cle = ThisItem.Cle), {Statut: Self.Selected.Value, DateRealise: If(Self.Selected.Value = "Réalisé", Today(), Blank())}); Set(gblModifie, true))
+          AllowEmptySelection: =false
+          Size: =10
+    - recNCSep:
+        Control: Rectangle
+        Properties:
+          X: =0
+          Y: =Parent.TemplateHeight - 1
+          Width: =Parent.TemplateWidth
+          Height: =1
+          Fill: =ColorValue("#e2e8f0")
+- lblSignature:
+    Control: Label
+    Properties:
+      X: =16
+      Y: =568
+      Width: =600
+      Height: =24
+      Text: |-
+        ="Signature de l'inspecteur (souris, doigt ou stylet) — insérer le contrôle penSignature ici"
+      Size: =10
+      Color: =ColorValue("#334155")
+      FontWeight: =FontWeight.Bold
+- recCadreSignature:
+    Control: Rectangle
+    Properties:
+      X: =16
+      Y: =594
+      Width: =420
+      Height: =140
+      Fill: =ColorValue("#f8fafc")
+      BorderColor: =ColorValue("#94a3b8")
+      BorderThickness: =1
+- btnValiderSignature:
+    Control: Classic/Button
+    Properties:
+      X: =444
+      Y: =594
+      Width: =180
+      Height: =40
+      Text: ="Valider la signature"
+      OnSelect: =Set(gblSignature, Substitute(JSON(penSignature.Image, JSONFormat.IncludeBinaryData), Char(34), "")); Set(gblModifie, true); Notify("Signature validée — pensez à enregistrer.", NotificationType.Success)
+      Fill: =ColorValue("#2563eb")
+      Color: =ColorValue("#ffffff")
+      HoverFill: =ColorFade(ColorValue("#2563eb"), -15%)
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- btnEffacerSignature:
+    Control: Classic/Button
+    Properties:
+      X: =444
+      Y: =642
+      Width: =180
+      Height: =40
+      Text: ="Effacer la signature"
+      OnSelect: =Reset(penSignature); Set(gblSignature, ""); Set(gblModifie, true)
+      Fill: =ColorValue("#64748b")
+      Color: =ColorValue("#ffffff")
+      HoverFill: =ColorFade(ColorValue("#64748b"), -15%)
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- lblSigEnreg:
+    Control: Label
+    Properties:
+      X: =640
+      Y: =568
+      Width: =360
+      Height: =24
+      Text: =If(IsBlank(gblSignature), "Aucune signature validée", "Signature validée :")
+      Size: =9
+      Color: =ColorValue("#64748b")
+- imgSignature:
+    Control: Image
+    Properties:
+      X: =640
+      Y: =594
+      Width: =360
+      Height: =140
+      Image: =gblSignature
+      ImagePosition: =ImagePosition.Fit
+      BorderColor: =ColorValue("#cbd5e1")
+      BorderThickness: =1
+- btnEnvoyer:
+    Control: Classic/Button
+    Properties:
+      X: =1040
+      Y: =594
+      Width: =310
+      Height: =44
+      Text: ="Envoyer (PDF + Excel + courriel)"
+      OnSelect: |-
+        =If(
+            IsBlank(gblInspID) || gblModifie,
+            Notify("Enregistrez d'abord l'inspection (bouton « Enregistrer ») avant de l'envoyer.", NotificationType.Warning),
+            With(
+                {nom: "Inspection_" & Substitute(Substitute(Substitute(Trim(gblInfo.Endroit), " ", "_"), "/", "-"), "\", "-") & "_" & Text(gblInfo.DateInspection, "yyyy-mm-dd")},
+                Notify("Envoi en cours…", NotificationType.Information);
+                IfError(
+                    INSExporterInspection.Run(
+                        nom,
+                        "<html><head><meta charset='utf-8'><title>Inspection du milieu de travail</title></head><body style='font-family:Segoe UI,Arial,sans-serif;font-size:9px;color:#1f2937'><h1 style='font-size:16px;color:#1e293b;margin:0'>Liste de vérification / inspection du milieu de travail</h1><p style='margin:0 0 8px 0;color:#64748b'>Bâtiments, cours et accès — Division santé et sécurité au travail, Ville de Québec</p><table style='border-collapse:collapse;width:100%;font-size:10px'><tr>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & "<b>Endroit</b>" & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & gblInfo.Endroit & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & "<b>Service</b>" & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & gblInfo.Service & "</td>" & "</tr><tr>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & "<b>Inspection réalisée par</b>" & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & gblInfo.Inspecteur & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & "<b>Date</b>" & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & Text(gblInfo.DateInspection, "yyyy-mm-dd") & "</td>" & "</tr><tr>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & "<b>Participants</b>" & "</td>" & "<td colspan='3' style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & gblInfo.Participants & "</td></tr></table><p style='font-size:11px'><b>" & CountIf(colReponses, !(("|" & SectionNo & "|") in gblNA) && Reponse = "N") & "</b> non-conformité(s), dont <b>" & CountIf(colReponses, !(("|" & SectionNo & "|") in gblNA) && Reponse = "N" && Gravite = "E") & "</b> à gravité élevée · <b>" & CountIf(colReponses, !(("|" & SectionNo & "|") in gblNA) && Reponse = "N" && Statut <> "Réalisé") & "</b> correctif(s) à réaliser</p><h2 style='font-size:12px;color:#1e293b;border-bottom:2px solid #2563eb'>Non-conformités et correctifs</h2><table style='border-collapse:collapse;width:100%'><tr><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Sujet</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Élément</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Gravité</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Correctif / commentaire</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Emplacement</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Responsable</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Échéance</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Statut</th></tr>" & If(CountIf(colReponses, !(("|" & SectionNo & "|") in gblNA) && Reponse = "N") = 0, "<tr><td colspan='8' style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>Aucune non-conformité.</td></tr>", Concat(Sort(Filter(colReponses, Reponse = "N" && !(("|" & SectionNo & "|") in gblNA)), If(Gravite = "E", 0, 1)) As r, "<tr>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & LookUp(nfSections, Numero = r.SectionNo).Titre & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & r.Element & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & r.Gravite & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & r.Commentaire & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & r.Emplacement & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & r.Responsable & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & Text(r.Echeance, "yyyy-mm-dd") & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & r.Statut & "</td>" & "</tr>")) & "</table><h2 style='font-size:12px;color:#1e293b;border-bottom:2px solid #2563eb'>Liste de vérification</h2><table style='border-collapse:collapse;width:100%'><tr><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Élément</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Oui</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Non</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>N/A</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Correctifs / commentaires</th><th style='background:#1e293b;color:#fff;padding:4px;text-align:left'>Responsable / échéance / statut</th></tr>" & Concat(nfSections As sec, "<tr><td colspan='6' style='background:#e2e8f0;padding:4px'><b>" & sec.Numero & ". " & sec.Titre & "</b>" & If((("|" & sec.Numero & "|") in gblNA), " — Non applicable", "") & "</td></tr>" & If((("|" & sec.Numero & "|") in gblNA), "", Concat(Filter(colReponses, SectionNo = sec.Numero) As r, "<tr>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & r.Element & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top;text-align:center'>" & If(r.Reponse = "O", "X", "") & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top;text-align:center;color:#dc2626;font-weight:bold'>" & If(r.Reponse = "N", "X", "") & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top;text-align:center'>" & If(r.Reponse = "NA", "X", "") & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & r.Commentaire & If(IsBlank(r.Emplacement), "", "<br>Emplacement : " & r.Emplacement) & "</td>" & "<td style='border:1px solid #cbd5e1;padding:3px;vertical-align:top'>" & If(r.Reponse = "N", r.Responsable & If(IsBlank(r.Echeance), "", "<br>" & Text(r.Echeance, "yyyy-mm-dd")) & "<br>Statut : " & r.Statut & If(IsBlank(r.Gravite), "", " · Gravité " & r.Gravite), "") & "</td>" & "</tr>"))) & "</table><h2 style='font-size:12px;color:#1e293b;border-bottom:2px solid #2563eb'>Signature de l'inspecteur</h2>" & If(IsBlank(gblSignature), "<p>(non signée)</p>", "<img src='" & gblSignature & "' style='height:90px'>") & "<p>" & gblInfo.Inspecteur & " — " & Text(gblInfo.DateInspection, "yyyy-mm-dd") & "</p></body></html>",
+                        UniChar(65279) & "Endroit;" & Char(34) & Substitute(gblInfo.Endroit, Char(34), "'") & Char(34) & Char(13) & Char(10) & "Service;" & Char(34) & Substitute(gblInfo.Service, Char(34), "'") & Char(34) & Char(13) & Char(10) & "Inspecteur;" & Char(34) & Substitute(gblInfo.Inspecteur, Char(34), "'") & Char(34) & Char(13) & Char(10) & "Date;" & Text(gblInfo.DateInspection, "yyyy-mm-dd") & Char(13) & Char(10) & Char(13) & Char(10) & "No sujet;Sujet;Applicable;Élément;Réponse;Gravité;Correctif / commentaire;Emplacement;Responsable;Échéance;Statut;Date réalisé" & Char(13) & Char(10) & Concat(colReponses As r, r.SectionNo & ";" & Char(34) & Substitute(LookUp(nfSections, Numero = r.SectionNo).Titre, Char(34), "'") & Char(34) & ";" & If((("|" & r.SectionNo & "|") in gblNA), "Non", "Oui") & ";" & Char(34) & Substitute(r.Element, Char(34), "'") & Char(34) & ";" & Switch(r.Reponse, "O", "Oui", "N", "Non", "NA", "N/A", "") & ";" & r.Gravite & ";" & Char(34) & Substitute(r.Commentaire, Char(34), "'") & Char(34) & ";" & Char(34) & Substitute(r.Emplacement, Char(34), "'") & Char(34) & ";" & Char(34) & Substitute(r.Responsable, Char(34), "'") & Char(34) & ";" & Text(r.Echeance, "yyyy-mm-dd") & ";" & r.Statut & ";" & Text(r.DateRealise, "yyyy-mm-dd") & Char(13) & Char(10))
+                    );
+                    Notify("PDF et fichier Excel (CSV) déposés dans « Inspections complétées », courriel envoyé.", NotificationType.Success),
+                    Notify("L'envoi a échoué : " & FirstError.Message, NotificationType.Error)
+                )
+            )
+        )
+      Fill: =ColorValue("#2563eb")
+      Color: =ColorValue("#ffffff")
+      HoverFill: =ColorFade(ColorValue("#2563eb"), -15%)
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- btnImprimer:
+    Control: Classic/Button
+    Properties:
+      X: =1040
+      Y: =646
+      Width: =310
+      Height: =40
+      Text: ="Imprimer cet écran"
+      OnSelect: =Print()
+      Fill: =ColorValue("#475569")
+      Color: =ColorValue("#ffffff")
+      HoverFill: =ColorFade(ColorValue("#475569"), -15%)
+      Size: =11
+      BorderThickness: =0
+      RadiusTopLeft: =4
+      RadiusTopRight: =4
+      RadiusBottomLeft: =4
+      RadiusBottomRight: =4
+- lblAideEnvoi:
+    Control: Label
+    Properties:
+      X: =1040
+      Y: =690
+      Width: =310
+      Height: =60
+      Text: |-
+        ="L'envoi dépose le PDF et le CSV (Excel) dans « Inspections complétées » et envoie le PDF par courriel."
+      Size: =8
+      Color: =ColorValue("#64748b")

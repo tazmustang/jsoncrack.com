@@ -1,0 +1,17 @@
+// Initialise les collections (structure) et les variables globales
+ClearCollect(colReponses; nfReponseVide);;
+Clear(colReponses);;
+ClearCollect(colSupprimes; {LigneID: 0});;
+Clear(colSupprimes);;
+Set(gblInspID; Blank());;
+Set(gblInspCle; "");;
+Set(gblASupprimer; Blank());;
+Set(gblInfo; {Endroit: ""; Service: ""; Inspecteur: ""; DateInspection: Today(); Participants: ""});;
+Set(gblNA; "");;
+Set(gblSignature; "");;
+Set(gblSection; 1);;
+Set(gblDetail; "");;
+Set(gblSansReponse; false);;
+Set(gblVoirRealises; false);;
+Set(gblModifie; false);;
+Set(gblAvertiQuitter; false)
