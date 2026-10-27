@@ -1,0 +1,191 @@
+// ---------- Paramètres de l'environnement (liste Parametres) ----------
+Set(varEnv; Coalesce(LookUp(Parametres; Title = "Environnement").Valeur; "PROD"));;
+Set(varCourrielSoutien; LookUp(Parametres; Title = "CourrielSoutien").Valeur);;
+
+// ---------- Base ----------
+Set(varMoi; Lower(User().Email));;
+Set(CurrentTabID; 1);;
+ClearCollect(colRoles;
+    {RoleLabel: "Personne en appréciation"; RoleID: "cadre"};
+    {RoleLabel: "Supérieur(e) immédiat(e)"; RoleID: "superieur_immediat"};
+    {RoleLabel: "Supérieur(e) hiérarchique"; RoleID: "superieur_hierarchique"};
+    {RoleLabel: "Directeur / directrice"; RoleID: "directeur"});;
+ClearCollect(colPostes;
+    {PosteLabel: "Cadre avec équipe"; PosteColor: RGBA(7;75;152;1); PosteID: "avec_equipe"};
+    {PosteLabel: "Cadre sans équipe"; PosteColor: RGBA(0;121;107;1); PosteID: "sans_equipe"};
+    {PosteLabel: "Professionnel non syndiqué"; PosteColor: RGBA(107;63;160;1); PosteID: "professionnel"});;
+ClearCollect(colTabs;
+    {TabLabel: "📝 Formulaire"; TabID: 1};
+    {TabLabel: "❓ Comment remplir"; TabID: 2};
+    {TabLabel: "📊 Synthèse"; TabID: 3};
+    {TabLabel: "🎯 Plan de développement"; TabID: 4});;
+
+// Dossier ouvert depuis un lien (...&ID=12)
+If(IsBlank(varDossier) && !IsBlank(Param("ID"));
+    Set(varDossier; LookUp(Appreciations; ID = Value(Param("ID")))));;
+
+// Rôle selon le courriel de la personne connectée
+Set(CurrentRoleID;
+    Switch(varMoi;
+        varDossier.CourrielSI; "superieur_immediat";
+        varDossier.CourrielSH; "superieur_hierarchique";
+        varDossier.CourrielDirecteur; "directeur";
+        "cadre"));;
+Set(CurrentPosteID;
+    Coalesce(LookUp(colPostes; PosteLabel = varDossier.TypePoste.Value).PosteID; ""));;
+
+// ---------- Section A ----------
+With({t: Table(ParseJSON(Coalesce(varDossier.ObjectifsActuels; "[]")))};
+    ClearCollect(colObjActuels;
+        ForAll(Sequence(CountRows(t)) As i;
+            With({r: Index(t; i.Value).Value};
+                {LigneID: i.Value; Objectif: Text(r.objectif);
+                 Indicateur: Text(r.indicateur); Actions: Text(r.actions)}))));;
+If(IsEmpty(colObjActuels);
+    Collect(colObjActuels; {LigneID: 1; Objectif: ""; Indicateur: ""; Actions: ""}));;
+With({t: Table(ParseJSON(Coalesce(varDossier.ObjectifsAvenir; "[]")))};
+    ClearCollect(colObjAvenir;
+        ForAll(Sequence(CountRows(t)) As i;
+            With({r: Index(t; i.Value).Value};
+                {LigneID: i.Value; Objectif: Text(r.objectif); Indicateur: Text(r.indicateur)}))));;
+If(IsEmpty(colObjAvenir);
+    Collect(colObjAvenir; {LigneID: 1; Objectif: ""; Indicateur: ""}));;
+
+// ---------- Section B : échelle, postures, comportements, compétences ----------
+ClearCollect(colEchelle;
+    {Niveau: "Non démontré"; Ordre: 1};
+    {Niveau: "Partiellement démontré"; Ordre: 2};
+    {Niveau: "Conforme aux attentes"; Ordre: 3};
+    {Niveau: "Dépasse les attentes"; Ordre: 4};
+    {Niveau: "Exemplaire"; Ordre: 5});;
+
+ClearCollect(colPostures;
+    {PostureID: "performant"; Ordre: 1; Titre: "LEADER PERFORMANT(E)";
+     DescAvec: "Axé(e) résultat et communauté, inspire son équipe avec une vision claire et des objectifs ambitieux. Valorise et développe les talents, les efforts et la responsabilisation. Gère les risques et l’ambiguïté.";
+     DescSans: "Axé(e) résultats et communauté, inspire avec une vision claire et des objectifs ambitieux. Valorise et développe les talents, les efforts et la responsabilisation au sein des collaborations. Gère les risques et l’ambiguïté.";
+     Commentaire: ""};
+    {PostureID: "bienveillant"; Ordre: 2; Titre: "LEADER BIENVEILLANT(E)";
+     DescAvec: "Inspire par son courage, son écoute et son soutien. Crée un environnement inclusif. Favorise et valorise la collaboration, gère efficacement les conflits et les communications permettant l’atteinte du plein potentiel et des résultats.";
+     DescSans: "Inspire par son courage, son écoute et son soutien. Crée un environnement inclusif. Favorise et valorise la collaboration, gère efficacement les conflits et les communications permettant l’atteinte du plein potentiel et des résultats.";
+     Commentaire: ""};
+    {PostureID: "responsable"; Ordre: 3; Titre: "LEADER RESPONSABLE";
+     DescAvec: "Agit avec fiabilité, un sens de l’éthique dans le respect des valeurs. Respecte ses engagements et s’ajuste de façon proactive.";
+     DescSans: "Agit avec fiabilité, un sens de l’éthique dans le respect des valeurs. Respecte ses engagements et s’ajuste de façon proactive.";
+     Commentaire: ""};
+    {PostureID: "innovant"; Ordre: 4; Titre: "LEADER INNOVANT(E)";
+     DescAvec: "Sait optimiser et améliorer les processus. Remet en question les choses, stimule la créativité et l’expérimentation. Sait transformer les défis en opportunité.";
+     DescSans: "Sait optimiser et améliorer les processus. Remet en question les choses, stimule la créativité et l’expérimentation. Sait transformer les défis en opportunité.";
+     Commentaire: ""});;
+
+ClearCollect(colComportements;
+    {CompKey: "performant-0"; PostureID: "performant"; ItemIndex: 0; CoteCadre: ""; CoteSup: "";
+     TexteAvec: "Communiquer clairement les orientations, les priorités et les objectifs à l’équipe et en assurer le suivi";
+     TexteSans: "Communiquer clairement les orientations, les priorités et les objectifs et en assurer le suivi."};
+    {CompKey: "performant-1"; PostureID: "performant"; ItemIndex: 1; CoteCadre: ""; CoteSup: "";
+     TexteAvec: "Confier des responsabilités en fonction des rôles et des compétences, en témoignant de la confiance";
+     TexteSans: "Mettre à profit les expertises et les responsabilités de chacun pour soutenir l'atteinte des résultats."};
+    {CompKey: "performant-2"; PostureID: "performant"; ItemIndex: 2; CoteCadre: ""; CoteSup: "";
+     TexteAvec: "Reconnaitre les contributions et fournir une rétroaction constructive utile au développement.";
+     TexteSans: "Reconnaitre les contributions et fournir une rétroaction constructive utile au développement."};
+    {CompKey: "performant-3"; PostureID: "performant"; ItemIndex: 3; CoteCadre: ""; CoteSup: "";
+     TexteAvec: "Prendre des décisions courageuses en cohérence avec les objectifs organisationnels, même en contexte d’incertitude";
+     TexteSans: "Prendre des décisions courageuses en cohérence avec les objectifs organisationnels, même en contexte d’incertitude."};
+    {CompKey: "bienveillant-0"; PostureID: "bienveillant"; ItemIndex: 0; CoteCadre: ""; CoteSup: "";
+     TexteAvec: "Être à l’écoute et favoriser un climat respectueux et inclusif où chacun peut s’exprimer";
+     TexteSans: "Être à l’écoute et favoriser un climat respectueux et inclusif où chacun peut s’exprimer"};
+    {CompKey: "bienveillant-1"; PostureID: "bienveillant"; ItemIndex: 1; CoteCadre: ""; CoteSup: "";
+     TexteAvec: "Mobiliser et favoriser la collaboration afin d’atteindre les objectifs attendus";
+     TexteSans: "Mobiliser et favoriser la collaboration afin d’atteindre les objectifs attendus"};
+    {CompKey: "bienveillant-2"; PostureID: "bienveillant"; ItemIndex: 2; CoteCadre: ""; CoteSup: "";
+     TexteAvec: "Intervenir rapidement, avec courage, pour prévenir ou résoudre les conflits";
+     TexteSans: "Intervenir rapidement, avec courage, pour prévenir ou résoudre les conflits"};
+    {CompKey: "responsable-0"; PostureID: "responsable"; ItemIndex: 0; CoteCadre: ""; CoteSup: "";
+     TexteAvec: "Respecter ses engagements et agir de façon équitable, en cohérence avec les valeurs et les règles de l’organisation";
+     TexteSans: "Respecter ses engagements et agir de façon équitable, en cohérence avec les valeurs et les règles de l’organisation"};
+    {CompKey: "responsable-1"; PostureID: "responsable"; ItemIndex: 1; CoteCadre: ""; CoteSup: "";
+     TexteAvec: "Identifier les risques et les opportunités à venir et ajuster ses pratiques et celles de l’équipe en conséquence";
+     TexteSans: "Identifier les risques et les opportunités à venir et ajuster ses pratiques en conséquence"};
+    {CompKey: "responsable-2"; PostureID: "responsable"; ItemIndex: 2; CoteCadre: ""; CoteSup: "";
+     TexteAvec: "Assurer une gestion rigoureuse des ressources pour répondre aux priorités actuelles et futures";
+     TexteSans: "Assurer une gestion rigoureuse des ressources pour répondre aux priorités actuelles et futures"};
+    {CompKey: "innovant-0"; PostureID: "innovant"; ItemIndex: 0; CoteCadre: ""; CoteSup: "";
+     TexteAvec: "Encourager et soutenir l’expérimentation en tirant des apprentissages des succès comme des erreurs";
+     TexteSans: "Encourager et soutenir l’expérimentation en tirant des apprentissages des succès comme des erreurs"};
+    {CompKey: "innovant-1"; PostureID: "innovant"; ItemIndex: 1; CoteCadre: ""; CoteSup: "";
+     TexteAvec: "Proposer et mettre en place des améliorations concrètes renforçant l’efficacité, l’efficience et la qualité";
+     TexteSans: "Proposer et mettre en place des améliorations concrètes renforçant l’efficacité, l’efficience et la qualité"});;
+
+ClearCollect(colCompetences;
+    {CompID: "autonomie"; Ordre: 1; Label: "Autonomie"; Exemple: "";
+     Desc: "Je réalise mes mandats et mes responsabilités avec le niveau d’autonomie attendu."};
+    {CompID: "efficacite"; Ordre: 2; Label: "Efficacité au travail"; Exemple: "";
+     Desc: "J’effectue une gestion efficace des priorités en fonction des attentes et de la charge de travail."};
+    {CompID: "collaboration"; Ordre: 3; Label: "Collaboration – Mobilisation"; Exemple: "";
+     Desc: "Je travaille en partenariat avec les autres, favorise la collaboration et contribue activement à l’atteinte des objectifs communs."};
+    {CompID: "ecoute"; Ordre: 4; Label: "Faire preuve d’écoute"; Exemple: "";
+     Desc: "Je fais preuve d’ouverture et d’écoute afin de comprendre les besoins de mes partenaires et collaborateurs et d’y répondre de façon appropriée."};
+    {CompID: "agilite"; Ordre: 5; Label: "Agilité – créativité"; Exemple: "";
+     Desc: "Je prends les décisions requises et m’ajuste en fonction du contexte."};
+    {CompID: "autre"; Ordre: 6; Label: "Autres (si jugé opportun)"; Exemple: ""; Desc: ""});;
+
+// ---------- Section B : chargement du dossier ouvert ----------
+With({j: ParseJSON(Coalesce(varDossier.Postures; "{""cotes"":[],""commentaires"":[]}"))};
+    ForAll(Table(j.cotes) As c;
+        Patch(colComportements;
+            LookUp(colComportements; CompKey = Text(c.Value.k));
+            {CoteCadre: Coalesce(Text(c.Value.cadre); "");
+             CoteSup: Coalesce(Text(c.Value.sup); "")}));;
+    ForAll(Table(j.commentaires) As m;
+        Patch(colPostures;
+            LookUp(colPostures; PostureID = Text(m.Value.p));
+            {Commentaire: Coalesce(Text(m.Value.texte); "")})));;
+ForAll(Table(ParseJSON(Coalesce(varDossier.Competences; "[]"))) As e;
+    Patch(colCompetences;
+        LookUp(colCompetences; CompID = Text(e.Value.id));
+        {Exemple: Coalesce(Text(e.Value.exemple); "")}));;
+
+// ---------- Section C : valeurs organisationnelles ----------
+ClearCollect(colValeurs;
+    {Slug: "visionnaire"; Ordre: 1; Label: "Valeurs organisationnelles (Visionnaire, engagé et agile)"; Coche: false; Ex1: ""; Ex2: ""};
+    {Slug: "sst"; Ordre: 2; Label: "Santé et sécurité au travail"; Coche: false; Ex1: ""; Ex2: ""};
+    {Slug: "civilite"; Ordre: 3; Label: "Civilité et respect au travail"; Coche: false; Ex1: ""; Ex2: ""};
+    {Slug: "edi"; Ordre: 4; Label: "Diversité, équité et inclusion"; Coche: false; Ex1: ""; Ex2: ""};
+    {Slug: "securiteCivile"; Ordre: 5; Label: "Prévention et préparation en sécurité civile"; Coche: false; Ex1: ""; Ex2: ""};
+    {Slug: "qualiteService"; Ordre: 6; Label: "Qualité de service aux citoyens"; Coche: false; Ex1: ""; Ex2: ""};
+    {Slug: "autres"; Ordre: 7; Label: "Autres"; Coche: false; Ex1: ""; Ex2: ""});;
+ForAll(Table(ParseJSON(Coalesce(varDossier.Valeurs; "[]"))) As v;
+    Patch(colValeurs;
+        LookUp(colValeurs; Slug = Text(v.Value.s));
+        {Coche: Coalesce(Boolean(v.Value.coche); false);
+         Ex1: Coalesce(Text(v.Value.ex1); "");
+         Ex2: Coalesce(Text(v.Value.ex2); "")}));;
+
+// ---------- Section D : développement des compétences ----------
+With({t: Table(ParseJSON(Coalesce(varDossier.DevPrecedents; "[]")))};
+    ClearCollect(colDevPrecedents;
+        ForAll(Sequence(CountRows(t)) As i;
+            With({r: Index(t; i.Value).Value};
+                {LigneID: i.Value; Objectif: Text(r.objectif); Moyens: Text(r.moyens); Impacts: Text(r.impacts)}))));;
+If(IsEmpty(colDevPrecedents);
+    Collect(colDevPrecedents; {LigneID: 1; Objectif: ""; Moyens: ""; Impacts: ""}));;
+With({t: Table(ParseJSON(Coalesce(varDossier.DevNouveaux; "[]")))};
+    ClearCollect(colDevNouveaux;
+        ForAll(Sequence(CountRows(t)) As i;
+            With({r: Index(t; i.Value).Value};
+                {LigneID: i.Value; Besoin: Text(r.besoin); Moyen: Text(r.moyen)}))));;
+If(IsEmpty(colDevNouveaux);
+    Collect(colDevNouveaux; {LigneID: 1; Besoin: ""; Moyen: ""}));;
+
+// ---------- Évaluation globale ----------
+ClearCollect(colEvalGlobale;
+    {Code: "nouveau"; Ordre: 1; Label: "Nouveau (- de 3 mois)";
+     Desc: "Lorsqu'un(e) cadre est nouvellement dans l'équipe au moment de l'évaluation, il est souvent trop tôt pour l'évaluer. Convenir d'une date pour une rencontre de suivi."};
+    {Code: "I"; Ordre: 2; Label: "Insatisfaisant";
+     Desc: "Contribution grandement inférieure aux attentes et/ou comportements signifiés. Une amélioration immédiate et soutenue est requise. Un plan d'action et de soutien est requis."};
+    {Code: "PS"; Ordre: 3; Label: "Partiellement satisfaisant";
+     Desc: "La contribution est en progrès mais inférieure aux attentes signifiées. On remarque une amélioration et on croit que le niveau complètement satisfaisant sera atteint sous peu."};
+    {Code: "CS"; Ordre: 4; Label: "Complètement satisfaisant";
+     Desc: "La contribution répond globalement aux attentes et/ou comportements signifiés, quantitativement et qualitativement. La personne est considérée comme un atout de grande valeur."};
+    {Code: "S"; Ordre: 5; Label: "Supérieur";
+     Desc: "La contribution dépasse les attentes signifiées et contribue de façon vraiment importante au succès de l'équipe."});;
+Set(varEvalGlobale; Coalesce(varDossier.EvaluationGlobale.Value; ""))
