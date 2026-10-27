@@ -1,0 +1,45 @@
+FLUX « APPRÉCIATION – SUIVI DES ÉTAPES » — CAS « COMPLÉTÉ » — LIGNES À COPIER
+=============================================================================
+Copiez UNE ligne à la fois (sans le titre entre crochets).
+
+
+[6.1-Objet]  (action « Courriel paie », champ Objet)
+Évaluation globale – @{triggerOutputs()?['body/Title']} (@{triggerOutputs()?['body/IdEmploye']}) – @{triggerOutputs()?['body/Annee']}
+
+[6.1-Corps]  (action « Courriel paie », champ Corps, en mode code </>)
+<table border="1" cellpadding="6" style="border-collapse:collapse"><tr><td>Nom, prénom</td><td>@{triggerOutputs()?['body/Title']}</td></tr><tr><td>ID</td><td>@{triggerOutputs()?['body/IdEmploye']}</td></tr><tr><td>Poste</td><td>@{triggerOutputs()?['body/Poste']}</td></tr><tr><td>Type de poste</td><td>@{triggerOutputs()?['body/TypePoste/Value']}</td></tr><tr><td>Année</td><td>@{triggerOutputs()?['body/Annee']}</td></tr><tr><td>Évaluation globale</td><td><b>@{triggerOutputs()?['body/EvaluationGlobale/Value']}</b></td></tr><tr><td>Supérieur(e) immédiat(e)</td><td>@{triggerOutputs()?['body/SuperieurImmediat/DisplayName']}</td></tr></table>
+
+
+[6.2-À]  (action « Avis à tous », champ À, EN EXPRESSION fx)
+join(createArray(triggerOutputs()?['body/CourrielPersonne'], triggerOutputs()?['body/CourrielSI'], triggerOutputs()?['body/CourrielSH']), ';')
+
+[6.2-Objet]
+Appréciation complétée – @{triggerOutputs()?['body/Title']}
+
+[6.2-Corps]  (en mode code </>)
+Toutes les étapes d'approbation sont complétées. Le dossier est archivé en lecture seule.<br><br><a href="@{variables('LienApp')}">Consulter le dossier</a>
+
+
+[6.3-De]  (action « Personnes finales », champ De, EN EXPRESSION fx)
+createArray(triggerOutputs()?['body/CourrielPersonne'], triggerOutputs()?['body/CourrielSI'], triggerOutputs()?['body/CourrielSH'], triggerOutputs()?['body/CourrielDirecteur'])
+
+[6.3-Condition]  (« Modifier en mode avancé »)
+@not(empty(item()))
+
+
+[6.4-Sortie]  (boucle « Lecture seule », EN EXPRESSION fx)
+body('Personnes_finales')
+
+
+[6.4a-Corps]  (action « Assurer personne », champ Corps)
+{ "logonName": "i:0#.f|membership|@{item()}" }
+
+[6.4b-URI]  (action « Retirer accès », champ URI)
+_api/web/lists(guid'@{parameters('Liste Appreciations (rhdsst_ListeAppreciations)')}')/items(@{triggerOutputs()?['body/ID']})/roleassignments/getbyprincipalid(@{body('Assurer_personne')?['Id']})
+
+[6.4c-URI]  (action « Donner Lecture », champ URI)
+_api/web/lists(guid'@{parameters('Liste Appreciations (rhdsst_ListeAppreciations)')}')/items(@{triggerOutputs()?['body/ID']})/roleassignments/addroleassignment(principalid=@{body('Assurer_personne')?['Id']},roledefid=1073741826)
+
+
+[6.5]  (action « Date paie », champ TransmisPaieLe, EN EXPRESSION fx)
+utcNow()
