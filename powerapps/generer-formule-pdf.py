@@ -80,20 +80,21 @@ P(vide(f'CountRows({fv}) = 0',
        s("</table>")))
 
 # Section B
-postures = ('Concat(Sort(colPostures; Ordre) As p; "<h3>" & p.Titre & "</h3><p class=desc>" & '
-            'If(CurrentPosteID = "sans_equipe"; p.DescSans; p.DescAvec) & "</p>' 
-            '<table><tr><th>Comportements</th><th>Cote de la personne</th><th>Cote du supérieur</th></tr>" & '
-            'Concat(Filter(colComportements; PostureID = p.PostureID) As c; "<tr><td>" & '
-            'If(CurrentPosteID = "sans_equipe"; c.TexteSans; c.TexteAvec) & "</td><td>" & '
-            'Coalesce(c.CoteCadre; "—") & "</td><td>" & Coalesce(c.CoteSup; "—") & "</td></tr>") & '
-            '"</table>" & If(IsBlank(p.Commentaire); ""; "<p><b>Exemples et commentaires :</b><br>" & '
-            + E('p.Commentaire') + ' & "</p>"))')
-competences = ('"<table><tr><th>Compétence</th><th>Exemples d\'application</th></tr>" & '
-               'Concat(Sort(colCompetences; Ordre) As k; "<tr><td><b>" & k.Label & "</b>" & '
-               'If(IsBlank(k.Desc); ""; "<br><span class=desc>" & k.Desc & "</span>") & "</td><td>" & '
-               'If(IsBlank(k.Exemple); "—"; ' + E('k.Exemple') + ') & "</td></tr>") & "</table>"')
-P('If(CurrentPosteID = "professionnel"; ' + s("<h2>Section B — Les compétences</h2>") + ' & ' + competences +
-  '; ' + s("<h2>Section B — Les postures de leadership</h2>") + ' & ' + postures + ')')
+postures = ('Concat(Sort(colPostures; Ordre) As p; Concatenate("<h3>"; p.Titre; "</h3><p class=desc>"; '
+            'If(CurrentPosteID = "sans_equipe"; p.DescSans; p.DescAvec); '
+            '"</p><table><tr><th>Comportements</th><th>Cote de la personne</th><th>Cote du supérieur</th></tr>"; '
+            'Concat(Filter(colComportements; PostureID = p.PostureID) As c; Concatenate("<tr><td>"; '
+            'If(CurrentPosteID = "sans_equipe"; c.TexteSans; c.TexteAvec); "</td><td>"; '
+            'Coalesce(c.CoteCadre; "—"); "</td><td>"; Coalesce(c.CoteSup; "—"); "</td></tr>")); '
+            '"</table>"; If(IsBlank(p.Commentaire); ""; Concatenate("<p><b>Exemples et commentaires :</b><br>"; '
+            + E('p.Commentaire') + '; "</p>"))))')
+competences = ('Concatenate("<table><tr><th>Compétence</th><th>Exemples d\'application</th></tr>"; '
+               'Concat(Sort(colCompetences; Ordre) As k; Concatenate("<tr><td><b>"; k.Label; "</b>"; '
+               'If(IsBlank(k.Desc); ""; "<br><span class=desc>" & k.Desc & "</span>"); "</td><td>"; '
+               'If(IsBlank(k.Exemple); "—"; ' + E('k.Exemple') + '); "</td></tr>")); "</table>")')
+P('If(CurrentPosteID = "professionnel"; ' + s("<h2>Section B — Les compétences</h2>") + '; ' +
+  s("<h2>Section B — Les postures de leadership</h2>") + ')')
+P('If(CurrentPosteID = "professionnel"; ' + competences + '; ' + postures + ')')
 
 # Section C
 fc = 'Filter(colValeurs; Coche)'
@@ -139,18 +140,24 @@ P(g("Transmis à la paie", '"—"', 'varDossier.TransmisPaieLe'))
 P(s("</table><p class=pied>Document produit le ") + ' & Text(Now(); "[$-fr-CA]d mmmm yyyy") & " à " & Text(Now(); "hh:mm") & ' +
   s(" à partir de l'application Appréciation de la contribution. Version du formulaire : 15 octobre 2026.</p></body></html>"))
 
-html = ' &\n            '.join(parts)
+# Une seule longue chaîne de « & » dépasse la profondeur permise par Power Apps
+# (« L'imbrication d'expressions est trop profonde ») : on assemble donc la page
+# morceau par morceau dans la variable varHtmlPDF.
+etapes = ['Set(varHtmlPDF; ' + parts[0] + ')'] + \
+         ['Set(varHtmlPDF; varHtmlPDF & ' + x + ')' for x in parts[1:]]
+assemblage = ';;\n    '.join(etapes)
 
 formule = f'''// btnApercuPDF.OnSelect — PDF de l'appréciation complète
-// 1) assemble l'appréciation en HTML ; 2) le flux GenererPDFAppreciation le convertit en PDF ;
-// 3) le PDF s'ouvre dans un nouvel onglet.
+// 1) assemble l'appréciation en HTML dans varHtmlPDF ; 2) le flux GenererPDFAppreciation
+// le convertit en PDF ; 3) le PDF s'ouvre dans un nouvel onglet.
 If(IsBlank(varDossier);
     Notify("Enregistrez d'abord le dossier avec « Enregistrer et déposer »."; NotificationType.Warning);
     Notify("Création du PDF en cours… Comptez de 10 à 30 secondes."; NotificationType.Information);;
+    {assemblage};;
     Set(varLienPDF;
         GenererPDFAppreciation.Run(
             "Appreciation_dossier" & varDossier.ID & "_" & Text(Now(); "yyyy-mm-dd_hh-mm");
-            {html};
+            varHtmlPDF;
             varMoi).lien);;
     If(IsBlank(varLienPDF);
         Notify("Le PDF n'a pas pu être créé. Réessayez dans un moment."; NotificationType.Error);
