@@ -1,6 +1,6 @@
 ---
 title: "Guide — PDF de l'appréciation complète"
-subtitle: "Application Power Apps « Appréciation de la contribution » — 27 octobre 2026"
+subtitle: "Application Power Apps « Appréciation de la contribution » — version finale du 27 octobre 2026"
 lang: fr-CA
 ---
 
@@ -91,7 +91,7 @@ L'**ordre** est important : l'application envoie les valeurs dans cet ordre.
 ## 2.4 Action 3 — Déposer le PDF dans SharePoint
 
 - Action : **SharePoint › Créer un fichier**
-- Adresse du site : la variable d'environnement **Site Appréciations**. Dans le bac à sable, c'est votre site SandBoxAnnieAudet.
+- Adresse du site : la variable d'environnement **Site Appréciations** (nom technique `rhdsst_SiteApprciations`), choisie dans le contenu dynamique. Dans le bac à sable, c'est votre site SandBoxAnnieAudet.
 - Chemin d'accès du dossier : `/Appreciations_PDF`
 - Nom de fichier : **nomFichier**, puis tapez `.pdf`.
 - Contenu du fichier : **Contenu du fichier**, venant de « Convertir un fichier ».
@@ -137,6 +137,8 @@ Cliquez sur **Enregistrer**. Le **Vérificateur de flux** doit être vide.
 6. Cliquez sur **Enregistrer**.
 
 > L'onglet **🎯 Plan de développement** reste disponible avec son propre bouton « Imprimer ce plan ». Seul le bouton de gauche change.
+
+**Si `.lien` est souligné en rouge :** le flux a été ajouté avant sa dernière action. Dans le volet Power Automate, faites … › **Actualiser** sur GenererPDFAppreciation (ou retirez-le et ajoutez-le de nouveau).
 
 **Si Power Apps souligne `GenererPDFAppreciation` en rouge :** le flux a été ajouté sous un autre nom. Effacez le mot, tapez `Gener` et choisissez le nom proposé dans la liste.
 

@@ -1,5 +1,8 @@
 # État du projet « Appréciation de la contribution » — au 21 octobre 2026
 
+> **⚠️ ARCHIVÉ — 27 octobre 2026.** L'application HTML n'est pas compatible avec le SharePoint de la Ville. Le projet se poursuit avec **l'application Power Apps** : voir le dossier `powerapps/` et son **GUIDE-MISE-EN-PRODUCTION**. Les flux « AC - … » et les listes Depot_Appreciations, Journal_Appreciations, Dossiers_Appreciations, Archives_Appreciations et Config_Appreciations peuvent être désactivés puis supprimés du bac à sable.
+
+
 **Commencez par ce document.**
 
 ## Où on en est

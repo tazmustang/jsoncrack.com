@@ -1,0 +1,204 @@
+FORMULES POWER APPS — VERSION FINALE (27 octobre 2026)
+Application « Appréciation de la contribution » — syntaxe FRANÇAISE (« ; » et « ;; »)
+=====================================================================================
+Ce fichier rassemble TOUTES les formules qui diffèrent du « Guide complet » d'origine.
+Toutes les autres formules du guide (et de ses fichiers YAML) restent valables.
+
+RÈGLES À RETENIR
+- Les formules se collent dans la BARRE fx (en haut), jamais dans le panneau de droite.
+- Le connecteur Office 365 Users s'appelle dans votre application : 'Utilisateursd’Office365'
+  (tapez « Util » et choisissez-le dans la liste plutôt que de le coller).
+- Les sources de données doivent s'appeler exactement : Appreciations et Parametres.
+
+Les deux formules les plus longues sont dans des fichiers séparés :
+- scrFormulaire.OnVisible ...... fichier « scrFormulaire-OnVisible-corrige.txt »
+- btnApercuPDF.OnSelect ........ fichier « btnApercuPDF-OnSelect.txt »
+
+
+#####################################################################
+# 1. IDENTIFICATION — propriété Default des champs texte
+#####################################################################
+
+txtNom.Default
+If(IsBlank(varDossier); User().FullName; varDossier.Title)
+
+txtId.Default
+varDossier.IdEmploye
+
+txtPoste.Default
+If(IsBlank(varDossier); 'Utilisateursd’Office365'.MyProfileV2().jobTitle; varDossier.Poste)
+
+txtAutre.Default
+varDossier.TypeRencontreAutre
+
+
+#####################################################################
+# 2. TYPE DE RENCONTRE — propriété Checked des cases à cocher
+#####################################################################
+
+chkEssai.Checked
+!IsBlank(LookUp(varDossier.TypeRencontre; Value = "Période d'essai ou progression salariale"))
+
+chkPremiere.Checked
+!IsBlank(LookUp(varDossier.TypeRencontre; Value = "Première rencontre annuelle"))
+
+chkMiAnnee.Checked
+!IsBlank(LookUp(varDossier.TypeRencontre; Value = "Bilan de mi-année"))
+
+chkBilan.Checked
+!IsBlank(LookUp(varDossier.TypeRencontre; Value = "Bilan annuel"))
+
+chkAutre.Checked
+!IsBlank(LookUp(varDossier.TypeRencontre; Value = "Autre"))
+
+
+#####################################################################
+# 3. btnDeposer.OnSelect — « Enregistrer et déposer » (formule complète)
+#####################################################################
+
+If(IsBlank(varDossier);
+    If(CurrentRoleID <> "cadre";
+        Notify("Ouvrez d'abord le dossier de la personne depuis « Mes dossiers »."; NotificationType.Warning);
+        With({si: IfError('Utilisateursd’Office365'.ManagerV2(User().Email); Blank())};
+        With({sh: IfError('Utilisateursd’Office365'.ManagerV2(si.mail); Blank())};
+            Set(varDossier; Patch(Appreciations; Defaults(Appreciations); {
+                Title: txtNom.Text;
+                Annee: Year(Today());
+                VersionFormulaire: "15 octobre 2026";
+                Statut: {Value: "Brouillon"};
+                PersonneAppreciation: {Claims: "i:0#.f|membership|" & varMoi;
+                    DisplayName: User().FullName; Email: User().Email;
+                    Department: ""; JobTitle: ""; Picture: ""};
+                CourrielPersonne: varMoi;
+                SuperieurImmediat: If(!IsBlank(si.mail); {Claims: "i:0#.f|membership|" & Lower(si.mail);
+                    DisplayName: si.displayName; Email: si.mail;
+                    Department: ""; JobTitle: ""; Picture: ""});
+                CourrielSI: Lower(si.mail);
+                SuperieurHierarchique: If(!IsBlank(sh.mail); {Claims: "i:0#.f|membership|" & Lower(sh.mail);
+                    DisplayName: sh.displayName; Email: sh.mail;
+                    Department: ""; JobTitle: ""; Picture: ""});
+                CourrielSH: Lower(sh.mail)
+            }))))));;
+
+If(!IsBlank(varDossier);
+    Set(varDossier; Patch(Appreciations; varDossier; {
+        Title: txtNom.Text;
+        IdEmploye: txtId.Text;
+        Poste: Coalesce(txtPoste.Text; varDossier.Poste; 'Utilisateursd’Office365'.MyProfileV2().jobTitle);
+        TypePoste: If(CurrentPosteID = ""; Blank();
+            {Value: LookUp(colPostes; PosteID = CurrentPosteID).PosteLabel});
+        TypeRencontre: Filter(Choices(Appreciations.TypeRencontre);
+            (Value = "Période d'essai ou progression salariale" And chkEssai.Checked) Or
+            (Value = "Première rencontre annuelle" And chkPremiere.Checked) Or
+            (Value = "Bilan de mi-année" And chkMiAnnee.Checked) Or
+            (Value = "Bilan annuel" And chkBilan.Checked) Or
+            (Value = "Autre" And chkAutre.Checked));
+        TypeRencontreAutre: txtAutre.Text;
+        ObjectifsActuels: JSON(ForAll(colObjActuels;
+            {objectif: Objectif; indicateur: Indicateur; actions: Actions}));
+        ObjectifsAvenir: JSON(ForAll(colObjAvenir;
+            {objectif: Objectif; indicateur: Indicateur}));
+        Postures: JSON({
+            cotes: ForAll(colComportements; {k: CompKey; cadre: CoteCadre; sup: CoteSup});
+            commentaires: ForAll(colPostures; {p: PostureID; texte: Commentaire})});
+        Competences: JSON(ForAll(colCompetences; {id: CompID; exemple: Exemple}));
+        Valeurs: JSON(ForAll(colValeurs; {s: Slug; coche: Coche; ex1: Ex1; ex2: Ex2}));
+        DevPrecedents: JSON(ForAll(colDevPrecedents; {objectif: Objectif; moyens: Moyens; impacts: Impacts}));
+        DevNouveaux: JSON(ForAll(colDevNouveaux; {besoin: Besoin; moyen: Moyen}));
+        BilanSuperieur: txtBilanSup.Text;
+        BilanPersonne: txtBilanPersonne.Text;
+        EvaluationGlobale: If(varEvalGlobale = ""; Blank(); {Value: varEvalGlobale});
+        DirecteurRequis: chkDirRequis.Checked;
+        Directeur: If(!IsBlank(cboDirecteur.Selected);
+            {Claims: "i:0#.f|membership|" & Lower(cboDirecteur.Selected.Mail);
+             DisplayName: cboDirecteur.Selected.DisplayName; Email: cboDirecteur.Selected.Mail;
+             Department: ""; JobTitle: ""; Picture: ""};
+            varDossier.Directeur);
+        CourrielDirecteur: If(!IsBlank(cboDirecteur.Selected);
+            Lower(cboDirecteur.Selected.Mail); varDossier.CourrielDirecteur)
+    }));;
+    If(IsEmpty(Errors(Appreciations));
+        Notify("Dossier enregistré."; NotificationType.Success);
+        Notify("Erreur : " & First(Errors(Appreciations)).Message; NotificationType.Error)))
+
+
+#####################################################################
+# 4. SECTION G — liste des directeurs
+#####################################################################
+
+cboDirecteur.Items
+'Utilisateursd’Office365'.SearchUserV2({searchTerm: Self.SearchText; top: 10}).value
+
+
+#####################################################################
+# 5. ONGLET SYNTHÈSE — barres et moyennes des postures
+#####################################################################
+
+synBarSup.Width
+synTrackSup.Width * With({c: Filter(colComportements; PostureID = ThisItem.PostureID And CoteSup <> "")}; If(CountRows(c) = 0; 0; Average(c; Switch(CoteSup; "Non démontré"; 1; "Partiellement démontré"; 2; "Conforme aux attentes"; 3; "Dépasse les attentes"; 4; "Exemplaire"; 5; 0)))) / 5
+
+synValSup.Text
+With({m: With({c: Filter(colComportements; PostureID = ThisItem.PostureID And CoteSup <> "")}; If(CountRows(c) = 0; 0; Average(c; Switch(CoteSup; "Non démontré"; 1; "Partiellement démontré"; 2; "Conforme aux attentes"; 3; "Dépasse les attentes"; 4; "Exemplaire"; 5; 0))))}; If(m = 0; "—"; Text(m; "0.0")))
+
+synBarCadre.Width
+synTrackCadre.Width * With({c: Filter(colComportements; PostureID = ThisItem.PostureID And CoteCadre <> "")}; If(CountRows(c) = 0; 0; Average(c; Switch(CoteCadre; "Non démontré"; 1; "Partiellement démontré"; 2; "Conforme aux attentes"; 3; "Dépasse les attentes"; 4; "Exemplaire"; 5; 0)))) / 5
+
+synValCadre.Text
+With({m: With({c: Filter(colComportements; PostureID = ThisItem.PostureID And CoteCadre <> "")}; If(CountRows(c) = 0; 0; Average(c; Switch(CoteCadre; "Non démontré"; 1; "Partiellement démontré"; 2; "Conforme aux attentes"; 3; "Dépasse les attentes"; 4; "Exemplaire"; 5; 0))))}; If(m = 0; "—"; Text(m; "0.0")))
+
+NOTE : n'utilisez JAMAIS le 3e argument "fr-CA" dans Text(…) : il provoque l'erreur
+« Code de langue fr-CA non pris en charge ». Les formats de date "[$-fr-CA]d mmmm yyyy" sont corrects.
+
+
+#####################################################################
+# 6. BARRE D'ÉTAPES — une formule par contrôle
+#####################################################################
+(voir aussi « barre-etapes-formules.txt »)
+
+galEtapes.Items
+With(
+    {S: Coalesce(varDossier.Statut.Value; "Brouillon");
+     dirReq: Coalesce(varDossier.DirecteurRequis; false);
+     d2: !IsBlank(varDossier.CertifieLe);
+     d3: !IsBlank(varDossier.ApprouveSILe);
+     d4: !IsBlank(varDossier.ApprouveSHLe);
+     d5: !IsBlank(varDossier.ApprouveDirLe);
+     d6: !IsBlank(varDossier.TransmisPaieLe)};
+    Table(
+        {Ordre: 1; Etape: "Brouillon"; Fait: true; EnCours: S = "Brouillon" Or S = "Avisé au supérieur"; Saute: false; DateEtape: If(false; Now()); SuivantFait: d2};
+        {Ordre: 2; Etape: "Certifié (personne en appréciation)"; Fait: d2; EnCours: false; Saute: false; DateEtape: varDossier.CertifieLe; SuivantFait: d3};
+        {Ordre: 3; Etape: "Approuvé (sup. immédiat)"; Fait: d3; EnCours: S = "Certifié"; Saute: false; DateEtape: varDossier.ApprouveSILe; SuivantFait: d4};
+        {Ordre: 4; Etape: "Approuvé (sup. hiérarchique)"; Fait: d4; EnCours: S = "Approuvé SI"; Saute: false; DateEtape: varDossier.ApprouveSHLe; SuivantFait: d5};
+        {Ordre: 5; Etape: "Approuvé (directeur)"; Fait: d5; EnCours: S = "Approuvé SH"; Saute: Not(dirReq); DateEtape: varDossier.ApprouveDirLe; SuivantFait: d6};
+        {Ordre: 6; Etape: "Transmis à la paie"; Fait: d6; EnCours: S = "Complété" And Not(d6); Saute: false; DateEtape: varDossier.TransmisPaieLe; SuivantFait: S = "Complété"};
+        {Ordre: 7; Etape: "Archivé (lecture seule)"; Fait: S = "Complété"; EnCours: false; Saute: false; DateEtape: If(false; Now()); SuivantFait: false}))
+
+stepLineLeft.Visible ........ ThisItem.Ordre > 1
+stepLineRight.Visible ....... ThisItem.Ordre < 7
+stepHalo.Visible ............ ThisItem.EnCours And Not(ThisItem.Saute)
+stepDotLabel.Text ........... If(ThisItem.Saute; "—"; ThisItem.Fait; "✓"; Text(ThisItem.Ordre))
+stepLabel.Text .............. ThisItem.Etape & If(ThisItem.Saute; " (n/a)"; "")
+stepDate.Text ............... If(ThisItem.Fait And Not(IsBlank(ThisItem.DateEtape)); Text(ThisItem.DateEtape; "[$-fr-CA]d mmm yyyy"); "")
+
+
+#####################################################################
+# 7. ÉCRAN « MES DOSSIERS »
+#####################################################################
+
+btnNouveauDossier.Text
+"📝 Nouveau formulaire"
+
+btnNouveauDossier.Width
+230
+
+
+#####################################################################
+# 8. MISE EN PAGE (panneau de droite ou barre fx)
+#####################################################################
+
+Texte d'introduction (HtmlText sous « Introduction ») : Hauteur automatique = Activé
+cardIdentification : Remplissage Gauche = 16, Droite = 16
+cardSectionA : Remplissage Gauche = 16, Droite = 16
+cardSectionA.Height : ajouter « + 16 » à la toute fin de la formule existante
+Carte de la section D : ajouter « + 16 » à la toute fin de sa formule Height
+(Les enveloppes sectionB, sectionCD, sectionEF, sectionG restent à 0 : leurs cartes ont leur propre marge.)

@@ -1,5 +1,8 @@
 # Kit « Page HTML dans SharePoint » — Guide complet
 
+> **⚠️ ARCHIVÉ — 27 octobre 2026.** L'application HTML n'est pas compatible avec le SharePoint de la Ville. Le projet se poursuit avec **l'application Power Apps** : voir le dossier `powerapps/` et son **GUIDE-MISE-EN-PRODUCTION**. Les flux « AC - … » et les listes Depot_Appreciations, Journal_Appreciations, Dossiers_Appreciations, Archives_Appreciations et Config_Appreciations peuvent être désactivés puis supprimés du bac à sable.
+
+
 Ce kit rassemble ce qu'il faut savoir pour créer une **page HTML dans SharePoint Online**, la nouvelle fonctionnalité dont parlent les publications LinkedIn (Ami Diamond, Gemma Saint, Stefan Bauer, Therman Trotman, etc.), avec les solutions aux **liens qui ne fonctionnent pas**.
 
 Tout est **gratuit** et ne demande **aucune installation** : deux fichiers HTML s'ouvrent par double-clic dans Edge ou Chrome.

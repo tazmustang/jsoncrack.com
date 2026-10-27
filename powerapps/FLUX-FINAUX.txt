@@ -1,0 +1,216 @@
+FLUX POWER AUTOMATE — VERSION FINALE (27 octobre 2026)
+Solution « Solution-ApplicationAppreciation » — 3 flux
+=======================================================
+Tous les noms de variables d'environnement ci-dessous sont les VRAIS noms de votre solution :
+
+  Liste Appreciations (rhdsst_ListeAppreciations)
+  Liste Parametres (rhdsst_ListeParametres)
+  Lienapplication (rhdsst_Lienapplication)
+  Courriel paie (rhdsst_Courrielpaie)
+  Site Appréciations (rhdsst_SiteApprciations)
+
+Dans un champ « Adresse du site » ou « Nom de la liste » : choisissez la variable dans le
+contenu dynamique (section Variables d'environnement). Ne la tapez pas.
+Les noms d'actions entre « » doivent être exacts : les formules s'y réfèrent
+(Power Automate remplace les espaces par « _ »).
+Toutes les requêtes HTTP : Adresse du site = variable Site Appréciations,
+en-tête Accept = application/json;odata=nometadata
+
+
+=====================================================================
+FLUX 1 — « Appréciation – Permissions à la création »
+Déclencheur : SharePoint › Lors de la création d'un élément
+  Adresse du site = Site Appréciations ; Nom de la liste = Liste Appreciations
+=====================================================================
+
+[1] « Id dossier » — Variable › Initialiser la variable
+    Nom : IdDossier    Type : Entier    Valeur : ID (contenu dynamique du déclencheur)
+
+[2] « Couper l'héritage » — SharePoint › Envoyer une requête HTTP à SharePoint
+    Méthode : POST
+    URI :
+_api/web/lists(guid'@{parameters('Liste Appreciations (rhdsst_ListeAppreciations)')}')/items(@{variables('IdDossier')})/breakroleinheritance(copyRoleAssignments=true,clearSubscopes=true)
+
+[3] « Groupe Membres » — Envoyer une requête HTTP à SharePoint
+    Méthode : GET
+    URI :
+_api/web/associatedmembergroup?$select=Id
+
+[4] « Retirer les Membres » — Envoyer une requête HTTP à SharePoint
+    Méthode : POST
+    En-tête supplémentaire : X-HTTP-Method = DELETE
+    URI :
+_api/web/lists(guid'@{parameters('Liste Appreciations (rhdsst_ListeAppreciations)')}')/items(@{variables('IdDossier')})/roleassignments/getbyprincipalid(@{body('Groupe_Membres')?['Id']})
+
+[5] « Personnes du dossier » — Opérations de données › Filtrer un tableau
+    *** … › Configurer l'exécution après : sous « Retirer les Membres », cocher
+        « a réussi » ET « a échoué » (si les Membres n'ont aucun droit, l'action 4
+        répond « NotFound » : c'est normal et le flux doit continuer) ***
+    De (expression) :
+createArray(triggerOutputs()?['body/CourrielPersonne'], triggerOutputs()?['body/CourrielSI'], triggerOutputs()?['body/CourrielSH'], triggerOutputs()?['body/CourrielDirecteur'])
+    Condition (mode avancé) :
+@not(empty(item()))
+
+[6] « Pour chaque personne » — Contrôle › Appliquer à chacun
+    Sortie : Corps de « Personnes du dossier »
+
+  [6a] « Assurer utilisateur » — Envoyer une requête HTTP à SharePoint
+       Méthode : POST     URI : _api/web/ensureuser
+       En-têtes : Accept et Content-Type = application/json;odata=nometadata
+       Corps :
+{ "logonName": "i:0#.f|membership|@{item()}" }
+
+  [6b] « Donner Collaboration » — Envoyer une requête HTTP à SharePoint
+       Méthode : POST
+       URI :
+_api/web/lists(guid'@{parameters('Liste Appreciations (rhdsst_ListeAppreciations)')}')/items(@{variables('IdDossier')})/roleassignments/addroleassignment(principalid=@{body('Assurer_utilisateur')?['Id']},roledefid=1073741827)
+
+Résultat attendu (Gérer l'accès sur un nouveau dossier) : Propriétaires du site,
+RH – Appréciations (lecture) et les personnes du dossier (modification). Personne d'autre.
+
+
+=====================================================================
+FLUX 2 — « Appréciation – Suivi des étapes »
+Déclencheur : SharePoint › Lors de la création ou de la modification d'un élément
+  Adresse du site = Site Appréciations ; Nom de la liste = Liste Appreciations
+=====================================================================
+
+STRUCTURE (cartes refermées, dans cet ordre, au même niveau) :
+  LienApp → CourrielPaie → Changements
+  → « Directeur ajouté »  (Si oui : Assurer directeur → Accès directeur)
+  → « Statut changé »     (Si oui : commutateur « Selon le statut »)
+       Avisé au supérieur | Certifié | Approuvé SI | Approuvé SH | Complété
+
+[1] « LienApp » — Initialiser la variable — Nom : LienApp — Type : Chaîne — Valeur (expression) :
+concat(parameters('Lienapplication (rhdsst_Lienapplication)'), '&ID=', triggerOutputs()?['body/ID'])
+
+[2] « CourrielPaie » — Initialiser la variable — Nom : CourrielPaie — Type : Chaîne — Valeur (expression) :
+parameters('Courriel paie (rhdsst_Courrielpaie)')
+
+[3] « Changements » — SharePoint › Obtenir les modifications d'un élément ou d'un fichier
+    Site / Liste : variables Site Appréciations et Liste Appreciations
+    ID : ID (contenu dynamique)
+    Depuis (expression) :
+triggerOutputs()?['body/{TriggerWindowStartToken}']
+    Jusqu'à (expression) :
+triggerOutputs()?['body/{TriggerWindowEndToken}']
+
+[4] « Directeur ajouté » — Condition (2 lignes, ET)
+    Ligne 1 : body('Changements')?['ColumnHasChanged']?['CourrielDirecteur']   est égal à   true
+    Ligne 2 : triggerOutputs()?['body/CourrielDirecteur']   n'est pas égal à   (vide)
+
+  Si oui :
+  [4a] « Assurer directeur » — Envoyer une requête HTTP à SharePoint
+       Méthode : POST   URI : _api/web/ensureuser
+       En-têtes : Accept et Content-Type = application/json;odata=nometadata
+       Corps :
+{ "logonName": "i:0#.f|membership|@{triggerOutputs()?['body/CourrielDirecteur']}" }
+
+  [4b] « Accès directeur » — Envoyer une requête HTTP à SharePoint
+       Méthode : POST
+       URI :
+_api/web/lists(guid'@{parameters('Liste Appreciations (rhdsst_ListeAppreciations)')}')/items(@{triggerOutputs()?['body/ID']})/roleassignments/addroleassignment(principalid=@{body('Assurer_directeur')?['Id']},roledefid=1073741827)
+
+[5] « Statut changé » — Condition — SOUS « Directeur ajouté » (pas dedans !)
+    body('Changements')?['ColumnHasChanged']?['Statut']   est égal à   true
+    Si non : rien.
+
+  Si oui :
+  [6] « Selon le statut » — Contrôle › Commutateur — Activé :
+triggerOutputs()?['body/Statut/Value']
+
+  --- Cas « Avisé au supérieur » : Envoyer un courriel (V2)
+      À : CourrielSI (contenu dynamique)
+      Objet : Appréciation de @{triggerOutputs()?['body/Title']} : prête pour votre consultation
+      Corps (mode code </>) :
+Bonjour,<br><br>@{triggerOutputs()?['body/Title']} a rempli sa partie du formulaire d'appréciation de la contribution. Vous pouvez la consulter et planifier la rencontre.<br><br><a href="@{variables('LienApp')}">Ouvrir le dossier</a>
+
+  --- Cas « Certifié » : Envoyer un courriel (V2)
+      À : CourrielSI
+      Objet : À approuver : appréciation de @{triggerOutputs()?['body/Title']}
+      Corps :
+Bonjour,<br><br>@{triggerOutputs()?['body/Title']} a certifié son formulaire. C'est maintenant votre étape : complétez au besoin le bilan annuel (section E) et l'évaluation globale, puis approuvez.<br><br><a href="@{variables('LienApp')}">Ouvrir le dossier</a>
+
+  --- Cas « Approuvé SI » : Envoyer un courriel (V2)
+      À : CourrielSH
+      Objet : À approuver : appréciation de @{triggerOutputs()?['body/Title']}
+      Corps :
+Bonjour,<br><br>Le ou la supérieur(e) immédiat(e) a approuvé le dossier de @{triggerOutputs()?['body/Title']}. C'est maintenant votre étape.<br><br><a href="@{variables('LienApp')}">Ouvrir le dossier</a>
+
+  --- Cas « Approuvé SH » : Envoyer un courriel (V2)
+      À : CourrielDirecteur
+      Objet : À approuver : appréciation de @{triggerOutputs()?['body/Title']}
+      Corps :
+Bonjour,<br><br>Le dossier de @{triggerOutputs()?['body/Title']} attend votre approbation (directeur ou directrice).<br><br><a href="@{variables('LienApp')}">Ouvrir le dossier</a>
+
+  --- Cas « Complété » (dans cet ordre) :
+
+  [6.1] « Courriel paie » — Envoyer un courriel (V2)
+        À : variable CourrielPaie
+        Objet :
+Évaluation globale – @{triggerOutputs()?['body/Title']} (@{triggerOutputs()?['body/IdEmploye']}) – @{triggerOutputs()?['body/Annee']}
+        Corps (mode code </>) :
+<table border="1" cellpadding="6" style="border-collapse:collapse"><tr><td>Nom, prénom</td><td>@{triggerOutputs()?['body/Title']}</td></tr><tr><td>ID</td><td>@{triggerOutputs()?['body/IdEmploye']}</td></tr><tr><td>Poste</td><td>@{triggerOutputs()?['body/Poste']}</td></tr><tr><td>Type de poste</td><td>@{triggerOutputs()?['body/TypePoste/Value']}</td></tr><tr><td>Année</td><td>@{triggerOutputs()?['body/Annee']}</td></tr><tr><td>Évaluation globale</td><td><b>@{triggerOutputs()?['body/EvaluationGlobale/Value']}</b></td></tr><tr><td>Supérieur(e) immédiat(e)</td><td>@{triggerOutputs()?['body/SuperieurImmediat/DisplayName']}</td></tr></table>
+
+  [6.2] « Avis à tous » — Envoyer un courriel (V2)
+        À (expression) :
+join(createArray(triggerOutputs()?['body/CourrielPersonne'], triggerOutputs()?['body/CourrielSI'], triggerOutputs()?['body/CourrielSH']), ';')
+        Objet :
+Appréciation complétée – @{triggerOutputs()?['body/Title']}
+        Corps :
+Toutes les étapes d'approbation sont complétées. Le dossier est archivé en lecture seule.<br><br><a href="@{variables('LienApp')}">Consulter le dossier</a>
+
+  [6.3] « Personnes finales » — Filtrer un tableau
+        De (expression) :
+createArray(triggerOutputs()?['body/CourrielPersonne'], triggerOutputs()?['body/CourrielSI'], triggerOutputs()?['body/CourrielSH'], triggerOutputs()?['body/CourrielDirecteur'])
+        Condition (mode avancé) :
+@not(empty(item()))
+
+  [6.4] « Lecture seule » — Appliquer à chacun — Sortie (expression) :
+body('Personnes_finales')
+        Paramètres : Contrôle d'accès concurrentiel activé, degré 1
+
+    [6.4a] « Assurer personne » — HTTP — POST — URI : _api/web/ensureuser
+           En-têtes : Accept et Content-Type = application/json;odata=nometadata
+           Corps :
+{ "logonName": "i:0#.f|membership|@{item()}" }
+
+    [6.4b] « Retirer accès » — HTTP — POST — en-tête X-HTTP-Method = DELETE — URI :
+_api/web/lists(guid'@{parameters('Liste Appreciations (rhdsst_ListeAppreciations)')}')/items(@{triggerOutputs()?['body/ID']})/roleassignments/getbyprincipalid(@{body('Assurer_personne')?['Id']})
+
+    [6.4c] « Donner Lecture » — HTTP — POST — URI :
+_api/web/lists(guid'@{parameters('Liste Appreciations (rhdsst_ListeAppreciations)')}')/items(@{triggerOutputs()?['body/ID']})/roleassignments/addroleassignment(principalid=@{body('Assurer_personne')?['Id']},roledefid=1073741826)
+
+  [6.5] « Date paie » — SharePoint › Mettre à jour l'élément — EN DERNIER, sous la boucle
+        Site / Liste : variables ; ID : ID ; Titre : Titre ; tous les autres champs vides, sauf :
+        TransmisPaieLe (expression) :
+utcNow()
+        (Cette mise à jour relance le flux, mais « Statut changé » l'arrête : pas de boucle.)
+
+
+=====================================================================
+FLUX 3 — « GenererPDFAppreciation » (bouton Aperçu PDF)
+Déclencheur : Power Apps (V2) — 3 entrées Texte, dans cet ordre :
+  nomFichier, html, courriel
+=====================================================================
+(détail complet dans GUIDE-MISE-EN-PRODUCTION, partie 6)
+
+[1] OneDrive Entreprise › Créer un fichier
+    Dossier : /     Nom : nomFichier + .html     Contenu : html
+[2] OneDrive Entreprise › Convertir un fichier
+    Fichier : Id (de l'action 1)     Type cible : PDF
+[3] SharePoint › Créer un fichier
+    Site : variable Site Appréciations     Dossier : /Appreciations_PDF
+    Nom : nomFichier + .pdf     Contenu : Contenu du fichier (de l'action 2)
+[4] SharePoint › Accorder l'accès à un élément ou à un dossier
+    Site : idem     Bibliothèque : Appreciations_PDF     Id : ItemId (de l'action 3)
+    Destinataires : courriel     Rôles : Peut afficher     Notifier : Non
+[5] SharePoint › Obtenir les propriétés du fichier
+    Site : idem     Bibliothèque : Appreciations_PDF     Id : ItemId (de l'action 3)
+[6] OneDrive Entreprise › Supprimer un fichier
+    Fichier : Id (de l'action 1, OneDrive)
+[7] Power Apps › Répondre à une application ou à un flux Power Apps
+    Sortie Texte nommée « lien » = Lien vers l'élément (de l'action 5)
+
+Après toute modification du flux 3 : dans Power Apps, volet Power Automate,
+… › Actualiser sur GenererPDFAppreciation.

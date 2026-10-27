@@ -188,4 +188,7 @@ ClearCollect(colEvalGlobale;
      Desc: "La contribution répond globalement aux attentes et/ou comportements signifiés, quantitativement et qualitativement. La personne est considérée comme un atout de grande valeur."};
     {Code: "S"; Ordre: 5; Label: "Supérieur";
      Desc: "La contribution dépasse les attentes signifiées et contribue de façon vraiment importante au succès de l'équipe."});;
-Set(varEvalGlobale; Coalesce(varDossier.EvaluationGlobale.Value; ""))
+Set(varEvalGlobale; Coalesce(varDossier.EvaluationGlobale.Value; ""));;
+
+// ---------- Cases « Type de rencontre » : relire le dossier à chaque ouverture ----------
+Reset(chkEssai);; Reset(chkPremiere);; Reset(chkMiAnnee);; Reset(chkBilan);; Reset(chkAutre)
