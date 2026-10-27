@@ -1,0 +1,62 @@
+BARRE D'ÉTAPES (galEtapes) — UNE FORMULE PAR PROPRIÉTÉ
+=======================================================
+Dans le guide (annexe A.8), toutes ces formules sont collées sur une seule ligne.
+Il faut les séparer : chaque bloc ci-dessous va dans UN contrôle et UNE propriété.
+Copiez seulement ce qui est entre les lignes ----- (sans le titre).
+
+
+1) Contrôle : galEtapes      Propriété : Items
+-----
+With(
+    {S: Coalesce(varDossier.Statut.Value; "Brouillon");
+     dirReq: Coalesce(varDossier.DirecteurRequis; false);
+     d2: !IsBlank(varDossier.CertifieLe);
+     d3: !IsBlank(varDossier.ApprouveSILe);
+     d4: !IsBlank(varDossier.ApprouveSHLe);
+     d5: !IsBlank(varDossier.ApprouveDirLe);
+     d6: !IsBlank(varDossier.TransmisPaieLe)};
+    Table(
+        {Ordre: 1; Etape: "Brouillon"; Fait: true; EnCours: S = "Brouillon" Or S = "Avisé au supérieur"; Saute: false; DateEtape: If(false; Now()); SuivantFait: d2};
+        {Ordre: 2; Etape: "Certifié (personne en appréciation)"; Fait: d2; EnCours: false; Saute: false; DateEtape: varDossier.CertifieLe; SuivantFait: d3};
+        {Ordre: 3; Etape: "Approuvé (sup. immédiat)"; Fait: d3; EnCours: S = "Certifié"; Saute: false; DateEtape: varDossier.ApprouveSILe; SuivantFait: d4};
+        {Ordre: 4; Etape: "Approuvé (sup. hiérarchique)"; Fait: d4; EnCours: S = "Approuvé SI"; Saute: false; DateEtape: varDossier.ApprouveSHLe; SuivantFait: d5};
+        {Ordre: 5; Etape: "Approuvé (directeur)"; Fait: d5; EnCours: S = "Approuvé SH"; Saute: Not(dirReq); DateEtape: varDossier.ApprouveDirLe; SuivantFait: d6};
+        {Ordre: 6; Etape: "Transmis à la paie"; Fait: d6; EnCours: S = "Complété" And Not(d6); Saute: false; DateEtape: varDossier.TransmisPaieLe; SuivantFait: S = "Complété"};
+        {Ordre: 7; Etape: "Archivé (lecture seule)"; Fait: S = "Complété"; EnCours: false; Saute: false; DateEtape: If(false; Now()); SuivantFait: false}))
+-----
+
+
+2) Contrôle : stepLineLeft   Propriété : Visible
+-----
+ThisItem.Ordre > 1
+-----
+
+
+3) Contrôle : stepLineRight  Propriété : Visible
+-----
+ThisItem.Ordre < 7
+-----
+
+
+4) Contrôle : stepHalo       Propriété : Visible
+-----
+ThisItem.EnCours And Not(ThisItem.Saute)
+-----
+
+
+5) Contrôle : stepDotLabel   Propriété : Text
+-----
+If(ThisItem.Saute; "—"; ThisItem.Fait; "✓"; Text(ThisItem.Ordre))
+-----
+
+
+6) Contrôle : stepLabel      Propriété : Text
+-----
+ThisItem.Etape & If(ThisItem.Saute; " (n/a)"; "")
+-----
+
+
+7) Contrôle : stepDate       Propriété : Text
+-----
+If(ThisItem.Fait And Not(IsBlank(ThisItem.DateEtape)); Text(ThisItem.DateEtape; "[$-fr-CA]d mmm yyyy"); "")
+-----
