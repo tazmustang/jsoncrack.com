@@ -68,7 +68,7 @@ function pastille(s, x, y, txt, fill, name) {
 pres.addSection({ title: "Introduction" });
 let s = pres.addSlide({ masterName: "TITRE", sectionTitle: "Introduction" });
 s.addText("Appréciation de la contribution : du formulaire Word à l'application numérique", { placeholder: "title" });
-s.addText("Démarche, options évaluées, tests et résultat\nPrésenté par Annie Audet, conseillère en ressources humaines (RH-SST) — octobre 2026", { placeholder: "body" });
+s.addText("Démarche, options évaluées, tests et résultat\nPrésenté par Annie Audet, conseillère en ressources humaines (RH-SST)\nVersion finale — 28 octobre 2026", { placeholder: "body" });
 s.addNotes("Présenter l'objectif de la rencontre : faire le point sur la démarche, montrer le résultat et obtenir l'appui pour la mise en production.");
 
 // ---------- 2. En bref ----------

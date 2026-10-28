@@ -1,3 +1,4 @@
+// scrFormulaire.OnVisible — VERSION FINALE — 28 octobre 2026 (coller tout le contenu de ce fichier)
 // ---------- Paramètres de l'environnement (liste Parametres) ----------
 Set(varEnv; Coalesce(LookUp(Parametres; Title = "Environnement").Valeur; "PROD"));;
 Set(varCourrielSoutien; LookUp(Parametres; Title = "CourrielSoutien").Valeur);;

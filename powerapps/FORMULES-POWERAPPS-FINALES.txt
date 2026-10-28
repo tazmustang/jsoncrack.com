@@ -1,4 +1,4 @@
-FORMULES POWER APPS — VERSION FINALE (27 octobre 2026)
+FORMULES POWER APPS — VERSION FINALE (28 octobre 2026)
 Application « Appréciation de la contribution » — syntaxe FRANÇAISE (« ; » et « ;; »)
 =====================================================================================
 Ce fichier rassemble TOUTES les formules qui diffèrent du « Guide complet » d'origine.
@@ -235,7 +235,7 @@ Le flux joint le PDF au dossier. Le navigateur bloque l'ouverture automatique d'
 
 btnApercuPDF.OnSelect ............ fichier « btnApercuPDF-OnSelect.txt »
 
-btnOuvrirPDF (copie de btnApercuPDF, barre de gauche)
+btnOuvrirPDF (copie de btnApercuPDF, barre de gauche, juste sous btnApercuPDF)
   Text ....... "📄 Ouvrir le PDF"
   Visible .... !IsBlank(varLienPDF)
   OnSelect ... Launch(varLienPDF)
@@ -244,8 +244,11 @@ Fin de scrFormulaire.OnVisible : ;; Set(varLienPDF; Blank())   (déjà dans le f
 
 
 #####################################################################
-# 11. ÉCRAN MES DOSSIERS — bouton « 📄 PDF » sur chaque ligne
+# 11. ÉCRAN MES DOSSIERS — bouton « 📄 PDF » sur chaque ligne (OPTIONNEL)
 #####################################################################
+Non requis pour la version finale (le PDF s'ouvre déjà avec « 📄 Ouvrir le PDF » dans le
+formulaire). À activer plus tard : remplacer Attachments par le nom de la colonne des pièces
+jointes proposé par Power Apps après « ThisItem. » (ex. 'Pièces jointes').
 btnPDFDossier (copie de btnOuvrir, dans rowDossier)
   Text ....... "📄 PDF"
   Width ...... 80
@@ -259,6 +262,7 @@ hdrAction.Width : 190
 #####################################################################
 Onglets : un seul, « ← Retour au formulaire » (déjà dans scrFormulaire-OnVisible-corrige.txt)
 tabBar.Visible : CurrentTabID <> 1      (la barre n'apparaît que dans l'aide)
+panelOnglets.Height : 20 + If(panelAide.Visible; panelAide.Height; 0) + 20
 SUPPRIMER (clic droit › Supprimer) : panelSynthese et panelPlan, avec tout leur contenu
   (onglets Synthèse et Plan de développement retirés ; supprime aussi l'erreur
    « Impossible d'utiliser la fonction Average avec une table vide » de synBarCadre)

@@ -1,4 +1,4 @@
-BARRE D'ÉTAPES (galEtapes) — UNE FORMULE PAR PROPRIÉTÉ
+BARRE D'ÉTAPES (galEtapes) — UNE FORMULE PAR PROPRIÉTÉ — VERSION FINALE (28 octobre 2026)
 =======================================================
 Dans le guide (annexe A.8), toutes ces formules sont collées sur une seule ligne.
 Il faut les séparer : chaque bloc ci-dessous va dans UN contrôle et UNE propriété.

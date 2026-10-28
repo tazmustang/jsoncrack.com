@@ -1,6 +1,6 @@
 ---
 title: "Appréciation de la contribution — Guide d'utilisation"
-subtitle: "Pour les personnes en appréciation et les gestionnaires — formulaires du 15 octobre 2026"
+subtitle: "VERSION FINALE — 28 octobre 2026 · Pour les personnes en appréciation et les gestionnaires (formulaires du 15 octobre 2026)"
 lang: fr-CA
 ---
 
@@ -121,7 +121,6 @@ Vous suivez l'avancement dans la **barre d'étapes**, en haut du formulaire. Qua
 |---|---|---|
 | **Barre d'étapes** | En haut du formulaire | Les 7 étapes, avec un ✓ et la date quand elles sont faites |
 | **🖨️ Aperçu PDF** | Barre de gauche | Produit le **PDF complet** de l'appréciation (10 à 30 secondes) et le **joint au dossier**. Cliquez ensuite sur **📄 Ouvrir le PDF** |
-| **📄 PDF** | Mes dossiers, sur chaque ligne | Ouvre le PDF, sans ouvrir le dossier |
 | **🗑️ Nouveau formulaire** | Barre de gauche | Vide l'écran pour commencer un autre formulaire. Ce qui a été enregistré n'est pas effacé |
 | **📂 Mes dossiers** | Barre de gauche | Revenir à la liste de vos dossiers |
 
@@ -134,7 +133,7 @@ Vous suivez l'avancement dans la **barre d'étapes**, en haut du formulaire. Qua
 | Je ne peux plus modifier mon contenu. | Il est verrouillé depuis la **certification**. Pour une correction, parlez-en à votre supérieur(e) et au soutien RH. |
 | Une section est grisée. | Elle est réservée à un autre rôle, ou à une autre étape. |
 | Le bouton Approuver est grisé. | Cochez d'abord la case de confirmation juste au-dessus. |
-| Le PDF ne s'ouvre pas. | Attendez le message vert, puis cliquez sur **📄 Ouvrir le PDF** (ou sur **📄 PDF** dans Mes dossiers). Si un message rouge apparaît, réessayez dans une minute, puis contactez le soutien. |
+| Le PDF ne s'ouvre pas. | Attendez le message vert, puis cliquez sur **📄 Ouvrir le PDF**. Si un message rouge apparaît, réessayez dans une minute, puis contactez le soutien. |
 | Il y a plusieurs versions de mon PDF ? | Non : chaque nouvelle demande remplace l'ancienne. Le PDF le plus récent est toujours celui joint au dossier. |
 | Qui voit mon appréciation ? | Vous, votre supérieur(e) immédiat(e), votre supérieur(e) hiérarchique, le directeur ou la directrice si requis, et l'équipe RH responsable. **Personne d'autre.** |
 | Est-ce que le courriel contient mon évaluation ? | Non. Les courriels contiennent seulement un lien. Seule l'**évaluation globale** est transmise aux RH, à la fin. |

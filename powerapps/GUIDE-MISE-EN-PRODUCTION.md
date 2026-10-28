@@ -1,6 +1,6 @@
 ---
 title: "Appréciation de la contribution — Guide de mise en production"
-subtitle: "Application Power Apps, SharePoint et Power Automate — version finale du 27 octobre 2026"
+subtitle: "VERSION FINALE — 28 octobre 2026 · Application Power Apps, SharePoint et Power Automate"
 lang: fr-CA
 ---
 
@@ -8,7 +8,7 @@ lang: fr-CA
 
 Ce guide complète le **« Guide complet — Application Appréciation de la contribution »** du 26 octobre 2026. Il contient :
 
-- l'état **final et testé** de la solution dans le bac à sable ;
+- l'état **final et testé** de la solution dans le bac à sable (version finale du 28 octobre 2026) ;
 - **toutes les corrections** apportées au guide d'origine pendant les tests (partie 3) ;
 - la configuration SharePoint finale, les flux finaux et le nouveau bouton PDF ;
 - la liste de vérification des tests et la **remise aux TI**.
@@ -23,10 +23,13 @@ Ce guide complète le **« Guide complet — Application Appréciation de la con
 | `FORMULES-POWERAPPS-FINALES.txt` | Toutes les formules de l'application qui diffèrent du guide d'origine |
 | `scrFormulaire-OnVisible-corrige.txt` | La formule complète **OnVisible** de l'écran formulaire |
 | `btnApercuPDF-OnSelect.txt` | La formule complète du bouton **Aperçu PDF** |
-| `MISE-A-JOUR-28-OCTOBRE.docx` | Le pas-à-pas des changements du 28 octobre (PDF joint au dossier, écran allégé) |
+| `MISE-A-JOUR-28-OCTOBRE.docx` | Journal des derniers changements (PDF joint au dossier, écran allégé), étape par étape |
 | `barre-etapes-formules.txt` | Les 7 formules de la barre d'étapes |
 | `FLUX-FINAUX.txt` | Les 3 flux, action par action, avec les vrais noms de variables |
 | `GUIDE-PDF-APPRECIATION.docx` | Le pas-à-pas détaillé du bouton PDF et du flux 3 |
+| `DOSSIER-AUTORISATION-TI.docx` | Les réponses au formulaire de mise en PréProd/Prod des TI et les éléments recommandés avant la Prod |
+| `communication/` | Guide d'utilisation, message d'annonce, 4 schémas opérationnels (et leur PDF) |
+| `presentation/` | Présentation aux gestionnaires (.pptx et .pdf) |
 | `Variables-environnement-et-deploiement.xlsx` | Variables d'environnement (dev, pré-prod, prod), structure SharePoint, composants de la solution, liste de vérification des TI |
 | `schema/Schema-solution.jpg` (et `.png`) | Le schéma d'ensemble |
 | `generer-formule-pdf.py`, `schema/…html`, `schema/generer-image.js` | Les sources, pour régénérer la formule PDF ou le schéma |
@@ -70,6 +73,9 @@ Tout utilise des connecteurs **standard** : aucune licence Premium.
 | 21 | Onglet Plan | « Imprimer ce plan » (`Print()`) donnait une page miniature ; l'onglet a été jugé trop lourd. | **Onglet Plan de développement supprimé** (panelPlan). Le contenu reste dans les sections A et D et dans le PDF complet. |
 | 22 | Écran | Trois boutons « Comment remplir » et un onglet Synthèse jugés superflus ; erreur « Average avec une table vide ». | Un seul bouton d'aide (en haut à gauche) ; **panelSynthese supprimé** ; barre d'onglets visible seulement dans l'aide (« ← Retour au formulaire »). |
 | 23 | Barre d'étapes | « Transmis à la paie » | « Transmis aux RH » |
+| 24 | Flux 3, réponse | La sortie « lien » contenait le texte tapé « URI absolu… » au lieu de l'adresse. | Expression `body('Ajouter_PDF')?['AbsoluteUri']`. |
+| 25 | Flux 3, anciennes versions | La Condition comparait le nom OneDrive (.html), d'où « Le nom spécifié est déjà utilisé ». | Expression `concat(triggerBody()?['text'], '.pdf')`. |
+| 26 | panelOnglets.Height | Référençait les panneaux supprimés. | `20 + If(panelAide.Visible; panelAide.Height; 0) + 20` |
 | 19 | Tests avec d'autres comptes | « You are not a member of the environment's security group » | Normal dans le bac à sable : seules les personnes du **groupe de sécurité** de l'environnement peuvent ouvrir l'application. Les TI doivent y ajouter les testeurs, et prévoir le bon groupe en pré-prod et en prod. |
 | 13 | Flux 1, action 4 | « Retirer les Membres » échoue (404 NotFound) quand les Membres n'ont pas de droit sur le dossier, et le flux s'arrêtait. | Sur « Personnes du dossier » : Configurer l'exécution après = **a réussi + a échoué**. |
 | 14 | Flux 2, structure | « Statut changé » était placée **dans** « Directeur ajouté », et « Date paie » était **hors** du cas Complété. | Structure corrigée (partie 6.2). |
@@ -137,10 +143,12 @@ Toutes les formules sont dans **`FORMULES-POWERAPPS-FINALES.txt`**, classées pa
 2. **Type de rencontre** : propriété Checked des 5 cases.
 3. **btnDeposer.OnSelect** : la formule complète.
 4. **cboDirecteur.Items**.
-5. **Synthèse** (onglet retiré le 28 octobre) : synBarSup, synValSup, synBarCadre, synValCadre.
+5. **Écran allégé** : panelSynthese et panelPlan **supprimés** ; panelOnglets.Height et tabBar.Visible corrigés ; aideCallout masqué.
 6. **Barre d'étapes** : galEtapes et ses 6 contrôles.
-7. **Mes dossiers** : bouton « 📝 Nouveau formulaire ».
+7. **Mes dossiers** : bouton « 📝 Nouveau formulaire » (et, en option, bouton « 📄 PDF » sur chaque ligne).
 8. **Mise en page** : Introduction, remplissages, hauteurs.
+9. **Dates** : aucun « fr-CA » dans l'application.
+10. **PDF** : btnApercuPDF et btnOuvrirPDF.
 
 Les deux formules les plus longues sont dans leurs propres fichiers :
 
@@ -191,7 +199,9 @@ Le pas-à-pas complet est dans **`GUIDE-PDF-APPRECIATION.docx`**. En résumé :
 
 1. Vérifier que la liste Appreciations accepte les pièces jointes (partie 4.2).
 2. Créer le flux **GenererPDFAppreciation** dans la solution : 3 entrées (nomFichier, html, idDossier) et 7 actions ; il **joint le PDF au dossier** en remplaçant l'ancienne version (voir `FLUX-FINAUX.txt` et `MISE-A-JOUR-28-OCTOBRE.docx`). Il convertit avec **OneDrive Entreprise › Convertir un fichier**, crée la référence de connexion **OneDrive Appreciations**, et répond avec une sortie **lien**.
-3. Dans l'application, ajouter le flux, coller `btnApercuPDF-OnSelect.txt` dans **btnApercuPDF.OnSelect** puis créer les boutons « 📄 Ouvrir le PDF » (formulaire) et « 📄 PDF » (Mes dossiers).
+3. Dans l'application, ajouter le flux, coller `btnApercuPDF-OnSelect.txt` dans **btnApercuPDF.OnSelect**, puis créer le bouton **« 📄 Ouvrir le PDF »** (barre de gauche, sous Aperçu PDF). Le bouton « 📄 PDF » sur chaque ligne de Mes dossiers est **optionnel** (amélioration future).
+
+**Point clé du flux :** la sortie **lien** de « Répondre à l'application » doit être l'expression `body('Ajouter_PDF')?['AbsoluteUri']` (une pastille), jamais du texte tapé. La Condition des anciennes versions compare **DisplayName** à `concat(triggerBody()?['text'], '.pdf')`.
 
 La formule assemble le document **en 40 petites étapes**, dans la variable `varHtmlPDF`. Une seule longue formule donnait l'erreur « L'imbrication d'expressions est trop profonde ».
 
@@ -288,4 +298,8 @@ Voir l'onglet **Checklist TI** du fichier Excel :
 | « L'imbrication d'expressions est trop profonde » | Formule trop longue d'un bloc | Formule PDF en étapes (`btnApercuPDF-OnSelect.txt`) |
 | « Value n'est pas reconnu » | `ThisRecord` dans un LookUp | Formules avec `As` (OnVisible corrigé) |
 | Le champ affiche la formule au lieu de la valeur | Formule tapée dans le panneau de droite | Barre fx, propriété Default |
-| `.lien` souligné en rouge | Le flux 3 a été ajouté avant sa dernière action | Volet Power Automate › … › Actualiser |
+| `.lien` souligné en rouge | Le flux 3 a été ajouté avant sa dernière action, ou ses entrées ont changé | Volet Power Automate › … › Actualiser (ou supprimer et rajouter le flux) |
+| « 502 BadGateway / NoResponse » | Le flux n'a pas atteint « Répondre » (une action a échoué) | Historique des exécutions › carte rouge. Une erreur Runtime ancienne reste affichée tant qu'il n'y a pas d'appel réussi |
+| « Le nom spécifié est déjà utilisé » (Ajouter PDF) | L'ancien PDF n'a pas été supprimé | Condition = `concat(triggerBody()?['text'], '.pdf')` |
+| « ActionResponseSkipped » | Exécution relancée par « Renvoyer » : personne n'attend la réponse | Normal ; tester depuis l'application |
+| « Impossible d'utiliser la fonction Average avec une table vide » | Contrôles de l'ancien onglet Synthèse | Supprimer panelSynthese |

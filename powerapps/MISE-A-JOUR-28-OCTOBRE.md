@@ -1,5 +1,5 @@
 ---
-title: "Mise à jour du 28 octobre 2026"
+title: "Journal des changements du 28 octobre 2026 (version finale)"
 subtitle: "PDF joint au dossier, allègement de l'écran (sans onglets Synthèse ni Plan), dates"
 lang: fr-CA
 ---
@@ -78,7 +78,7 @@ Supprimez ces cartes (… › Supprimer) :
 ## A.5 Les deux dernières actions
 
 - **Supprimer un fichier** (OneDrive) : ne change pas. Elle supprime le fichier .html temporaire.
-- **Répondre à une application ou à un flux Power Apps** : sortie **lien** = **URI absolu** (AbsoluteUri), venant de « Ajouter PDF ».
+- **Répondre à une application ou à un flux Power Apps** : sortie **lien** = expression (fx) `body('Ajouter_PDF')?['AbsoluteUri']` (une **pastille**, pas du texte tapé).
 
 **Ordre final :**
 
@@ -105,7 +105,7 @@ Cliquez sur **Enregistrer**.
 - clic droit sur **panelSynthese** › **Supprimer** ;
 - clic droit sur **panelPlan** › **Supprimer** (son bouton « Imprimer ce plan » part avec lui).
 
-Puis **Revérifier tout** : l'erreur « Impossible d'utiliser la fonction Average avec une table vide » disparaît.
+Puis remplacez **panelOnglets.Height** par `20 + If(panelAide.Visible; panelAide.Height; 0) + 20` et faites **Revérifier tout** : l'erreur « Impossible d'utiliser la fonction Average avec une table vide » disparaît.
 
 **B.4 Bouton « 📄 Ouvrir le PDF »** (s'il n'est pas déjà créé). Copiez **btnApercuPDF** (Ctrl+C, Ctrl+V), renommez la copie `btnOuvrirPDF`, puis :
 
@@ -137,7 +137,7 @@ If(ThisItem.Fait And Not(IsBlank(ThisItem.DateEtape)); Text(ThisItem.DateEtape; 
 
 Faites aussi une recherche avec la **loupe 🔍** sur `[$-fr-CA]` : effacez-le partout où il reste.
 
-# C. Bouton « 📄 PDF » dans Mes dossiers (scrMesDossiers)
+# C. *(Optionnel)* Bouton « 📄 PDF » dans Mes dossiers (scrMesDossiers)
 
 1. Dans l'Arborescence, ouvrez **galDossiers › rowDossierWrap › rowDossier** et cliquez sur **btnOuvrir**.
 2. Faites **Ctrl+C**, puis **Ctrl+V**. La copie apparaît dans la même ligne. Renommez-la `btnPDFDossier`.

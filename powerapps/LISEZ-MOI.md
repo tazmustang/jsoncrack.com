@@ -1,4 +1,6 @@
-# Appréciation de la contribution — application Power Apps (version finale)
+# Appréciation de la contribution — application Power Apps
+
+**VERSION FINALE — 28 octobre 2026** (version présentée et soumise pour déploiement)
 
 Commencez par **GUIDE-MISE-EN-PRODUCTION.docx**. Il explique tout et liste chaque fichier.
 
@@ -14,4 +16,8 @@ Commencez par **GUIDE-MISE-EN-PRODUCTION.docx**. Il explique tout et liste chaqu
 | FLUX-FINAUX.txt | Les 3 flux, champ par champ |
 | Variables-environnement-et-deploiement.xlsx | Variables, SharePoint, composants, checklist TI |
 | schema/Schema-solution.jpg / .png | Schéma d'ensemble |
+| DOSSIER-AUTORISATION-TI.docx / .md | Réponses au formulaire d'autorisation des TI |
+| communication/ | Guide d'utilisation, message d'annonce, 4 schémas opérationnels (JPG/PNG + PDF) |
+| presentation/ | Présentation aux gestionnaires (.pptx + .pdf, 18 diapositives) |
+| Appreciation-contribution-VERSION-FINALE.zip | Tous les fichiers ci-dessus en un seul téléchargement |
 | generer-formule-pdf.py, schema/schema-solution.html, schema/generer-image.js | Sources pour régénérer |

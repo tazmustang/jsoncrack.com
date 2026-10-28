@@ -1,6 +1,6 @@
 ---
 title: "Message d'annonce — Appréciation de la contribution"
-subtitle: "Trois versions prêtes à copier : courriel complet, message Teams et rappel aux gestionnaires"
+subtitle: "VERSION FINALE — 28 octobre 2026 · Trois versions prêtes à copier : courriel complet, message Teams et rappel aux gestionnaires"
 lang: fr-CA
 ---
 

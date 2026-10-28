@@ -1,5 +1,7 @@
 # Trousse de communication — Appréciation de la contribution
 
+**VERSION FINALE — 28 octobre 2026**
+
 | Fichier | Pour qui | Usage |
 |---|---|---|
 | GUIDE-UTILISATION.docx | Employés et gestionnaires | Guide d'utilisation (joindre à l'annonce ; Word › Enregistrer sous › PDF au besoin) |

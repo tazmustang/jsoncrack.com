@@ -1,4 +1,4 @@
-FLUX POWER AUTOMATE — VERSION FINALE (27 octobre 2026)
+FLUX POWER AUTOMATE — VERSION FINALE (28 octobre 2026)
 Solution « Solution-ApplicationAppreciation » — 3 flux
 =======================================================
 Tous les noms de variables d'environnement ci-dessous sont les VRAIS noms de votre solution :
@@ -213,7 +213,12 @@ concat(triggerBody()?['text'], '.pdf')
 [6] OneDrive Entreprise › Supprimer un fichier
     Fichier : Id (de l'action 1, OneDrive)
 [7] Power Apps › Répondre à une application ou à un flux Power Apps
-    Sortie Texte nommée « lien » = URI absolu (AbsoluteUri) de « Ajouter PDF »
+    Sortie Texte nommée « lien » = expression (fx) :
+body('Ajouter_PDF')?['AbsoluteUri']
+    (doit apparaître comme une PASTILLE ; jamais le texte tapé « URI absolu… »)
+    Optionnel : une copie de cette action en branche parallèle sous « Ajouter PDF »,
+    lien vide, « Configurer l'exécution après » = a échoué + a expiré (l'application
+    affiche alors « Le PDF n'a pas pu être créé » au lieu d'une erreur 502).
 
 Le PDF a automatiquement les mêmes accès que le dossier (personnes du dossier + RH).
 La bibliothèque Appreciations_PDF n'est plus utilisée.

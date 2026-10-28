@@ -178,6 +178,7 @@ def formule(morceaux, titre, nom):
              ['Set(varHtmlPDF; varHtmlPDF & ' + x + ')' for x in morceaux[1:]]
     assemblage = ';;\n    '.join(etapes)
     return f"""// {titre}
+// VERSION FINALE — 28 octobre 2026
 // 1) assemble la page HTML dans varHtmlPDF ; 2) le flux GenererPDFAppreciation la convertit
 // en PDF et la joint au dossier (liste Appreciations) en remplaçant la version précédente ;
 // 3) le bouton « 📄 Ouvrir le PDF » (ou Mes dossiers) l'ouvre.

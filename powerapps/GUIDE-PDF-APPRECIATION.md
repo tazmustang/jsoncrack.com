@@ -1,6 +1,6 @@
 ---
 title: "Guide — PDF de l'appréciation"
-subtitle: "Application Power Apps « Appréciation de la contribution » — version du 28 octobre 2026"
+subtitle: "VERSION FINALE — 28 octobre 2026 · Application Power Apps « Appréciation de la contribution »"
 lang: fr-CA
 ---
 
@@ -77,7 +77,7 @@ La liste **Appreciations** doit accepter les pièces jointes. Pour le vérifier 
 6. **OneDrive Entreprise › Supprimer un fichier**
    - Fichier : **Id** (de l'action 1)
 7. **Power Apps › Répondre à une application ou à un flux Power Apps**
-   - Sortie **Texte** nommée `lien` = **URI absolu** de « Ajouter PDF »
+   - Sortie **Texte** nommée `lien` = expression (fx) `body('Ajouter_PDF')?['AbsoluteUri']` — elle doit apparaître comme une **pastille**, pas comme du texte
 
 Cliquez sur **Enregistrer**.
 
@@ -89,7 +89,7 @@ Cliquez sur **Enregistrer**.
    - **Text** : `"📄 Ouvrir le PDF"`
    - **Visible** : `!IsBlank(varLienPDF)`
    - **OnSelect** : `Launch(varLienPDF)`
-4. **Mes dossiers** : bouton **📄 PDF** sur chaque ligne. Voir `FORMULES-POWERAPPS-FINALES.txt`, partie 11.
+4. *(Optionnel, plus tard)* **Mes dossiers** : bouton **📄 PDF** sur chaque ligne. Voir `FORMULES-POWERAPPS-FINALES.txt`, partie 11.
 
 **Pourquoi un bouton « Ouvrir » ?** Le navigateur bloque l'ouverture automatique d'un onglet quand elle survient 10 à 30 secondes après le clic. C'est le temps que prend la création du PDF. Le bouton ouvre le PDF d'un seul clic, sans blocage.
 
