@@ -189,28 +189,32 @@ utcNow()
 
 
 =====================================================================
-FLUX 3 — « GenererPDFAppreciation » (bouton Aperçu PDF)
-Déclencheur : Power Apps (V2) — 3 entrées Texte, dans cet ordre :
-  nomFichier, html, courriel
+FLUX 3 — « GenererPDFAppreciation » (boutons Aperçu PDF et Créer le PDF du plan)
+Version du 28 octobre : le PDF est JOINT AU DOSSIER (pièce jointe de l'élément de la
+liste Appreciations) et remplace la version précédente du même nom.
+Déclencheur : Power Apps (V2) — 3 entrées, dans cet ordre :
+  nomFichier (Texte), html (Texte), idDossier (Nombre)
 =====================================================================
-(détail complet dans GUIDE-MISE-EN-PRODUCTION, partie 6)
 
 [1] OneDrive Entreprise › Créer un fichier
     Dossier : /     Nom : nomFichier + .html     Contenu : html
 [2] OneDrive Entreprise › Convertir un fichier
     Fichier : Id (de l'action 1)     Type cible : PDF
-[3] SharePoint › Créer un fichier
-    Site : variable Site Appréciations     Dossier : /Appreciations_PDF
-    Nom : nomFichier + .pdf     Contenu : Contenu du fichier (de l'action 2)
-[4] SharePoint › Accorder l'accès à un élément ou à un dossier
-    Site : idem     Bibliothèque : Appreciations_PDF     Id : ItemId (de l'action 3)
-    Destinataires : courriel     Rôles : Peut afficher     Notifier : Non
-[5] SharePoint › Obtenir les propriétés du fichier
-    Site : idem     Bibliothèque : Appreciations_PDF     Id : ItemId (de l'action 3)
+[3] « Pieces jointes » — SharePoint › Obtenir les pièces jointes
+    Site : Site Appréciations     Liste : Liste Appreciations     Id : idDossier
+[4] « Anciennes versions » — Appliquer à chacun sur le Corps de « Pieces jointes »
+    Condition : Nom d'affichage (DisplayName)  est égal à  nomFichier + .pdf
+    Si oui : SharePoint › Supprimer la pièce jointe
+             Site / Liste : idem     Id : idDossier     Id de la pièce jointe : Id
+[5] « Ajouter PDF » — SharePoint › Ajouter une pièce jointe (sous la boucle)
+    Site / Liste : idem     Id : idDossier     Nom : nomFichier + .pdf
+    Contenu : Contenu du fichier (de l'action 2)
 [6] OneDrive Entreprise › Supprimer un fichier
     Fichier : Id (de l'action 1, OneDrive)
 [7] Power Apps › Répondre à une application ou à un flux Power Apps
-    Sortie Texte nommée « lien » = Lien vers l'élément (de l'action 5)
+    Sortie Texte nommée « lien » = URI absolu (AbsoluteUri) de « Ajouter PDF »
 
+Le PDF a automatiquement les mêmes accès que le dossier (personnes du dossier + RH).
+La bibliothèque Appreciations_PDF n'est plus utilisée.
 Après toute modification du flux 3 : dans Power Apps, volet Power Automate,
 … › Actualiser sur GenererPDFAppreciation.

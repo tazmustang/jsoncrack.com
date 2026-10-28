@@ -101,7 +101,7 @@ Vous suivez l'avancement dans la **barre d'étapes**, en haut du formulaire. Qua
 # 4. Supérieur(e) hiérarchique et directeur ou directrice
 
 1. Vous recevez « À approuver » par courriel, avec le lien vers le dossier.
-2. Prenez connaissance du dossier. Les onglets **📊 Synthèse** et **🎯 Plan de développement** en donnent un résumé.
+2. Prenez connaissance du dossier. La **barre d'étapes** et l'onglet **🎯 Plan de développement** en donnent un résumé.
 3. Dans la **section G**, cochez la case de confirmation et cliquez sur **Approuver**.
 
 - **Sans directeur requis :** l'approbation du supérieur hiérarchique **termine** le dossier (statut « Complété »).
@@ -109,7 +109,7 @@ Vous suivez l'avancement dans la **barre d'étapes**, en haut du formulaire. Qua
 
 **À « Complété », tout est automatique :**
 
-- l'évaluation globale est transmise à la **paie** ;
+- l'évaluation globale est transmise aux **RH** ;
 - tout le monde est avisé ;
 - le dossier passe en **lecture seule**.
 
@@ -120,9 +120,10 @@ Vous suivez l'avancement dans la **barre d'étapes**, en haut du formulaire. Qua
 | Outil | Où | À quoi il sert |
 |---|---|---|
 | **Barre d'étapes** | En haut du formulaire | Les 7 étapes, avec un ✓ et la date quand elles sont faites |
-| **📊 Synthèse** | Onglet | Statut, type de poste, évaluation globale, nombre d'objectifs, moyenne des cotes par posture |
 | **🎯 Plan de développement** | Onglet | Objectifs à venir et besoins de développement, réunis sur une page |
-| **🖨️ Aperçu PDF** | Barre de gauche | Produit le **PDF complet** de l'appréciation (10 à 30 secondes). Il s'ouvre dans un nouvel onglet |
+| **🖨️ Aperçu PDF** | Barre de gauche | Produit le **PDF complet** de l'appréciation (10 à 30 secondes) et le **joint au dossier**. Cliquez ensuite sur **📄 Ouvrir le PDF** |
+| **🖨️ Créer le PDF du plan** | Onglet Plan | Produit le PDF du plan de développement, joint aussi au dossier |
+| **📄 PDF** | Mes dossiers, sur chaque ligne | Ouvre le PDF, sans ouvrir le dossier |
 | **🗑️ Nouveau formulaire** | Barre de gauche | Vide l'écran pour commencer un autre formulaire. Ce qui a été enregistré n'est pas effacé |
 | **📂 Mes dossiers** | Barre de gauche | Revenir à la liste de vos dossiers |
 
@@ -135,11 +136,12 @@ Vous suivez l'avancement dans la **barre d'étapes**, en haut du formulaire. Qua
 | Je ne peux plus modifier mon contenu. | Il est verrouillé depuis la **certification**. Pour une correction, parlez-en à votre supérieur(e) et au soutien RH. |
 | Une section est grisée. | Elle est réservée à un autre rôle, ou à une autre étape. |
 | Le bouton Approuver est grisé. | Cochez d'abord la case de confirmation juste au-dessus. |
-| Le PDF ne s'ouvre pas. | Vérifiez que votre navigateur autorise les fenêtres. Si un message rouge apparaît, réessayez dans une minute, puis contactez le soutien. |
+| Le PDF ne s'ouvre pas. | Attendez le message vert, puis cliquez sur **📄 Ouvrir le PDF** (ou sur **📄 PDF** dans Mes dossiers). Si un message rouge apparaît, réessayez dans une minute, puis contactez le soutien. |
+| Il y a plusieurs versions de mon PDF ? | Non : chaque nouvelle demande remplace l'ancienne. Le PDF le plus récent est toujours celui joint au dossier. |
 | Qui voit mon appréciation ? | Vous, votre supérieur(e) immédiat(e), votre supérieur(e) hiérarchique, le directeur ou la directrice si requis, et l'équipe RH responsable. **Personne d'autre.** |
-| Est-ce que le courriel contient mon évaluation ? | Non. Les courriels contiennent seulement un lien. Seule l'**évaluation globale** est transmise à la paie, à la fin. |
+| Est-ce que le courriel contient mon évaluation ? | Non. Les courriels contiennent seulement un lien. Seule l'**évaluation globale** est transmise aux RH, à la fin. |
 
 # 7. Besoin d'aide ?
 
-- Dans l'onglet **❓ Comment remplir**, utilisez le bouton de contact pour écrire à l'équipe.
+- Cliquez sur **❓ Comment remplir ce formulaire** (en haut à gauche), puis sur le bouton de contact pour écrire à l'équipe.
 - Soutien RH : *[adresse de soutien]*.

@@ -16,9 +16,9 @@ ClearCollect(colPostes;
     {PosteLabel: "Professionnel non syndiqué"; PosteColor: RGBA(107;63;160;1); PosteID: "professionnel"});;
 ClearCollect(colTabs;
     {TabLabel: "📝 Formulaire"; TabID: 1};
-    {TabLabel: "❓ Comment remplir"; TabID: 2};
-    {TabLabel: "📊 Synthèse"; TabID: 3};
     {TabLabel: "🎯 Plan de développement"; TabID: 4});;
+// (onglets « Comment remplir » et « Synthèse » retirés le 28 octobre :
+//  l'aide s'ouvre avec le bouton « Comment remplir ce formulaire » en haut à gauche)
 
 // Dossier ouvert depuis un lien (...&ID=12)
 If(IsBlank(varDossier) && !IsBlank(Param("ID"));

@@ -17,7 +17,7 @@ Bonjour,
 - **Un seul dossier, toujours à jour.** Fini les versions Word qui circulent par courriel.
 - **Confidentiel par défaut.** Seuls vous, vos supérieur(e)s et l'équipe RH responsable y ont accès.
 - **Suivi automatique.** La bonne personne est avisée par courriel à chaque étape, et une barre d'étapes montre où en est le dossier.
-- **Plus simple.** Vous certifiez et approuvez en un clic. Un PDF complet se produit en un clic, et l'évaluation globale est transmise automatiquement à la paie.
+- **Plus simple.** Vous certifiez et approuvez en un clic. Un PDF complet se produit en un clic, et l'évaluation globale est transmise automatiquement aux RH.
 
 **Pour commencer :**
 

@@ -1,6 +1,7 @@
 // btnApercuPDF.OnSelect — PDF de l'appréciation complète
-// 1) assemble l'appréciation en HTML dans varHtmlPDF ; 2) le flux GenererPDFAppreciation
-// le convertit en PDF ; 3) le PDF s'ouvre dans un nouvel onglet.
+// 1) assemble la page HTML dans varHtmlPDF ; 2) le flux GenererPDFAppreciation la convertit
+// en PDF et la joint au dossier (liste Appreciations) en remplaçant la version précédente ;
+// 3) le bouton « 📄 Ouvrir le PDF » (ou Mes dossiers) l'ouvre.
 If(IsBlank(varDossier);
     Notify("Enregistrez d'abord le dossier avec « Enregistrer et déposer »."; NotificationType.Warning);
     Set(varLienPDF; Blank());;
@@ -44,15 +45,13 @@ If(IsBlank(varDossier);
     Set(varHtmlPDF; varHtmlPDF & "<tr><td>Approbation du supérieur immédiat</td><td>" & Coalesce(varDossier.SuperieurImmediat.DisplayName; "—") & "</td><td>" & If(IsBlank(varDossier.ApprouveSILe); "—"; Text(varDossier.ApprouveSILe; "d mmmm yyyy")) & "</td></tr>");;
     Set(varHtmlPDF; varHtmlPDF & "<tr><td>Approbation du supérieur hiérarchique</td><td>" & Coalesce(varDossier.SuperieurHierarchique.DisplayName; "—") & "</td><td>" & If(IsBlank(varDossier.ApprouveSHLe); "—"; Text(varDossier.ApprouveSHLe; "d mmmm yyyy")) & "</td></tr>");;
     Set(varHtmlPDF; varHtmlPDF & If(chkDirRequis.Checked; "<tr><td>Approbation du directeur</td><td>" & Coalesce(varDossier.Directeur.DisplayName; "—") & "</td><td>" & If(IsBlank(varDossier.ApprouveDirLe); "—"; Text(varDossier.ApprouveDirLe; "d mmmm yyyy")) & "</td></tr>"; ""));;
-    Set(varHtmlPDF; varHtmlPDF & "<tr><td>Transmis à la paie</td><td>" & "—" & "</td><td>" & If(IsBlank(varDossier.TransmisPaieLe); "—"; Text(varDossier.TransmisPaieLe; "d mmmm yyyy")) & "</td></tr>");;
+    Set(varHtmlPDF; varHtmlPDF & "<tr><td>Transmis aux RH</td><td>" & "—" & "</td><td>" & If(IsBlank(varDossier.TransmisPaieLe); "—"; Text(varDossier.TransmisPaieLe; "d mmmm yyyy")) & "</td></tr>");;
     Set(varHtmlPDF; varHtmlPDF & "</table><p class=pied>Document produit le " & Text(Now(); "d mmmm yyyy") & " à " & Text(Now(); "hh:mm") & " à partir de l'application Appréciation de la contribution. Version du formulaire : 15 octobre 2026.</p></body></html>");;
     Set(varLienPDF;
         GenererPDFAppreciation.Run(
-            "Appreciation_dossier" & varDossier.ID & "_" & Text(Now(); "yyyy-mm-dd_hh-mm");
+            "Appreciation_dossier" & varDossier.ID;
             varHtmlPDF;
-            varMoi).lien);;
+            varDossier.ID).lien);;
     If(IsBlank(varLienPDF);
         Notify("Le PDF n'a pas pu être créé. Réessayez dans un moment."; NotificationType.Error);
-        Notify("PDF prêt : cliquez sur « 📄 Ouvrir le PDF » s'il ne s'ouvre pas tout seul."; NotificationType.Success);;
-        Launch(varLienPDF)))
-
+        Notify("PDF prêt : cliquez sur « 📄 Ouvrir le PDF »."; NotificationType.Success)))

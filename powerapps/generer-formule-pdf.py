@@ -1,5 +1,5 @@
 # Génère la formule Power Fx (syntaxe française) du bouton btnApercuPDF.
-# Usage : python3 generer-formule-pdf.py > btnApercuPDF-OnSelect.txt
+# Usage : python3 generer-formule-pdf.py  (écrit btnApercuPDF-OnSelect.txt et btnImprimer-Plan-OnSelect.txt)
 
 def E(x):
     """Texte saisi -> HTML sûr (& < > et retours de ligne)."""
@@ -136,20 +136,51 @@ P(g("Certification (personne en appréciation)", 'Coalesce(varDossier.PersonneAp
 P(g("Approbation du supérieur immédiat", 'Coalesce(varDossier.SuperieurImmediat.DisplayName; "—")', 'varDossier.ApprouveSILe'))
 P(g("Approbation du supérieur hiérarchique", 'Coalesce(varDossier.SuperieurHierarchique.DisplayName; "—")', 'varDossier.ApprouveSHLe'))
 P('If(chkDirRequis.Checked; ' + g("Approbation du directeur", 'Coalesce(varDossier.Directeur.DisplayName; "—")', 'varDossier.ApprouveDirLe') + '; "")')
-P(g("Transmis à la paie", '"—"', 'varDossier.TransmisPaieLe'))
+P(g("Transmis aux RH", '"—"', 'varDossier.TransmisPaieLe'))
 P(s("</table><p class=pied>Document produit le ") + ' & Text(Now(); "d mmmm yyyy") & " à " & Text(Now(); "hh:mm") & ' +
   s(" à partir de l'application Appréciation de la contribution. Version du formulaire : 15 octobre 2026.</p></body></html>"))
+
+# ---------------------------------------------------------------------------
+# PDF « Plan de développement » (bouton « Imprimer ce plan » de l'onglet Plan)
+# ---------------------------------------------------------------------------
+plan = []
+Q = plan.append
+Q(parts[0])
+Q(s("<h1>Plan de développement</h1><p class=sous>") + ' & LookUp(colPostes; PosteID = CurrentPosteID).PosteLabel & ' +
+  s(" — dossier no ") + ' & varDossier.ID & ' + s("</p><table>"))
+Q(ligne("Nom, prénom", E('Coalesce(txtNom.Text; varDossier.Title)')))
+Q(ligne("Poste", E('Coalesce(txtPoste.Text; varDossier.Poste)')))
+Q(ligne("Supérieur(e) immédiat(e)", 'Coalesce(varDossier.SuperieurImmediat.DisplayName; "—")'))
+Q(ligne("Année", 'Coalesce(Text(varDossier.Annee); Text(Year(Today())))'))
+Q(s("</table><h2>Objectifs pour l'année à venir</h2>"))
+Q(vide(f'CountRows({fv}) = 0',
+       s("<table><tr><th>Objectifs à venir</th><th>Indicateurs de mesure</th></tr>") +
+       f' & Concat({fv}; "<tr><td>" & {E("Objectif")} & "</td><td>" & {E("Indicateur")} & "</td></tr>") & ' +
+       s("</table>")))
+Q(s("<h2>Développement des compétences — résultats des actions réalisées</h2>"))
+Q(vide(f'CountRows({fp}) = 0',
+       s("<table><tr><th>Objectifs précédents</th><th>Moyens choisis</th><th>Impacts / résultats</th></tr>") +
+       f' & Concat({fp}; "<tr><td>" & {E("Objectif")} & "</td><td>" & {E("Moyens")} & "</td><td>" & {E("Impacts")} & "</td></tr>") & ' +
+       s("</table>")))
+Q(s("<h2>Nouveaux besoins et moyens de développement</h2>"))
+Q(vide(f'CountRows({fn}) = 0',
+       s("<table><tr><th>Besoins de développement</th><th>Moyens de développement</th></tr>") +
+       f' & Concat({fn}; "<tr><td>" & {E("Besoin")} & "</td><td>" & {E("Moyen")} & "</td></tr>") & ' +
+       s("</table>")))
+Q(s("<p class=pied>Document produit le ") + ' & Text(Now(); "d mmmm yyyy") & " à " & Text(Now(); "hh:mm") & ' +
+  s(" à partir de l'application Appréciation de la contribution.</p></body></html>"))
 
 # Une seule longue chaîne de « & » dépasse la profondeur permise par Power Apps
 # (« L'imbrication d'expressions est trop profonde ») : on assemble donc la page
 # morceau par morceau dans la variable varHtmlPDF.
-etapes = ['Set(varHtmlPDF; ' + parts[0] + ')'] + \
-         ['Set(varHtmlPDF; varHtmlPDF & ' + x + ')' for x in parts[1:]]
-assemblage = ';;\n    '.join(etapes)
-
-formule = f'''// btnApercuPDF.OnSelect — PDF de l'appréciation complète
-// 1) assemble l'appréciation en HTML dans varHtmlPDF ; 2) le flux GenererPDFAppreciation
-// le convertit en PDF ; 3) le PDF s'ouvre dans un nouvel onglet.
+def formule(morceaux, titre, nom):
+    etapes = ['Set(varHtmlPDF; ' + morceaux[0] + ')'] + \
+             ['Set(varHtmlPDF; varHtmlPDF & ' + x + ')' for x in morceaux[1:]]
+    assemblage = ';;\n    '.join(etapes)
+    return f"""// {titre}
+// 1) assemble la page HTML dans varHtmlPDF ; 2) le flux GenererPDFAppreciation la convertit
+// en PDF et la joint au dossier (liste Appreciations) en remplaçant la version précédente ;
+// 3) le bouton « 📄 Ouvrir le PDF » (ou Mes dossiers) l'ouvre.
 If(IsBlank(varDossier);
     Notify("Enregistrez d'abord le dossier avec « Enregistrer et déposer »."; NotificationType.Warning);
     Set(varLienPDF; Blank());;
@@ -157,12 +188,20 @@ If(IsBlank(varDossier);
     {assemblage};;
     Set(varLienPDF;
         GenererPDFAppreciation.Run(
-            "Appreciation_dossier" & varDossier.ID & "_" & Text(Now(); "yyyy-mm-dd_hh-mm");
+            {nom};
             varHtmlPDF;
-            varMoi).lien);;
+            varDossier.ID).lien);;
     If(IsBlank(varLienPDF);
         Notify("Le PDF n'a pas pu être créé. Réessayez dans un moment."; NotificationType.Error);
-        Notify("PDF prêt : cliquez sur « 📄 Ouvrir le PDF » s'il ne s'ouvre pas tout seul."; NotificationType.Success);;
-        Launch(varLienPDF)))
-'''
-print(formule)
+        Notify("PDF prêt : cliquez sur « 📄 Ouvrir le PDF »."; NotificationType.Success)))
+"""
+
+import os
+ici = os.path.dirname(os.path.abspath(__file__))
+open(os.path.join(ici, 'btnApercuPDF-OnSelect.txt'), 'w').write(
+    formule(parts, "btnApercuPDF.OnSelect — PDF de l'appréciation complète",
+            '"Appreciation_dossier" & varDossier.ID'))
+open(os.path.join(ici, 'btnImprimer-Plan-OnSelect.txt'), 'w').write(
+    formule(plan, "btnImprimer.OnSelect (onglet Plan) — PDF du plan de développement",
+            '"Plan_developpement_dossier" & varDossier.ID'))
+print("btnApercuPDF-OnSelect.txt et btnImprimer-Plan-OnSelect.txt écrits")

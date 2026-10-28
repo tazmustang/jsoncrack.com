@@ -1,0 +1,185 @@
+---
+title: "Mise à jour du 28 octobre 2026"
+subtitle: "PDF joint au dossier, plan de développement en PDF, allègement de l'écran, dates"
+lang: fr-CA
+---
+
+# Résumé des changements
+
+| N° | Demande | Solution |
+|---|---|---|
+| 1 | Joindre le PDF au dossier de l'employé | Le flux 3 **joint le PDF à l'élément** de la liste Appreciations (pièce jointe), au lieu de la bibliothèque Appreciations_PDF |
+| 2 | Plusieurs versions du PDF portent à confusion | Le flux **remplace** l'ancien PDF du même nom : il y a toujours **une seule** version, la plus récente |
+| 3 | Plan de développement imprimé mal mis en page | « Imprimer ce plan » produit maintenant un **vrai PDF** du plan, joint aussi au dossier |
+| 4 | Trop de « Comment remplir » | On garde **seulement** le bouton du haut à gauche |
+| 5 | Retirer « Synthèse » | Onglet retiré : il reste **Formulaire** et **Plan de développement** |
+| 6 | « Transmis à la paie » | Devient **« Transmis aux RH »** dans la barre d'étapes et le PDF |
+| 7 | Erreur fr-CA dans stepDate | Nouvelle formule ci-dessous |
+| 8 | Bouton « Ouvrir le PDF » | Il est nécessaire (le navigateur bloque l'ouverture automatique). Il existe en **deux endroits** : dans le formulaire, et sur chaque ligne de **Mes dossiers** (bouton 📄 PDF) |
+
+**Bonus du point 1 :** une pièce jointe a **exactement les mêmes accès que le dossier**. Seuls la personne, ses supérieurs, le directeur si requis et les RH peuvent ouvrir le PDF. L'action « Accorder l'accès » et la bibliothèque Appreciations_PDF ne sont donc **plus nécessaires**.
+
+Ordre conseillé : **A** (flux) → **B** (application) → **C** (Mes dossiers) → **D** (ménage) → **E** (test).
+
+# A. Modifier le flux GenererPDFAppreciation (15 minutes)
+
+Ouvrez le flux en modification, dans la solution.
+
+## A.1 Le déclencheur Power Apps (V2)
+
+1. **Supprimez** l'entrée **courriel** (… à droite de l'entrée › Supprimer).
+2. Ajoutez une entrée **Nombre** nommée `idDossier`.
+3. Ordre final : **nomFichier** (Texte), **html** (Texte), **idDossier** (Nombre).
+
+## A.2 Les actions 1 et 2 ne changent pas
+
+- **Créer un fichier** (OneDrive) ;
+- **Convertir un fichier** (OneDrive).
+
+## A.3 Supprimer les 3 anciennes actions SharePoint
+
+Supprimez ces cartes (… › Supprimer) :
+
+- **Créer un fichier** (SharePoint, vers Appreciations_PDF) ;
+- **Accorder l'accès à un élément ou à un dossier** ;
+- **Obtenir les propriétés du fichier**.
+
+## A.4 Ajouter les nouvelles actions, sous « Convertir un fichier »
+
+**a) SharePoint › Obtenir les pièces jointes** — renommez-la `Pieces jointes`
+
+- Adresse du site : variable **Site Appréciations**
+- Nom de la liste : variable **Liste Appreciations**
+- Id : **idDossier** (contenu dynamique du déclencheur)
+
+**b) Contrôle › Appliquer à chacun** — renommez-la `Anciennes versions`
+
+- Sortie : **Corps** de « Pieces jointes » (contenu dynamique)
+- À l'intérieur, ajoutez une **Condition** :
+  - à gauche : **Nom d'affichage** (DisplayName, venant de « Pieces jointes ») ;
+  - au milieu : **est égal à** ;
+  - à droite : **nomFichier** (contenu dynamique), puis tapez `.pdf` juste après.
+- Dans **Si oui** : **SharePoint › Supprimer la pièce jointe**
+  - Site et liste : les mêmes variables
+  - Id : **idDossier**
+  - Id de la pièce jointe : **Id** (venant de « Pieces jointes »)
+
+**c) SharePoint › Ajouter une pièce jointe** — sous la boucle, pas dedans ; renommez-la `Ajouter PDF`
+
+- Site et liste : les mêmes variables
+- Id : **idDossier**
+- Nom de fichier : **nomFichier**, puis tapez `.pdf`
+- Contenu du fichier : **Contenu du fichier**, venant de « Convertir un fichier »
+
+## A.5 Les deux dernières actions
+
+- **Supprimer un fichier** (OneDrive) : ne change pas. Elle supprime le fichier .html temporaire.
+- **Répondre à une application ou à un flux Power Apps** : sortie **lien** = **URI absolu** (AbsoluteUri), venant de « Ajouter PDF ».
+
+**Ordre final :**
+
+1. Créer un fichier (OneDrive)
+2. Convertir un fichier
+3. Pieces jointes
+4. Anciennes versions (Condition › Supprimer la pièce jointe)
+5. Ajouter PDF
+6. Supprimer un fichier (OneDrive)
+7. Répondre à Power Apps
+
+Cliquez sur **Enregistrer**.
+
+> La liste Appreciations doit accepter les pièces jointes. C'est le réglage par défaut. Pour le vérifier : ⚙️ › Paramètres de la liste › Paramètres avancés › Pièces jointes = **Activé**.
+
+# B. Modifier l'application (scrFormulaire)
+
+**B.1 Actualiser le flux.** Dans le volet **Power Automate**, faites … › **Actualiser** sur GenererPDFAppreciation. C'est obligatoire, parce que ses entrées ont changé.
+
+**B.2 Bouton Aperçu PDF.** Dans **btnApercuPDF.OnSelect**, collez tout le fichier `btnApercuPDF-OnSelect.txt` (nouvelle version).
+
+**B.3 Bouton « Imprimer ce plan »** (onglet Plan de développement, contrôle **btnImprimer**) :
+
+- **OnSelect** : collez tout le fichier `btnImprimer-Plan-OnSelect.txt` ;
+- **Text** : `"🖨️ Créer le PDF du plan"`.
+
+**B.4 Bouton « 📄 Ouvrir le PDF »** (s'il n'est pas déjà créé). Copiez **btnApercuPDF** (Ctrl+C, Ctrl+V), renommez la copie `btnOuvrirPDF`, puis :
+
+- **Text** : `"📄 Ouvrir le PDF"`
+- **Visible** : `!IsBlank(varLienPDF)`
+- **OnSelect** : `Launch(varLienPDF)`
+
+**B.5 Onglets.** Dans **scrFormulaire.OnVisible**, collez le fichier `scrFormulaire-OnVisible-corrige.txt` (nouvelle version). Seule la liste des onglets a changé :
+
+```
+ClearCollect(colTabs;
+    {TabLabel: "📝 Formulaire"; TabID: 1};
+    {TabLabel: "🎯 Plan de développement"; TabID: 4});;
+```
+
+Le bouton **« ❓ Comment remplir ce formulaire »** (en haut à gauche) ouvre toujours l'aide. Pour revenir, cliquez sur l'onglet **📝 Formulaire**.
+
+**B.6 Retirer le bandeau « Première fois ? »** Sélectionnez **aideCallout** (le bandeau avec le second bouton « Comment remplir ») :
+
+- **Visible** : `false`
+- **Height** : `0`
+
+**B.7 Barre d'étapes.** Dans **galEtapes.Items**, sur la ligne de l'étape 6, remplacez `"Transmis à la paie"` par `"Transmis aux RH"`.
+
+**B.8 stepDate.Text** :
+
+```
+If(ThisItem.Fait And Not(IsBlank(ThisItem.DateEtape)); Text(ThisItem.DateEtape; "d mmm yyyy"); "")
+```
+
+Faites aussi une recherche avec la **loupe 🔍** sur `[$-fr-CA]` : effacez-le partout où il reste.
+
+# C. Bouton « 📄 PDF » dans Mes dossiers (scrMesDossiers)
+
+1. Dans l'Arborescence, ouvrez **galDossiers › rowDossierWrap › rowDossier** et cliquez sur **btnOuvrir**.
+2. Faites **Ctrl+C**, puis **Ctrl+V**. La copie apparaît dans la même ligne. Renommez-la `btnPDFDossier`.
+3. Propriétés de **btnPDFDossier** :
+
+**Text**
+
+```
+"📄 PDF"
+```
+
+**Width**
+
+```
+80
+```
+
+**Visible**
+
+```
+!IsEmpty(Filter(ThisItem.Attachments; EndsWith(DisplayName; ".pdf")))
+```
+
+**OnSelect**
+
+```
+Launch(Coalesce(LookUp(ThisItem.Attachments; StartsWith(DisplayName; "Appreciation_")).AbsoluteUri; First(Filter(ThisItem.Attachments; EndsWith(DisplayName; ".pdf"))).AbsoluteUri))
+```
+
+Le bouton ouvre le PDF de **l'appréciation complète**. Si seul le PDF du plan existe, il ouvre celui-là.
+
+**En-tête du tableau :** dans **tblHeader**, élargissez **hdrAction** à `190` pour qu'il couvre les deux boutons.
+
+# D. Ménage
+
+1. Dans la bibliothèque **Appreciations_PDF**, supprimez les PDF de test. Quand le nouveau flux fonctionne, **supprimez la bibliothèque** elle-même (⚙️ › Paramètres de la bibliothèque › Supprimer cette bibliothèque). Elle ne sert plus.
+2. Les anciens PDF déjà créés ne sont pas joints aux dossiers : il suffit de refaire **Aperçu PDF** sur chaque dossier concerné.
+
+# E. Tester
+
+| N° | Test | Résultat attendu | ✓ |
+|---|---|---|---|
+| 1 | Ouvrir un dossier, puis Aperçu PDF | Message vert ; le bouton « 📄 Ouvrir le PDF » apparaît et ouvre le PDF | |
+| 2 | Dans SharePoint, ouvrir l'élément du dossier | Une pièce jointe `Appreciation_dossierN.pdf` | |
+| 3 | Refaire Aperçu PDF | Toujours **une seule** pièce jointe `Appreciation_dossierN.pdf`, mise à jour | |
+| 4 | Onglet Plan › Créer le PDF du plan | Une 2ᵉ pièce jointe `Plan_developpement_dossierN.pdf`, bien mise en page | |
+| 5 | Mes dossiers | Le bouton 📄 PDF apparaît sur la ligne et ouvre le PDF | |
+| 6 | Un dossier « Complété » | Le PDF se crée et s'ouvre aussi | |
+| 7 | Un collègue sans lien | Ne voit ni le dossier ni le PDF | |
+| 8 | Écran | Un seul bouton « Comment remplir » ; onglets Formulaire et Plan seulement ; étape 6 « Transmis aux RH » | |

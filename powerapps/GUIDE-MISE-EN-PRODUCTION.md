@@ -23,6 +23,8 @@ Ce guide complète le **« Guide complet — Application Appréciation de la con
 | `FORMULES-POWERAPPS-FINALES.txt` | Toutes les formules de l'application qui diffèrent du guide d'origine |
 | `scrFormulaire-OnVisible-corrige.txt` | La formule complète **OnVisible** de l'écran formulaire |
 | `btnApercuPDF-OnSelect.txt` | La formule complète du bouton **Aperçu PDF** |
+| `btnImprimer-Plan-OnSelect.txt` | La formule du bouton **Créer le PDF du plan** (onglet Plan) |
+| `MISE-A-JOUR-28-OCTOBRE.docx` | Le pas-à-pas des changements du 28 octobre (PDF joint au dossier, écran allégé) |
 | `barre-etapes-formules.txt` | Les 7 formules de la barre d'étapes |
 | `FLUX-FINAUX.txt` | Les 3 flux, action par action, avec les vrais noms de variables |
 | `GUIDE-PDF-APPRECIATION.docx` | Le pas-à-pas détaillé du bouton PDF et du flux 3 |
@@ -41,7 +43,7 @@ Ce guide complète le **« Guide complet — Application Appréciation de la con
 | Partie | Composants |
 |---|---|
 | Application | 2 écrans : **scrMesDossiers** et **scrFormulaire** |
-| SharePoint | Liste **Appreciations**, liste **Parametres**, bibliothèque **Appreciations_PDF** (nouvelle) |
+| SharePoint | Liste **Appreciations** (le PDF est joint à chaque dossier), liste **Parametres** |
 | Power Automate | **Permissions à la création**, **Suivi des étapes**, **GenererPDFAppreciation** (nouveau) |
 | Connexions | 4 références : SharePoint Appreciation, Utilisateurs Office 365 Appreciations, Outlook Appreciations, **OneDrive Appreciations** (nouvelle) |
 | Variables | 5 variables d'environnement (partie 4.3) |
@@ -65,6 +67,10 @@ Tout utilise des connecteurs **standard** : aucune licence Premium.
 | 11 | Champs txtNom, txtId, txtPoste, txtAutre | Les formules avaient été tapées dans le panneau de droite et s'affichaient comme du texte. | Les mettre dans la **barre fx**, propriété **Default**. |
 | 12 | Onglet Synthèse (moyennes) et toutes les dates | `LookUp(colEchelle; Niveau = CoteSup)` dans `Average` était refusé. `Text(…; "fr-CA")` **et** les formats `"[$-fr-CA]d mmmm yyyy"` donnaient « Code de langue fr-CA non pris en charge ». | Formules avec `Switch` ; **aucun « fr-CA »** dans l'application (chercher `[$-fr-CA]` avec la loupe et l'effacer). Voir `FORMULES-POWERAPPS-FINALES.txt`, partie 9. |
 | 18 | Bouton Aperçu PDF | Le PDF ne s'ouvrait pas : le navigateur bloque l'onglet ouvert 10 à 30 secondes après le clic. | Nouveau bouton **📄 Ouvrir le PDF** (partie 10 du fichier des formules). |
+| 20 | PDF | Les PDF s'accumulaient dans une bibliothèque séparée, en plusieurs versions. | Le PDF est **joint au dossier** et **remplace** la version précédente ; il a les mêmes accès que le dossier. Bibliothèque Appreciations_PDF supprimée. |
+| 21 | Onglet Plan | « Imprimer ce plan » (`Print()`) donnait une page miniature. | Bouton « Créer le PDF du plan » : vrai PDF, joint au dossier. |
+| 22 | Écran | Trois boutons « Comment remplir » et un onglet Synthèse jugés superflus. | Un seul bouton d'aide (en haut à gauche) ; onglets Formulaire et Plan seulement. |
+| 23 | Barre d'étapes | « Transmis à la paie » | « Transmis aux RH » |
 | 19 | Tests avec d'autres comptes | « You are not a member of the environment's security group » | Normal dans le bac à sable : seules les personnes du **groupe de sécurité** de l'environnement peuvent ouvrir l'application. Les TI doivent y ajouter les testeurs, et prévoir le bon groupe en pré-prod et en prod. |
 | 13 | Flux 1, action 4 | « Retirer les Membres » échoue (404 NotFound) quand les Membres n'ont pas de droit sur le dossier, et le flux s'arrêtait. | Sur « Personnes du dossier » : Configurer l'exécution après = **a réussi + a échoué**. |
 | 14 | Flux 2, structure | « Statut changé » était placée **dans** « Directeur ajouté », et « Date paie » était **hors** du cas Complété. | Structure corrigée (partie 6.2). |
@@ -99,7 +105,7 @@ Le détail est aussi dans l'onglet **SharePoint** du fichier Excel.
 
 - **Contrôle** : chaque nouveau dossier, dans **… › Gérer l'accès**, ne montre que les Propriétaires, RH – Appréciations et les personnes du dossier.
 
-## 4.2 Liste Parametres et bibliothèque Appreciations_PDF
+## 4.2 Liste Parametres
 
 **Liste Parametres** : une colonne **Valeur**, et 2 lignes :
 
@@ -110,7 +116,7 @@ Le détail est aussi dans l'onglet **SharePoint** du fichier Excel.
 
 Héritage conservé.
 
-**Bibliothèque Appreciations_PDF** (nouvelle) : héritage arrêté, **Propriétaires** (Contrôle total) et **RH – Appréciations** (Lecture) seulement. Membres et Visiteurs **retirés**.
+**Pièces jointes :** la liste Appreciations doit accepter les pièces jointes (Paramètres avancés › Pièces jointes = Activé, réglage par défaut). Le PDF de chaque dossier y est joint par le flux 3.
 
 ## 4.3 Les 5 variables d'environnement (noms réels)
 
@@ -132,7 +138,7 @@ Toutes les formules sont dans **`FORMULES-POWERAPPS-FINALES.txt`**, classées pa
 2. **Type de rencontre** : propriété Checked des 5 cases.
 3. **btnDeposer.OnSelect** : la formule complète.
 4. **cboDirecteur.Items**.
-5. **Synthèse** : synBarSup, synValSup, synBarCadre, synValCadre.
+5. **Synthèse** (onglet retiré le 28 octobre) : synBarSup, synValSup, synBarCadre, synValCadre.
 6. **Barre d'étapes** : galEtapes et ses 6 contrôles.
 7. **Mes dossiers** : bouton « 📝 Nouveau formulaire ».
 8. **Mise en page** : Introduction, remplissages, hauteurs.
@@ -184,9 +190,9 @@ Voir la partie 7.
 
 Le pas-à-pas complet est dans **`GUIDE-PDF-APPRECIATION.docx`**. En résumé :
 
-1. Créer la bibliothèque **Appreciations_PDF** (partie 4.2).
-2. Créer le flux **GenererPDFAppreciation** dans la solution : 3 entrées (nomFichier, html, courriel) et 7 actions. Il convertit avec **OneDrive Entreprise › Convertir un fichier**, crée la référence de connexion **OneDrive Appreciations**, et répond avec une sortie **lien**.
-3. Dans l'application, ajouter le flux, puis coller `btnApercuPDF-OnSelect.txt` dans **btnApercuPDF.OnSelect**.
+1. Vérifier que la liste Appreciations accepte les pièces jointes (partie 4.2).
+2. Créer le flux **GenererPDFAppreciation** dans la solution : 3 entrées (nomFichier, html, idDossier) et 7 actions ; il **joint le PDF au dossier** en remplaçant l'ancienne version (voir `FLUX-FINAUX.txt` et `MISE-A-JOUR-28-OCTOBRE.docx`). Il convertit avec **OneDrive Entreprise › Convertir un fichier**, crée la référence de connexion **OneDrive Appreciations**, et répond avec une sortie **lien**.
+3. Dans l'application, ajouter le flux, coller `btnApercuPDF-OnSelect.txt` dans **btnApercuPDF.OnSelect** et `btnImprimer-Plan-OnSelect.txt` dans **btnImprimer.OnSelect**, puis créer les boutons « 📄 Ouvrir le PDF » (formulaire) et « 📄 PDF » (Mes dossiers).
 
 La formule assemble le document **en 40 petites étapes**, dans la variable `varHtmlPDF`. Une seule longue formule donnait l'erreur « L'imbrication d'expressions est trop profonde ».
 
@@ -214,9 +220,9 @@ Le dossier doit avoir été enregistré au moins une fois.
 | 9 | SI : cotes, section E, évaluation globale, Approuver | Le SH reçoit « À approuver » | |
 | 10 | SH : Approuver (sans directeur) | Statut Complété ; Courriel paie reçu ; tous avisés ; tout le monde en Lecture ; TransmisPaieLe rempli | |
 | 11 | Dossier avec directeur requis | Le directeur reçoit l'accès dès qu'il est choisi, puis le courriel après le SH | |
-| 12 | Onglet Synthèse | Barres et moyennes affichées (ex. 3,5), sans message d'erreur | |
+| 12 | Écran allégé | Un seul bouton d'aide ; onglets Formulaire et Plan ; « Créer le PDF du plan » joint un 2ᵉ PDF au dossier | |
 | 13 | Barre d'étapes | Chaque étape passe au vert avec sa date | |
-| 14 | Aperçu PDF | Le PDF de plusieurs pages s'ouvre ; le fichier est dans Appreciations_PDF ; aucun .html ne reste dans OneDrive | |
+| 14 | Aperçu PDF, puis « 📄 Ouvrir le PDF » | Le PDF de plusieurs pages s'ouvre ; il est joint au dossier (une seule version) ; aucun .html ne reste dans OneDrive | |
 | 15 | Aperçu PDF par un collègue sans lien sur le PDF d'un autre | Accès refusé | |
 
 Pour les tests de courriels, utilisez des comptes de test, ou mettez temporairement votre adresse dans les colonnes Courriel du dossier de test.
@@ -253,7 +259,7 @@ Pour les tests de courriels, utilisez des comptes de test, ou mettez temporairem
 
 Voir l'onglet **Checklist TI** du fichier Excel :
 
-1. Créer les listes, la bibliothèque et le groupe RH.
+1. Créer les listes et le groupe RH.
 2. Remplir la liste Parametres.
 3. Importer la solution.
 4. Choisir les connexions du compte de service (**4** références).

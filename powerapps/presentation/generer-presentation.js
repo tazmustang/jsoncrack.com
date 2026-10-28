@@ -93,7 +93,7 @@ const irritants = [
   ["Versions multiples", "Le fichier Word circule par courriel ; on perd la bonne version."],
   ["Confidentialité", "Des copies d'évaluations restent dans les boîtes courriel et les ordinateurs."],
   ["Suivi difficile", "Impossible de savoir où en est une appréciation sans relancer."],
-  ["Travail manuel", "Signatures, moyennes, synthèse et transmission à la paie faites à la main."],
+  ["Travail manuel", "Signatures, moyennes, synthèse et transmission aux RH faites à la main."],
 ];
 irritants.forEach(([t, d], i) => {
   const x = 0.5 + (i % 2) * 4.6, y = 1.3 + Math.floor(i / 2) * 1.75;
@@ -111,7 +111,7 @@ s.addText([
   { text: "Intégrer les 3 formulaires du 15 octobre 2026", options: { bullet: true, breakLine: true } },
   { text: "Circuit : personne, supérieur immédiat, hiérarchique, directeur au besoin", options: { bullet: true, breakLine: true } },
   { text: "Courriels de suivi automatiques", options: { bullet: true, breakLine: true } },
-  { text: "Transmission de l'évaluation globale à la paie", options: { bullet: true, breakLine: true } },
+  { text: "Transmission de l'évaluation globale aux RH", options: { bullet: true, breakLine: true } },
   { text: "PDF de l'appréciation complète", options: { bullet: true } },
 ], { x: 0.75, y: 1.9, w: 4.0, h: 3.0, fontSize: 14, color: C.text1, paraSpaceAfter: 6, valign: "top", isTextBox: true });
 carte(s, 5.1, 1.25, 4.4, 3.75, "EEF6F1", "contraintes");
@@ -199,7 +199,7 @@ s.addImage({ path: IMG + "/communication/1-Circuit-des-etapes.png", x: 1.35, y: 
 // ---------- 9. Tests ----------
 pres.addSection({ title: "Tests" });
 s = contenu("Tests", "Tests et validation : les chiffres");
-const stats = [["15", "scénarios de test définis"], ["17", "ajustements apportés au guide de construction"], ["3", "flux automatisés validés"], ["4", "rôles testés (personne, SI, SH, directeur)"]];
+const stats = [["15", "scénarios de test définis"], ["23", "ajustements apportés au guide de construction"], ["3", "flux automatisés validés"], ["4", "rôles testés (personne, SI, SH, directeur)"]];
 stats.forEach(([n, t], i) => {
   const x = 0.5 + i * 2.28;
   carte(s, x, 1.35, 2.1, 1.9, C.text2, "stat" + i);
@@ -214,7 +214,7 @@ const corr = [
   ["Formules", "Lecture des dossiers enregistrés, cases à cocher, synthèse des cotes, mise en page."],
   ["Flux", "Noms des variables d'environnement, ordre des étapes, tolérance aux cas normaux."],
   ["Accès", "Autorisations de la liste resserrées : chaque dossier n'est visible que par ses personnes et les RH."],
-  ["PDF", "Nouveau flux : PDF complet de plusieurs pages, déposé dans une bibliothèque protégée."],
+  ["PDF", "PDF complet et PDF du plan, joints au dossier (une seule version, mêmes accès)."],
 ];
 corr.forEach(([t, d], i) => {
   const y = 1.2 + i * 0.78;
@@ -231,7 +231,7 @@ s.addText([
   { text: "Un collègue ne voit jamais le dossier d'un autre (testé)", options: { bullet: true, breakLine: true } },
   { text: "Les courriels ne contiennent aucune évaluation, seulement un lien", options: { bullet: true, breakLine: true } },
   { text: "À la fin, le dossier passe en lecture seule pour tous", options: { bullet: true, breakLine: true } },
-  { text: "Les PDF sont rangés dans une bibliothèque fermée", options: { bullet: true } },
+  { text: "Le PDF est joint au dossier, avec les mêmes accès", options: { bullet: true } },
 ], { x: 0.75, y: 1.4, w: 4.85, h: 3.4, fontSize: 14, color: C.text1, paraSpaceAfter: 8, valign: "top", isTextBox: true });
 carte(s, 6.05, 1.2, 3.45, 3.8, "FBF6EA", "aFaire");
 s.addText("À compléter avant la Prod", { x: 6.25, y: 1.35, w: 3.1, h: 0.4, fontSize: 15, bold: true, color: C.accent1, margin: 0, isTextBox: true });
@@ -248,7 +248,7 @@ s.addImage({ path: IMG + "/communication/4-Avantages-vs-Word.png", x: 0.5, y: 1.
 
 s = contenu("Résultat", "Ce qui est livré");
 const livr = [
-  ["Application", "Formulaire complet, 3 types de poste, barre d'étapes, synthèse, plan, PDF"],
+  ["Application", "Formulaire complet, 3 types de poste, barre d'étapes, plan, PDF joint au dossier"],
   ["Automatisation", "3 flux : accès, suivi et courriels, production du PDF"],
   ["Documentation", "Guide de mise en production, formules et flux de référence, dossier TI"],
   ["Déploiement", "Fichier des variables d'environnement, liste de vérification des TI"],

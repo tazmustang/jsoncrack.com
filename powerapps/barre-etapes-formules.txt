@@ -21,7 +21,7 @@ With(
         {Ordre: 3; Etape: "Approuvé (sup. immédiat)"; Fait: d3; EnCours: S = "Certifié"; Saute: false; DateEtape: varDossier.ApprouveSILe; SuivantFait: d4};
         {Ordre: 4; Etape: "Approuvé (sup. hiérarchique)"; Fait: d4; EnCours: S = "Approuvé SI"; Saute: false; DateEtape: varDossier.ApprouveSHLe; SuivantFait: d5};
         {Ordre: 5; Etape: "Approuvé (directeur)"; Fait: d5; EnCours: S = "Approuvé SH"; Saute: Not(dirReq); DateEtape: varDossier.ApprouveDirLe; SuivantFait: d6};
-        {Ordre: 6; Etape: "Transmis à la paie"; Fait: d6; EnCours: S = "Complété" And Not(d6); Saute: false; DateEtape: varDossier.TransmisPaieLe; SuivantFait: S = "Complété"};
+        {Ordre: 6; Etape: "Transmis aux RH"; Fait: d6; EnCours: S = "Complété" And Not(d6); Saute: false; DateEtape: varDossier.TransmisPaieLe; SuivantFait: S = "Complété"};
         {Ordre: 7; Etape: "Archivé (lecture seule)"; Fait: S = "Complété"; EnCours: false; Saute: false; DateEtape: If(false; Now()); SuivantFait: false}))
 -----
 

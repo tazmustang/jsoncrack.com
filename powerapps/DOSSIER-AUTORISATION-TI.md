@@ -22,7 +22,7 @@ Le formulaire des TI est **court**. Avec le *Guide de mise en production* et le 
 
 > Première mise en PréProd de la solution Solution-ApplicationAppreciation (version 1.0.0.1, gérée). Contenu : 1 application canevas, 3 flux (Appréciation – Permissions à la création, Appréciation – Suivi des étapes, GenererPDFAppreciation), 5 variables d'environnement et 4 références de connexion (SharePoint Appreciation, Utilisateurs Office 365 Appreciations, Outlook Appreciations, OneDrive Appreciations). Connecteurs standard seulement, aucune licence Premium.
 >
-> Préalables à l'import : un site SharePoint de PréProd avec la liste Appreciations (35 colonnes), la liste Parametres, la bibliothèque Appreciations_PDF et le groupe RH – Appréciations. La structure et les autorisations sont dans l'onglet « SharePoint » du fichier Excel et dans la partie 4 du guide joint.
+> Préalables à l'import : un site SharePoint de PréProd avec la liste Appreciations (35 colonnes), la liste Parametres (pièces jointes activées sur Appreciations) et le groupe RH – Appréciations. La structure et les autorisations sont dans l'onglet « SharePoint » du fichier Excel et dans la partie 4 du guide joint.
 >
 > Connexions : merci d'utiliser un compte de service, propriétaire du site, pour les 4 références de connexion.
 >
@@ -105,7 +105,7 @@ L'appréciation de la contribution est exactement ce cas.
 
 Les appréciations sont des documents de **gestion des ressources humaines**. Leur durée de conservation est fixée par le **calendrier de conservation** de la Ville. Consultez la **gestion documentaire** (archives) pour savoir :
 
-- combien de temps garder les dossiers (liste Appreciations) et les PDF (bibliothèque Appreciations_PDF) ;
+- combien de temps garder les dossiers (liste Appreciations) et les PDF (joints à chaque dossier) ;
 - qui les détruit, et comment (manuellement ou par une étiquette de rétention Microsoft 365) ;
 - si le PDF final doit être versé au **dossier de l'employé**.
 
@@ -137,7 +137,7 @@ Complétez les passages *[entre crochets]*.
 | Sensibilité | **Élevée** : évaluation du rendement d'un employé |
 | Finalité | Appréciation annuelle de la contribution et transmission de l'évaluation globale à la paie |
 | Provenance | Saisis par la personne et ses gestionnaires. Nom, poste et gestionnaires sont lus dans l'annuaire Microsoft 365 |
-| Où sont-ils stockés ? | SharePoint Online de la Ville (Microsoft 365, locataire de la Ville) : liste Appreciations, bibliothèque Appreciations_PDF |
+| Où sont-ils stockés ? | SharePoint Online de la Ville (Microsoft 365, locataire de la Ville) : liste Appreciations (le PDF est joint à chaque dossier, avec les mêmes accès) |
 | Qui y a accès ? | Voir la partie 6.3 |
 | Communication | Courriel à la paie avec l'évaluation globale seulement (pas les commentaires) ; courriels d'avis aux personnes du dossier (sans contenu d'évaluation) |
 | Fichiers temporaires | Le flux PDF crée un fichier .html dans le OneDrive du compte de service, puis le supprime aussitôt après la conversion |
@@ -148,10 +148,10 @@ Complétez les passages *[entre crochets]*.
 
 ## 5.3 Matrice des accès
 
-| Qui | Liste Appreciations | Son propre dossier | Dossiers des autres | Appreciations_PDF |
+| Qui | Liste Appreciations | Son propre dossier | Dossiers des autres | PDF joint au dossier |
 |---|---|---|---|---|
-| Personne évaluée | Peut créer | Modifier jusqu'à la certification, puis lecture | Aucun accès | Ses PDF seulement |
-| Supérieur(e) immédiat(e) / hiérarchique / directeur | Peut créer | Modifier selon l'étape, puis lecture à « Complété » | Seulement les dossiers où il ou elle est nommé(e) | PDF demandés seulement |
+| Personne évaluée | Peut créer | Modifier jusqu'à la certification, puis lecture | Aucun accès | Celui de son dossier |
+| Supérieur(e) immédiat(e) / hiérarchique / directeur | Peut créer | Modifier selon l'étape, puis lecture à « Complété » | Seulement les dossiers où il ou elle est nommé(e) | Ceux de ses dossiers |
 | RH – Appréciations | Lecture de tout | — | Lecture | Lecture |
 | Propriétaires du site | Contrôle total | — | Contrôle total | Contrôle total |
 | Compte de service | Propriétaire (exécution des flux) | — | — | — |

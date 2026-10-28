@@ -133,6 +133,8 @@ cboDirecteur.Items
 #####################################################################
 # 5. ONGLET SYNTHÈSE — barres et moyennes des postures
 #####################################################################
+(Onglet retiré de la liste des onglets le 28 octobre : ces formules ne sont plus affichées,
+mais gardez-les sans erreur si les contrôles existent encore dans l'écran.)
 
 synBarSup.Width
 synTrackSup.Width * With({c: Filter(colComportements; PostureID = ThisItem.PostureID And CoteSup <> "")}; If(CountRows(c) = 0; 0; Average(c; Switch(CoteSup; "Non démontré"; 1; "Partiellement démontré"; 2; "Conforme aux attentes"; 3; "Dépasse les attentes"; 4; "Exemplaire"; 5; 0)))) / 5
@@ -172,7 +174,7 @@ With(
         {Ordre: 3; Etape: "Approuvé (sup. immédiat)"; Fait: d3; EnCours: S = "Certifié"; Saute: false; DateEtape: varDossier.ApprouveSILe; SuivantFait: d4};
         {Ordre: 4; Etape: "Approuvé (sup. hiérarchique)"; Fait: d4; EnCours: S = "Approuvé SI"; Saute: false; DateEtape: varDossier.ApprouveSHLe; SuivantFait: d5};
         {Ordre: 5; Etape: "Approuvé (directeur)"; Fait: d5; EnCours: S = "Approuvé SH"; Saute: Not(dirReq); DateEtape: varDossier.ApprouveDirLe; SuivantFait: d6};
-        {Ordre: 6; Etape: "Transmis à la paie"; Fait: d6; EnCours: S = "Complété" And Not(d6); Saute: false; DateEtape: varDossier.TransmisPaieLe; SuivantFait: S = "Complété"};
+        {Ordre: 6; Etape: "Transmis aux RH"; Fait: d6; EnCours: S = "Complété" And Not(d6); Saute: false; DateEtape: varDossier.TransmisPaieLe; SuivantFait: S = "Complété"};
         {Ordre: 7; Etape: "Archivé (lecture seule)"; Fait: S = "Complété"; EnCours: false; Saute: false; DateEtape: If(false; Now()); SuivantFait: false}))
 
 stepLineLeft.Visible ........ ThisItem.Ordre > 1
@@ -227,23 +229,38 @@ certDetail, sigSIDetail, sigSHDetail, sigDirDetail — et btnApercuPDF (nouvelle
 
 
 #####################################################################
-# 10. BOUTON « 📄 Ouvrir le PDF » (nouveau — 28 octobre)
+# 10. PDF — boutons (version du 28 octobre)
 #####################################################################
-Pourquoi : le navigateur bloque l'ouverture automatique d'un onglet quand elle arrive
-10 à 30 secondes après le clic (le temps que le flux crée le PDF). Ce bouton permet
-d'ouvrir le PDF d'un clic, une fois prêt.
+Le flux joint le PDF au dossier. Le navigateur bloque l'ouverture automatique d'un onglet
+10 à 30 secondes après le clic : le PDF s'ouvre donc avec un bouton.
 
-Création : sélectionnez btnApercuPDF › Ctrl+C › Ctrl+V (la copie se place juste dessous),
-puis renommez la copie btnOuvrirPDF et remplacez ses propriétés :
+btnApercuPDF.OnSelect ............ fichier « btnApercuPDF-OnSelect.txt »
+btnImprimer.OnSelect (onglet Plan)  fichier « btnImprimer-Plan-OnSelect.txt »
+btnImprimer.Text ................. "🖨️ Créer le PDF du plan"
 
-btnOuvrirPDF.Text
-"📄 Ouvrir le PDF"
+btnOuvrirPDF (copie de btnApercuPDF, barre de gauche)
+  Text ....... "📄 Ouvrir le PDF"
+  Visible .... !IsBlank(varLienPDF)
+  OnSelect ... Launch(varLienPDF)
 
-btnOuvrirPDF.Visible
-!IsBlank(varLienPDF)
+Fin de scrFormulaire.OnVisible : ;; Set(varLienPDF; Blank())   (déjà dans le fichier OnVisible)
 
-btnOuvrirPDF.OnSelect
-Launch(varLienPDF)
 
-Et à la toute fin de scrFormulaire.OnVisible (pour ne pas montrer le PDF d'un autre dossier) :
-;; Set(varLienPDF; Blank())
+#####################################################################
+# 11. ÉCRAN MES DOSSIERS — bouton « 📄 PDF » sur chaque ligne
+#####################################################################
+btnPDFDossier (copie de btnOuvrir, dans rowDossier)
+  Text ....... "📄 PDF"
+  Width ...... 80
+  Visible .... !IsEmpty(Filter(ThisItem.Attachments; EndsWith(DisplayName; ".pdf")))
+  OnSelect ... Launch(Coalesce(LookUp(ThisItem.Attachments; StartsWith(DisplayName; "Appreciation_")).AbsoluteUri; First(Filter(ThisItem.Attachments; EndsWith(DisplayName; ".pdf"))).AbsoluteUri))
+hdrAction.Width : 190
+
+
+#####################################################################
+# 12. ALLÈGEMENT DE L'ÉCRAN (28 octobre)
+#####################################################################
+Onglets : seulement « 📝 Formulaire » et « 🎯 Plan de développement »
+          (déjà dans scrFormulaire-OnVisible-corrige.txt)
+aideCallout (bandeau « Première fois ? ») : Visible = false ; Height = 0
+L'aide s'ouvre seulement avec btnHelp « ❓ Comment remplir ce formulaire » (en haut à gauche).
