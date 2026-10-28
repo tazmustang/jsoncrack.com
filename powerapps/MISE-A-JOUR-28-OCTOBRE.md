@@ -58,17 +58,17 @@ Supprimez ces cartes (… › Supprimer) :
 - À l'intérieur, ajoutez une **Condition** :
   - à gauche : **Nom d'affichage** (DisplayName, venant de « Pieces jointes ») ;
   - au milieu : **est égal à** ;
-  - à droite : **nomFichier** (contenu dynamique), puis tapez `.pdf` juste après.
+  - à droite : **nomFichier** du **déclencheur Power Apps** (icône mauve, **pas** « Nom de fichier » de OneDrive, qui se termine par .html), puis tapez `.pdf` juste après.
 - Dans **Si oui** : **SharePoint › Supprimer la pièce jointe**
   - Site et liste : les mêmes variables
   - Id : **idDossier**
   - Id de la pièce jointe : **Id** (venant de « Pieces jointes »)
 
-**c) SharePoint › Ajouter une pièce jointe** — sous la boucle, pas dedans ; renommez-la `Ajouter PDF`
+**c) SharePoint › Ajouter une pièce jointe** — **SOUS la boucle, à l'extérieur** (utilisez le « + » de la flèche *sous* la carte « Anciennes versions », pas le « Ajouter une action » à l'intérieur) ; renommez-la `Ajouter PDF`
 
 - Site et liste : les mêmes variables
 - Id : **idDossier**
-- Nom de fichier : **nomFichier**, puis tapez `.pdf`
+- Nom de fichier : **nomFichier** du déclencheur Power Apps (icône mauve), puis tapez `.pdf` (avec le point)
 - Contenu du fichier : **Contenu du fichier**, venant de « Convertir un fichier »
 
 ## A.5 Les deux dernières actions
@@ -155,6 +155,8 @@ Faites aussi une recherche avec la **loupe 🔍** sur `[$-fr-CA]` : effacez-le p
 ```
 !IsEmpty(Filter(ThisItem.Attachments; EndsWith(DisplayName; ".pdf")))
 ```
+
+> Si `Attachments` est souligné en rouge : effacez `Attachments`, tapez `ThisItem.` et choisissez la colonne des pièces jointes proposée par Power Apps (en français, elle peut s'appeler **'Pièces jointes'**). Faites la même chose dans OnSelect.
 
 **OnSelect**
 

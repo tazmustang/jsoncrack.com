@@ -204,9 +204,10 @@ Déclencheur : Power Apps (V2) — 3 entrées, dans cet ordre :
     Site : Site Appréciations     Liste : Liste Appreciations     Id : idDossier
 [4] « Anciennes versions » — Appliquer à chacun sur le Corps de « Pieces jointes »
     Condition : Nom d'affichage (DisplayName)  est égal à  nomFichier + .pdf
+                (nomFichier du DÉCLENCHEUR Power Apps, pas le « Nom de fichier » OneDrive)
     Si oui : SharePoint › Supprimer la pièce jointe
              Site / Liste : idem     Id : idDossier     Id de la pièce jointe : Id
-[5] « Ajouter PDF » — SharePoint › Ajouter une pièce jointe (sous la boucle)
+[5] « Ajouter PDF » — SharePoint › Ajouter une pièce jointe — SOUS la boucle, À L'EXTÉRIEUR
     Site / Liste : idem     Id : idDossier     Nom : nomFichier + .pdf
     Contenu : Contenu du fichier (de l'action 2)
 [6] OneDrive Entreprise › Supprimer un fichier
