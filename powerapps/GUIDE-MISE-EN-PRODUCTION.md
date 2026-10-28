@@ -63,7 +63,9 @@ Tout utilise des connecteurs **standard** : aucune licence Premium.
 | 9 | btnDeposer (TypeRencontre) | `ForAll(… {Value: Value})` était refusé par SharePoint. | `Filter(Choices(Appreciations.TypeRencontre); …)`. |
 | 10 | btnDeposer (Poste) | Le poste proposé automatiquement n'était pas enregistré s'il n'avait pas été retapé. | `Poste: Coalesce(txtPoste.Text; varDossier.Poste; …MyProfileV2().jobTitle)`. |
 | 11 | Champs txtNom, txtId, txtPoste, txtAutre | Les formules avaient été tapées dans le panneau de droite et s'affichaient comme du texte. | Les mettre dans la **barre fx**, propriété **Default**. |
-| 12 | Onglet Synthèse (moyennes) | `LookUp(colEchelle; Niveau = CoteSup)` dans `Average` était refusé, et `Text(…; "fr-CA")` donnait « Code de langue fr-CA non pris en charge ». | Formules avec `Switch` et sans `"fr-CA"` (partie 5). |
+| 12 | Onglet Synthèse (moyennes) et toutes les dates | `LookUp(colEchelle; Niveau = CoteSup)` dans `Average` était refusé. `Text(…; "fr-CA")` **et** les formats `"[$-fr-CA]d mmmm yyyy"` donnaient « Code de langue fr-CA non pris en charge ». | Formules avec `Switch` ; **aucun « fr-CA »** dans l'application (chercher `[$-fr-CA]` avec la loupe et l'effacer). Voir `FORMULES-POWERAPPS-FINALES.txt`, partie 9. |
+| 18 | Bouton Aperçu PDF | Le PDF ne s'ouvrait pas : le navigateur bloque l'onglet ouvert 10 à 30 secondes après le clic. | Nouveau bouton **📄 Ouvrir le PDF** (partie 10 du fichier des formules). |
+| 19 | Tests avec d'autres comptes | « You are not a member of the environment's security group » | Normal dans le bac à sable : seules les personnes du **groupe de sécurité** de l'environnement peuvent ouvrir l'application. Les TI doivent y ajouter les testeurs, et prévoir le bon groupe en pré-prod et en prod. |
 | 13 | Flux 1, action 4 | « Retirer les Membres » échoue (404 NotFound) quand les Membres n'ont pas de droit sur le dossier, et le flux s'arrêtait. | Sur « Personnes du dossier » : Configurer l'exécution après = **a réussi + a échoué**. |
 | 14 | Flux 2, structure | « Statut changé » était placée **dans** « Directeur ajouté », et « Date paie » était **hors** du cas Complété. | Structure corrigée (partie 6.2). |
 | 15 | Bouton Aperçu PDF | Il ouvrait l'onglet Plan, et `Print()` n'imprimait qu'une page miniature. | Nouveau flux 3 et nouvelle formule : un vrai PDF de plusieurs pages (partie 7). |
@@ -275,7 +277,9 @@ Voir l'onglet **Checklist TI** du fichier Excel :
 | « Impossible de trouver le principal dont l'ID est 5 » | Les Membres n'ont pas de droit sur le dossier | Normal : exécution après « a échoué » (partie 6.1) |
 | « Impossible de modifier le type de cette colonne car il est en cours d'indexation » | Colonne indexée | Supprimer l'index (Paramètres de la liste › Colonnes indexées) |
 | « Le type de cet argument 'TypeRencontre' ne correspond pas » | Colonne à choix unique | Cases à cocher (plusieurs sélections), puis Actualiser la source |
-| « Code de langue fr-CA non pris en charge » | `Text(…; "fr-CA")` | Retirer le 3ᵉ argument |
+| « Code de langue fr-CA non pris en charge » | `Text(…; "fr-CA")` ou un format `[$-fr-CA]` | Retirer « fr-CA » partout (loupe › `[$-fr-CA]`) |
+| Le PDF est créé, mais ne s'ouvre pas | Ouverture d'onglet bloquée par le navigateur | Bouton « 📄 Ouvrir le PDF » |
+| « You can't open apps in this environment… security group » | Le compte n'est pas dans le groupe de sécurité de l'environnement | Demander aux TI d'ajouter la personne (ou le groupe des utilisateurs) |
 | « L'imbrication d'expressions est trop profonde » | Formule trop longue d'un bloc | Formule PDF en étapes (`btnApercuPDF-OnSelect.txt`) |
 | « Value n'est pas reconnu » | `ThisRecord` dans un LookUp | Formules avec `As` (OnVisible corrigé) |
 | Le champ affiche la formule au lieu de la valeur | Formule tapée dans le panneau de droite | Barre fx, propriété Default |

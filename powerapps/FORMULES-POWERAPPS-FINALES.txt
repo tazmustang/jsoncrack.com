@@ -146,8 +146,10 @@ synTrackCadre.Width * With({c: Filter(colComportements; PostureID = ThisItem.Pos
 synValCadre.Text
 With({m: With({c: Filter(colComportements; PostureID = ThisItem.PostureID And CoteCadre <> "")}; If(CountRows(c) = 0; 0; Average(c; Switch(CoteCadre; "Non démontré"; 1; "Partiellement démontré"; 2; "Conforme aux attentes"; 3; "Dépasse les attentes"; 4; "Exemplaire"; 5; 0))))}; If(m = 0; "—"; Text(m; "0.0")))
 
-NOTE : n'utilisez JAMAIS le 3e argument "fr-CA" dans Text(…) : il provoque l'erreur
-« Code de langue fr-CA non pris en charge ». Les formats de date "[$-fr-CA]d mmmm yyyy" sont corrects.
+NOTE : « fr-CA » n'est PAS accepté dans votre environnement, ni comme 3e argument de Text(…),
+ni dans les formats de date « [$-fr-CA]… ». Les deux provoquent l'erreur « Code de langue fr-CA
+non pris en charge ». Écrivez simplement Text(date; "d mmmm yyyy") : la date s'affiche dans la
+langue de la personne (en français pour les employés de la Ville). Voir la partie 9.
 
 
 #####################################################################
@@ -178,7 +180,7 @@ stepLineRight.Visible ....... ThisItem.Ordre < 7
 stepHalo.Visible ............ ThisItem.EnCours And Not(ThisItem.Saute)
 stepDotLabel.Text ........... If(ThisItem.Saute; "—"; ThisItem.Fait; "✓"; Text(ThisItem.Ordre))
 stepLabel.Text .............. ThisItem.Etape & If(ThisItem.Saute; " (n/a)"; "")
-stepDate.Text ............... If(ThisItem.Fait And Not(IsBlank(ThisItem.DateEtape)); Text(ThisItem.DateEtape; "[$-fr-CA]d mmm yyyy"); "")
+stepDate.Text ............... If(ThisItem.Fait And Not(IsBlank(ThisItem.DateEtape)); Text(ThisItem.DateEtape; "d mmm yyyy"); "")
 
 
 #####################################################################
@@ -202,3 +204,46 @@ cardSectionA : Remplissage Gauche = 16, Droite = 16
 cardSectionA.Height : ajouter « + 16 » à la toute fin de la formule existante
 Carte de la section D : ajouter « + 16 » à la toute fin de sa formule Height
 (Les enveloppes sectionB, sectionCD, sectionEF, sectionG restent à 0 : leurs cartes ont leur propre marge.)
+
+
+#####################################################################
+# 9. DATES — retirer « [$-fr-CA] » partout (mise à jour du 28 octobre)
+#####################################################################
+Méthode : menu de gauche › loupe 🔍 › cherchez  [$-fr-CA]  › ouvrez chaque formule trouvée
+et effacez seulement « [$-fr-CA] » (crochets compris). Le reste du format ne change pas.
+
+Exemples :
+synTlDate.Text
+If(IsBlank(ThisItem.DateEtape); "À venir"; Text(ThisItem.DateEtape; "d mmmm yyyy"))
+
+stepDate.Text
+If(ThisItem.Fait And Not(IsBlank(ThisItem.DateEtape)); Text(ThisItem.DateEtape; "d mmm yyyy"); "")
+
+autosaveNote.Text
+If(IsBlank(varDossier); "Pas encore enregistré"; "Dossier no " & varDossier.ID & ", enregistré le " & Text(varDossier.Modified; "d mmmm yyyy") & " à " & Text(varDossier.Modified; "hh:mm"))
+
+Contrôles qui en contiennent habituellement : synTlDate, stepDate, autosaveNote, avisLast,
+certDetail, sigSIDetail, sigSHDetail, sigDirDetail — et btnApercuPDF (nouvelle formule fournie).
+
+
+#####################################################################
+# 10. BOUTON « 📄 Ouvrir le PDF » (nouveau — 28 octobre)
+#####################################################################
+Pourquoi : le navigateur bloque l'ouverture automatique d'un onglet quand elle arrive
+10 à 30 secondes après le clic (le temps que le flux crée le PDF). Ce bouton permet
+d'ouvrir le PDF d'un clic, une fois prêt.
+
+Création : sélectionnez btnApercuPDF › Ctrl+C › Ctrl+V (la copie se place juste dessous),
+puis renommez la copie btnOuvrirPDF et remplacez ses propriétés :
+
+btnOuvrirPDF.Text
+"📄 Ouvrir le PDF"
+
+btnOuvrirPDF.Visible
+!IsBlank(varLienPDF)
+
+btnOuvrirPDF.OnSelect
+Launch(varLienPDF)
+
+Et à la toute fin de scrFormulaire.OnVisible (pour ne pas montrer le PDF d'un autre dossier) :
+;; Set(varLienPDF; Blank())

@@ -191,4 +191,5 @@ ClearCollect(colEvalGlobale;
 Set(varEvalGlobale; Coalesce(varDossier.EvaluationGlobale.Value; ""));;
 
 // ---------- Cases « Type de rencontre » : relire le dossier à chaque ouverture ----------
-Reset(chkEssai);; Reset(chkPremiere);; Reset(chkMiAnnee);; Reset(chkBilan);; Reset(chkAutre)
+Reset(chkEssai);; Reset(chkPremiere);; Reset(chkMiAnnee);; Reset(chkBilan);; Reset(chkAutre);;
+Set(varLienPDF; Blank())

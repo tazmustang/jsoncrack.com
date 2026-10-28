@@ -13,7 +13,7 @@ def s(t):
 def vide(cond, contenu, msg="Aucun élément."):
     return f'If({cond}; {s("<p class=vide>" + msg + "</p>")}; {contenu})'
 
-DATE = '"[$-fr-CA]d mmmm yyyy"'
+DATE = '"d mmmm yyyy"'  # pas de « [$-fr-CA] » : refusé par l'environnement (« Code de langue fr-CA non pris en charge »)
 def d(x):
     return f'If(IsBlank({x}); "—"; Text({x}; {DATE}))'
 
@@ -137,7 +137,7 @@ P(g("Approbation du supérieur immédiat", 'Coalesce(varDossier.SuperieurImmedia
 P(g("Approbation du supérieur hiérarchique", 'Coalesce(varDossier.SuperieurHierarchique.DisplayName; "—")', 'varDossier.ApprouveSHLe'))
 P('If(chkDirRequis.Checked; ' + g("Approbation du directeur", 'Coalesce(varDossier.Directeur.DisplayName; "—")', 'varDossier.ApprouveDirLe') + '; "")')
 P(g("Transmis à la paie", '"—"', 'varDossier.TransmisPaieLe'))
-P(s("</table><p class=pied>Document produit le ") + ' & Text(Now(); "[$-fr-CA]d mmmm yyyy") & " à " & Text(Now(); "hh:mm") & ' +
+P(s("</table><p class=pied>Document produit le ") + ' & Text(Now(); "d mmmm yyyy") & " à " & Text(Now(); "hh:mm") & ' +
   s(" à partir de l'application Appréciation de la contribution. Version du formulaire : 15 octobre 2026.</p></body></html>"))
 
 # Une seule longue chaîne de « & » dépasse la profondeur permise par Power Apps
@@ -152,6 +152,7 @@ formule = f'''// btnApercuPDF.OnSelect — PDF de l'appréciation complète
 // le convertit en PDF ; 3) le PDF s'ouvre dans un nouvel onglet.
 If(IsBlank(varDossier);
     Notify("Enregistrez d'abord le dossier avec « Enregistrer et déposer »."; NotificationType.Warning);
+    Set(varLienPDF; Blank());;
     Notify("Création du PDF en cours… Comptez de 10 à 30 secondes."; NotificationType.Information);;
     {assemblage};;
     Set(varLienPDF;
@@ -161,7 +162,7 @@ If(IsBlank(varDossier);
             varMoi).lien);;
     If(IsBlank(varLienPDF);
         Notify("Le PDF n'a pas pu être créé. Réessayez dans un moment."; NotificationType.Error);
-        Notify("PDF prêt : il s'ouvre dans un nouvel onglet."; NotificationType.Success);;
+        Notify("PDF prêt : cliquez sur « 📄 Ouvrir le PDF » s'il ne s'ouvre pas tout seul."; NotificationType.Success);;
         Launch(varLienPDF)))
 '''
 print(formule)

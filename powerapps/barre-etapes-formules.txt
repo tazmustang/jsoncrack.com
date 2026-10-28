@@ -58,5 +58,5 @@ ThisItem.Etape & If(ThisItem.Saute; " (n/a)"; "")
 
 7) Contrôle : stepDate       Propriété : Text
 -----
-If(ThisItem.Fait And Not(IsBlank(ThisItem.DateEtape)); Text(ThisItem.DateEtape; "[$-fr-CA]d mmm yyyy"); "")
+If(ThisItem.Fait And Not(IsBlank(ThisItem.DateEtape)); Text(ThisItem.DateEtape; "d mmm yyyy"); "")
 -----
