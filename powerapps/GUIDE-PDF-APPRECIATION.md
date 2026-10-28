@@ -1,5 +1,5 @@
 ---
-title: "Guide — PDF de l'appréciation et du plan de développement"
+title: "Guide — PDF de l'appréciation"
 subtitle: "Application Power Apps « Appréciation de la contribution » — version du 28 octobre 2026"
 lang: fr-CA
 ---
@@ -11,11 +11,8 @@ lang: fr-CA
   - sections A à F ;
   - évaluation globale ;
   - avis, certification et approbations.
-- **🖨️ Créer le PDF du plan** (onglet Plan de développement) produit le **PDF du plan** : objectifs à venir, développement des compétences et nouveaux besoins.
-- Les deux PDF sont **joints au dossier**, comme pièces jointes de l'élément de la liste Appreciations :
-  - `Appreciation_dossierN.pdf` ;
-  - `Plan_developpement_dossierN.pdf`.
-- **Une seule version** de chaque PDF : chaque nouvelle demande **remplace** l'ancienne.
+- Le PDF est **joint au dossier**, comme pièce jointe de l'élément de la liste Appreciations : `Appreciation_dossierN.pdf`.
+- **Une seule version** : chaque nouvelle demande **remplace** l'ancienne.
 - Le PDF a **les mêmes accès que le dossier** : la personne, ses supérieurs, le directeur si requis et les RH. Personne d'autre.
 - On l'ouvre avec **📄 Ouvrir le PDF**, dans le formulaire, ou avec **📄 PDF** sur la ligne du dossier, dans **Mes dossiers**.
 
@@ -33,9 +30,8 @@ Tout se fait avec des connecteurs **standard**, sans licence Premium.
 | Fichier | Contenu |
 |---|---|
 | `btnApercuPDF-OnSelect.txt` | Formule du bouton Aperçu PDF |
-| `btnImprimer-Plan-OnSelect.txt` | Formule du bouton Créer le PDF du plan |
 | `FLUX-FINAUX.txt` (flux 3) | Le flux, action par action |
-| `generer-formule-pdf.py` | Le programme qui produit les deux formules (pour les modifier) |
+| `generer-formule-pdf.py` | Le programme qui produit la formule (pour la modifier) |
 
 # Étape 1 — Préalable
 
@@ -89,14 +85,11 @@ Cliquez sur **Enregistrer**.
 
 1. Dans le volet **Power Automate** : **+ Ajouter un flux**, puis **GenererPDFAppreciation**. Si le flux était déjà ajouté : **… › Actualiser**.
 2. **btnApercuPDF.OnSelect** : collez `btnApercuPDF-OnSelect.txt`.
-3. **btnImprimer** (onglet Plan) :
-   - **OnSelect** : collez `btnImprimer-Plan-OnSelect.txt` ;
-   - **Text** : `"🖨️ Créer le PDF du plan"`.
-4. **btnOuvrirPDF** (copie de btnApercuPDF) :
+3. **btnOuvrirPDF** (copie de btnApercuPDF) :
    - **Text** : `"📄 Ouvrir le PDF"`
    - **Visible** : `!IsBlank(varLienPDF)`
    - **OnSelect** : `Launch(varLienPDF)`
-5. **Mes dossiers** : bouton **📄 PDF** sur chaque ligne. Voir `FORMULES-POWERAPPS-FINALES.txt`, partie 11.
+4. **Mes dossiers** : bouton **📄 PDF** sur chaque ligne. Voir `FORMULES-POWERAPPS-FINALES.txt`, partie 11.
 
 **Pourquoi un bouton « Ouvrir » ?** Le navigateur bloque l'ouverture automatique d'un onglet quand elle survient 10 à 30 secondes après le clic. C'est le temps que prend la création du PDF. Le bouton ouvre le PDF d'un seul clic, sans blocage.
 
@@ -107,7 +100,6 @@ Cliquez sur **Enregistrer**.
 | 1 | Aperçu PDF sur un dossier enregistré | Message vert, puis le bouton « 📄 Ouvrir le PDF » apparaît et ouvre le PDF |
 | 2 | Élément du dossier dans SharePoint | Pièce jointe `Appreciation_dossierN.pdf` |
 | 3 | Refaire Aperçu PDF | Toujours une seule pièce jointe de ce nom |
-| 4 | Créer le PDF du plan | Pièce jointe `Plan_developpement_dossierN.pdf` |
 | 5 | Mes dossiers › 📄 PDF | Le PDF s'ouvre |
 | 6 | Un collègue sans lien | Aucun accès au dossier ni au PDF |
 | 7 | Formulaire jamais enregistré | Message « Enregistrez d'abord le dossier… » |
@@ -115,7 +107,7 @@ Cliquez sur **Enregistrer**.
 **Si un message rouge apparaît :** ouvrez le flux, puis **Historique des exécutions**, et la dernière exécution. L'action en rouge donne la cause.
 
 - **`.lien` souligné en rouge dans l'application** : faites … › **Actualiser** sur le flux.
-- **« Code de langue fr-CA non pris en charge »** : n'utilisez jamais « fr-CA » dans les formules. Les deux formules fournies n'en contiennent pas.
+- **« Code de langue fr-CA non pris en charge »** : n'utilisez jamais « fr-CA » dans les formules. La formule fournie n'en contient pas.
 
 # Pour les TI
 

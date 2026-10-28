@@ -101,7 +101,7 @@ Vous suivez l'avancement dans la **barre d'étapes**, en haut du formulaire. Qua
 # 4. Supérieur(e) hiérarchique et directeur ou directrice
 
 1. Vous recevez « À approuver » par courriel, avec le lien vers le dossier.
-2. Prenez connaissance du dossier. La **barre d'étapes** et l'onglet **🎯 Plan de développement** en donnent un résumé.
+2. Prenez connaissance du dossier. La **barre d'étapes** montre où il en est, et **🖨️ Aperçu PDF** en donne une version complète à lire.
 3. Dans la **section G**, cochez la case de confirmation et cliquez sur **Approuver**.
 
 - **Sans directeur requis :** l'approbation du supérieur hiérarchique **termine** le dossier (statut « Complété »).
@@ -120,9 +120,7 @@ Vous suivez l'avancement dans la **barre d'étapes**, en haut du formulaire. Qua
 | Outil | Où | À quoi il sert |
 |---|---|---|
 | **Barre d'étapes** | En haut du formulaire | Les 7 étapes, avec un ✓ et la date quand elles sont faites |
-| **🎯 Plan de développement** | Onglet | Objectifs à venir et besoins de développement, réunis sur une page |
 | **🖨️ Aperçu PDF** | Barre de gauche | Produit le **PDF complet** de l'appréciation (10 à 30 secondes) et le **joint au dossier**. Cliquez ensuite sur **📄 Ouvrir le PDF** |
-| **🖨️ Créer le PDF du plan** | Onglet Plan | Produit le PDF du plan de développement, joint aussi au dossier |
 | **📄 PDF** | Mes dossiers, sur chaque ligne | Ouvre le PDF, sans ouvrir le dossier |
 | **🗑️ Nouveau formulaire** | Barre de gauche | Vide l'écran pour commencer un autre formulaire. Ce qui a été enregistré n'est pas effacé |
 | **📂 Mes dossiers** | Barre de gauche | Revenir à la liste de vos dossiers |

@@ -5,9 +5,8 @@ Commencez par **GUIDE-MISE-EN-PRODUCTION.docx**. Il explique tout et liste chaqu
 | Fichier | Rôle |
 |---|---|
 | GUIDE-MISE-EN-PRODUCTION.docx / .md | Guide principal : état final, corrections, SharePoint, flux, tests, remise aux TI |
-| GUIDE-PDF-APPRECIATION.docx / .md | Pas-à-pas des PDF (appréciation et plan), joints au dossier |
+| GUIDE-PDF-APPRECIATION.docx / .md | Pas-à-pas du PDF de l'appréciation, joint au dossier |
 | MISE-A-JOUR-28-OCTOBRE.docx / .md | Changements du 28 octobre, étape par étape |
-| btnImprimer-Plan-OnSelect.txt | Formule du bouton Créer le PDF du plan |
 | FORMULES-POWERAPPS-FINALES.txt | Formules de l'application qui diffèrent du guide d'origine |
 | scrFormulaire-OnVisible-corrige.txt | OnVisible complet de scrFormulaire |
 | btnApercuPDF-OnSelect.txt | Formule du bouton Aperçu PDF |

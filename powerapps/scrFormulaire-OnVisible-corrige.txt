@@ -15,10 +15,10 @@ ClearCollect(colPostes;
     {PosteLabel: "Cadre sans équipe"; PosteColor: RGBA(0;121;107;1); PosteID: "sans_equipe"};
     {PosteLabel: "Professionnel non syndiqué"; PosteColor: RGBA(107;63;160;1); PosteID: "professionnel"});;
 ClearCollect(colTabs;
-    {TabLabel: "📝 Formulaire"; TabID: 1};
-    {TabLabel: "🎯 Plan de développement"; TabID: 4});;
-// (onglets « Comment remplir » et « Synthèse » retirés le 28 octobre :
-//  l'aide s'ouvre avec le bouton « Comment remplir ce formulaire » en haut à gauche)
+    {TabLabel: "← Retour au formulaire"; TabID: 1});;
+// (onglets « Comment remplir », « Synthèse » et « Plan de développement » retirés le 28 octobre :
+//  l'aide s'ouvre avec le bouton « Comment remplir ce formulaire » en haut à gauche ;
+//  la barre d'onglets n'apparaît que dans l'aide, pour revenir au formulaire)
 
 // Dossier ouvert depuis un lien (...&ID=12)
 If(IsBlank(varDossier) && !IsBlank(Param("ID"));

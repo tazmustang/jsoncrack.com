@@ -214,7 +214,7 @@ const corr = [
   ["Formules", "Lecture des dossiers enregistrés, cases à cocher, synthèse des cotes, mise en page."],
   ["Flux", "Noms des variables d'environnement, ordre des étapes, tolérance aux cas normaux."],
   ["Accès", "Autorisations de la liste resserrées : chaque dossier n'est visible que par ses personnes et les RH."],
-  ["PDF", "PDF complet et PDF du plan, joints au dossier (une seule version, mêmes accès)."],
+  ["PDF", "PDF complet joint au dossier (une seule version, mêmes accès) ; écran allégé."],
 ];
 corr.forEach(([t, d], i) => {
   const y = 1.2 + i * 0.78;
@@ -248,7 +248,7 @@ s.addImage({ path: IMG + "/communication/4-Avantages-vs-Word.png", x: 0.5, y: 1.
 
 s = contenu("Résultat", "Ce qui est livré");
 const livr = [
-  ["Application", "Formulaire complet, 3 types de poste, barre d'étapes, plan, PDF joint au dossier"],
+  ["Application", "Formulaire complet, 3 types de poste, barre d'étapes, PDF joint au dossier"],
   ["Automatisation", "3 flux : accès, suivi et courriels, production du PDF"],
   ["Documentation", "Guide de mise en production, formules et flux de référence, dossier TI"],
   ["Déploiement", "Fichier des variables d'environnement, liste de vérification des TI"],

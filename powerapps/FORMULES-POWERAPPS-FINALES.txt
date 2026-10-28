@@ -133,8 +133,7 @@ cboDirecteur.Items
 #####################################################################
 # 5. ONGLET SYNTHÈSE — barres et moyennes des postures
 #####################################################################
-(Onglet retiré de la liste des onglets le 28 octobre : ces formules ne sont plus affichées,
-mais gardez-les sans erreur si les contrôles existent encore dans l'écran.)
+(Onglet SUPPRIMÉ le 28 octobre : supprimez panelSynthese et tout son contenu. Formules gardées pour mémoire.)
 
 synBarSup.Width
 synTrackSup.Width * With({c: Filter(colComportements; PostureID = ThisItem.PostureID And CoteSup <> "")}; If(CountRows(c) = 0; 0; Average(c; Switch(CoteSup; "Non démontré"; 1; "Partiellement démontré"; 2; "Conforme aux attentes"; 3; "Dépasse les attentes"; 4; "Exemplaire"; 5; 0)))) / 5
@@ -235,8 +234,6 @@ Le flux joint le PDF au dossier. Le navigateur bloque l'ouverture automatique d'
 10 à 30 secondes après le clic : le PDF s'ouvre donc avec un bouton.
 
 btnApercuPDF.OnSelect ............ fichier « btnApercuPDF-OnSelect.txt »
-btnImprimer.OnSelect (onglet Plan)  fichier « btnImprimer-Plan-OnSelect.txt »
-btnImprimer.Text ................. "🖨️ Créer le PDF du plan"
 
 btnOuvrirPDF (copie de btnApercuPDF, barre de gauche)
   Text ....... "📄 Ouvrir le PDF"
@@ -260,7 +257,10 @@ hdrAction.Width : 190
 #####################################################################
 # 12. ALLÈGEMENT DE L'ÉCRAN (28 octobre)
 #####################################################################
-Onglets : seulement « 📝 Formulaire » et « 🎯 Plan de développement »
-          (déjà dans scrFormulaire-OnVisible-corrige.txt)
+Onglets : un seul, « ← Retour au formulaire » (déjà dans scrFormulaire-OnVisible-corrige.txt)
+tabBar.Visible : CurrentTabID <> 1      (la barre n'apparaît que dans l'aide)
+SUPPRIMER (clic droit › Supprimer) : panelSynthese et panelPlan, avec tout leur contenu
+  (onglets Synthèse et Plan de développement retirés ; supprime aussi l'erreur
+   « Impossible d'utiliser la fonction Average avec une table vide » de synBarCadre)
 aideCallout (bandeau « Première fois ? ») : Visible = false ; Height = 0
 L'aide s'ouvre seulement avec btnHelp « ❓ Comment remplir ce formulaire » (en haut à gauche).

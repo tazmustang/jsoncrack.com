@@ -23,7 +23,6 @@ Ce guide complète le **« Guide complet — Application Appréciation de la con
 | `FORMULES-POWERAPPS-FINALES.txt` | Toutes les formules de l'application qui diffèrent du guide d'origine |
 | `scrFormulaire-OnVisible-corrige.txt` | La formule complète **OnVisible** de l'écran formulaire |
 | `btnApercuPDF-OnSelect.txt` | La formule complète du bouton **Aperçu PDF** |
-| `btnImprimer-Plan-OnSelect.txt` | La formule du bouton **Créer le PDF du plan** (onglet Plan) |
 | `MISE-A-JOUR-28-OCTOBRE.docx` | Le pas-à-pas des changements du 28 octobre (PDF joint au dossier, écran allégé) |
 | `barre-etapes-formules.txt` | Les 7 formules de la barre d'étapes |
 | `FLUX-FINAUX.txt` | Les 3 flux, action par action, avec les vrais noms de variables |
@@ -68,8 +67,8 @@ Tout utilise des connecteurs **standard** : aucune licence Premium.
 | 12 | Onglet Synthèse (moyennes) et toutes les dates | `LookUp(colEchelle; Niveau = CoteSup)` dans `Average` était refusé. `Text(…; "fr-CA")` **et** les formats `"[$-fr-CA]d mmmm yyyy"` donnaient « Code de langue fr-CA non pris en charge ». | Formules avec `Switch` ; **aucun « fr-CA »** dans l'application (chercher `[$-fr-CA]` avec la loupe et l'effacer). Voir `FORMULES-POWERAPPS-FINALES.txt`, partie 9. |
 | 18 | Bouton Aperçu PDF | Le PDF ne s'ouvrait pas : le navigateur bloque l'onglet ouvert 10 à 30 secondes après le clic. | Nouveau bouton **📄 Ouvrir le PDF** (partie 10 du fichier des formules). |
 | 20 | PDF | Les PDF s'accumulaient dans une bibliothèque séparée, en plusieurs versions. | Le PDF est **joint au dossier** et **remplace** la version précédente ; il a les mêmes accès que le dossier. Bibliothèque Appreciations_PDF supprimée. |
-| 21 | Onglet Plan | « Imprimer ce plan » (`Print()`) donnait une page miniature. | Bouton « Créer le PDF du plan » : vrai PDF, joint au dossier. |
-| 22 | Écran | Trois boutons « Comment remplir » et un onglet Synthèse jugés superflus. | Un seul bouton d'aide (en haut à gauche) ; onglets Formulaire et Plan seulement. |
+| 21 | Onglet Plan | « Imprimer ce plan » (`Print()`) donnait une page miniature ; l'onglet a été jugé trop lourd. | **Onglet Plan de développement supprimé** (panelPlan). Le contenu reste dans les sections A et D et dans le PDF complet. |
+| 22 | Écran | Trois boutons « Comment remplir » et un onglet Synthèse jugés superflus ; erreur « Average avec une table vide ». | Un seul bouton d'aide (en haut à gauche) ; **panelSynthese supprimé** ; barre d'onglets visible seulement dans l'aide (« ← Retour au formulaire »). |
 | 23 | Barre d'étapes | « Transmis à la paie » | « Transmis aux RH » |
 | 19 | Tests avec d'autres comptes | « You are not a member of the environment's security group » | Normal dans le bac à sable : seules les personnes du **groupe de sécurité** de l'environnement peuvent ouvrir l'application. Les TI doivent y ajouter les testeurs, et prévoir le bon groupe en pré-prod et en prod. |
 | 13 | Flux 1, action 4 | « Retirer les Membres » échoue (404 NotFound) quand les Membres n'ont pas de droit sur le dossier, et le flux s'arrêtait. | Sur « Personnes du dossier » : Configurer l'exécution après = **a réussi + a échoué**. |
@@ -192,7 +191,7 @@ Le pas-à-pas complet est dans **`GUIDE-PDF-APPRECIATION.docx`**. En résumé :
 
 1. Vérifier que la liste Appreciations accepte les pièces jointes (partie 4.2).
 2. Créer le flux **GenererPDFAppreciation** dans la solution : 3 entrées (nomFichier, html, idDossier) et 7 actions ; il **joint le PDF au dossier** en remplaçant l'ancienne version (voir `FLUX-FINAUX.txt` et `MISE-A-JOUR-28-OCTOBRE.docx`). Il convertit avec **OneDrive Entreprise › Convertir un fichier**, crée la référence de connexion **OneDrive Appreciations**, et répond avec une sortie **lien**.
-3. Dans l'application, ajouter le flux, coller `btnApercuPDF-OnSelect.txt` dans **btnApercuPDF.OnSelect** et `btnImprimer-Plan-OnSelect.txt` dans **btnImprimer.OnSelect**, puis créer les boutons « 📄 Ouvrir le PDF » (formulaire) et « 📄 PDF » (Mes dossiers).
+3. Dans l'application, ajouter le flux, coller `btnApercuPDF-OnSelect.txt` dans **btnApercuPDF.OnSelect** puis créer les boutons « 📄 Ouvrir le PDF » (formulaire) et « 📄 PDF » (Mes dossiers).
 
 La formule assemble le document **en 40 petites étapes**, dans la variable `varHtmlPDF`. Une seule longue formule donnait l'erreur « L'imbrication d'expressions est trop profonde ».
 
@@ -220,7 +219,7 @@ Le dossier doit avoir été enregistré au moins une fois.
 | 9 | SI : cotes, section E, évaluation globale, Approuver | Le SH reçoit « À approuver » | |
 | 10 | SH : Approuver (sans directeur) | Statut Complété ; Courriel paie reçu ; tous avisés ; tout le monde en Lecture ; TransmisPaieLe rempli | |
 | 11 | Dossier avec directeur requis | Le directeur reçoit l'accès dès qu'il est choisi, puis le courriel après le SH | |
-| 12 | Écran allégé | Un seul bouton d'aide ; onglets Formulaire et Plan ; « Créer le PDF du plan » joint un 2ᵉ PDF au dossier | |
+| 12 | Écran allégé | Un seul bouton d'aide ; plus d'onglets Synthèse ni Plan ; aucune erreur dans le Vérificateur | |
 | 13 | Barre d'étapes | Chaque étape passe au vert avec sa date | |
 | 14 | Aperçu PDF, puis « 📄 Ouvrir le PDF » | Le PDF de plusieurs pages s'ouvre ; il est joint au dossier (une seule version) ; aucun .html ne reste dans OneDrive | |
 | 15 | Aperçu PDF par un collègue sans lien sur le PDF d'un autre | Accès refusé | |

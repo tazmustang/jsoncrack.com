@@ -1,5 +1,5 @@
 # Génère la formule Power Fx (syntaxe française) du bouton btnApercuPDF.
-# Usage : python3 generer-formule-pdf.py  (écrit btnApercuPDF-OnSelect.txt et btnImprimer-Plan-OnSelect.txt)
+# Usage : python3 generer-formule-pdf.py  (écrit btnApercuPDF-OnSelect.txt)
 
 def E(x):
     """Texte saisi -> HTML sûr (& < > et retours de ligne)."""
@@ -201,7 +201,5 @@ ici = os.path.dirname(os.path.abspath(__file__))
 open(os.path.join(ici, 'btnApercuPDF-OnSelect.txt'), 'w').write(
     formule(parts, "btnApercuPDF.OnSelect — PDF de l'appréciation complète",
             '"Appreciation_dossier" & varDossier.ID'))
-open(os.path.join(ici, 'btnImprimer-Plan-OnSelect.txt'), 'w').write(
-    formule(plan, "btnImprimer.OnSelect (onglet Plan) — PDF du plan de développement",
-            '"Plan_developpement_dossier" & varDossier.ID'))
-print("btnApercuPDF-OnSelect.txt et btnImprimer-Plan-OnSelect.txt écrits")
+# (PDF du plan retiré le 28 octobre : l'onglet Plan de développement n'existe plus)
+print("btnApercuPDF-OnSelect.txt écrit")

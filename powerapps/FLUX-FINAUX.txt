@@ -189,7 +189,7 @@ utcNow()
 
 
 =====================================================================
-FLUX 3 — « GenererPDFAppreciation » (boutons Aperçu PDF et Créer le PDF du plan)
+FLUX 3 — « GenererPDFAppreciation » (bouton Aperçu PDF)
 Version du 28 octobre : le PDF est JOINT AU DOSSIER (pièce jointe de l'élément de la
 liste Appreciations) et remplace la version précédente du même nom.
 Déclencheur : Power Apps (V2) — 3 entrées, dans cet ordre :

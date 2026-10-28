@@ -1,6 +1,6 @@
 ---
 title: "Mise à jour du 28 octobre 2026"
-subtitle: "PDF joint au dossier, plan de développement en PDF, allègement de l'écran, dates"
+subtitle: "PDF joint au dossier, allègement de l'écran (sans onglets Synthèse ni Plan), dates"
 lang: fr-CA
 ---
 
@@ -10,9 +10,9 @@ lang: fr-CA
 |---|---|---|
 | 1 | Joindre le PDF au dossier de l'employé | Le flux 3 **joint le PDF à l'élément** de la liste Appreciations (pièce jointe), au lieu de la bibliothèque Appreciations_PDF |
 | 2 | Plusieurs versions du PDF portent à confusion | Le flux **remplace** l'ancien PDF du même nom : il y a toujours **une seule** version, la plus récente |
-| 3 | Plan de développement imprimé mal mis en page | « Imprimer ce plan » produit maintenant un **vrai PDF** du plan, joint aussi au dossier |
+| 3 | Plan de développement jugé trop lourd | **Onglet Plan de développement supprimé**, avec son bouton d'impression. Les objectifs à venir et le développement restent dans le formulaire (sections A et D) et dans le PDF complet |
 | 4 | Trop de « Comment remplir » | On garde **seulement** le bouton du haut à gauche |
-| 5 | Retirer « Synthèse » | Onglet retiré : il reste **Formulaire** et **Plan de développement** |
+| 5 | Retirer « Synthèse » | **Onglet supprimé** (il causait aussi l'erreur « Impossible d'utiliser la fonction Average avec une table vide ») |
 | 6 | « Transmis à la paie » | Devient **« Transmis aux RH »** dans la barre d'étapes et le PDF |
 | 7 | Erreur fr-CA dans stepDate | Nouvelle formule ci-dessous |
 | 8 | Bouton « Ouvrir le PDF » | Il est nécessaire (le navigateur bloque l'ouverture automatique). Il existe en **deux endroits** : dans le formulaire, et sur chaque ligne de **Mes dossiers** (bouton 📄 PDF) |
@@ -100,10 +100,12 @@ Cliquez sur **Enregistrer**.
 
 **B.2 Bouton Aperçu PDF.** Dans **btnApercuPDF.OnSelect**, collez tout le fichier `btnApercuPDF-OnSelect.txt` (nouvelle version).
 
-**B.3 Bouton « Imprimer ce plan »** (onglet Plan de développement, contrôle **btnImprimer**) :
+**B.3 Supprimer les onglets Synthèse et Plan de développement.** Dans l'Arborescence (sous panelOnglets) :
 
-- **OnSelect** : collez tout le fichier `btnImprimer-Plan-OnSelect.txt` ;
-- **Text** : `"🖨️ Créer le PDF du plan"`.
+- clic droit sur **panelSynthese** › **Supprimer** ;
+- clic droit sur **panelPlan** › **Supprimer** (son bouton « Imprimer ce plan » part avec lui).
+
+Puis **Revérifier tout** : l'erreur « Impossible d'utiliser la fonction Average avec une table vide » disparaît.
 
 **B.4 Bouton « 📄 Ouvrir le PDF »** (s'il n'est pas déjà créé). Copiez **btnApercuPDF** (Ctrl+C, Ctrl+V), renommez la copie `btnOuvrirPDF`, puis :
 
@@ -115,11 +117,10 @@ Cliquez sur **Enregistrer**.
 
 ```
 ClearCollect(colTabs;
-    {TabLabel: "📝 Formulaire"; TabID: 1};
-    {TabLabel: "🎯 Plan de développement"; TabID: 4});;
+    {TabLabel: "← Retour au formulaire"; TabID: 1});;
 ```
 
-Le bouton **« ❓ Comment remplir ce formulaire »** (en haut à gauche) ouvre toujours l'aide. Pour revenir, cliquez sur l'onglet **📝 Formulaire**.
+Puis **tabBar.Visible** : `CurrentTabID <> 1`. La barre d'onglets disparaît du formulaire ; elle n'apparaît que dans l'aide (ouverte par **« ❓ Comment remplir ce formulaire »**, en haut à gauche), avec un seul bouton **« ← Retour au formulaire »**.
 
 **B.6 Retirer le bandeau « Première fois ? »** Sélectionnez **aideCallout** (le bandeau avec le second bouton « Comment remplir ») :
 
@@ -168,7 +169,7 @@ Faites aussi une recherche avec la **loupe 🔍** sur `[$-fr-CA]` : effacez-le p
 Launch(Coalesce(LookUp(ThisItem.Attachments; StartsWith(DisplayName; "Appreciation_")).AbsoluteUri; First(Filter(ThisItem.Attachments; EndsWith(DisplayName; ".pdf"))).AbsoluteUri))
 ```
 
-Le bouton ouvre le PDF de **l'appréciation complète**. Si seul le PDF du plan existe, il ouvre celui-là.
+Le bouton ouvre le PDF de **l'appréciation complète** joint au dossier.
 
 **En-tête du tableau :** dans **tblHeader**, élargissez **hdrAction** à `190` pour qu'il couvre les deux boutons.
 
@@ -184,8 +185,7 @@ Le bouton ouvre le PDF de **l'appréciation complète**. Si seul le PDF du plan 
 | 1 | Ouvrir un dossier, puis Aperçu PDF | Message vert ; le bouton « 📄 Ouvrir le PDF » apparaît et ouvre le PDF | |
 | 2 | Dans SharePoint, ouvrir l'élément du dossier | Une pièce jointe `Appreciation_dossierN.pdf` | |
 | 3 | Refaire Aperçu PDF | Toujours **une seule** pièce jointe `Appreciation_dossierN.pdf`, mise à jour | |
-| 4 | Onglet Plan › Créer le PDF du plan | Une 2ᵉ pièce jointe `Plan_developpement_dossierN.pdf`, bien mise en page | |
-| 5 | Mes dossiers | Le bouton 📄 PDF apparaît sur la ligne et ouvre le PDF | |
+| 4 | Mes dossiers | Le bouton 📄 PDF apparaît sur la ligne et ouvre le PDF | |
 | 6 | Un dossier « Complété » | Le PDF se crée et s'ouvre aussi | |
 | 7 | Un collègue sans lien | Ne voit ni le dossier ni le PDF | |
-| 8 | Écran | Un seul bouton « Comment remplir » ; onglets Formulaire et Plan seulement ; étape 6 « Transmis aux RH » | |
+| 8 | Écran | Un seul bouton « Comment remplir » ; plus d'onglets Synthèse ni Plan ; aucune erreur Average ; étape 6 « Transmis aux RH » | |
