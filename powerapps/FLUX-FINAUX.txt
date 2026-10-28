@@ -203,8 +203,8 @@ Déclencheur : Power Apps (V2) — 3 entrées, dans cet ordre :
 [3] « Pieces jointes » — SharePoint › Obtenir les pièces jointes
     Site : Site Appréciations     Liste : Liste Appreciations     Id : idDossier
 [4] « Anciennes versions » — Appliquer à chacun sur le Corps de « Pieces jointes »
-    Condition : Nom d'affichage (DisplayName)  est égal à  nomFichier + .pdf
-                (nomFichier du DÉCLENCHEUR Power Apps, pas le « Nom de fichier » OneDrive)
+    Condition : Nom d'affichage (DisplayName)  est égal à  (expression fx) :
+concat(triggerBody()?['text'], '.pdf')
     Si oui : SharePoint › Supprimer la pièce jointe
              Site / Liste : idem     Id : idDossier     Id de la pièce jointe : Id
 [5] « Ajouter PDF » — SharePoint › Ajouter une pièce jointe — SOUS la boucle, À L'EXTÉRIEUR

@@ -58,7 +58,11 @@ Supprimez ces cartes (… › Supprimer) :
 - À l'intérieur, ajoutez une **Condition** :
   - à gauche : **Nom d'affichage** (DisplayName, venant de « Pieces jointes ») ;
   - au milieu : **est égal à** ;
-  - à droite : **nomFichier** du **déclencheur Power Apps** (icône mauve, **pas** « Nom de fichier » de OneDrive, qui se termine par .html), puis tapez `.pdf` juste après.
+  - à droite : l'**expression** (fx) suivante — c'est la méthode qui fonctionne à coup sûr :
+
+    ```
+    concat(triggerBody()?['text'], '.pdf')
+    ```
 - Dans **Si oui** : **SharePoint › Supprimer la pièce jointe**
   - Site et liste : les mêmes variables
   - Id : **idDossier**

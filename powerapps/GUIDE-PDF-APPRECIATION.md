@@ -68,7 +68,7 @@ La liste **Appreciations** doit accepter les pièces jointes. Pour le vérifier 
    - Site : variable **Site Appréciations**
    - Liste : variable **Liste Appreciations**
    - Id : **idDossier**
-4. **Contrôle › Appliquer à chacun**, renommée `Anciennes versions`, sur le **Corps** de « Pieces jointes ». Dedans, une **Condition** : **Nom d'affichage** *est égal à* **nomFichier** suivi de `.pdf`.
+4. **Contrôle › Appliquer à chacun**, renommée `Anciennes versions`, sur le **Corps** de « Pieces jointes ». Dedans, une **Condition** : **Nom d'affichage** *est égal à* l'expression (fx) `concat(triggerBody()?['text'], '.pdf')`.
    - **Si oui** : **SharePoint › Supprimer la pièce jointe**
      - Site et liste : idem
      - Id : **idDossier**
