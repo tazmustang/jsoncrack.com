@@ -1,4 +1,4 @@
-// scrFormulaire.OnVisible — VERSION FINALE — 28 octobre 2026 (coller tout le contenu de ce fichier)
+// scrFormulaire.OnVisible — VERSION FINALE — 28 octobre 2026, mise à jour du 29 octobre (coller tout le contenu de ce fichier)
 // ---------- Paramètres de l'environnement (liste Parametres) ----------
 Set(varEnv; Coalesce(LookUp(Parametres; Title = "Environnement").Valeur; "PROD"));;
 Set(varCourrielSoutien; LookUp(Parametres; Title = "CourrielSoutien").Valeur);;
@@ -24,6 +24,11 @@ ClearCollect(colTabs;
 // Dossier ouvert depuis un lien (...&ID=12)
 If(IsBlank(varDossier) && !IsBlank(Param("ID"));
     Set(varDossier; LookUp(Appreciations; ID = Value(Param("ID")))));;
+
+// Relire le dossier complet dans SharePoint (sinon certaines colonnes, comme TypeRencontre,
+// peuvent arriver vides quand le dossier est ouvert depuis « Mes dossiers ») — ajout du 29 octobre
+If(!IsBlank(varDossier);
+    Set(varDossier; LookUp(Appreciations; ID = varDossier.ID)));;
 
 // Rôle selon le courriel de la personne connectée
 Set(CurrentRoleID;

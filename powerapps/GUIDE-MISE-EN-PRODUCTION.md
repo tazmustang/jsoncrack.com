@@ -1,6 +1,6 @@
 ---
 title: "Appréciation de la contribution — Guide de mise en production"
-subtitle: "VERSION FINALE — 28 octobre 2026 · Application Power Apps, SharePoint et Power Automate"
+subtitle: "VERSION FINALE — 28 octobre 2026, mise à jour du 29 octobre (transmission PréProd) · Application Power Apps, SharePoint et Power Automate"
 lang: fr-CA
 ---
 
@@ -23,6 +23,8 @@ Ce guide complète le **« Guide complet — Application Appréciation de la con
 | `FORMULES-POWERAPPS-FINALES.txt` | Toutes les formules de l'application qui diffèrent du guide d'origine |
 | `scrFormulaire-OnVisible-corrige.txt` | La formule complète **OnVisible** de l'écran formulaire |
 | `btnApercuPDF-OnSelect.txt` | La formule complète du bouton **Aperçu PDF** |
+| `CORRECTION-TYPE-RENCONTRE.docx` | Correction du 29 octobre : le type de rencontre reste dans le dossier et paraît dans le PDF |
+| `transmission-TI/` | Le paquet à envoyer aux TI pour la PréProd (bordereau, courriel, ZIP) |
 | `MISE-A-JOUR-28-OCTOBRE.docx` | Journal des derniers changements (PDF joint au dossier, écran allégé), étape par étape |
 | `barre-etapes-formules.txt` | Les 7 formules de la barre d'étapes |
 | `FLUX-FINAUX.txt` | Les 3 flux, action par action, avec les vrais noms de variables |
@@ -76,6 +78,7 @@ Tout utilise des connecteurs **standard** : aucune licence Premium.
 | 24 | Flux 3, réponse | La sortie « lien » contenait le texte tapé « URI absolu… » au lieu de l'adresse. | Expression `body('Ajouter_PDF')?['AbsoluteUri']`. |
 | 25 | Flux 3, anciennes versions | La Condition comparait le nom OneDrive (.html), d'où « Le nom spécifié est déjà utilisé ». | Expression `concat(triggerBody()?['text'], '.pdf')`. |
 | 26 | panelOnglets.Height | Référençait les panneaux supprimés. | `20 + If(panelAide.Visible; panelAide.Height; 0) + 20` |
+| 27 | Cases Type de rencontre (29 oct.) | Les cases se décochaient après « Enregistrer et déposer » et le type de rencontre n'était pas dans le PDF : le texte exact des choix ne correspondait pas, ou le dossier ouvert depuis Mes dossiers arrivait incomplet. | Comparaison par **mot-clé** (`"essai" in Value`…) dans Checked et dans btnDeposer ; **relecture du dossier** au début d'OnVisible. Voir `CORRECTION-TYPE-RENCONTRE.docx`. |
 | 19 | Tests avec d'autres comptes | « You are not a member of the environment's security group » | Normal dans le bac à sable : seules les personnes du **groupe de sécurité** de l'environnement peuvent ouvrir l'application. Les TI doivent y ajouter les testeurs, et prévoir le bon groupe en pré-prod et en prod. |
 | 13 | Flux 1, action 4 | « Retirer les Membres » échoue (404 NotFound) quand les Membres n'ont pas de droit sur le dossier, et le flux s'arrêtait. | Sur « Personnes du dossier » : Configurer l'exécution après = **a réussi + a échoué**. |
 | 14 | Flux 2, structure | « Statut changé » était placée **dans** « Directeur ajouté », et « Date paie » était **hors** du cas Complété. | Structure corrigée (partie 6.2). |
@@ -222,7 +225,7 @@ Le dossier doit avoir été enregistré au moins une fois.
 | 2 | Personne : nouveau formulaire, Identification, type de rencontre, section A, Enregistrer et déposer | Message vert ; ligne dans Appreciations avec Poste, TypeRencontre, SI et SH remplis | |
 | 3 | Flux 1 sur ce dossier | « Correctement exécuté » ; Gérer l'accès = Propriétaires, RH, personnes du dossier seulement | |
 | 4 | Collègue sans lien | Ne voit pas le dossier dans Mes dossiers | |
-| 5 | Fermer, puis rouvrir le dossier | Tout revient, y compris les cases Type de rencontre | |
+| 5 | Fermer, puis rouvrir le dossier | Tout revient, y compris les cases Type de rencontre (2 cases cochées restent cochées) | |
 | 6 | Saisie dans les tableaux (Objectifs, Indicateurs) | Le texte ne saute pas | |
 | 7 | Aviser le supérieur | Le SI reçoit le courriel ; le lien ouvre le bon dossier | |
 | 8 | Certifier | Contenu verrouillé ; le SI reçoit « À approuver » | |
@@ -231,7 +234,7 @@ Le dossier doit avoir été enregistré au moins une fois.
 | 11 | Dossier avec directeur requis | Le directeur reçoit l'accès dès qu'il est choisi, puis le courriel après le SH | |
 | 12 | Écran allégé | Un seul bouton d'aide ; plus d'onglets Synthèse ni Plan ; aucune erreur dans le Vérificateur | |
 | 13 | Barre d'étapes | Chaque étape passe au vert avec sa date | |
-| 14 | Aperçu PDF, puis « 📄 Ouvrir le PDF » | Le PDF de plusieurs pages s'ouvre ; il est joint au dossier (une seule version) ; aucun .html ne reste dans OneDrive | |
+| 14 | Aperçu PDF, puis « 📄 Ouvrir le PDF » | Le PDF de plusieurs pages s'ouvre et affiche le **type de rencontre** ; il est joint au dossier (une seule version) ; aucun .html ne reste dans OneDrive | |
 | 15 | Aperçu PDF par un collègue sans lien sur le PDF d'un autre | Accès refusé | |
 
 Pour les tests de courriels, utilisez des comptes de test, ou mettez temporairement votre adresse dans les colonnes Courriel du dossier de test.
@@ -249,20 +252,24 @@ Pour les tests de courriels, utilisez des comptes de test, ou mettez temporairem
    S'il manque un élément : **Ajouter existant**.
 2. Pour chacune des 5 variables : ouvrez-la, puis sous **Valeur actuelle**, faites **… › Retirer de cette solution**. Laissez la valeur par défaut vide.
 3. **Publier toutes les personnalisations.**
-4. Augmentez la **version** (ex. 1.0.0.1).
+4. Augmentez la **version** (ex. 1.0.0.2 pour la remise du 29 octobre).
 
 ## 9.2 Exporter
 
 1. **Exporter la solution**, puis **Vérifier**.
 2. Choisissez **Gérée**, puis **Exporter**.
-3. Téléchargez le .zip (ex. `Solution-ApplicationAppreciation_1_0_0_1_managed.zip`).
+3. Téléchargez le .zip (ex. `Solution-ApplicationAppreciation_1_0_0_2_managed.zip`).
 
 ## 9.3 Remettre aux TI
 
-- le **.zip géré** ;
-- le fichier **`Variables-environnement-et-deploiement.xlsx`** : colonnes Pré-prod et Prod à compléter avec eux, et la liste de vérification des TI ;
-- la **partie 4** de ce guide (SharePoint), avec l'étape 3 du Guide complet (les 35 colonnes) ;
-- le **schéma** (`Schema-solution.jpg`).
+Tout est prêt dans le dossier **`transmission-TI/`** :
+
+- `BORDEREAU-TRANSMISSION-TI.docx` : le contenu du paquet, le courriel à envoyer et la marche à suivre ;
+- `Transmission-TI-PreProd.zip` : les documents pour les TI.
+
+**À ajouter vous-même** : le **.zip géré de la solution** (partie 9.2). Il ne peut venir que de votre environnement Power Apps.
+
+**Recréer les listes SharePoint à l'identique :** sur le site de PréProd, **Nouveau › Liste › À partir d'une liste existante**, puis choisir la liste *Appreciations* du bac à sable (même chose pour *Parametres*). Les 35 colonnes, avec leurs noms internes et leurs choix, sont recopiées exactement. Ensuite, refaire les réglages de l'onglet **SharePoint** du fichier Excel : index, pièces jointes, versions, autorisations.
 
 ## 9.4 Ce que font les TI (pré-prod, puis prod)
 

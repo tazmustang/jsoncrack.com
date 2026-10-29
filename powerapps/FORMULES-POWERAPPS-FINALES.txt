@@ -1,4 +1,4 @@
-FORMULES POWER APPS — VERSION FINALE (28 octobre 2026)
+FORMULES POWER APPS — VERSION FINALE (28 octobre 2026, mise à jour du 29 octobre : type de rencontre)
 Application « Appréciation de la contribution » — syntaxe FRANÇAISE (« ; » et « ;; »)
 =====================================================================================
 Ce fichier rassemble TOUTES les formules qui diffèrent du « Guide complet » d'origine.
@@ -36,20 +36,24 @@ varDossier.TypeRencontreAutre
 # 2. TYPE DE RENCONTRE — propriété Checked des cases à cocher
 #####################################################################
 
+(Mise à jour du 29 octobre : la comparaison se fait sur un MOT-CLÉ, et non plus sur le texte
+ exact du choix. Ainsi, une apostrophe ’ au lieu de ', un accent ou une majuscule dans SharePoint
+ ne bloquent plus l'enregistrement. Collez chaque formule dans la propriété Checked de la case.)
+
 chkEssai.Checked
-!IsBlank(LookUp(varDossier.TypeRencontre; Value = "Période d'essai ou progression salariale"))
+!IsEmpty(Filter(varDossier.TypeRencontre; "essai" in Value))
 
 chkPremiere.Checked
-!IsBlank(LookUp(varDossier.TypeRencontre; Value = "Première rencontre annuelle"))
+!IsEmpty(Filter(varDossier.TypeRencontre; "premi" in Value))
 
 chkMiAnnee.Checked
-!IsBlank(LookUp(varDossier.TypeRencontre; Value = "Bilan de mi-année"))
+!IsEmpty(Filter(varDossier.TypeRencontre; "mi-ann" in Value))
 
 chkBilan.Checked
-!IsBlank(LookUp(varDossier.TypeRencontre; Value = "Bilan annuel"))
+!IsEmpty(Filter(varDossier.TypeRencontre; "bilan annuel" in Value))
 
 chkAutre.Checked
-!IsBlank(LookUp(varDossier.TypeRencontre; Value = "Autre"))
+!IsEmpty(Filter(varDossier.TypeRencontre; StartsWith(Value; "Autre")))
 
 
 #####################################################################
@@ -88,11 +92,11 @@ If(!IsBlank(varDossier);
         TypePoste: If(CurrentPosteID = ""; Blank();
             {Value: LookUp(colPostes; PosteID = CurrentPosteID).PosteLabel});
         TypeRencontre: Filter(Choices(Appreciations.TypeRencontre);
-            (Value = "Période d'essai ou progression salariale" And chkEssai.Checked) Or
-            (Value = "Première rencontre annuelle" And chkPremiere.Checked) Or
-            (Value = "Bilan de mi-année" And chkMiAnnee.Checked) Or
-            (Value = "Bilan annuel" And chkBilan.Checked) Or
-            (Value = "Autre" And chkAutre.Checked));
+            ("essai" in Value And chkEssai.Checked) Or
+            ("premi" in Value And chkPremiere.Checked) Or
+            ("mi-ann" in Value And chkMiAnnee.Checked) Or
+            ("bilan annuel" in Value And chkBilan.Checked) Or
+            (StartsWith(Value; "Autre") And chkAutre.Checked));
         TypeRencontreAutre: txtAutre.Text;
         ObjectifsActuels: JSON(ForAll(colObjActuels;
             {objectif: Objectif; indicateur: Indicateur; actions: Actions}));
