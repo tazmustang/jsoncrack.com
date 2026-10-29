@@ -1,0 +1,305 @@
+<title>Plan directeur SST 360</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: colonne de lecture unique, sommaire collant à gauche sur grand écran, sections numérotées car le cycle de vie est une vraie séquence */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --ink:#14213d; --muted:#5b6478; --line:#dfe4ec;
+  --navy:#1f3a68; --navy-soft:#e7edf7; --safety:#e8710a; --safety-soft:#fdf0e3;
+  --ok:#1d7a46; --ok-soft:#e5f4ec; --warn:#a15c00; --crit:#b42318; --crit-soft:#fdecea;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+  --mono:"JetBrains Mono",Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1522; --surface:#172033; --ink:#e6ebf4; --muted:#9aa6bd; --line:#2a3550;
+  --navy:#8fb0ea; --navy-soft:#1e2c4a; --safety:#ff9a3d; --safety-soft:#3a2614;
+  --ok:#5fd394; --ok-soft:#17332a; --warn:#f0b35a; --crit:#ff8a7f; --crit-soft:#3b1d1d; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1522; --surface:#172033; --ink:#e6ebf4; --muted:#9aa6bd; --line:#2a3550;
+  --navy:#8fb0ea; --navy-soft:#1e2c4a; --safety:#ff9a3d; --safety-soft:#3a2614;
+  --ok:#5fd394; --ok-soft:#17332a; --warn:#f0b35a; --crit:#ff8a7f; --crit-soft:#3b1d1d; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 var(--body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:220px minmax(0,1fr);gap:40px}
+@media (max-width:900px){.wrap{grid-template-columns:minmax(0,1fr)} nav.toc{display:none}}
+header.top{max-width:1180px;margin:0 auto;padding-block:40px 28px;border-bottom:3px solid var(--safety);margin-bottom:32px}
+.eyebrow{font:600 13px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--safety)}
+h1{font:700 clamp(38px,6vw,60px)/1 var(--display);letter-spacing:.01em;margin:10px 0 12px;text-wrap:balance}
+.lede{max-width:68ch;color:var(--muted);font-size:18px;margin:0}
+nav.toc{position:sticky;top:env(safe-area-inset-top,0px);align-self:start;padding-top:8px}
+nav.toc a{display:block;color:var(--muted);text-decoration:none;font-size:14px;padding:5px 0 5px 12px;border-left:2px solid var(--line)}
+nav.toc a:hover,nav.toc a:focus-visible{color:var(--ink);border-left-color:var(--safety);outline:none}
+section{padding-block:8px 36px}
+h2{font:700 30px/1.1 var(--display);margin:0 0 14px;display:flex;gap:12px;align-items:baseline;text-wrap:balance}
+h2 .n{font:600 14px var(--mono);color:var(--safety)}
+h3{font:600 18px/1.3 var(--body);margin:22px 0 8px}
+p,li{max-width:72ch}
+code,.mono{font-family:var(--mono);font-size:.86em}
+code{background:var(--navy-soft);color:var(--navy);padding:1px 5px;border-radius:4px}
+.flow{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0;margin:18px 0 8px}
+@media (max-width:700px){.flow{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}}
+.step{background:var(--surface);border:1px solid var(--line);padding:12px;position:relative}
+.step:first-child{border-radius:8px 0 0 8px}.step:last-child{border-radius:0 8px 8px 0}
+@media (max-width:700px){.step{border-radius:8px!important}}
+.step b{display:block;font:700 19px/1.1 var(--display)}
+.step span{display:block;font-size:13px;color:var(--muted);margin-top:4px}
+.step .st{font:600 11px var(--mono);color:var(--navy);text-transform:uppercase;letter-spacing:.05em}
+.step.hot{background:var(--safety-soft);border-color:var(--safety)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.mod{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px}
+.mod h3{margin:0 0 6px}
+.mod p{margin:0;font-size:15px;color:var(--muted)}
+.mod .from{margin-top:10px;font:600 11px var(--mono);color:var(--safety);text-transform:uppercase;letter-spacing:.05em}
+.mod.hot{border-color:var(--safety)}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:640px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:600 12px var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--muted);background:var(--bg)}
+tr:last-child td{border-bottom:0}
+td:first-child{font-family:var(--mono);font-size:13px;color:var(--navy);white-space:nowrap}
+tr.new td{background:var(--safety-soft)}
+.pill{display:inline-block;font:600 11px var(--mono);padding:2px 8px;border-radius:99px;white-space:nowrap}
+.p-ok{background:var(--ok-soft);color:var(--ok)}.p-crit{background:var(--crit-soft);color:var(--crit)}.p-nav{background:var(--navy-soft);color:var(--navy)}.p-saf{background:var(--safety-soft);color:var(--safety)}
+.note{border-left:4px solid var(--safety);background:var(--safety-soft);padding:12px 16px;border-radius:0 8px 8px 0;margin:16px 0}
+.note.blue{border-left-color:var(--navy);background:var(--navy-soft)}
+.note p{margin:0}
+.pdf{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:14px 0}
+@media (max-width:700px){.pdf{grid-template-columns:minmax(0,1fr)}}
+.pdf div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14px}
+.pdf div b{display:block;font:600 12px var(--mono);color:var(--navy);margin-bottom:4px}
+.tree{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;font-size:14.5px;margin:14px 0}
+.tree .row{display:flex;gap:10px;align-items:baseline;padding:3px 0}
+.tree .lv{font:600 11px var(--mono);color:var(--navy);white-space:nowrap;min-width:84px}
+.tree .i1{padding-left:0}.tree .i2{padding-left:28px}.tree .i3{padding-left:56px}
+.tree .root{color:var(--safety);font-weight:700}
+.phase{display:grid;grid-template-columns:110px minmax(0,1fr);gap:14px;padding:14px 0;border-top:1px solid var(--line)}
+.phase:first-of-type{border-top:0}
+.phase .tag{font:700 22px/1 var(--display);color:var(--safety)}
+.phase .tag small{display:block;font:600 11px var(--mono);color:var(--muted);margin-top:4px;letter-spacing:.04em}
+.phase ul{margin:4px 0 0;padding-left:18px}
+.q{counter-reset:q;list-style:none;padding:0}
+.q li{counter-increment:q;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px 12px 50px;margin-bottom:10px;position:relative}
+.q li::before{content:counter(q);position:absolute;left:14px;top:11px;width:24px;height:24px;border-radius:50%;background:var(--navy);color:var(--surface);font:700 13px/24px var(--mono);text-align:center}
+pre.mermaid{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px;overflow-x:auto}
+a{color:var(--navy)}
+footer{max-width:1180px;margin:24px auto 0;font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px}
+</style>
+
+<header class="top">
+  <div class="eyebrow">Plan directeur · Power Apps + SharePoint · version 1.1</div>
+  <h1>SST 360 : déclarer, enquêter, corriger, prouver</h1>
+  <p class="lede">Une seule application pour les accidents, les incidents (passés proches) et les situations dangereuses. Chaque déclaration devient un dossier qui suit son cycle de vie jusqu'à la vérification des mesures, avec son historique, ses personnes, ses documents et ses rapports PDF.</p>
+</header>
+
+<div class="wrap">
+<nav class="toc" aria-label="Sommaire">
+  <a href="#cycle">Cycle de vie</a><a href="#modules">Modules</a><a href="#pourquoi">Analyse des 5 Pourquoi</a><a href="#donnees">Modèle de données</a>
+  <a href="#ecrans">Écrans</a><a href="#securite">Rôles et sécurité</a><a href="#pdf">Rapports PDF</a>
+  <a href="#flux">Alertes et flux</a><a href="#technique">Règles techniques</a><a href="#feuille">Feuille de route</a><a href="#decisions">À décider</a>
+</nav>
+
+<main>
+<section id="cycle">
+  <h2><span class="n">01</span>Le cycle de vie d'un dossier</h2>
+  <p>Le statut du dossier pilote tout : ce que l'écran affiche, qui est averti, quels rapports sont disponibles. Les étapes reprennent la démarche d'enquête de la CNESST.</p>
+  <div class="flow">
+    <div class="step"><span class="st">Déclaré</span><b>Déclarer</b><span>Membre, sur téléphone, en moins de 3 minutes. Photos incluses.</span></div>
+    <div class="step"><span class="st">En analyse</span><b>Trier</b><span>Gravité réelle et potentielle, avis CNESST, enquête requise ou non.</span></div>
+    <div class="step hot"><span class="st">En enquête</span><b>Enquêter</b><span>Équipe, faits ITAMAMI, entrevues, facteurs contributifs, arbre des 5 Pourquoi, causes racines.</span></div>
+    <div class="step"><span class="st">Plan d'action</span><b>Agir</b><span>Une action par cause racine, selon la hiérarchie des mesures, avec responsable et échéance.</span></div>
+    <div class="step"><span class="st">Vérification</span><b>Vérifier</b><span>Efficacité de chaque mesure. Une mesure inefficace rouvre l'analyse.</span></div>
+    <div class="step"><span class="st">Fermé</span><b>Prouver</b><span>Rapport final PDF, journal complet, dossier archivé.</span></div>
+  </div>
+  <p class="mono" style="color:var(--muted);font-size:13px">Une situation dangereuse ou un incident mineur peut passer directement de « Trier » à « Agir » sans enquête complète.</p>
+</section>
+
+<section id="modules">
+  <h2><span class="n">02</span>Les modules</h2>
+  <p>Chaque module répond à une fonction des logiciels de référence (Intelex, EHS4Safety, Benchmark Gensuite) ou à un élément que vous avez retenu.</p>
+  <div class="grid">
+    <div class="mod"><h3>Déclarations</h3><p>Un assistant en 4 étapes, avec un type choisi par grandes tuiles : accident avec arrêt, accident avec premiers soins, incident ou passé proche, situation dangereuse, dommage matériel.</p><div class="from">Intelex · déclaration mobile</div></div>
+    <div class="mod"><h3>Dossier 360</h3><p>Une fiche par dossier avec des onglets : Résumé, Personnes, Faits, Analyse, Actions, Documents, Journal. Le statut s'affiche en barre d'étapes.</p><div class="from">Gestion complète des cas</div></div>
+    <div class="mod"><h3>Personnes et groupes</h3><p>Personnes touchées, parties mises en cause, témoins, membres de l'équipe d'enquête, personnel, bénévoles et groupes touchés. Les notes d'entrevue sont attachées à chaque personne.</p><div class="from">Suivi des personnes et des groupes</div></div>
+    <div class="mod hot"><h3>Enquête et analyse</h3><p>Mesures d'urgence cochées, grille ITAMAMI avec photos par fait, puis l'analyse de votre outil 5 Pourquoi : grille des facteurs contributifs, arbre à plusieurs branches, alerte « piège erreur humaine », causes racines et test du « Donc ».</p><div class="from">Votre outil 5 Pourquoi v3.0 · CNESST</div></div>
+    <div class="mod"><h3>Plan d'action et calendrier</h3><p>Mesures liées à une cause racine ou tâches indépendantes : inspections, formations, comités. Vue liste, vue calendrier mensuel et vue « Mes actions ».</p><div class="from">CAPA · Benchmark Gensuite</div></div>
+    <div class="mod"><h3>Alertes et escalades</h3><p>Des règles modifiables dans une liste : gravité minimale, action en retard, dossier sans suivi depuis X jours. Les flux les lisent et avertissent les bonnes personnes.</p><div class="from">Alertes et escalades automatisées</div></div>
+    <div class="mod"><h3>Documents liés</h3><p>Une bibliothèque SharePoint avec un dossier par événement. Chaque document a une catégorie (enquête, entrevue, preuve, médical, assurance, police, juridique) et un niveau de confidentialité.</p><div class="from">Connexion de fichiers SharePoint</div></div>
+    <div class="mod"><h3>Rapports PDF</h3><p>Déclaration, rapport d'enquête, plan d'action, tableau de bord mensuel, registre des accidents bénins. Chaque PDF est classé dans le dossier et peut être envoyé par courriel.</p><div class="from">Exigence essentielle</div></div>
+    <div class="mod"><h3>Tableau de bord</h3><p>Jours sans accident avec arrêt, pyramide des événements, enquêtes ouvertes, actions en retard, échéances de la semaine, tendance sur 12 mois, facteurs contributifs les plus fréquents.</p><div class="from">Indicateurs opérationnels</div></div>
+  </div>
+</section>
+
+<section id="pourquoi">
+  <h2><span class="n">03</span>L'analyse des 5 Pourquoi dans SST 360</h2>
+  <p>L'onglet Analyse du dossier reprend votre outil <b>5 Pourquoi v3.0</b> sans changer la méthode. La différence : les réponses ne restent plus sur un seul appareil. Elles sont enregistrées dans le dossier, et chaque action corrective devient une vraie tâche suivie.</p>
+  <h3>Ce que l'outil apporte et ce qui change dans le plan</h3>
+  <div class="tw"><table>
+    <thead><tr><th>Outil 5 Pourquoi v3.0</th><th>Dans SST 360</th><th>Effet sur le plan</th></tr></thead>
+    <tbody>
+      <tr><td>Informations générales</td><td>Service, lieu, date et analyste viennent du dossier. Rien à ressaisir.</td><td>Aucun champ nouveau, sauf l'énoncé du problème (<code>Enq_Probleme</code>).</td></tr>
+      <tr><td>Grille de collecte</td><td>Les mêmes 4 catégories et les mêmes choix (questions 191 à 194), avec plusieurs choix et un champ « Autre » par catégorie.</td><td>4 colonnes à choix multiples et 4 colonnes « Autre » dans SST_Evenements.</td></tr>
+      <tr><td>Créer les branches</td><td>Le bouton crée un « Pourquoi 1 » par facteur coché, avec le préfixe de catégorie. Les facteurs « n'est pas en cause » sont ignorés.</td><td>Chaque branche garde sa catégorie : les facteurs les plus fréquents s'affichent au tableau de bord.</td></tr>
+      <tr><td>Arbre des causes</td><td>Plusieurs branches, chaque réponse peut avoir des sous-causes, sans limite de niveaux. Couleurs par niveau, comme dans l'outil.</td><td>SST_Pourquoi devient un <b>arbre</b> (colonne <code>ParentID</code>) au lieu d'une chaîne unique.</td></tr>
+      <tr><td>Piège « erreur humaine »</td><td>Même liste de mots repérés (oubli, négligence, inattention…), même avertissement.</td><td>Calculé à l'écran, rien n'est stocké.</td></tr>
+      <tr><td>Cause racine + action</td><td>Marquer une réponse comme cause racine ouvre son action : description, responsable, échéance, statut.</td><td>L'action est créée dans <b>SST_Actions</b> (colonne <code>PourquoiID</code>), donc elle apparaît dans « Mes actions », le calendrier et les rappels.</td></tr>
+      <tr><td>Statuts</td><td>À faire, En cours, Fait, Efficacité vérifiée.</td><td>Ce sont les statuts retenus pour toutes les actions de SST 360.</td></tr>
+      <tr><td>Synthèse et test du « Donc »</td><td>Tableau des causes racines avec leur chemin, puis la relecture « cause racine, donc …, donc problème ».</td><td>Généré à l'écran et repris dans le rapport d'enquête PDF.</td></tr>
+      <tr><td>Mesures suggérées</td><td>Les mesures cochées s'affichent comme pistes au moment de définir les actions.</td><td>Stockées avec le dossier, proposées dans l'onglet Actions.</td></tr>
+      <tr><td>Historique local, JSON, impression</td><td>Remplacés par le dossier SharePoint, le journal et le PDF.</td><td>Une analyse déjà faite avec l'outil peut être importée (section 10, question 5).</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Exemple d'arbre tel qu'il sera enregistré</h3>
+  <div class="tree" role="img" aria-label="Exemple d'arbre : deux branches de départ, des sous-causes, une cause racine marquée">
+    <div class="row i1"><span class="lv">Problème</span><span>Un employé a chuté du quai de chargement du garage municipal.</span></div>
+    <div class="row i1"><span class="lv">Pourquoi 1</span><span>[Environnement et équipements] Éclairage insuffisant</span></div>
+    <div class="row i2"><span class="lv">Pourquoi 2</span><span>Deux luminaires du quai sont brûlés depuis trois semaines.</span></div>
+    <div class="row i3"><span class="lv">Pourquoi 3</span><span class="root">Aucun entretien préventif n'est planifié pour l'éclairage extérieur. · CAUSE RACINE → action ACT-0031</span></div>
+    <div class="row i1"><span class="lv">Pourquoi 1</span><span>[Organisation du travail] Procédure inexistante pour cette tâche</span></div>
+    <div class="row i2"><span class="lv">Pourquoi 2</span><span>Le déchargement de nuit n'a jamais fait l'objet d'une analyse de risque.</span></div>
+  </div>
+  <p style="color:var(--muted);font-size:14px">Test du « Donc » généré pour la cause racine : <i>Aucun entretien préventif n'est planifié pour l'éclairage extérieur, donc deux luminaires du quai sont brûlés depuis trois semaines, donc éclairage insuffisant, donc un employé a chuté du quai de chargement.</i></p>
+</section>
+
+<section id="donnees">
+  <h2><span class="n">04</span>Le modèle de données</h2>
+  <p>Neuf listes et une bibliothèque, créées par le script <code>01-Creer-listes-SharePoint.ps1</code>. Les listes enfants sont reliées au dossier par une colonne numérique <code>EvenementID</code> plutôt que par une colonne de recherche. Le filtre reste ainsi délégable et rapide dans Power Apps. Les lignes surlignées changent avec l'outil 5 Pourquoi.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Liste</th><th>Rôle</th><th>Colonnes clés</th></tr></thead>
+    <tbody>
+      <tr class="new"><td>SST_Evenements</td><td>Le dossier : déclaration, triage, synthèse d'enquête, suivi CNESST</td><td>TypeEvenement, Statut, DateEvenement, Site, Description, Blessure, PartiesCorps, NatureLesion, ArretTravail, JoursPerdus, GraviteReelle, GravitePotentielle, Probabilite, CNESST_Statut, Enq_MesuresUrgence, Enq_Probleme, Enq_Verification, Responsable. <b>Facteurs contributifs</b> : Fact_Organisation, Fact_Environnement, Fact_Comportement, Fact_Mesures (choix multiples), et Fact_OrganisationAutre, Fact_EnvironnementAutre, Fact_ComportementAutre, Fact_MesuresAutre (texte). Les photos sont en pièces jointes.</td></tr>
+      <tr><td>SST_Participants</td><td>Personnes et groupes du dossier</td><td>EvenementID, TypeParticipant, Role, MembreEquipe, Fonction, Courriel, DateEntrevue, Entrevue</td></tr>
+      <tr><td>SST_Faits</td><td>Recueil des faits, grille ITAMAMI</td><td>EvenementID, Categorie, Description, Source, FacteurCausal. Les photos sont en pièces jointes.</td></tr>
+      <tr class="new"><td>SST_Pourquoi</td><td>Arbre des 5 Pourquoi : une ligne par réponse</td><td>EvenementID, ParentID (0 = branche de départ), Niveau (1, 2, 3…), Chemin (ex. <code>002.001.003</code>, pour l'ordre d'affichage), Title (réponse), Categorie (organisation, environnement, comportement, libre), CauseRacine (oui/non)</td></tr>
+      <tr class="new"><td>SST_Actions</td><td>Mesures et tâches du calendrier</td><td>EvenementID (0 = hors dossier), PourquoiID (0 = action non liée à une cause racine), TypeTache, Hierarchie, Responsable, DateEcheance, Statut (À faire, En cours, Fait, Efficacité vérifiée), Priorite, Recurrence</td></tr>
+      <tr><td>SST_Journal</td><td>Historique vérifiable</td><td>EvenementID, TypeEntree, Details, AuteurNom, DateEntree</td></tr>
+      <tr><td>SST_Alertes</td><td>Règles d'alerte et d'escalade</td><td>Declencheur, TypeEvenement, GraviteMin, DelaiJours, Destinataires, Actif</td></tr>
+      <tr><td>SST_Referentiel</td><td>Sites, départements, lieux, et les choix de la grille des facteurs</td><td>Categorie, Parent, Ordre, Actif</td></tr>
+      <tr><td>SST_Roles</td><td>Rôles applicatifs</td><td>Courriel, Role, Site</td></tr>
+      <tr><td>SST_Dossiers <span class="pill p-nav">bibliothèque</span></td><td>Documents liés et PDF générés</td><td>EvenementID, CategorieDoc, TypeRapport, Confidentialite</td></tr>
+    </tbody>
+  </table></div>
+<pre class="mermaid">
+erDiagram
+  SST_Evenements ||--o{ SST_Participants : "personnes et groupes"
+  SST_Evenements ||--o{ SST_Faits : "faits ITAMAMI"
+  SST_Evenements ||--o{ SST_Pourquoi : "arbre des pourquoi"
+  SST_Pourquoi ||--o{ SST_Pourquoi : "sous-causes"
+  SST_Pourquoi ||--o| SST_Actions : "action de la cause racine"
+  SST_Evenements ||--o{ SST_Actions : "mesures"
+  SST_Evenements ||--o{ SST_Journal : "historique"
+  SST_Evenements ||--o{ SST_Dossiers : "documents et PDF"
+</pre>
+  <div class="note blue"><p><b>Numéro de dossier.</b> Le titre est construit par l'application après la création : <code>EV-2026-0042</code>, à partir de l'année et de l'ID SharePoint. Il est donc unique sans compteur séparé.</p></div>
+  <div class="note"><p><b>Pourquoi la colonne Chemin ?</b> Power Apps ne sait pas parcourir un arbre de façon récursive. Chaque réponse garde donc son chemin complet (<code>002.001.003</code> = 3<sup>e</sup> sous-cause de la 1<sup>re</sup> sous-cause de la 2<sup>e</sup> branche). Trié sur cette colonne, l'arbre s'affiche dans le bon ordre dans une simple galerie, et on peut supprimer une branche entière avec <code>StartsWith(Chemin, …)</code>.</p></div>
+</section>
+
+<section id="ecrans">
+  <h2><span class="n">05</span>Les écrans</h2>
+  <p>Une seule application adaptative. Sous 700 px de large, la navigation passe en barre au bas de l'écran et les tableaux deviennent des cartes. Au-delà, une barre latérale et des tableaux complets.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Écran</th><th>Contenu</th><th>Téléphone</th><th>Rôles</th></tr></thead>
+    <tbody>
+      <tr><td>scrAccueil</td><td>Indicateurs, pyramide des événements, « Mes actions », derniers dossiers, gros bouton Déclarer</td><td>Tuiles empilées, bouton Déclarer en haut</td><td>Tous (le contenu varie selon le rôle)</td></tr>
+      <tr><td>scrDeclarer</td><td>Assistant en 4 étapes : Type, Quand et où, Ce qui s'est passé, Photos et mesures. Résumé avant envoi.</td><td>Conçu d'abord pour le téléphone</td><td>Tous</td></tr>
+      <tr><td>scrRegistre</td><td>Tous les dossiers : recherche, filtres (type, statut, site, période), pastilles de gravité</td><td>Cartes</td><td>Gestionnaire et plus ; un membre ne voit que ses déclarations</td></tr>
+      <tr class="new"><td>scrDossier</td><td>Fiche 360 avec onglets Résumé · Personnes · Faits · Analyse · Actions · Documents · Journal, et une barre de statut. L'onglet <b>Analyse</b> suit l'outil 5 Pourquoi : guide de la méthode (repliable), énoncé du problème, grille des facteurs, arbre en galerie indentée, synthèse des causes racines et test du « Donc ».</td><td>Onglets défilants ; l'arbre s'indente moins sur téléphone</td><td>Gestionnaire et plus</td></tr>
+      <tr><td>scrActions</td><td>Plan d'action global : vues Liste, Calendrier, Mes actions ; actions en retard en rouge ; chaque action liée affiche sa cause racine</td><td>Liste par défaut</td><td>Tous (« Mes actions ») ; Gestionnaire et plus pour le reste</td></tr>
+      <tr><td>scrRapports</td><td>Centre de rapports : choix du type, période ou dossier, aperçu, génération du PDF, envoi</td><td>Oui</td><td>Gestionnaire et plus</td></tr>
+      <tr><td>scrAdmin</td><td>Référentiel (dont les choix de la grille des facteurs), rôles, règles d'alerte</td><td>Non nécessaire</td><td>Administrateur</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="securite">
+  <h2><span class="n">06</span>Rôles et sécurité</h2>
+  <p>Un dossier SST contient des renseignements de santé. Au Québec, la Loi 25 impose d'en limiter l'accès. La sécurité doit donc être appliquée dans SharePoint, pas seulement cachée dans l'application : un utilisateur peut ouvrir la liste directement dans son navigateur.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Rôle</th><th>Dans l'application</th><th>Dans SharePoint</th></tr></thead>
+    <tbody>
+      <tr><td>Membre</td><td>Déclarer, voir ses propres déclarations, gérer ses actions assignées</td><td>Collaboration. Sur SST_Evenements : <i>lire et modifier uniquement ses propres éléments</i> (paramètres avancés de la liste).</td></tr>
+      <tr><td>Gestionnaire</td><td>Dossiers de son site, enquête, actions, rapports</td><td>Niveau personnalisé qui inclut <i>Remplacer le comportement de la liste</i> pour voir tous les éléments</td></tr>
+      <tr><td>Préventionniste</td><td>Tout, sur tous les sites</td><td>Même niveau que le gestionnaire</td></tr>
+      <tr><td>Administrateur</td><td>Tout, plus l'écran Admin</td><td>Contrôle total</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note"><p><b>Documents confidentiels.</b> Les catégories Médical, Juridique et Police vont dans un dossier dont l'héritage des permissions est rompu par un flux, avec seulement les préventionnistes. C'est la « sécurité basée sur les rôles » que vous avez retenue.</p></div>
+  <div class="note blue"><p><b>Analyse des causes.</b> L'outil HTML garde tout sur l'appareil (« aucune donnée transmise »). Dans SST 360, l'arbre suit les permissions du dossier : la liste SST_Pourquoi reçoit les mêmes droits que SST_Evenements. Comme le recommande le guide de l'outil, les réponses décrivent des faits et des processus, pas des personnes.</p></div>
+</section>
+
+<section id="pdf">
+  <h2><span class="n">07</span>Rapports PDF</h2>
+  <p>La fonction <code>PDF()</code> de Power Apps est encore expérimentale et donne des résultats inégaux. La méthode retenue n'utilise que des connecteurs standards, donc aucune licence Premium :</p>
+  <div class="pdf">
+    <div><b>1 · Power Apps</b>Assemble le rapport en HTML à partir des données du dossier</div>
+    <div><b>2 · Flux</b>Reçoit le HTML et intègre les photos (base64)</div>
+    <div><b>3 · OneDrive</b>Crée un fichier .html temporaire puis le convertit en PDF</div>
+    <div><b>4 · SharePoint</b>Classe le PDF dans SST_Dossiers et inscrit le journal</div>
+    <div><b>5 · Retour</b>L'app reçoit le lien : ouvrir, télécharger ou envoyer par courriel</div>
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>Rapport</th><th>Contenu</th><th>Destinataire type</th></tr></thead>
+    <tbody>
+      <tr><td>Déclaration</td><td>Faits, personne touchée, lésion, témoins, mesures immédiates, photos</td><td>Dossier interne, assureur, préparation de l'avis CNESST</td></tr>
+      <tr class="new"><td>Rapport d'enquête</td><td>Équipe, faits ITAMAMI, problème identifié, facteurs contributifs cochés, arbre des 5 Pourquoi (couleurs par niveau), tableau des causes racines avec leur chemin, test du « Donc », actions et signatures</td><td>Comité SST, CNESST, partenaires</td></tr>
+      <tr><td>Plan d'action</td><td>Mesures par hiérarchie, cause racine liée, responsables, échéances, statut</td><td>Gestionnaires, comité</td></tr>
+      <tr><td>Tableau de bord</td><td>Indicateurs du mois, pyramide, tendance, actions en retard, facteurs contributifs les plus fréquents</td><td>Direction, comité SST</td></tr>
+      <tr><td>Registre des accidents bénins</td><td>Accidents avec premiers soins seulement, sur une période</td><td>Registre obligatoire de l'employeur</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note blue"><p><b>Avis CNESST.</b> L'Avis de l'employeur et demande de remboursement (ADR) se remplit dans Mon Espace CNESST. Le PDF de déclaration rassemble toutes les informations nécessaires pour le remplir ; il ne remplace pas le formulaire officiel.</p></div>
+</section>
+
+<section id="flux">
+  <h2><span class="n">08</span>Alertes et flux Power Automate</h2>
+  <div class="tw"><table>
+    <thead><tr><th>Flux</th><th>Déclencheur</th><th>Effet</th></tr></thead>
+    <tbody>
+      <tr><td>SST-GenererPDF</td><td>Bouton dans l'app</td><td>Génère et classe un PDF ; l'envoie par courriel au besoin</td></tr>
+      <tr><td>SST-NouvelleDeclaration</td><td>Élément créé dans SST_Evenements</td><td>Avertit selon les règles de SST_Alertes (gravité, type, site) ; crée le dossier documentaire ; inscrit le journal</td></tr>
+      <tr><td>SST-ChangementStatut</td><td>Élément modifié (statut changé)</td><td>Inscrit le journal ; avertit le responsable</td></tr>
+      <tr><td>SST-RappelsQuotidiens</td><td>Récurrence, chaque jour à 7 h</td><td>Actions en retard, échéances dans 7 jours, dossiers sans suivi : courriel au responsable, puis escalade au gestionnaire après X jours. Les actions « Fait » depuis 30 jours sans vérification d'efficacité sont aussi rappelées.</td></tr>
+      <tr><td>SST-AssignationAction</td><td>Action créée ou responsable changé</td><td>Courriel au responsable avec la cause racine liée ; en option, rendez-vous Outlook à l'échéance</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="technique">
+  <h2><span class="n">09</span>Règles techniques</h2>
+  <ul>
+    <li><b>Contrôles modernes</b> partout, avec une palette bleu marine et orange sécurité. L'orange est réservé aux causes racines, aux retards et aux alertes. Dans l'arbre, les 5 couleurs de niveau de l'outil (vert foncé vers jaune) sont reprises telles quelles.</li>
+    <li><b>Adaptatif</b> : application au format tablette, avec <i>Mettre à l'échelle</i> et <i>Verrouiller l'orientation</i> désactivés. La variable <code>gblTelephone = App.Width &lt; 700</code> pilote la disposition.</li>
+    <li><b>Délégation</b> : on filtre sur des colonnes indexées (<code>EvenementID</code>, <code>Statut</code>, <code>DateEcheance</code>, <code>TypeEvenement</code>) avec des comparaisons simples. Pas de <code>in</code> ni de <code>Search()</code> sur les grosses listes.</li>
+    <li><b>Arbre sans récursion</b> : à l'ouverture de l'onglet Analyse, les réponses du dossier sont chargées dans une collection triée par <code>Chemin</code>. La galerie décale chaque carte de <code>(Niveau − 1) × 24</code> px. Le chemin d'une cause racine et le test du « Donc » se construisent avec <code>Concat()</code> sur les préfixes du chemin.</li>
+    <li><b>Piège « erreur humaine »</b> : la liste de mots de l'outil est une formule nommée ; une carte affiche l'avertissement si la réponse contient l'un d'eux.</li>
+    <li><b>Seuil de 12 recherches</b> : les colonnes Personne comptent comme des recherches. On en garde une seule par liste, et les noms et courriels sont dans des colonnes texte. Les facteurs sont des colonnes à choix, qui ne comptent pas.</li>
+    <li><b>Formules nommées</b> (App.Formulas) pour l'utilisateur, le rôle, la palette, les choix de la grille des facteurs et les gabarits HTML des rapports. Cela évite de les dupliquer d'un écran à l'autre.</li>
+    <li><b>Licences</b> : SharePoint, Outlook et OneDrive sont des connecteurs standards, couverts par Microsoft 365. Chaque utilisateur a besoin d'un compte de votre locataire (Entra ID).</li>
+  </ul>
+</section>
+
+<section id="feuille">
+  <h2><span class="n">10</span>Feuille de route</h2>
+  <div class="phase"><div class="tag">Phase 0<small>Fondations</small></div><div><ul><li>Exécuter le script des listes ; ajuster le référentiel et les rôles</li><li>Créer l'application vide, coller App.Formulas et App.OnStart</li><li>En attendant, l'outil 5 Pourquoi v3.0 reste utilisé tel quel pour les enquêtes</li></ul></div></div>
+  <div class="phase"><div class="tag">Phase 1<small>Déclarer</small></div><div><ul><li>scrAccueil et scrDeclarer (téléphone d'abord)</li><li>Flux SST-NouvelleDeclaration</li><li>Mise à l'essai avec quelques membres</li></ul></div></div>
+  <div class="phase"><div class="tag">Phase 2<small>Enquêter</small></div><div><ul><li>scrRegistre et scrDossier : Résumé, Personnes, Faits, Journal</li><li>Onglet Analyse : grille des facteurs, arbre des 5 Pourquoi, causes racines, test du « Donc »</li><li>Essai en parallèle : une même enquête faite avec l'outil HTML et dans l'app, pour comparer</li></ul></div></div>
+  <div class="phase"><div class="tag">Phase 3<small>Agir</small></div><div><ul><li>scrActions avec le calendrier ; onglet Actions du dossier ; actions créées depuis les causes racines</li><li>Flux d'assignation et de rappels quotidiens, dont le rappel de vérification d'efficacité</li></ul></div></div>
+  <div class="phase"><div class="tag">Phase 4<small>Prouver</small></div><div><ul><li>Flux SST-GenererPDF, scrRapports, gabarits des 5 rapports (le rapport d'enquête reprend l'arbre et le test du « Donc »)</li><li>Onglet Documents, dossiers confidentiels</li></ul></div></div>
+  <div class="phase"><div class="tag">Phase 5<small>Piloter</small></div><div><ul><li>Indicateurs avancés (facteurs contributifs les plus fréquents par site), écran Admin, règles d'escalade fines</li></ul></div></div>
+</section>
+
+<section id="decisions">
+  <h2><span class="n">11</span>À décider avant la phase 1</h2>
+  <ol class="q">
+    <li><b>Qui sont les « membres » ?</b> Des employés avec un compte Microsoft 365 de votre organisation, ou des personnes externes (syndiqués, bénévoles) sans compte ? Sans compte, la déclaration doit passer par Microsoft Forms ou une page publique qui alimente la liste.</li>
+    <li><b>Combien de sites ?</b> Un seul, ou plusieurs avec des gestionnaires qui ne voient que le leur ?</li>
+    <li><b>Nom de l'application et logo.</b> « SST 360 » est un nom provisoire.</li>
+    <li><b>Contenu exact des PDF.</b> Avez-vous un gabarit de rapport d'enquête actuel (Word ou PDF) à reproduire ?</li>
+    <li><b>Analyses déjà faites avec l'outil 5 Pourquoi.</b> Faut-il les reprendre dans SST 360 ? Si oui, deux voies : un écran d'import qui lit l'export JSON de l'outil (jusqu'à 6 niveaux), ou un petit ajout à l'outil HTML qui exporte l'arbre « à plat » (une ligne par réponse, avec son chemin), plus simple et plus fiable à importer.</li>
+    <li><b>Grille des facteurs.</b> Les choix des questions 191 à 194 restent-ils fixes, ou la DSST veut-elle pouvoir les modifier ? Dans le second cas, ils sont lus depuis SST_Referentiel au lieu d'une formule nommée.</li>
+  </ol>
+</section>
+</main>
+</div>
+<footer>Script des listes : 01-Creer-listes-SharePoint.ps1 · Outil de référence pour l'analyse : arbre-5-pourquoi v3.0 · Les écrans Power Apps (YAML) seront générés phase par phase.</footer>

@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5 Pourquoi — Ville de Québec</title>
+<style>
+  :root{
+    --header-bg:#1e293b;
+    --bg:#f4f6f8;
+    --surface:#ffffff;
+    --accent:#2563eb;
+    --text:#1e293b;
+    --text-light:#64748b;
+    --border:#d7dce2;
+    --c1:#1f7a6c;
+    --c2:#3f9d8f;
+    --c3:#7cb37a;
+    --c4:#d9b04c;
+    --c5:#ecd98b;
+    --danger:#dc2626;
+    --ok:#16a34a;
+    --warn:#d97706;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text);}
+  header{background:var(--header-bg);color:#fff;padding:1.1rem 1.5rem;}
+  header h1{margin:0;font-size:1.3rem;font-weight:600;}
+  header p{margin:.25rem 0 0;color:#cbd5e1;font-size:.85rem;}
+  main{max-width:1200px;margin:0 auto;padding:1.5rem;}
+
+  .panel{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.1rem 1.3rem;margin-bottom:1.25rem;}
+  .panel h2{margin:0 0 .75rem;font-size:1rem;}
+
+  details.guide summary{cursor:pointer;font-weight:600;color:var(--accent);font-size:.95rem;list-style:none;}
+  details.guide summary::-webkit-details-marker{display:none;}
+  details.guide summary::before{content:"▸ ";}
+  details.guide[open] summary::before{content:"▾ ";}
+  details.guide .guide-body{margin-top:.75rem;font-size:.85rem;line-height:1.55;color:var(--text);}
+  details.guide .guide-body h4{margin:.9rem 0 .3rem;font-size:.85rem;color:var(--header-bg);}
+  details.guide .guide-body ul{margin:.25rem 0 .5rem 1.1rem;padding:0;}
+  details.guide .guide-body li{margin-bottom:.25rem;}
+  .tip-box{background:#fff7e0;border:1px solid #e8cf7a;border-left:4px solid var(--c4);border-radius:6px;padding:.6rem .8rem;font-size:.82rem;margin-top:.6rem;}
+
+  .meta-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.9rem;margin-bottom:1rem;}
+  @media (max-width:800px){ .meta-grid{grid-template-columns:1fr 1fr;} }
+  label.field-label{display:block;font-weight:600;font-size:.8rem;margin-bottom:.3rem;color:var(--text);}
+  input.field, select.field{width:100%;border:1px solid var(--border);border-radius:6px;padding:.45rem .55rem;font-family:inherit;font-size:.85rem;}
+  input.field:focus, select.field:focus, textarea:focus{outline:none;border-color:var(--accent);}
+  textarea.problem-input{width:100%;min-height:60px;border:1px solid var(--border);border-radius:8px;padding:.6rem .75rem;font-family:inherit;font-size:.95rem;resize:vertical;}
+
+  .toolbar{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0;}
+  button{cursor:pointer;border:none;border-radius:7px;padding:.5rem .9rem;font-size:.82rem;font-weight:600;font-family:inherit;}
+  .btn-primary{background:var(--accent);color:#fff;}
+  .btn-primary:hover{background:#1d4ed8;}
+  .btn-secondary{background:#e2e8f0;color:var(--text);}
+  .btn-secondary:hover{background:#cbd5e1;}
+  .btn-danger{background:#fee2e2;color:var(--danger);}
+  .btn-danger:hover{background:#fecaca;}
+  .btn-small{padding:.3rem .6rem;font-size:.72rem;border-radius:6px;}
+  .btn-cause{background:#f1f5f9;color:var(--text-light);}
+  .btn-cause.active{background:var(--danger);color:#fff;}
+
+  .tree-wrap{margin-top:1rem;}
+  .node-block{position:relative;margin-bottom:.9rem;}
+  .node-card{border:2px solid var(--level-color,var(--border));border-radius:10px;background:#fff;padding:.65rem .85rem;box-shadow:0 1px 2px rgba(0,0,0,.04);}
+  .node-head{display:flex;align-items:flex-start;gap:.5rem;}
+  .node-tag{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.03em;color:var(--level-color,var(--text-light));white-space:nowrap;padding-top:.35rem;}
+  .node-text{flex:1;border:none;resize:vertical;min-height:42px;font-family:inherit;font-size:.88rem;background:transparent;}
+  .node-text:focus{outline:none;background:#f8fafc;}
+  .node-actions{display:flex;gap:.35rem;flex-wrap:wrap;margin-top:.4rem;padding-top:.4rem;border-top:1px dashed var(--border);}
+  .cause-badge{display:inline-block;margin-left:.4rem;background:var(--danger);color:#fff;font-size:.62rem;font-weight:700;padding:.12rem .5rem;border-radius:999px;vertical-align:middle;}
+  .warn-badge{display:inline-block;margin-left:.4rem;background:#fff3cd;color:#8a5a00;border:1px solid #e8cf7a;font-size:.62rem;font-weight:700;padding:.12rem .5rem;border-radius:999px;vertical-align:middle;cursor:help;}
+
+  .action-panel{margin-top:.6rem;padding:.65rem .75rem;background:#f8fafc;border:1px dashed var(--border);border-radius:8px;}
+  .action-panel .al{font-size:.72rem;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:.02em;margin-bottom:.4rem;}
+  .action-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:.5rem;}
+  @media (max-width:800px){ .action-grid{grid-template-columns:1fr 1fr;} }
+  .action-grid textarea{min-height:40px;resize:vertical;font-family:inherit;font-size:.8rem;border:1px solid var(--border);border-radius:6px;padding:.4rem .5rem;width:100%;}
+
+  .children{margin-left:1.9rem;border-left:2px dashed var(--border);padding-left:1.1rem;margin-top:.7rem;}
+
+  .empty-msg{color:var(--text-light);font-size:.85rem;font-style:italic;padding:.5rem 0;}
+
+  .table-wrap{overflow-x:auto;}
+  table.synth-table{width:100%;border-collapse:collapse;font-size:.82rem;min-width:820px;}
+  table.synth-table th{background:#f1f5f9;text-align:left;padding:.5rem .6rem;border-bottom:2px solid var(--border);}
+  table.synth-table td{padding:.55rem .6rem;border-bottom:1px solid var(--border);vertical-align:top;}
+  .path-cell{color:var(--text-light);font-size:.78rem;}
+  .statut-badge{display:inline-block;font-size:.68rem;font-weight:700;padding:.15rem .55rem;border-radius:999px;}
+  .statut-a_faire{background:#e2e8f0;color:#475569;}
+  .statut-en_cours{background:#dbeafe;color:#1d4ed8;}
+  .statut-fait{background:#dcfce7;color:#166534;}
+  .statut-verifiee{background:#cffafe;color:#0e7490;}
+
+  .donc-panel{margin-top:1rem;}
+  .donc-panel h3{font-size:.85rem;margin:0 0 .5rem;color:var(--text-light);text-transform:uppercase;letter-spacing:.02em;}
+  .donc-block{background:#f8fafc;border-left:4px solid var(--accent);border-radius:6px;padding:.7rem .9rem;font-size:.82rem;line-height:1.6;margin-bottom:.6rem;color:var(--text);}
+  .donc-block b{color:var(--accent);}
+
+  .histo-list{list-style:none;margin:0;padding:0;}
+  .histo-list li{display:flex;justify-content:space-between;align-items:center;gap:.6rem;padding:.5rem .7rem;border:1px solid var(--border);border-radius:6px;margin-bottom:.4rem;font-size:.83rem;background:#fff;}
+  .histo-info{color:var(--text-light);font-size:.75rem;}
+
+  .legend{display:flex;flex-wrap:wrap;gap:.9rem;font-size:.76rem;color:var(--text-light);margin-top:.6rem;}
+  .legend span{display:inline-flex;align-items:center;gap:.3rem;}
+  .legend i{width:12px;height:12px;border-radius:3px;display:inline-block;}
+
+  .facteur-cat{margin-bottom:1.1rem;padding-bottom:1rem;border-bottom:1px solid var(--border);}
+  .facteur-cat:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+  .facteur-cat h4{margin:0 0 .55rem;font-size:.85rem;color:var(--header-bg);}
+  .facteur-list{display:grid;grid-template-columns:1fr 1fr;gap:.35rem .9rem;}
+  @media (max-width:750px){ .facteur-list{grid-template-columns:1fr;} }
+  .facteur-item{display:flex;align-items:flex-start;gap:.45rem;font-size:.83rem;cursor:pointer;}
+  .facteur-item input{margin-top:.2rem;}
+  .facteur-autre{margin-top:.6rem;max-width:360px;}
+  .chip{display:inline-block;background:#eef2ff;color:#3730a3;border-radius:999px;padding:.2rem .65rem;font-size:.75rem;margin:.15rem .3rem .15rem 0;}
+
+  footer{text-align:center;padding:1.25rem 1rem;color:#C9CDD1;font-size:.75rem;border-top:1px solid var(--header-bg);margin-top:2rem;background:var(--header-bg);}
+  footer .footer-copy{font-size:.8rem;color:#EDEFF2;margin-top:.3rem;}
+  footer .footer-version{font-size:.72rem;color:#9099A4;margin-top:.25rem;}
+
+  @media print{
+    header, footer, .toolbar, .node-actions, details.guide, .btn-small, #histo-panel{display:none !important;}
+    body{background:#fff;}
+    .node-card, table.synth-table tr{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>5 Pourquoi</h1>
+  <p>Analyse des causes</p>
+</header>
+
+<main>
+
+  <div class="panel">
+    <details class="guide">
+      <summary>Qu'est-ce que la méthode des 5 Pourquoi ? (cliquez pour déplier)</summary>
+      <div class="guide-body">
+        <p>Cette méthode consiste à demander « Pourquoi ? » de façon répétée face à un problème, afin de dépasser sa cause apparente et de remonter jusqu'à sa cause profonde. En général, cinq questions suffisent, mais une chaîne peut être plus courte ou plus longue selon la complexité du problème.</p>
+        <h4>1. Bien poser le problème</h4>
+        <ul>
+          <li>Énoncez un fait observable, pas un jugement : par exemple « les évaluations de risque sont incomplètes pour ce type de dossier » plutôt que « l'équipe est négligente ».</li>
+          <li>L'objectif est de comprendre un processus, pas de désigner une personne responsable.</li>
+        </ul>
+        <h4>2. Creuser, puis savoir quand s'arrêter</h4>
+        <ul>
+          <li>Restez factuel à chaque réponse : appuyez-vous sur ce qui est observé ou vérifiable, pas sur des suppositions.</li>
+          <li>Un problème peut avoir plusieurs causes contributives distinctes : ouvrez alors une branche séparée pour chacune plutôt que de les mélanger dans une seule réponse.</li>
+          <li>Arrêtez de creuser une branche dès que la réponse devient illogique, se répète, ou sort du champ d'action de l'équipe (budget, décision organisationnelle, contrainte externe) : revenez plutôt à la réponse précédente et cherchez une autre piste.</li>
+          <li>Une cause racine est atteinte quand la réponse décrit quelque chose sur lequel l'équipe peut réellement agir.</li>
+        </ul>
+        <h4>3. Agir et vérifier</h4>
+        <ul>
+          <li>Pour chaque cause racine confirmée, définissez une action corrective concrète, avec un responsable et une échéance.</li>
+          <li>Revenez plus tard vérifier que l'action a réellement empêché le problème de se reproduire, plutôt que de considérer le dossier clos dès que l'action est faite.</li>
+        </ul>
+        <h4>4. Quatre pièges classiques à surveiller</h4>
+        <ul>
+          <li><b>S'arrêter à « l'erreur humaine »</b> : une erreur ou un oubli n'est jamais la cause profonde, seulement le symptôme d'un système qui l'a rendue possible. L'outil signale automatiquement une réponse de ce type — creusez encore : pourquoi le système n'a-t-il pas empêché cette erreur ?</li>
+          <li><b>S'enfermer dans une seule ligne</b> : un problème a souvent plusieurs causes qui se combinent. Ouvrez une branche distincte pour chaque facteur plutôt que de forcer une seule chaîne.</li>
+          <li><b>S'arrêter à une cause « acceptable »</b> pour éviter un sujet délicat (budget, décision de gestion) plutôt qu'à la vraie cause racine.</li>
+          <li><b>Remonter trop loin</b>, jusqu'à des causes générales sur lesquelles personne n'a de prise. Arrêtez-vous dès qu'une action concrète et réaliste devient possible.</li>
+        </ul>
+        <h4>5. Vérifier la logique de la chaîne (test du « Donc »)</h4>
+        <p>Une fois une cause racine identifiée, relisez la chaîne à l'envers en remplaçant chaque « Pourquoi » par « donc » : « (cause racine), donc (réponse précédente), donc ... donc (problème initial) ». Si cet enchaînement ne sonne pas juste, un maillon a été sauté ou reposait sur une supposition plutôt qu'un fait vérifié. L'outil génère cette relecture automatiquement pour chaque cause racine, dans la section de synthèse plus bas.</p>
+        <div class="tip-box">
+          <strong>Astuce :</strong> si une réponse dépend de quelque chose hors du contrôle de l'équipe, revenez à la réponse précédente et cherchez plutôt une piste qui relève de votre sphère d'influence.
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <div class="panel">
+    <h2>Informations générales</h2>
+    <div class="meta-grid">
+      <div>
+        <label class="field-label" for="meta-service">Service / direction</label>
+        <input class="field" id="meta-service" type="text" placeholder="ex. : DSST">
+      </div>
+      <div>
+        <label class="field-label" for="meta-lieu">Lieu</label>
+        <input class="field" id="meta-lieu" type="text" placeholder="ex. : Garage municipal">
+      </div>
+      <div>
+        <label class="field-label" for="meta-date">Date de l'événement</label>
+        <input class="field" id="meta-date" type="date">
+      </div>
+      <div>
+        <label class="field-label" for="meta-analyste">Analyse menée par</label>
+        <input class="field" id="meta-analyste" type="text" placeholder="ex. : Annie L.">
+      </div>
+    </div>
+
+    <label class="field-label" for="probleme">Problème identifié</label>
+    <textarea id="probleme" class="problem-input" placeholder="Décrivez le problème de façon précise, factuelle et sans désigner de responsable (ex. : « Pourquoi les évaluations de risque de chute sont-elles incomplètes pour les patients admis souffrant de démence ? » plutôt qu'un énoncé vague ou accusateur)."></textarea>
+
+    <div class="toolbar">
+      <button class="btn-primary" onclick="ajouterBranche()">+ Ajouter un Pourquoi</button>
+      <button class="btn-secondary" onclick="enregistrerAnalyse()">Enregistrer dans l'historique</button>
+      <button class="btn-secondary" onclick="exporterJSON()">Exporter (JSON)</button>
+      <button class="btn-secondary" onclick="document.getElementById('import-file').click()">Importer (JSON)</button>
+      <input type="file" id="import-file" accept="application/json" style="display:none" onchange="importerJSON(event)">
+      <button class="btn-secondary" onclick="window.print()">Exporter en PDF</button>
+      <button class="btn-danger" onclick="nouvelleAnalyse()">Nouvelle analyse</button>
+    </div>
+
+    <div class="legend">
+      <span><i style="background:var(--c1)"></i>Pourquoi 1</span>
+      <span><i style="background:var(--c2)"></i>Pourquoi 2</span>
+      <span><i style="background:var(--c3)"></i>Pourquoi 3</span>
+      <span><i style="background:var(--c4)"></i>Pourquoi 4</span>
+      <span><i style="background:var(--c5)"></i>Pourquoi 5+</span>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Grille de collecte (facteurs contributifs)</h2>
+    <p style="font-size:.85rem;color:var(--text-light);margin-top:-.3rem;">Ces catégories reprennent la grille utilisée en amont de l'enquête (questions 191 à 194 du formulaire de collecte). Cochez les facteurs constatés — plusieurs choix possibles par catégorie — puis générez une branche « Pourquoi » de départ pour chacun.</p>
+    <div id="facteurs-container"></div>
+    <div class="toolbar">
+      <button class="btn-primary" onclick="genererBranchesDepuisFacteurs()">Créer les branches Pourquoi à partir des facteurs cochés</button>
+    </div>
+  </div>
+
+  <div class="panel tree-wrap">
+    <h2>Arbre des causes</h2>
+    <div id="arbre-container"></div>
+  </div>
+
+  <div class="panel synth-panel">
+    <h2>Causes racines et suivi des actions</h2>
+    <div id="synth-container"></div>
+  </div>
+
+  <div class="panel" id="histo-panel">
+    <h2>Mes analyses enregistrées (sur cet appareil)</h2>
+    <div id="histo-container"></div>
+  </div>
+
+</main>
+
+<footer>
+  Arbre décisionnel des 5 Pourquoi — Outil interne 100&nbsp;% local (aucune donnée transmise).
+  <div class="footer-copy">© Ville de Québec — Ce document est la propriété de la Ville de Québec. Tous droits réservés.</div>
+  <div class="footer-version">Version 3.0 · Sauvegarde automatique locale sur cet appareil.</div>
+</footer>
+
+<script>
+const AUTOSAVE_KEY = "arbre5pourquoi_vdq_v1";
+const HISTO_KEY = "arbre5pourquoi_vdq_historique";
+let idCounter = 1;
+
+function etatVide(){
+  return {
+    meta:{ service:"", lieu:"", dateEvenement:"", analyste:"" },
+    probleme:"",
+    facteurs:{
+      organisation:{ coches:[], autre:"" },
+      environnement:{ coches:[], autre:"" },
+      comportement:{ coches:[], autre:"" },
+      mesures:{ coches:[], autre:"" }
+    },
+    arbre:[]
+  };
+}
+let data = etatVide();
+
+const FACTEURS_DEFS = {
+  organisation:{
+    titre:"L'organisation du travail",
+    items:[
+      "Procédure inexistante pour cette tâche",
+      "Procédure existante mais non respectée",
+      "Procédure inadéquate ou obsolète",
+      "Directive ambiguë ou incomplète",
+      "Règle de sécurité absente ou mal définie",
+      "Formation insuffisante ou inadéquate",
+      "Absence de formation",
+      "Communication déficiente entre les parties concernées",
+      "Supervision insuffisante",
+      "Organisation du travail inadéquate (cadence, charge de travail)",
+      "Manque de ressources (temps, personnel, matériel)",
+      "Planification déficiente des travaux",
+      "Absence d'analyse de risque préalable à la tâche",
+      "L'organisation n'est pas en cause"
+    ]
+  },
+  environnement:{
+    titre:"L'environnement et les équipements",
+    items:[
+      "Équipement défectueux ou mal entretenu",
+      "Équipement inadéquat pour la tâche",
+      "Outil non conforme ou mal choisi",
+      "EPI absent",
+      "EPI inadéquat ou mal ajusté",
+      "EPI non porté malgré sa disponibilité",
+      "État des lieux dangereux (encombrement, surface glissante, dénivelé, etc.)",
+      "Éclairage insuffisant",
+      "Espace de travail mal entretenu ou mal aménagé",
+      "Conditions environnementales défavorables (bruit, température, intempéries)",
+      "Signalisation absente ou inadéquate",
+      "Entretien préventif déficient",
+      "L'environnement et les équipements ne sont pas en cause"
+    ]
+  },
+  comportement:{
+    titre:"Le comportement des personnes concernées",
+    items:[
+      "Choix personnel délibéré (contournement d'une procédure connue)",
+      "Erreur de jugement ou d'exécution",
+      "Manque d'expérience ou de compétences",
+      "Fatigue",
+      "Stress",
+      "Distraction",
+      "Précipitation / raccourci pris",
+      "Non-port des EPI malgré leur disponibilité",
+      "Communication déficiente entre collègues",
+      "Surestimation de ses capacités",
+      "Le comportement n'est pas en cause"
+    ]
+  },
+  mesures:{
+    titre:"Mesures correctives suggérées",
+    items:[
+      "Réviser ou créer une procédure",
+      "Former ou sensibiliser le personnel concerné",
+      "Renforcer la supervision",
+      "Réorganiser la tâche ou le poste de travail",
+      "Améliorer la communication entre les parties concernées",
+      "Réviser la planification des travaux / l'analyse de risque préalable",
+      "Réparer, remplacer ou entretenir l'équipement",
+      "Fournir ou ajuster les EPI",
+      "Améliorer la signalisation ou le balisage",
+      "Corriger l'état des lieux (rangement, surface, éclairage, espace de travail)",
+      "Mettre en place un entretien préventif",
+      "Rappel ou coaching individuel",
+      "Renforcer le port des EPI",
+      "Sensibiliser à la gestion de la fatigue / du stress",
+      "Réaliser un suivi ou un audit post-correctif"
+    ]
+  }
+};
+
+function onFacteurToggle(cat, item, checked){
+  const arr = data.facteurs[cat].coches;
+  const idx = arr.indexOf(item);
+  if(checked && idx === -1) arr.push(item);
+  if(!checked && idx > -1) arr.splice(idx, 1);
+  autosave();
+  renderSynthese();
+}
+
+function renderFacteurs(){
+  const container = document.getElementById("facteurs-container");
+  container.innerHTML = "";
+  Object.keys(FACTEURS_DEFS).forEach(catKey => {
+    const def = FACTEURS_DEFS[catKey];
+    const catData = data.facteurs[catKey];
+
+    const box = document.createElement("div");
+    box.className = "facteur-cat";
+
+    const h = document.createElement("h4");
+    h.textContent = def.titre;
+    box.appendChild(h);
+
+    const list = document.createElement("div");
+    list.className = "facteur-list";
+    def.items.forEach(item => {
+      const lbl = document.createElement("label");
+      lbl.className = "facteur-item";
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.checked = catData.coches.includes(item);
+      cb.addEventListener("change", e => onFacteurToggle(catKey, item, e.target.checked));
+      lbl.appendChild(cb);
+      const span = document.createElement("span");
+      span.textContent = item;
+      lbl.appendChild(span);
+      list.appendChild(lbl);
+    });
+    box.appendChild(list);
+
+    const autre = document.createElement("input");
+    autre.className = "field facteur-autre";
+    autre.type = "text";
+    autre.placeholder = "Autre (préciser)...";
+    autre.value = catData.autre;
+    autre.addEventListener("input", e => { catData.autre = e.target.value; autosave(); });
+    box.appendChild(autre);
+
+    container.appendChild(box);
+  });
+}
+
+const LABELS_CATEGORIES = {
+  organisation:"Organisation du travail",
+  environnement:"Environnement et équipements",
+  comportement:"Comportement des personnes concernées"
+};
+
+function genererBranchesDepuisFacteurs(){
+  let ajouts = 0;
+  Object.keys(LABELS_CATEGORIES).forEach(catKey => {
+    const f = data.facteurs[catKey];
+    const items = f.coches.slice();
+    if(f.autre && f.autre.trim()) items.push(f.autre.trim());
+    items.forEach(item => {
+      if(item.toLowerCase().includes("n'est pas en cause")) return;
+      const texte = "[" + LABELS_CATEGORIES[catKey] + "] " + item;
+      const dejaPresent = data.arbre.some(n => n.texte === texte);
+      if(!dejaPresent){
+        const n = nouveauNoeud();
+        n.texte = texte;
+        data.arbre.push(n);
+        ajouts++;
+      }
+    });
+  });
+  render(); autosave();
+  if(ajouts === 0){
+    alert("Aucun nouveau facteur coché à ajouter (ou déjà présent dans l'arbre). Cochez des facteurs dans la grille de collecte ci-dessus, ou vérifiez que ceux cochés ne sont pas déjà dans l'arbre.");
+  } else {
+    alert(ajouts + " branche(s) « Pourquoi 1 » créée(s) à partir des facteurs cochés. Vous pouvez maintenant creuser chacune avec le bouton « + Pourquoi ».");
+  }
+}
+
+const MOTS_ERREUR_HUMAINE = ["erreur humaine","erreur de manipulation","a oublié","oubli de","négligence","négligé","inattention","distraction","mauvaise manipulation","n'a pas fait attention","imprudence","étourderie"];
+
+function detecterErreurHumaine(texte){
+  if(!texte) return false;
+  const t = texte.toLowerCase();
+  return MOTS_ERREUR_HUMAINE.some(mot => t.includes(mot));
+}
+
+const NIVEAU_COULEURS = ["var(--c1)","var(--c2)","var(--c3)","var(--c4)","var(--c5)"];
+const NIVEAU_NOMS = ["Pourquoi 1","Pourquoi 2","Pourquoi 3","Pourquoi 4","Pourquoi 5"];
+const STATUTS = [
+  {v:"a_faire", l:"À faire"},
+  {v:"en_cours", l:"En cours"},
+  {v:"fait", l:"Fait"},
+  {v:"verifiee", l:"Efficacité vérifiée"}
+];
+
+function nouveauNoeud(){
+  return {
+    id: idCounter++,
+    texte:"",
+    causeRacine:false,
+    action:{ texte:"", responsable:"", echeance:"", statut:"a_faire" },
+    enfants:[]
+  };
+}
+
+function ajouterBranche(){
+  data.arbre.push(nouveauNoeud());
+  render(); autosave();
+}
+
+function ajouterEnfant(noeud){
+  noeud.enfants.push(nouveauNoeud());
+  render(); autosave();
+}
+
+function trouverNoeud(liste, id){
+  for(const n of liste){
+    if(n.id === id) return n;
+    const trouve = trouverNoeud(n.enfants, id);
+    if(trouve) return trouve;
+  }
+  return null;
+}
+
+function supprimerNoeud(liste, id){
+  const idx = liste.findIndex(n => n.id === id);
+  if(idx > -1){ liste.splice(idx,1); return true; }
+  for(const n of liste){
+    if(supprimerNoeud(n.enfants, id)) return true;
+  }
+  return false;
+}
+
+function onSupprimer(id){
+  if(confirm("Supprimer cette branche et toutes les réponses qui en découlent ?")){
+    supprimerNoeud(data.arbre, id);
+    render(); autosave();
+  }
+}
+
+function onToggleCause(id){
+  const n = trouverNoeud(data.arbre, id);
+  if(n){ n.causeRacine = !n.causeRacine; render(); autosave(); }
+}
+
+function onTexteChange(id, valeur){
+  const n = trouverNoeud(data.arbre, id);
+  if(n){ n.texte = valeur; autosave(); renderSynthese(); }
+}
+
+function onActionChange(id, champ, valeur){
+  const n = trouverNoeud(data.arbre, id);
+  if(n){ n.action[champ] = valeur; autosave(); renderSynthese(); }
+}
+
+function creerActionPanelDOM(noeud){
+  const wrap = document.createElement("div");
+  wrap.className = "action-panel";
+
+  const label = document.createElement("div");
+  label.className = "al";
+  label.textContent = "Action corrective";
+  wrap.appendChild(label);
+
+  const grid = document.createElement("div");
+  grid.className = "action-grid";
+
+  const texte = document.createElement("textarea");
+  texte.placeholder = "Action à mettre en place...";
+  texte.value = noeud.action.texte;
+  texte.addEventListener("input", e => onActionChange(noeud.id, "texte", e.target.value));
+  grid.appendChild(texte);
+
+  const resp = document.createElement("input");
+  resp.className = "field";
+  resp.type = "text";
+  resp.placeholder = "Responsable";
+  resp.value = noeud.action.responsable;
+  resp.addEventListener("input", e => onActionChange(noeud.id, "responsable", e.target.value));
+  grid.appendChild(resp);
+
+  const ech = document.createElement("input");
+  ech.className = "field";
+  ech.type = "date";
+  ech.value = noeud.action.echeance;
+  ech.addEventListener("input", e => onActionChange(noeud.id, "echeance", e.target.value));
+  grid.appendChild(ech);
+
+  const statut = document.createElement("select");
+  statut.className = "field";
+  STATUTS.forEach(s => {
+    const opt = document.createElement("option");
+    opt.value = s.v; opt.textContent = s.l;
+    if(noeud.action.statut === s.v) opt.selected = true;
+    statut.appendChild(opt);
+  });
+  statut.addEventListener("change", e => onActionChange(noeud.id, "statut", e.target.value));
+  grid.appendChild(statut);
+
+  wrap.appendChild(grid);
+  return wrap;
+}
+
+function creerNoeudDOM(noeud, niveau){
+  const idx = Math.min(niveau - 1, NIVEAU_COULEURS.length - 1);
+  const couleur = NIVEAU_COULEURS[idx];
+  const nom = niveau <= 5 ? NIVEAU_NOMS[niveau-1] : ("Pourquoi " + niveau);
+
+  const block = document.createElement("div");
+  block.className = "node-block";
+
+  const card = document.createElement("div");
+  card.className = "node-card";
+  card.style.setProperty("--level-color", couleur);
+
+  const head = document.createElement("div");
+  head.className = "node-head";
+
+  const tag = document.createElement("div");
+  tag.className = "node-tag";
+  tag.style.color = couleur;
+  tag.textContent = nom + " ?";
+  head.appendChild(tag);
+
+  const texte = document.createElement("textarea");
+  texte.className = "node-text";
+  texte.placeholder = "Réponse factuelle...";
+  texte.value = noeud.texte;
+  texte.addEventListener("input", e => onTexteChange(noeud.id, e.target.value));
+  head.appendChild(texte);
+
+  card.appendChild(head);
+
+  if(noeud.causeRacine){
+    const badge = document.createElement("span");
+    badge.className = "cause-badge";
+    badge.textContent = "CAUSE RACINE";
+    tag.appendChild(badge);
+  }
+
+  if(detecterErreurHumaine(noeud.texte)){
+    const warn = document.createElement("span");
+    warn.className = "warn-badge";
+    warn.textContent = "⚠ Piège « erreur humaine » ?";
+    warn.title = "Une erreur ou un oubli n'est jamais la cause profonde : cherchez plutôt pourquoi le système a permis cette erreur (formation, charge de travail, ergonomie, consignes...).";
+    tag.appendChild(warn);
+  }
+
+  const actions = document.createElement("div");
+  actions.className = "node-actions";
+
+  const btnAjouter = document.createElement("button");
+  btnAjouter.className = "btn-secondary btn-small";
+  btnAjouter.textContent = "+ Pourquoi (nouvelle cause)";
+  btnAjouter.onclick = () => ajouterEnfant(noeud);
+  actions.appendChild(btnAjouter);
+
+  const btnCause = document.createElement("button");
+  btnCause.className = "btn-cause btn-small" + (noeud.causeRacine ? " active" : "");
+  btnCause.textContent = noeud.causeRacine ? "✓ Cause racine" : "Marquer cause racine";
+  btnCause.onclick = () => onToggleCause(noeud.id);
+  actions.appendChild(btnCause);
+
+  const btnSupp = document.createElement("button");
+  btnSupp.className = "btn-danger btn-small";
+  btnSupp.textContent = "Supprimer";
+  btnSupp.onclick = () => onSupprimer(noeud.id);
+  actions.appendChild(btnSupp);
+
+  card.appendChild(actions);
+
+  if(noeud.causeRacine){
+    card.appendChild(creerActionPanelDOM(noeud));
+  }
+
+  block.appendChild(card);
+
+  if(noeud.enfants.length > 0){
+    const childWrap = document.createElement("div");
+    childWrap.className = "children";
+    noeud.enfants.forEach(enf => childWrap.appendChild(creerNoeudDOM(enf, niveau + 1)));
+    block.appendChild(childWrap);
+  }
+
+  return block;
+}
+
+function render(){
+  document.getElementById("meta-service").value = data.meta.service;
+  document.getElementById("meta-lieu").value = data.meta.lieu;
+  document.getElementById("meta-date").value = data.meta.dateEvenement;
+  document.getElementById("meta-analyste").value = data.meta.analyste;
+  document.getElementById("probleme").value = data.probleme;
+
+  const container = document.getElementById("arbre-container");
+  container.innerHTML = "";
+  if(data.arbre.length === 0){
+    const p = document.createElement("p");
+    p.className = "empty-msg";
+    p.textContent = "Aucun « Pourquoi » ajouté pour l'instant. Cliquez sur « + Ajouter un Pourquoi » pour démarrer l'analyse, ou cochez des facteurs dans la grille de collecte ci-dessus.";
+    container.appendChild(p);
+  } else {
+    data.arbre.forEach(n => container.appendChild(creerNoeudDOM(n, 1)));
+  }
+
+  renderFacteurs();
+  renderSynthese();
+  renderHistorique();
+}
+
+function collecterCausesRacines(liste, chemin, resultats){
+  liste.forEach(n => {
+    const nouveauChemin = chemin.concat(n.texte || "(réponse vide)");
+    if(n.causeRacine){
+      resultats.push({ chemin: nouveauChemin.slice(), action: n.action });
+    }
+    if(n.enfants.length > 0){
+      collecterCausesRacines(n.enfants, nouveauChemin, resultats);
+    }
+  });
+}
+
+function statutLabel(v){
+  const s = STATUTS.find(s => s.v === v);
+  return s ? s.l : v;
+}
+
+function renderSynthese(){
+  const container = document.getElementById("synth-container");
+  container.innerHTML = "";
+
+  const mesures = data.facteurs.mesures.coches.slice();
+  if(data.facteurs.mesures.autre && data.facteurs.mesures.autre.trim()) mesures.push(data.facteurs.mesures.autre.trim());
+  if(mesures.length > 0){
+    const suggBox = document.createElement("div");
+    suggBox.style.marginBottom = "1rem";
+    const suggTitre = document.createElement("div");
+    suggTitre.style.fontSize = ".8rem";
+    suggTitre.style.fontWeight = "600";
+    suggTitre.style.marginBottom = ".3rem";
+    suggTitre.textContent = "Pistes de mesures correctives suggérées lors de la collecte :";
+    suggBox.appendChild(suggTitre);
+    mesures.forEach(m => {
+      const chip = document.createElement("span");
+      chip.className = "chip";
+      chip.textContent = m;
+      suggBox.appendChild(chip);
+    });
+    container.appendChild(suggBox);
+  }
+
+  const resultats = [];
+  collecterCausesRacines(data.arbre, [data.probleme || "(problème non défini)"], resultats);
+
+  if(resultats.length === 0){
+    const p = document.createElement("p");
+    p.className = "empty-msg";
+    p.textContent = "Aucune cause n'est encore marquée « cause racine ». Utilisez le bouton « Marquer cause racine » sur la réponse où l'équipe a réellement du pouvoir d'agir, puis décrivez l'action corrective associée.";
+    container.appendChild(p);
+    return;
+  }
+
+  const wrap = document.createElement("div");
+  wrap.className = "table-wrap";
+  const table = document.createElement("table");
+  table.className = "synth-table";
+  table.innerHTML = "<thead><tr><th>Cause racine</th><th>Chemin des Pourquoi</th><th>Action corrective</th><th>Responsable</th><th>Échéance</th><th>Statut</th></tr></thead>";
+  const tbody = document.createElement("tbody");
+
+  resultats.forEach(r => {
+    const tr = document.createElement("tr");
+
+    const tdCause = document.createElement("td");
+    tdCause.textContent = r.chemin[r.chemin.length - 1];
+    tr.appendChild(tdCause);
+
+    const tdChemin = document.createElement("td");
+    tdChemin.className = "path-cell";
+    tdChemin.textContent = r.chemin.join(" → ");
+    tr.appendChild(tdChemin);
+
+    const tdAction = document.createElement("td");
+    tdAction.textContent = r.action.texte || "—";
+    tr.appendChild(tdAction);
+
+    const tdResp = document.createElement("td");
+    tdResp.textContent = r.action.responsable || "—";
+    tr.appendChild(tdResp);
+
+    const tdEch = document.createElement("td");
+    tdEch.textContent = r.action.echeance || "—";
+    tr.appendChild(tdEch);
+
+    const tdStatut = document.createElement("td");
+    const badge = document.createElement("span");
+    badge.className = "statut-badge statut-" + r.action.statut;
+    badge.textContent = statutLabel(r.action.statut);
+    tdStatut.appendChild(badge);
+    tr.appendChild(tdStatut);
+
+    tbody.appendChild(tr);
+  });
+
+  table.appendChild(tbody);
+  wrap.appendChild(table);
+  container.appendChild(wrap);
+
+  const doncPanel = document.createElement("div");
+  doncPanel.className = "donc-panel";
+  const doncTitre = document.createElement("h3");
+  doncTitre.textContent = "Vérification logique (test du « Donc »)";
+  doncPanel.appendChild(doncTitre);
+
+  resultats.forEach(r => {
+    const bloc = document.createElement("div");
+    bloc.className = "donc-block";
+    const inverse = r.chemin.slice().reverse();
+    bloc.innerHTML = "<b>" + escapeHTML(inverse[0]) + "</b>" +
+      inverse.slice(1).map(etape => ", donc " + escapeHTML(etape)).join("");
+    doncPanel.appendChild(bloc);
+  });
+
+  container.appendChild(doncPanel);
+}
+
+function escapeHTML(str){
+  const div = document.createElement("div");
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function autosave(){
+  try{ localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(data)); }
+  catch(e){ /* stockage local indisponible : on ignore silencieusement */ }
+}
+
+function reindexerIds(){
+  let max = 0;
+  (function scan(liste){ liste.forEach(n => { max = Math.max(max, n.id); scan(n.enfants); }); })(data.arbre);
+  idCounter = max + 1;
+}
+
+function normaliserDonnees(parsed){
+  if(!parsed || !Array.isArray(parsed.arbre)) throw new Error("Format invalide");
+  if(!parsed.meta) parsed.meta = { service:"", lieu:"", dateEvenement:"", analyste:"" };
+  if(!parsed.facteurs) parsed.facteurs = {};
+  ["organisation","environnement","comportement","mesures"].forEach(cat => {
+    if(!parsed.facteurs[cat]) parsed.facteurs[cat] = { coches:[], autre:"" };
+    if(!parsed.facteurs[cat].coches) parsed.facteurs[cat].coches = [];
+    if(typeof parsed.facteurs[cat].autre !== "string") parsed.facteurs[cat].autre = "";
+  });
+  (function fix(liste){
+    liste.forEach(n => {
+      if(!n.action) n.action = { texte:"", responsable:"", echeance:"", statut:"a_faire" };
+      if(!n.enfants) n.enfants = [];
+      fix(n.enfants);
+    });
+  })(parsed.arbre);
+  return parsed;
+}
+
+function chargerAutosave(){
+  try{
+    const brut = localStorage.getItem(AUTOSAVE_KEY);
+    if(brut){
+      data = normaliserDonnees(JSON.parse(brut));
+      reindexerIds();
+    }
+  }catch(e){ /* fichier corrompu : on repart d'une analyse vide */ }
+}
+
+function nouvelleAnalyse(){
+  if(confirm("Effacer l'analyse en cours et repartir de zéro ? (pensez à l'enregistrer dans l'historique avant si vous voulez la garder)")){
+    data = etatVide();
+    idCounter = 1;
+    localStorage.removeItem(AUTOSAVE_KEY);
+    render();
+  }
+}
+
+function exporterJSON(){
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  const dateStr = new Date().toISOString().slice(0,10);
+  a.href = url;
+  a.download = "arbre-5-pourquoi_" + dateStr + ".json";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importerJSON(evt){
+  const file = evt.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try{
+      data = normaliserDonnees(JSON.parse(e.target.result));
+      reindexerIds();
+      render(); autosave();
+    }catch(err){
+      alert("Ce fichier n'a pas pu être lu. Vérifiez qu'il s'agit bien d'un export JSON généré par cet outil.");
+    }
+  };
+  reader.readAsText(file);
+  evt.target.value = "";
+}
+
+// --- Historique local (plusieurs analyses conservées sur cet appareil) ---
+
+function lireHistorique(){
+  try{
+    const brut = localStorage.getItem(HISTO_KEY);
+    return brut ? JSON.parse(brut) : [];
+  }catch(e){ return []; }
+}
+
+function ecrireHistorique(liste){
+  try{ localStorage.setItem(HISTO_KEY, JSON.stringify(liste)); }
+  catch(e){ alert("Impossible d'enregistrer dans l'historique local (stockage plein ou indisponible)."); }
+}
+
+function enregistrerAnalyse(){
+  const nomParDefaut = (data.probleme || "Analyse sans titre").slice(0, 60);
+  const nom = prompt("Nom de cette analyse dans l'historique :", nomParDefaut);
+  if(nom === null) return;
+  const historique = lireHistorique();
+  historique.unshift({
+    id: Date.now(),
+    nom: nom || nomParDefaut,
+    dateEnregistrement: new Date().toISOString().slice(0,10),
+    data: JSON.parse(JSON.stringify(data))
+  });
+  ecrireHistorique(historique.slice(0, 100));
+  renderHistorique();
+  alert("Analyse enregistrée dans l'historique local de cet appareil.");
+}
+
+function chargerAnalyseHistorique(id){
+  const historique = lireHistorique();
+  const entree = historique.find(h => h.id === id);
+  if(!entree) return;
+  if(!confirm("Charger « " + entree.nom + " » ? L'analyse en cours non enregistrée sera remplacée.")) return;
+  data = normaliserDonnees(entree.data);
+  reindexerIds();
+  render(); autosave();
+}
+
+function supprimerAnalyseHistorique(id){
+  if(!confirm("Supprimer définitivement cette analyse de l'historique local ?")) return;
+  const historique = lireHistorique().filter(h => h.id !== id);
+  ecrireHistorique(historique);
+  renderHistorique();
+}
+
+function renderHistorique(){
+  const container = document.getElementById("histo-container");
+  container.innerHTML = "";
+  const historique = lireHistorique();
+
+  if(historique.length === 0){
+    const p = document.createElement("p");
+    p.className = "empty-msg";
+    p.textContent = "Aucune analyse enregistrée pour l'instant. Utilisez « Enregistrer dans l'historique » pour garder plusieurs analyses sur cet appareil.";
+    container.appendChild(p);
+    return;
+  }
+
+  const ul = document.createElement("ul");
+  ul.className = "histo-list";
+  historique.forEach(h => {
+    const li = document.createElement("li");
+
+    const infoWrap = document.createElement("div");
+    const titre = document.createElement("div");
+    titre.textContent = h.nom;
+    infoWrap.appendChild(titre);
+    const info = document.createElement("div");
+    info.className = "histo-info";
+    info.textContent = "Enregistrée le " + h.dateEnregistrement;
+    infoWrap.appendChild(info);
+    li.appendChild(infoWrap);
+
+    const btnWrap = document.createElement("div");
+    const btnCharger = document.createElement("button");
+    btnCharger.className = "btn-secondary btn-small";
+    btnCharger.textContent = "Charger";
+    btnCharger.onclick = () => chargerAnalyseHistorique(h.id);
+    btnWrap.appendChild(btnCharger);
+
+    const btnSupp = document.createElement("button");
+    btnSupp.className = "btn-danger btn-small";
+    btnSupp.textContent = "Supprimer";
+    btnSupp.style.marginLeft = ".4rem";
+    btnSupp.onclick = () => supprimerAnalyseHistorique(h.id);
+    btnWrap.appendChild(btnSupp);
+
+    li.appendChild(btnWrap);
+    ul.appendChild(li);
+  });
+  container.appendChild(ul);
+}
+
+// --- Champs d'en-tête ---
+
+["service","lieu","dateEvenement","analyste"].forEach(champ => {
+  const idMap = { service:"meta-service", lieu:"meta-lieu", dateEvenement:"meta-date", analyste:"meta-analyste" };
+  document.getElementById(idMap[champ]).addEventListener("input", e => {
+    data.meta[champ] = e.target.value;
+    autosave();
+  });
+});
+
+document.getElementById("probleme").addEventListener("input", e => {
+  data.probleme = e.target.value;
+  autosave();
+  renderSynthese();
+});
+
+chargerAutosave();
+render();
+</script>
+</body>
+</html>
