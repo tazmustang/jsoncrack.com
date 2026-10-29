@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maquette Demandes de congés</title>
+<!-- Exemple de livrable du skill pa-mockup : maquette jouable, un seul fichier, sans dépendance. -->
+<style>
+  :root {
+    --primaire: #0F6CBD; --fond: #F5F5F5; --texte: #242424; --gris: #616161; --bordure: #D1D1D1;
+    --succes: #107C10; --erreur: #C50F1F; --attente: #BC4B09; --blanc: #FFFFFF;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Segoe UI", system-ui, sans-serif; background: #E8E8E8; color: var(--texte); }
+  .barre { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; padding: 10px 16px; background: #333; color: #fff; font-size: 14px; }
+  .barre select, .barre label { font: inherit; }
+  .scene { padding: 16px; overflow: auto; }
+  .app { width: 1366px; height: 768px; margin: 0 auto; background: var(--fond); position: relative; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,.25); }
+  .ecran { display: none; flex-direction: column; height: 100%; }
+  .ecran.actif { display: flex; }
+  .entete { height: 64px; flex: none; display: flex; align-items: center; gap: 12px; padding: 0 16px; background: var(--primaire); color: #fff; }
+  .entete h1 { font-size: 20px; font-weight: 600; margin: 0; flex: 1; }
+  .corps { flex: 1; padding: 16px; display: flex; flex-direction: column; gap: 12px; overflow: auto; }
+  button { font: inherit; border-radius: 4px; border: 1px solid var(--bordure); background: #fff; padding: 6px 16px; cursor: pointer; }
+  button.principal { background: var(--primaire); color: #fff; border-color: var(--primaire); }
+  .entete button.principal { background: #fff; color: var(--primaire); }
+  button.danger { background: var(--erreur); color: #fff; border-color: var(--erreur); }
+  button:disabled { opacity: .45; cursor: not-allowed; }
+  .icone { background: none; border: none; color: #fff; font-size: 22px; padding: 4px 8px; }
+  .filtres { display: flex; gap: 8px; align-items: center; }
+  select, input, textarea { font: inherit; padding: 6px 8px; border: 1px solid var(--bordure); border-bottom: 2px solid var(--gris); border-radius: 4px; background: #fff; }
+  .galerie { display: flex; flex-direction: column; gap: 8px; }
+  .ligne { display: grid; grid-template-columns: 1fr 160px 220px 90px 120px; gap: 12px; align-items: center; background: #fff; padding: 12px 16px; border-radius: 6px; cursor: pointer; border: 1px solid transparent; }
+  .ligne:hover { border-color: var(--primaire); }
+  .ligne .titre { font-weight: 600; }
+  .ligne .sous { color: var(--gris); font-size: 13px; }
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 12px; color: #fff; font-size: 13px; text-align: center; }
+  .b-Soumis { background: var(--attente); } .b-Approuvé { background: var(--succes); } .b-Refusé { background: var(--erreur); }
+  .vide { text-align: center; color: var(--gris); padding: 48px; }
+  .carte { background: #fff; border-radius: 6px; padding: 16px; display: grid; grid-template-columns: 220px 1fr; gap: 12px 16px; max-width: 760px; }
+  .carte label, .carte .lib { font-weight: 600; align-self: center; }
+  .erreur { color: var(--erreur); font-size: 13px; grid-column: 2; }
+  .actions { display: flex; gap: 8px; justify-content: flex-end; max-width: 760px; }
+  .notif { position: absolute; top: 72px; left: 50%; transform: translateX(-50%); padding: 10px 20px; border-radius: 4px; color: #fff; display: none; z-index: 5; }
+  /* Surimpression des noms de contrôles */
+  .noms [data-pa] { position: relative; outline: 1px dashed #E3A400; }
+  .noms [data-pa]::after { content: attr(data-pa); position: absolute; top: -9px; left: 2px; background: #FFE14D; color: #000; font: 11px/1.3 Consolas, monospace; padding: 0 4px; z-index: 4; pointer-events: none; white-space: nowrap; }
+</style>
+</head>
+<body>
+<div class="barre">
+  <strong>Maquette — Demandes de congés</strong>
+  <label>Rôle :
+    <select id="choixRole"><option value="employe">Employé (Julie Tremblay)</option><option value="gestionnaire">Gestionnaire (Marc Gagnon)</option></select>
+  </label>
+  <label><input type="checkbox" id="choixNoms"> Afficher les noms des contrôles</label>
+  <button id="btnReinit" type="button">Réinitialiser les données</button>
+</div>
+
+<div class="scene">
+<div class="app" id="app">
+  <div class="notif" id="notif"></div>
+
+  <!-- scrAccueil -->
+  <section class="ecran actif" id="scrAccueil" data-pa="scrAccueil">
+    <div class="entete" data-pa="conAccueilHeader">
+      <h1 data-pa="lblAccueilTitre" id="titreAccueil">Mes demandes</h1>
+      <button class="principal" data-pa="btnNouvelle" id="btnNouvelle">+ Nouvelle demande</button>
+    </div>
+    <div class="corps" data-pa="conAccueilBody">
+      <div class="filtres">
+        <span>Statut :</span>
+        <select data-pa="drpFiltreStatut" id="drpFiltreStatut">
+          <option>Tous</option><option>Soumis</option><option>Approuvé</option><option>Refusé</option>
+        </select>
+      </div>
+      <div class="galerie" data-pa="galDemandes" id="galDemandes"></div>
+    </div>
+  </section>
+
+  <!-- scrDemande -->
+  <section class="ecran" id="scrDemande" data-pa="scrDemande">
+    <div class="entete" data-pa="conDemandeHeader">
+      <button class="icone" data-pa="icoRetourDemande" data-retour aria-label="Retour">←</button>
+      <h1>Nouvelle demande</h1>
+    </div>
+    <div class="corps" data-pa="conDemandeBody">
+      <div class="carte" data-pa="conDemandeForm">
+        <label for="txtTitre">Titre *</label><input id="txtTitre" data-pa="txtTitre" placeholder="Ex. Vacances d'été">
+        <label for="drpType">Type de congé *</label>
+        <select id="drpType" data-pa="drpTypeConge"><option value="">— Choisir —</option><option>Vacances</option><option>Maladie</option><option>Personnel</option><option>Formation</option></select>
+        <label for="dteDebut">Date de début *</label><input type="date" id="dteDebut" data-pa="dteDebut">
+        <label for="dteFin">Date de fin *</label><input type="date" id="dteFin" data-pa="dteFin">
+        <div class="erreur" id="errDates" data-pa="lblErreurDates" hidden>La date de fin doit suivre la date de début</div>
+        <span class="lib">Jours ouvrables</span><span id="lblNbJours" data-pa="lblNbJours">0</span>
+      </div>
+      <div class="actions">
+        <button data-retour data-pa="btnAnnulerDemande">Annuler</button>
+        <button class="principal" id="btnEnvoyer" data-pa="btnEnvoyer" disabled>Envoyer</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- scrDetail -->
+  <section class="ecran" id="scrDetail" data-pa="scrDetail">
+    <div class="entete" data-pa="conDetailHeader">
+      <button class="icone" data-pa="icoRetourDetail" data-retour aria-label="Retour">←</button>
+      <h1 id="lblDetailTitre" data-pa="lblDetailTitre">Détail</h1>
+    </div>
+    <div class="corps" data-pa="conDetailBody">
+      <div class="carte" id="carteDetail" data-pa="conDetailInfos"></div>
+      <div class="carte" id="zoneDecision" data-pa="conDecision">
+        <label for="txtCommentaire">Commentaire</label>
+        <textarea id="txtCommentaire" data-pa="txtCommentaire" rows="3"></textarea>
+        <div class="erreur" id="errCommentaire" data-pa="lblErreurCommentaire" hidden>Un commentaire est obligatoire pour refuser</div>
+      </div>
+      <div class="actions">
+        <button class="danger" id="btnAnnulerConge" data-pa="btnAnnulerConge">Annuler la demande</button>
+        <button class="danger" id="btnRefuser" data-pa="btnRefuser">Refuser</button>
+        <button class="principal" id="btnApprouver" data-pa="btnApprouver">Approuver</button>
+      </div>
+    </div>
+  </section>
+</div>
+</div>
+
+<script>
+// Fausses données : mêmes noms que la liste SharePoint DemandesConges (modele-donnees-conges.md)
+const DONNEES_INITIALES = [
+  { ID: 1, Title: "Vacances d'été", TypeConge: "Vacances", DateDebut: "2026-07-13", DateFin: "2026-07-24", NbJours: 10, Statut: "Soumis", CommentaireGestionnaire: "", Author: "Julie Tremblay", Created: "2026-10-20" },
+  { ID: 2, Title: "Rendez-vous médical", TypeConge: "Maladie", DateDebut: "2026-10-05", DateFin: "2026-10-05", NbJours: 1, Statut: "Approuvé", CommentaireGestionnaire: "", Author: "Julie Tremblay", Created: "2026-10-01" },
+  { ID: 3, Title: "Formation Power Platform avancée — session de trois jours à Montréal avec certification", TypeConge: "Formation", DateDebut: "2026-11-16", DateFin: "2026-11-18", NbJours: 3, Statut: "Soumis", CommentaireGestionnaire: "", Author: "Samir Haddad", Created: "2026-10-22" },
+  { ID: 4, Title: "Déménagement", TypeConge: "Personnel", DateDebut: "2026-09-28", DateFin: "2026-09-29", NbJours: 2, Statut: "Refusé", CommentaireGestionnaire: "Période de clôture, merci de proposer une autre date.", Author: "Julie Tremblay", Created: "2026-09-10" },
+  { ID: 5, Title: "Semaine de relâche", TypeConge: "Vacances", DateDebut: "2027-03-01", DateFin: "2027-03-05", NbJours: 5, Statut: "Soumis", CommentaireGestionnaire: "", Author: "Léa Bouchard", Created: "2026-10-25" },
+  { ID: 6, Title: "Grippe", TypeConge: "Maladie", DateDebut: "2026-02-09", DateFin: "2026-02-11", NbJours: 3, Statut: "Approuvé", CommentaireGestionnaire: "Bon rétablissement", Author: "Samir Haddad", Created: "2026-02-09" }
+];
+const UTILISATEURS = { employe: "Julie Tremblay", gestionnaire: "Marc Gagnon" };
+let DemandesConges = structuredClone(DONNEES_INITIALES);
+let role = "employe", selection = null;
+
+const $ = (id) => document.getElementById(id);
+const fmt = (d) => new Date(d + "T00:00").toLocaleDateString("fr-CA", { day: "numeric", month: "short", year: "numeric" });
+
+function naviguer(id) {
+  document.querySelectorAll(".ecran").forEach(e => e.classList.toggle("actif", e.id === id));
+  if (id === "scrAccueil") afficherGalerie();
+}
+function notifier(texte, ok = true) {
+  const n = $("notif"); n.textContent = texte; n.style.background = ok ? "var(--succes)" : "var(--erreur)"; n.style.display = "block";
+  clearTimeout(n._t); n._t = setTimeout(() => n.style.display = "none", 2500);
+}
+// R2 : jours ouvrables (lundi-vendredi) inclus
+function joursOuvrables(debut, fin) {
+  if (!debut || !fin || fin < debut) return 0;
+  let n = 0; for (let d = new Date(debut + "T00:00"); d <= new Date(fin + "T00:00"); d.setDate(d.getDate() + 1)) if (d.getDay() % 6 !== 0) n++;
+  return n;
+}
+
+function afficherGalerie() {
+  const gestionnaire = role === "gestionnaire";
+  $("titreAccueil").textContent = gestionnaire ? "Toutes les demandes" : "Mes demandes";
+  $("btnNouvelle").style.display = gestionnaire ? "none" : "";
+  const statut = $("drpFiltreStatut").value;
+  const items = DemandesConges
+    .filter(d => gestionnaire || d.Author === UTILISATEURS.employe)
+    .filter(d => statut === "Tous" || d.Statut === statut)
+    .sort((a, b) => b.Created.localeCompare(a.Created));
+  $("galDemandes").innerHTML = items.length ? items.map(d => `
+    <div class="ligne" data-id="${d.ID}">
+      <div><div class="titre">${d.Title}</div><div class="sous">${gestionnaire ? d.Author + " · " : ""}créée le ${fmt(d.Created)}</div></div>
+      <div>${d.TypeConge}</div>
+      <div>${fmt(d.DateDebut)} → ${fmt(d.DateFin)}</div>
+      <div>${d.NbJours} j</div>
+      <div><span class="badge b-${d.Statut}">${d.Statut}</span></div>
+    </div>`).join("")
+    : `<div class="vide">Aucune demande pour le moment</div>`;
+}
+
+function ouvrirDetail(id) {
+  selection = DemandesConges.find(d => d.ID === id);
+  const d = selection, gestionnaire = role === "gestionnaire", soumis = d.Statut === "Soumis";
+  $("lblDetailTitre").textContent = d.Title;
+  $("carteDetail").innerHTML = [
+    ["Demandeur", d.Author], ["Type de congé", d.TypeConge], ["Du", fmt(d.DateDebut)], ["Au", fmt(d.DateFin)],
+    ["Jours ouvrables", d.NbJours], ["Statut", `<span class="badge b-${d.Statut}">${d.Statut}</span>`],
+    ["Commentaire du gestionnaire", d.CommentaireGestionnaire || "—"]
+  ].map(([l, v]) => `<span class="lib">${l}</span><span>${v}</span>`).join("");
+  // R5 : seules les demandes « Soumis » peuvent être décidées ou annulées
+  $("zoneDecision").style.display = gestionnaire && soumis ? "" : "none";
+  $("btnApprouver").style.display = $("btnRefuser").style.display = gestionnaire && soumis ? "" : "none";
+  $("btnAnnulerConge").style.display = !gestionnaire && soumis ? "" : "none";
+  $("txtCommentaire").value = ""; $("errCommentaire").hidden = true;
+  naviguer("scrDetail");
+}
+
+function validerFormulaire() {
+  const debut = $("dteDebut").value, fin = $("dteFin").value;
+  const datesKo = debut && fin && fin < debut;                 // R1
+  $("errDates").hidden = !datesKo;
+  $("lblNbJours").textContent = joursOuvrables(debut, fin);    // R2
+  $("btnEnvoyer").disabled = !($("txtTitre").value.trim() && $("drpType").value && debut && fin) || datesKo; // R3
+}
+
+function decider(statut) {
+  const commentaire = $("txtCommentaire").value.trim();
+  if (statut === "Refusé" && !commentaire) { $("errCommentaire").hidden = false; return; } // R4
+  Object.assign(selection, { Statut: statut, CommentaireGestionnaire: commentaire });
+  notifier(`Demande ${statut.toLowerCase()}e — courriel envoyé à ${selection.Author}`);
+  naviguer("scrAccueil");
+}
+
+// Événements
+$("galDemandes").addEventListener("click", e => { const l = e.target.closest(".ligne"); if (l) ouvrirDetail(+l.dataset.id); });
+$("drpFiltreStatut").addEventListener("change", afficherGalerie);
+$("btnNouvelle").addEventListener("click", () => {
+  ["txtTitre", "drpType", "dteDebut", "dteFin"].forEach(id => $(id).value = ""); validerFormulaire(); naviguer("scrDemande");
+});
+["txtTitre", "drpType", "dteDebut", "dteFin"].forEach(id => $(id).addEventListener("input", validerFormulaire));
+$("btnEnvoyer").addEventListener("click", () => {
+  DemandesConges.push({
+    ID: Math.max(0, ...DemandesConges.map(d => d.ID)) + 1, Title: $("txtTitre").value.trim(), TypeConge: $("drpType").value,
+    DateDebut: $("dteDebut").value, DateFin: $("dteFin").value, NbJours: joursOuvrables($("dteDebut").value, $("dteFin").value),
+    Statut: "Soumis", CommentaireGestionnaire: "", Author: UTILISATEURS.employe, Created: new Date().toISOString().slice(0, 10)
+  });
+  notifier("Demande envoyée"); naviguer("scrAccueil");
+});
+$("btnApprouver").addEventListener("click", () => decider("Approuvé"));
+$("btnRefuser").addEventListener("click", () => decider("Refusé"));
+$("btnAnnulerConge").addEventListener("click", () => {
+  if (!confirm("Annuler cette demande ?")) return;
+  DemandesConges = DemandesConges.filter(d => d !== selection); notifier("Demande annulée"); naviguer("scrAccueil");
+});
+document.querySelectorAll("[data-retour]").forEach(b => b.addEventListener("click", () => naviguer("scrAccueil")));
+$("choixRole").addEventListener("change", e => { role = e.target.value; naviguer("scrAccueil"); });
+$("choixNoms").addEventListener("change", e => $("app").classList.toggle("noms", e.target.checked));
+$("btnReinit").addEventListener("click", () => { DemandesConges = structuredClone(DONNEES_INITIALES); naviguer("scrAccueil"); });
+
+afficherGalerie();
+</script>
+</body>
+</html>
