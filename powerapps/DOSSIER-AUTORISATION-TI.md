@@ -26,6 +26,8 @@ Le formulaire des TI est **court**. Avec le *Guide de mise en production* et le 
 >
 > Connexions : merci d'utiliser un compte de service, propriétaire du site, pour les 4 références de connexion.
 >
+> Testeurs : merci d'ajouter au groupe de sécurité de l'environnement PréProd (et au groupe Membres du site SharePoint de PréProd) les personnes suivantes, qui feront les tests avec du contenu fictif : *[noms des collègues]*. Actuellement, elles reçoivent le message « You are not a member of the environment's security group ».
+>
 > Après l'import : inscrire le lien web de l'application dans la variable Lienapplication, activer les 3 flux et partager l'application avec *[groupe de gestionnaires]*. La liste de vérification est dans l'onglet « Checklist TI » du fichier Excel.
 >
 > Données RH confidentielles (appréciations) : l'accès est limité dossier par dossier par le flux 1.
