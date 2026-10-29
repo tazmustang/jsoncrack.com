@@ -88,7 +88,7 @@ footer{max-width:1180px;margin:24px auto 0;font-size:13px;color:var(--muted);bor
 </style>
 
 <header class="top">
-  <div class="eyebrow">Plan directeur · Power Apps + SharePoint · version 1.1</div>
+  <div class="eyebrow">Plan directeur · Power Apps + SharePoint · version 1.2 · en développement et conception</div>
   <h1>SST 360 : déclarer, enquêter, corriger, prouver</h1>
   <p class="lede">Une seule application pour les accidents, les incidents (passés proches) et les situations dangereuses. Chaque déclaration devient un dossier qui suit son cycle de vie jusqu'à la vérification des mesures, avec son historique, ses personnes, ses documents et ses rapports PDF.</p>
 </header>
@@ -139,7 +139,7 @@ footer{max-width:1180px;margin:24px auto 0;font-size:13px;color:var(--muted);bor
     <thead><tr><th>Outil 5 Pourquoi v3.0</th><th>Dans SST 360</th><th>Effet sur le plan</th></tr></thead>
     <tbody>
       <tr><td>Informations générales</td><td>Service, lieu, date et analyste viennent du dossier. Rien à ressaisir.</td><td>Aucun champ nouveau, sauf l'énoncé du problème (<code>Enq_Probleme</code>).</td></tr>
-      <tr><td>Grille de collecte</td><td>Les mêmes 4 catégories et les mêmes choix (questions 191 à 194), avec plusieurs choix et un champ « Autre » par catégorie.</td><td>4 colonnes à choix multiples et 4 colonnes « Autre » dans SST_Evenements.</td></tr>
+      <tr><td>Grille de collecte</td><td>Les mêmes 4 catégories et les mêmes choix (questions 191 à 194), avec plusieurs choix et un champ « Autre » par catégorie. Ce volet sera revu.</td><td>4 colonnes à choix multiples et 4 colonnes « Autre » dans SST_Evenements. Les choix sont placés dans SST_Referentiel pour que leur révision n'exige pas de modifier l'application.</td></tr>
       <tr><td>Créer les branches</td><td>Le bouton crée un « Pourquoi 1 » par facteur coché, avec le préfixe de catégorie. Les facteurs « n'est pas en cause » sont ignorés.</td><td>Chaque branche garde sa catégorie : les facteurs les plus fréquents s'affichent au tableau de bord.</td></tr>
       <tr><td>Arbre des causes</td><td>Plusieurs branches, chaque réponse peut avoir des sous-causes, sans limite de niveaux. Couleurs par niveau, comme dans l'outil.</td><td>SST_Pourquoi devient un <b>arbre</b> (colonne <code>ParentID</code>) au lieu d'une chaîne unique.</td></tr>
       <tr><td>Piège « erreur humaine »</td><td>Même liste de mots repérés (oubli, négligence, inattention…), même avertissement.</td><td>Calculé à l'écran, rien n'est stocké.</td></tr>
@@ -147,7 +147,7 @@ footer{max-width:1180px;margin:24px auto 0;font-size:13px;color:var(--muted);bor
       <tr><td>Statuts</td><td>À faire, En cours, Fait, Efficacité vérifiée.</td><td>Ce sont les statuts retenus pour toutes les actions de SST 360.</td></tr>
       <tr><td>Synthèse et test du « Donc »</td><td>Tableau des causes racines avec leur chemin, puis la relecture « cause racine, donc …, donc problème ».</td><td>Généré à l'écran et repris dans le rapport d'enquête PDF.</td></tr>
       <tr><td>Mesures suggérées</td><td>Les mesures cochées s'affichent comme pistes au moment de définir les actions.</td><td>Stockées avec le dossier, proposées dans l'onglet Actions.</td></tr>
-      <tr><td>Historique local, JSON, impression</td><td>Remplacés par le dossier SharePoint, le journal et le PDF.</td><td>Une analyse déjà faite avec l'outil peut être importée (section 10, question 5).</td></tr>
+      <tr><td>Historique local, JSON, impression</td><td>Remplacés par le dossier SharePoint, le journal et le PDF.</td><td>Pas d'import : les analyses déjà faites avec l'outil restent dans leurs fichiers (décision du 29 octobre).</td></tr>
     </tbody>
   </table></div>
   <h3>Exemple d'arbre tel qu'il sera enregistré</h3>
@@ -274,7 +274,7 @@ erDiagram
     <li><b>Arbre sans récursion</b> : à l'ouverture de l'onglet Analyse, les réponses du dossier sont chargées dans une collection triée par <code>Chemin</code>. La galerie décale chaque carte de <code>(Niveau − 1) × 24</code> px. Le chemin d'une cause racine et le test du « Donc » se construisent avec <code>Concat()</code> sur les préfixes du chemin.</li>
     <li><b>Piège « erreur humaine »</b> : la liste de mots de l'outil est une formule nommée ; une carte affiche l'avertissement si la réponse contient l'un d'eux.</li>
     <li><b>Seuil de 12 recherches</b> : les colonnes Personne comptent comme des recherches. On en garde une seule par liste, et les noms et courriels sont dans des colonnes texte. Les facteurs sont des colonnes à choix, qui ne comptent pas.</li>
-    <li><b>Formules nommées</b> (App.Formulas) pour l'utilisateur, le rôle, la palette, les choix de la grille des facteurs et les gabarits HTML des rapports. Cela évite de les dupliquer d'un écran à l'autre.</li>
+    <li><b>Formules nommées</b> (App.Formulas) pour l'utilisateur, le rôle, la palette et les gabarits HTML des rapports. Les choix de la grille des facteurs sont lus dans SST_Referentiel. Cela évite de les dupliquer d'un écran à l'autre.</li>
     <li><b>Licences</b> : SharePoint, Outlook et OneDrive sont des connecteurs standards, couverts par Microsoft 365. Chaque utilisateur a besoin d'un compte de votre locataire (Entra ID).</li>
   </ul>
 </section>
@@ -296,9 +296,16 @@ erDiagram
     <li><b>Combien de sites ?</b> Un seul, ou plusieurs avec des gestionnaires qui ne voient que le leur ?</li>
     <li><b>Nom de l'application et logo.</b> « SST 360 » est un nom provisoire.</li>
     <li><b>Contenu exact des PDF.</b> Avez-vous un gabarit de rapport d'enquête actuel (Word ou PDF) à reproduire ?</li>
-    <li><b>Analyses déjà faites avec l'outil 5 Pourquoi.</b> Faut-il les reprendre dans SST 360 ? Si oui, deux voies : un écran d'import qui lit l'export JSON de l'outil (jusqu'à 6 niveaux), ou un petit ajout à l'outil HTML qui exporte l'arbre « à plat » (une ligne par réponse, avec son chemin), plus simple et plus fiable à importer.</li>
-    <li><b>Grille des facteurs.</b> Les choix des questions 191 à 194 restent-ils fixes, ou la DSST veut-elle pouvoir les modifier ? Dans le second cas, ils sont lus depuis SST_Referentiel au lieu d'une formule nommée.</li>
   </ol>
+  <h3>Décisions prises</h3>
+  <div class="tw"><table>
+    <thead><tr><th>Date</th><th>Sujet</th><th>Décision</th></tr></thead>
+    <tbody>
+      <tr><td>2026-10-29</td><td>Étape du projet</td><td>Développement et conception. Rien n'est en production.</td></tr>
+      <tr><td>2026-10-29</td><td>Analyses faites avec l'outil 5 Pourquoi</td><td>Elles ne sont pas reprises dans SST 360. Aucun écran d'import n'est prévu.</td></tr>
+      <tr><td>2026-10-29</td><td>Grille des facteurs</td><td>Les choix actuels (questions 191 à 194) sont conservés. Ce volet sera revu plus tard.</td></tr>
+    </tbody>
+  </table></div>
 </section>
 </main>
 </div>
