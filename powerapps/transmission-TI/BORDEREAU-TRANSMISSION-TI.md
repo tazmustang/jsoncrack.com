@@ -21,12 +21,13 @@ lang: fr-CA
 | N° | Fichier | À quoi il sert |
 |---|---|---|
 | 1 | **Solution-ApplicationAppreciation_1_0_0_2_managed.zip** | La solution à importer. **À ajouter par Annie** (partie 3) |
-| 2 | BORDEREAU-TRANSMISSION-TI.docx | Ce document |
-| 3 | DOSSIER-AUTORISATION-TI.docx | Réponses au formulaire des TI : texte « Commentaires », testeurs, renseignements personnels |
-| 4 | GUIDE-MISE-EN-PRODUCTION.docx | Guide technique : SharePoint (partie 4), flux (partie 6), tests (partie 8), remise (partie 9) |
-| 5 | Variables-environnement-et-deploiement.xlsx | Variables, SharePoint, composants, checklist TI, testeurs |
-| 6 | FLUX-FINAUX.txt | Les 3 flux, action par action |
-| 7 | Schema-solution.jpg | Schéma d'ensemble |
+| 2 | **DEMANDE-TI-DEPLOIEMENT-9-NOVEMBRE.docx** | **La demande : PréProd et Prod, revue de l'application, groupes de sécurité, recommandations, échéancier du 9 novembre** |
+| 3 | BORDEREAU-TRANSMISSION-TI.docx | Ce document |
+| 4 | DOSSIER-AUTORISATION-TI.docx | Réponses au formulaire des TI : texte « Commentaires », testeurs, renseignements personnels |
+| 5 | GUIDE-MISE-EN-PRODUCTION.docx | Guide technique : SharePoint (partie 4), flux (partie 6), tests (partie 8), remise (partie 9) |
+| 6 | Variables-environnement-et-deploiement.xlsx | Variables, SharePoint, composants, checklist TI, testeurs |
+| 7 | FLUX-FINAUX.txt | Les 3 flux, action par action |
+| 8 | Schema-solution.jpg | Schéma d'ensemble |
 
 **Ce qui n'est PAS dans le ZIP** (inutile pour les TI) : les fichiers de formules (.txt), le guide d'utilisation, le message d'annonce, la présentation et les schémas opérationnels. Les formules sont déjà dans la solution.
 
@@ -42,13 +43,16 @@ lang: fr-CA
 
 # 4. Le courriel aux TI
 
-**Objet :** Demande de mise en PréProd — application Appréciation de la contribution (RH-SST)
+**Objet :** Demande de déploiement pour le 9 novembre — application Appréciation de la contribution (RH-SST)
 
 > Bonjour,
 >
-> Je vous transmets la demande de mise en **PréProd** de la solution **Solution-ApplicationAppreciation** (version 1.0.0.2, gérée), qui remplace le formulaire Word d'appréciation de la contribution par une application Power Apps.
+> Je vous transmets la demande de déploiement de la solution **Solution-ApplicationAppreciation** (version 1.0.0.2, gérée). Elle remplace le formulaire Word d'appréciation de la contribution par une application Power Apps qui sera utilisée par **plus de 500 personnes**. Nous visons un lancement auprès des gestionnaires le **lundi 9 novembre**.
+>
+> En plus de la mise en PréProd puis en Prod, nous aimerions que votre équipe **fasse le tour de l'application**, **valide les groupes de sécurité** et nous fasse part de ses **recommandations**. Tout est expliqué dans le document **DEMANDE-TI-DEPLOIEMENT-9-NOVEMBRE.docx**, avec l'échéancier proposé et une grille de rétroaction. Je propose une rencontre de revue le **mardi 3 novembre**.
 >
 > Vous trouverez dans le fichier joint **Transmission-TI-PreProd-Appreciation.zip** :
+> - la demande et l'échéancier ;
 > - la solution gérée à importer ;
 > - le dossier d'autorisation (réponses au formulaire) ;
 > - le guide de mise en production ;
