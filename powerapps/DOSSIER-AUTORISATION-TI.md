@@ -1,6 +1,6 @@
 ---
 title: "Dossier de demande d'autorisation de déploiement"
-subtitle: "Application « Appréciation de la contribution » (Power Apps, SharePoint, Power Automate) — VERSION FINALE — 28 octobre 2026"
+subtitle: "Application « Appréciation de la contribution » (Power Apps, SharePoint, Power Automate) — VERSION FINALE — 28 octobre 2026, mise à jour du 29 octobre (transmission PréProd)"
 lang: fr-CA
 ---
 
