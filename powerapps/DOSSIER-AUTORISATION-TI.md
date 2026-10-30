@@ -15,12 +15,12 @@ Le formulaire des TI est **court**. Avec le *Guide de mise en production* et le 
 | **Acronyme de l'application** | Proposition : **APCONT**. Vérifiez s'il existe une convention d'acronymes, ou demandez-la aux TI. |
 | **Libraire** | Choisissez dans la liste la personne des TI qui fait habituellement les mises en production. Pour une 1ʳᵉ demande, prenez celle de votre secteur, ou demandez à votre répondant TI. |
 | **Date souhaitée** | Laissez **au moins 2 semaines** : les TI doivent créer le site et les listes avant l'import. |
-| **Pièces jointes** | Le tout est regroupé dans `Transmission-TI-PreProd-Appreciation.zip` (voir le BORDEREAU-TRANSMISSION-TI) : 1) `Solution-ApplicationAppreciation_1_0_0_2_managed.zip` (guide 9.1 et 9.2) · 2) `Variables-environnement-et-deploiement.xlsx`, avec la **colonne Pré-prod remplie** · 3) conseillé : `GUIDE-MISE-EN-PRODUCTION.docx` et `Schema-solution.jpg` |
+| **Pièces jointes** | Le tout est regroupé dans `Transmission-TI-PreProd-Appreciation.zip` (voir le BORDEREAU-TRANSMISSION-TI) : 1) `Solution-ApplicationAppreciation_1_0_0_3_managed.zip` (guide 9.1 et 9.2) · 2) `Variables-environnement-et-deploiement.xlsx`, avec la **colonne Pré-prod remplie** · 3) conseillé : `GUIDE-MISE-EN-PRODUCTION.docx` et `Schema-solution.jpg` |
 | **Commentaires** | Le texte ci-dessous, à copier-coller |
 
 **Texte pour « Commentaires » :**
 
-> Première mise en PréProd de la solution Solution-ApplicationAppreciation (version 1.0.0.2, gérée). Contenu : 1 application canevas, 3 flux (Appréciation – Permissions à la création, Appréciation – Suivi des étapes, GenererPDFAppreciation), 5 variables d'environnement et 4 références de connexion (SharePoint Appreciation, Utilisateurs Office 365 Appreciations, Outlook Appreciations, OneDrive Appreciations). Connecteurs standard seulement, aucune licence Premium.
+> Première mise en PréProd de la solution Solution-ApplicationAppreciation (version 1.0.0.3, gérée). Contenu : 1 application canevas, 3 flux (Appréciation – Permissions à la création, Appréciation – Suivi des étapes, GenererPDFAppreciation), 5 variables d'environnement et 4 références de connexion (SharePoint Appreciation, Utilisateurs Office 365 Appreciations, Outlook Appreciations, OneDrive Appreciations). Connecteurs standard seulement, aucune licence Premium.
 >
 > Préalables à l'import : un site SharePoint de PréProd avec la liste Appreciations (35 colonnes), la liste Parametres (pièces jointes activées sur Appreciations) et le groupe RH – Appréciations. La structure et les autorisations sont dans l'onglet « SharePoint » du fichier Excel et dans la partie 4 du guide joint.
 >
@@ -38,7 +38,7 @@ Le formulaire des TI est **court**. Avec le *Guide de mise en production* et le 
 2. **Préparez et exportez la solution** (guide 9.1 et 9.2) :
    - retirez la valeur actuelle des 5 variables ;
    - publiez ;
-   - passez en version 1.0.0.2 ;
+   - passez en version 1.0.0.3 ;
    - exportez en **Gérée**.
 3. **Remplissez la colonne Pré-prod** de l'onglet Variables du fichier Excel. Pour le site et les listes, écrivez « à créer par les TI » si vous ne connaissez pas encore l'adresse.
 

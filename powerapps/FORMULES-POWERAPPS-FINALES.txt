@@ -1,4 +1,4 @@
-FORMULES POWER APPS — VERSION FINALE (28 octobre 2026, mise à jour du 29 octobre : type de rencontre)
+FORMULES POWER APPS — VERSION FINALE (28 octobre 2026, mises à jour du 29 octobre : type de rencontre ; du 30 octobre : échelle à 4 niveaux)
 Application « Appréciation de la contribution » — syntaxe FRANÇAISE (« ; » et « ;; »)
 =====================================================================================
 Ce fichier rassemble TOUTES les formules qui diffèrent du « Guide complet » d'origine.
@@ -272,3 +272,28 @@ SUPPRIMER (clic droit › Supprimer) : panelSynthese et panelPlan, avec tout leu
    « Impossible d'utiliser la fonction Average avec une table vide » de synBarCadre)
 aideCallout (bandeau « Première fois ? ») : Visible = false ; Height = 0
 L'aide s'ouvre seulement avec btnHelp « ❓ Comment remplir ce formulaire » (en haut à gauche).
+
+
+#####################################################################
+# 13. ÉCHELLE DES POSTURES DE LEADERSHIP — 4 NIVEAUX (30 octobre)
+#####################################################################
+(Cadre avec équipe et cadre sans équipe. Détails : MISE-A-JOUR-ECHELLE-POSTURES.docx)
+
+1) scrFormulaire.OnVisible : le bloc ClearCollect(colEchelle; …) a maintenant 4 niveaux
+   avec leur description (colonne Desc). Voir scrFormulaire-OnVisible-corrige.txt.
+   Les listes de cotes (p1CboCadre, p1CboSup… Items = colEchelle) suivent automatiquement.
+
+2) echelleLegend.HtmlText
+"<div style='font-family:Segoe UI, Arial, sans-serif; font-size:14px; color:#1F2937'>" &
+"<table style='width:100%; border-collapse:collapse'>" &
+"<tr style='background:#E8EEF5'><th colspan='2' style='text-align:left; padding:8px 10px; color:#0B2D5B'>Échelle de démonstration des comportements associés aux postures de leadership<sup>1</sup></th></tr>" &
+"<tr style='background:#E8EEF5'><th style='text-align:left; padding:8px 10px; width:230px; color:#0B2D5B'>Niveau</th><th style='text-align:left; padding:8px 10px; color:#0B2D5B'>Description synthèse</th></tr>" &
+Concat(Sort(colEchelle; Ordre) As n;
+    "<tr><td style='padding:8px 10px; border:1px solid #E5E7EB; font-weight:bold; vertical-align:top'>" & n.Niveau &
+    "</td><td style='padding:8px 10px; border:1px solid #E5E7EB'>" & n.Desc & "</td></tr>") &
+"</table>" &
+"<p style='font-size:12px; color:#6B7280; font-style:italic; margin:6px 0 0 0'><sup>1</sup> Bien que les niveaux de l'échelle utilisés pour l'appréciation des postures de leadership et pour l'appréciation globale de la contribution soient identiques, leur utilisation répond à des objectifs différents. Les définitions ont donc été adaptées afin de refléter adéquatement l'objet à apprécier.</p>" &
+"</div>"
+
+echelleLegend.AutoHeight
+true

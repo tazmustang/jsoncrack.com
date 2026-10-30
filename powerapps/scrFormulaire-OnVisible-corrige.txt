@@ -1,4 +1,4 @@
-// scrFormulaire.OnVisible — VERSION FINALE — 28 octobre 2026, mise à jour du 29 octobre (coller tout le contenu de ce fichier)
+// scrFormulaire.OnVisible — VERSION FINALE — 28 octobre 2026, mises à jour du 29 et du 30 octobre (coller tout le contenu de ce fichier)
 // ---------- Paramètres de l'environnement (liste Parametres) ----------
 Set(varEnv; Coalesce(LookUp(Parametres; Title = "Environnement").Valeur; "PROD"));;
 Set(varCourrielSoutien; LookUp(Parametres; Title = "CourrielSoutien").Valeur);;
@@ -58,12 +58,16 @@ If(IsEmpty(colObjAvenir);
     Collect(colObjAvenir; {LigneID: 1; Objectif: ""; Indicateur: ""}));;
 
 // ---------- Section B : échelle, postures, comportements, compétences ----------
+// Échelle à 4 niveaux (mise à jour du 30 octobre) — utilisée par les listes de cotes ET par le tableau echelleLegend
 ClearCollect(colEchelle;
-    {Niveau: "Non démontré"; Ordre: 1};
-    {Niveau: "Partiellement démontré"; Ordre: 2};
-    {Niveau: "Conforme aux attentes"; Ordre: 3};
-    {Niveau: "Dépasse les attentes"; Ordre: 4};
-    {Niveau: "Exemplaire"; Ordre: 5});;
+    {Niveau: "Insatisfaisant"; Ordre: 1;
+     Desc: "Ne répond pas aux attentes. Les comportements associés aux postures de leadership sont peu ou pas observés malgré les occasions de les démontrer."};
+    {Niveau: "Partiellement satisfaisant"; Ordre: 2;
+     Desc: "Répond partiellement aux attentes. Les comportements associés aux postures de leadership sont présents, mais leur démonstration manque de constance, de profondeur ou d'autonomie dans certaines situations."};
+    {Niveau: "Complètement satisfaisant"; Ordre: 3;
+     Desc: "Répond pleinement aux attentes en démontrant de façon régulière et autonome les comportements associés aux postures de leadership dans les situations pertinentes à son rôle."};
+    {Niveau: "Supérieur"; Ordre: 4;
+     Desc: "Dépasse les attentes en démontrant les comportements associés aux postures de leadership de façon remarquable, constante et mobilisatrice. Fait preuve d'une grande maîtrise des comportements attendus et exerce une influence positive dans les situations rencontrées."});;
 
 ClearCollect(colPostures;
     {PostureID: "performant"; Ordre: 1; Titre: "LEADER PERFORMANT(E)";

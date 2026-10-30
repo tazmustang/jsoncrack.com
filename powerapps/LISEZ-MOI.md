@@ -10,6 +10,7 @@ Commencez par **GUIDE-MISE-EN-PRODUCTION.docx**. Il explique tout et liste chaqu
 | GUIDE-PDF-APPRECIATION.docx / .md | Pas-à-pas du PDF de l'appréciation, joint au dossier |
 | MISE-A-JOUR-28-OCTOBRE.docx / .md | Changements du 28 octobre, étape par étape |
 | CORRECTION-TYPE-RENCONTRE.docx / .md | Correction du 29 octobre : type de rencontre (cases et PDF) |
+| MISE-A-JOUR-ECHELLE-POSTURES.docx / .md | Mise à jour du 30 octobre : échelle des postures à 4 niveaux et note 1 |
 | transmission-TI/ | **Paquet pour les TI (PréProd)** : demande pour le 9 novembre, bordereau, courriel et Transmission-TI-PreProd.zip |
 | tests-equipe/ | Courriel et guide de tests pour l'équipe |
 | FORMULES-POWERAPPS-FINALES.txt | Formules de l'application qui diffèrent du guide d'origine |

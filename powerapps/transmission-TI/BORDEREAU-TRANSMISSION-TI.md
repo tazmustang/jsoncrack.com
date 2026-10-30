@@ -9,10 +9,11 @@ lang: fr-CA
 | ✔ | Action | Où |
 |---|---|---|
 | ☐ | Faire la **correction du type de rencontre**, puis la tester | CORRECTION-TYPE-RENCONTRE.docx |
+| ☐ | Faire la **mise à jour de l'échelle des postures** (4 niveaux), puis la tester | MISE-A-JOUR-ECHELLE-POSTURES.docx |
 | ☐ | Refaire rapidement les tests 2, 5 et 14 du guide | GUIDE-MISE-EN-PRODUCTION.docx, partie 8 |
 | ☐ | Inscrire les **testeurs** (nom et courriel) | Excel, onglet **Testeurs PréProd** |
 | ☐ | Dans DOSSIER-AUTORISATION-TI, remplacer *[noms des collègues]* et *[groupe de gestionnaires]* | DOSSIER-AUTORISATION-TI.docx |
-| ☐ | **Préparer et exporter la solution** en **gérée**, version **1.0.0.2** | Guide, parties 9.1 et 9.2 |
+| ☐ | **Préparer et exporter la solution** en **gérée**, version **1.0.0.3** | Guide, parties 9.1 et 9.2 |
 | ☐ | Ajouter le .zip de la solution au ZIP de transmission (voir partie 3) | — |
 | ☐ | Remplir le formulaire des TI et envoyer le courriel de la partie 4 | — |
 
@@ -20,7 +21,7 @@ lang: fr-CA
 
 | N° | Fichier | À quoi il sert |
 |---|---|---|
-| 1 | **Solution-ApplicationAppreciation_1_0_0_2_managed.zip** | La solution à importer. **À ajouter par Annie** (partie 3) |
+| 1 | **Solution-ApplicationAppreciation_1_0_0_3_managed.zip** | La solution à importer. **À ajouter par Annie** (partie 3) |
 | 2 | **DEMANDE-TI-DEPLOIEMENT-9-NOVEMBRE.docx** | **La demande : PréProd et Prod, revue de l'application, groupes de sécurité, recommandations, échéancier du 9 novembre** |
 | 3 | BORDEREAU-TRANSMISSION-TI.docx | Ce document |
 | 4 | DOSSIER-AUTORISATION-TI.docx | Réponses au formulaire des TI : texte « Commentaires », testeurs, renseignements personnels |
@@ -47,7 +48,7 @@ lang: fr-CA
 
 > Bonjour,
 >
-> Je vous transmets la demande de déploiement de la solution **Solution-ApplicationAppreciation** (version 1.0.0.2, gérée). Elle remplace le formulaire Word d'appréciation de la contribution par une application Power Apps qui sera utilisée par **plus de 500 personnes**. Nous visons un lancement auprès des gestionnaires le **lundi 9 novembre**.
+> Je vous transmets la demande de déploiement de la solution **Solution-ApplicationAppreciation** (version 1.0.0.3, gérée). Elle remplace le formulaire Word d'appréciation de la contribution par une application Power Apps qui sera utilisée par **plus de 500 personnes**. Nous visons un lancement auprès des gestionnaires le **lundi 9 novembre**.
 >
 > En plus de la mise en PréProd puis en Prod, nous aimerions que votre équipe **fasse le tour de l'application**, **valide les groupes de sécurité** et nous fasse part de ses **recommandations**. Tout est expliqué dans le document **DEMANDE-TI-DEPLOIEMENT-9-NOVEMBRE.docx**, avec l'échéancier proposé et une grille de rétroaction. Je propose une rencontre de revue le **mardi 3 novembre**.
 >

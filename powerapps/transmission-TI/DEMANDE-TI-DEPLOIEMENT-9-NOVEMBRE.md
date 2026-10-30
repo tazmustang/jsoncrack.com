@@ -24,7 +24,7 @@ L'application a été construite et testée dans un bac à sable. Toutes les ét
 Les étapes techniques sont détaillées dans le **GUIDE-MISE-EN-PRODUCTION.docx** (partie 9) et dans l'onglet **Checklist TI** du fichier Excel :
 
 1. Créer le site SharePoint et les listes (*Appreciations*, *Parametres*), le groupe *RH – Appréciations* et les autorisations.
-2. Importer la solution gérée *Solution-ApplicationAppreciation* (version 1.0.0.2).
+2. Importer la solution gérée *Solution-ApplicationAppreciation* (version 1.0.0.3).
 3. Choisir les connexions d'un **compte de service** pour les 4 références de connexion.
 4. Saisir les 5 variables d'environnement, puis activer les 3 flux.
 5. Partager l'application.
@@ -74,7 +74,7 @@ Nous voulons votre avis sur ces points :
 
 | Date | Étape | Qui |
 |---|---|---|
-| **Jeu. 29 oct.** | Correction finale dans le bac à sable ; export de la solution 1.0.0.2 | Annie |
+| **29 et 30 oct.** | Corrections finales dans le bac à sable (type de rencontre, échelle à 4 niveaux) ; export de la solution 1.0.0.3 | Annie |
 | **Ven. 30 oct.** | Envoi de la demande et du paquet de transmission | Annie |
 | **Lun. 2 nov.** | Création du site PréProd et import de la solution ; ajout des testeurs | TI |
 | **Mar. 3 nov.** | **Rencontre de revue** : démonstration, sécurité, questions | TI + Annie |
@@ -118,7 +118,7 @@ Merci de nous retourner ce tableau (ou de nous écrire) au plus tard le **jeudi 
 |---|---|
 | DEMANDE-TI-DEPLOIEMENT-9-NOVEMBRE.docx | Ce document |
 | BORDEREAU-TRANSMISSION-TI.docx | Contenu du paquet et marche à suivre |
-| Solution-ApplicationAppreciation_1_0_0_2_managed.zip | Solution gérée à importer |
+| Solution-ApplicationAppreciation_1_0_0_3_managed.zip | Solution gérée à importer |
 | DOSSIER-AUTORISATION-TI.docx | Réponses au formulaire, renseignements personnels, matrice des accès |
 | GUIDE-MISE-EN-PRODUCTION.docx | Guide technique complet |
 | Variables-environnement-et-deploiement.xlsx | Variables, SharePoint, composants, checklist TI, testeurs |
