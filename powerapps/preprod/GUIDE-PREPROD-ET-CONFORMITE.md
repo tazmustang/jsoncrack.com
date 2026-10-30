@@ -47,7 +47,7 @@ Acronyme de l'application : **APCONT**. Acronyme du service : **RHSST** (à remp
 
 # Partie A — Le site PréProd
 
-Ouvrez le site PréProd créé par les TI. Notez son adresse : *[adresse du site PréProd]*.
+Ouvrez le site PréProd créé par les TI : **RH Power Apps Données PréProd**. Notez son adresse : **RH Power Apps Données PréProd** (*[adresse URL]*).
 
 ## A1. La bibliothèque « Documents TI »
 
@@ -121,7 +121,7 @@ Supprimez les éléments recopiés qui ne sont pas dans ce tableau, s'il y en a.
 
 | Variable | Valeur PréProd |
 |---|---|
-| APCONT_SiteWeb-RHSST-AppreciationContribution | *[adresse du site PréProd]* |
+| APCONT_SiteWeb-RHSST-AppreciationContribution | **RH Power Apps Données PréProd** (*[adresse URL]*) |
 | APCONT_Appreciations | liste **APCONT_Appreciations** |
 | APCONT_Parametres | liste **APCONT_Parametres** |
 | APCONT_CourrielPaie | votre adresse (tests) |
@@ -337,3 +337,23 @@ Avant de déposer : remplacez les ***[éléments entre crochets]*** (adresses de
 | 11 | Parametres : Environnement = PRE-PROD | La version et l'environnement sont affichés dans À propos | |
 
 Notez les résultats dans le **DOSSIER-AUTORISATION-TI**, tableau des tests.
+
+# Partie G — Et pour la Prod ?
+
+**Vous n'avez pas à créer de liste dans un autre site** (ni votre site d'équipe, ni un site d'affaires). Le modèle des TI prévoit **un site de données par environnement**, partagé entre plusieurs applications :
+
+| Environnement | Site de données | Listes APCONT |
+|---|---|---|
+| Bac à sable | SandBoxAnnieAudet | Appreciations, Parametres (inchangées) |
+| PréProd | **RH Power Apps Données PréProd** | APCONT_Appreciations, APCONT_Parametres |
+| Prod | Site de données Prod des TI (*[nom à confirmer, ex. « RH Power Apps Données Prod »]*) | APCONT_Appreciations, APCONT_Parametres |
+
+Ces sites peuvent contenir les listes de **plusieurs applications**. C'est pourquoi on **brise l'héritage sur chaque liste** et qu'on ne donne accès qu'aux groupes de l'application (APCONT_Utilisateurs, APCONT_RH). Les Membres et Visiteurs du site, qui peuvent appartenir à d'autres applications, sont retirés de nos listes.
+
+**Au moment de la Prod**, refaites les parties **A2 à A4** sur le site de données Prod, avec :
+- le groupe Entra **G-IS-APP-xxxxx de Prod** dans APCONT_Utilisateurs ;
+- **Environnement = PROD** dans APCONT_Parametres.
+
+Les TI importent ensuite la **même** solution gérée et saisissent les valeurs de Prod des variables.
+
+**À confirmer avec les TI :** le nom et l'adresse du site de données Prod, et le nom du groupe G-IS-APP-xxxxx de chaque environnement.

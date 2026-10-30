@@ -70,7 +70,7 @@ SharePoint, Utilisateurs d'Office 365, Office 365 Outlook, OneDrive Entreprise, 
 |---|---|---|---|
 | Environnement Power Platform | *[nom de l'environnement bac à sable]* | *[nom de l'environnement PréProd]* | *[nom de l'environnement Prod]* |
 | Type de solution | **Non gérée** (modifications et tests) | **Gérée** | **Gérée** |
-| Site SharePoint des données | https://villedequebec.sharepoint.com/sites/SandBoxAnnieAudet | *[adresse du site PréProd]* | *[adresse du site Prod]* |
+| Site SharePoint des données | https://villedequebec.sharepoint.com/sites/SandBoxAnnieAudet | **RH Power Apps Données PréProd** (*[adresse URL]*) | site de données Prod des TI (*[nom et adresse à confirmer, ex. « RH Power Apps Données Prod »]*) |
 | Listes | Appreciations, Parametres | APCONT_Appreciations, APCONT_Parametres | APCONT_Appreciations, APCONT_Parametres |
 | Groupe Entra d'application | Groupe de sécurité du bac à sable | G-IS-APP-*[xxxxx]* (PréProd) | G-IS-APP-*[xxxxx]* (Prod) |
 | Groupes SharePoint locaux | APCONT_Utilisateurs, RH – Appréciations | APCONT_Utilisateurs, APCONT_RH | APCONT_Utilisateurs, APCONT_RH |
