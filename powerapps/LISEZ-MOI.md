@@ -11,7 +11,7 @@ Commencez par **GUIDE-MISE-EN-PRODUCTION.docx**. Il explique tout et liste chaqu
 | MISE-A-JOUR-28-OCTOBRE.docx / .md | Changements du 28 octobre, étape par étape |
 | CORRECTION-TYPE-RENCONTRE.docx / .md | Correction du 29 octobre : type de rencontre (cases et PDF) |
 | MISE-A-JOUR-ECHELLE-POSTURES.docx / .md | Mise à jour du 30 octobre : échelle des postures à 4 niveaux et note 1 |
-| preprod/ | **Site PréProd et conformité aux exigences des TI** : guide pas à pas et formules |
+| preprod/ | **Site PréProd** (SITE-PREPROD-PAS-A-PAS), **conformité aux exigences des TI** (guide et formules), **analyse de la solution et OneDrive** |
 | documents-TI/ | Les 5 documents pour « Documents TI » : matrices de sécurité et de métadonnées, architecture, utilisateurs, versions |
 | transmission-TI/ | **Paquet pour les TI (PréProd)** : demande pour le 9 novembre, bordereau, courriel et Transmission-TI-PreProd.zip |
 | tests-equipe/ | Courriel et guide de tests pour l'équipe |

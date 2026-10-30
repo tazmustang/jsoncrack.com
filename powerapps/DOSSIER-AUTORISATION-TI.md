@@ -12,7 +12,7 @@ Le formulaire des TI est **court**. Avec le *Guide de mise en production* et le 
 |---|---|
 | **Type de mise en production** | **PréProd** pour la première demande. Faites une **2ᵉ demande « Prod »** une fois les tests de pré-prod réussis. |
 | **Nom de l'application** | Appréciation de la contribution |
-| **Acronyme de l'application** | Proposition : **APCONT**. Vérifiez s'il existe une convention d'acronymes, ou demandez-la aux TI. |
+| **Acronyme de l'application** | Proposition : **SRHVQ**. Vérifiez s'il existe une convention d'acronymes, ou demandez-la aux TI. |
 | **Libraire** | Choisissez dans la liste la personne des TI qui fait habituellement les mises en production. Pour une 1ʳᵉ demande, prenez celle de votre secteur, ou demandez à votre répondant TI. |
 | **Date souhaitée** | Laissez **au moins 2 semaines** : les TI doivent créer le site et les listes avant l'import. |
 | **Pièces jointes** | Le tout est regroupé dans `Transmission-TI-PreProd-Appreciation.zip` (voir le BORDEREAU-TRANSMISSION-TI) : 1) `Solution-ApplicationAppreciation_1_0_0_4_managed.zip` (guide 9.1 et 9.2) · 2) `Variables-environnement-et-deploiement.xlsx`, avec la **colonne Pré-prod remplie** · 3) conseillé : `GUIDE-MISE-EN-PRODUCTION.docx` et `Schema-solution.jpg` |

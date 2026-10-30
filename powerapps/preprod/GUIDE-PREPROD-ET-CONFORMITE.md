@@ -1,5 +1,5 @@
 ---
-title: "Appréciation de la contribution (APCONT) — Site PréProd et conformité aux exigences des TI"
+title: "Appréciation de la contribution (SRHVQ) — Site PréProd et conformité aux exigences des TI"
 subtitle: "VERSION FINALE — 30 octobre 2026 · Tout ce qu'il faut faire, dans l'ordre"
 lang: fr-CA
 ---
@@ -19,6 +19,8 @@ Ce guide couvre **toutes** les exigences du document des TI (points 1 à 10, con
 
 **Fichiers qui accompagnent ce guide :**
 
+> 👉 Pour le site PréProd, suivez **SITE-PREPROD-PAS-A-PAS.docx** : la partie A ci-dessous y est détaillée clic par clic. Pour les références de connexion et OneDrive : **ANALYSE-SOLUTION-ET-ONEDRIVE.docx**.
+
 | Fichier | Sert à |
 |---|---|
 | `FORMULES-CONFORMITE.txt` | Toutes les formules de la partie C, commentées et prêtes à coller |
@@ -27,20 +29,20 @@ Ce guide couvre **toutes** les exigences du document des TI (points 1 à 10, con
 
 ## Les noms à utiliser partout (convention des TI)
 
-Acronyme de l'application : **APCONT**. Acronyme du service : **RHSST** (à remplacer par l'acronyme officiel du service s'il est différent).
+Acronyme de l'application : **SRHVQ**. Acronyme du service : **RHSST** (à remplacer par l'acronyme officiel du service s'il est différent).
 
 | Élément | Nom à utiliser |
 |---|---|
-| Variable du site | **APCONT_SiteWeb-RHSST-AppreciationContribution** |
-| Variable de la liste des dossiers | **APCONT_Appreciations** |
-| Variable de la liste des paramètres | **APCONT_Parametres** |
-| Variable courriel de la paie | **APCONT_CourrielPaie** |
-| Variable lien de l'application | **APCONT_LienApplication** |
-| Variable courriel du soutien (**nouvelle**) | **APCONT_CourrielSoutien** |
-| Liste des dossiers (PréProd et Prod) | **APCONT_Appreciations** |
-| Liste des paramètres (PréProd et Prod) | **APCONT_Parametres** |
-| Groupe SharePoint local des utilisateurs | **APCONT_Utilisateurs** (contient le groupe Entra **G-IS-APP-xxxxx** de l'environnement) |
-| Groupe SharePoint local des RH | **APCONT_RH** |
+| Variable du site | **SRHVQ_SiteWeb-RHSST-AppreciationContribution** |
+| Variable de la liste des dossiers | **SRHVQ_Appreciations** |
+| Variable de la liste des paramètres | **SRHVQ_Parametres** |
+| Variable courriel de la paie | **SRHVQ_CourrielPaie** |
+| Variable lien de l'application | **SRHVQ_LienApplication** |
+| Variable courriel du soutien (**nouvelle**) | **SRHVQ_CourrielSoutien** |
+| Liste des dossiers (PréProd et Prod) | **SRHVQ_Appreciations** |
+| Liste des paramètres (PréProd et Prod) | **SRHVQ_Parametres** |
+| Groupe SharePoint local des utilisateurs | **SRHVQ_Utilisateurs** (contient le groupe Entra **G-IS-APP-xxxxx** de l'environnement) |
+| Groupe SharePoint local des RH | **SRHVQ_RH** |
 | Bibliothèque de documentation | **Documents TI** |
 
 > ⚠️ **Le nom de schéma** des variables (`rhdsst_…`) **ne peut pas être changé** dans Power Platform. Seul le **nom d'affichage** change. C'est normal et accepté.
@@ -60,12 +62,12 @@ Les groupes **n'ont aucun droit sur le site** : ils reçoivent leurs droits seul
 
 1. Roue ⚙️ en haut à droite › **Autorisations du site** › **Paramètres d'autorisations avancés**.
 2. Dans le ruban : **Créer un groupe**.
-3. Nom : **APCONT_Utilisateurs**. Description : « Utilisateurs de l'application Appréciation de la contribution ».
+3. Nom : **SRHVQ_Utilisateurs**. Description : « Utilisateurs de l'application Appréciation de la contribution ».
 4. Propriétaire du groupe : vous-même (ou le compte de service).
 5. En bas, section **Accorder des autorisations au groupe sur ce site** : **ne cochez aucune case**.
 6. **Créer**.
 7. Dans le groupe : **Nouveau › Ajouter des utilisateurs**, tapez le nom du groupe Entra **G-IS-APP-xxxxx** de l'environnement PréProd (fourni par les TI), puis **Partager**.
-8. Recommencez les étapes 2 à 6 pour **APCONT_RH**. Ajoutez-y les personnes des RH autorisées à consulter **tous** les dossiers.
+8. Recommencez les étapes 2 à 6 pour **SRHVQ_RH**. Ajoutez-y les personnes des RH autorisées à consulter **tous** les dossiers.
 9. Vérifiez que le **compte de service** des flux est dans le groupe **Propriétaires** du site (sinon, demandez-le aux TI).
 
 ✅ Les deux groupes apparaissent dans la liste des groupes, **sans niveau d'autorisation** sur le site.
@@ -77,10 +79,10 @@ La méthode la plus sûre : recopier les listes du bac à sable. Toutes les colo
 1. Accueil du site PréProd : **+ Nouveau › Liste**.
 2. Choisissez **À partir d'une liste existante**.
 3. Choisissez le **site du bac à sable** (SandBoxAnnieAudet), puis la liste **Appreciations**, puis **Suivant**.
-4. Nom : **APCONT_Appreciations**. Description : « Dossiers de l'application Appréciation de la contribution ». **Créer**.
-5. Recommencez avec la liste **Parametres** du bac à sable, nom **APCONT_Parametres**.
+4. Nom : **SRHVQ_Appreciations**. Description : « Dossiers de l'application Appréciation de la contribution ». **Créer**.
+5. Recommencez avec la liste **Parametres** du bac à sable, nom **SRHVQ_Parametres**.
 
-**Vérifiez les réglages de APCONT_Appreciations** (⚙️ › **Paramètres de la liste**) :
+**Vérifiez les réglages de SRHVQ_Appreciations** (⚙️ › **Paramètres de la liste**) :
 
 | Réglage | Où | Valeur |
 |---|---|---|
@@ -90,7 +92,7 @@ La méthode la plus sûre : recopier les listes du bac à sable. Toutes les colo
 | Index | Colonnes indexées › Créer un index | **Annee, Statut, CourrielPersonne, CourrielSI, CourrielSH, CourrielDirecteur** (6 index, un à la fois). **Pas** TypeRencontre |
 | Choix de Statut | Cliquez sur la colonne Statut | Brouillon · Avisé au supérieur · Certifié · Approuvé SI · Approuvé SH · Approuvé directeur · Complété (défaut : Brouillon) |
 
-**Remplissez APCONT_Parametres** (**+ Nouveau** élément, colonnes **Title** et **Valeur**) :
+**Remplissez SRHVQ_Parametres** (**+ Nouveau** élément, colonnes **Title** et **Valeur**) :
 
 | Title | Valeur |
 |---|---|
@@ -103,41 +105,41 @@ Supprimez les éléments recopiés qui ne sont pas dans ce tableau, s'il y en a.
 
 ## A4. Les autorisations des listes
 
-**APCONT_Appreciations :**
+**SRHVQ_Appreciations :**
 
 1. ⚙️ › **Paramètres de la liste** › **Autorisations pour cette liste**.
 2. Ruban : **Arrêter l'héritage des autorisations** › **OK**.
 3. Cochez **Membres** et **Visiteurs** du site › **Supprimer les autorisations utilisateur** › **OK**.
-4. **Accorder des autorisations** : tapez **APCONT_Utilisateurs**, niveau **Collaboration**, décochez « Envoyer une invitation » › **Partager**.
-5. **Accorder des autorisations** : **APCONT_RH**, niveau **Lecture** › **Partager**.
+4. **Accorder des autorisations** : tapez **SRHVQ_Utilisateurs**, niveau **Collaboration**, décochez « Envoyer une invitation » › **Partager**.
+5. **Accorder des autorisations** : **SRHVQ_RH**, niveau **Lecture** › **Partager**.
 
-✅ Il reste exactement : **Propriétaires** (Contrôle total), **APCONT_Utilisateurs** (Collaboration), **APCONT_RH** (Lecture).
+✅ Il reste exactement : **Propriétaires** (Contrôle total), **SRHVQ_Utilisateurs** (Collaboration), **SRHVQ_RH** (Lecture).
 
-**APCONT_Parametres :** mêmes étapes, mais **APCONT_Utilisateurs** et **APCONT_RH** en **Lecture** : les utilisateurs lisent les paramètres, ils ne les modifient jamais.
+**SRHVQ_Parametres :** mêmes étapes, mais **SRHVQ_Utilisateurs** et **SRHVQ_RH** en **Lecture** : les utilisateurs lisent les paramètres, ils ne les modifient jamais.
 
-> 💡 Pourquoi Collaboration sur APCONT_Appreciations ? Chaque personne doit pouvoir **créer** son dossier. Dès la création, le flux 1 coupe l'héritage du dossier et retire **APCONT_Utilisateurs** : seules les personnes du dossier, les RH et les propriétaires y ont accès.
+> 💡 Pourquoi Collaboration sur SRHVQ_Appreciations ? Chaque personne doit pouvoir **créer** son dossier. Dès la création, le flux 1 coupe l'héritage du dossier et retire **SRHVQ_Utilisateurs** : seules les personnes du dossier, les RH et les propriétaires y ont accès.
 
 ## A5. Ce que les TI font ensuite (à leur fournir)
 
 | Variable | Valeur PréProd |
 |---|---|
-| APCONT_SiteWeb-RHSST-AppreciationContribution | **RH Power Apps Données PréProd** (*[adresse URL]*) |
-| APCONT_Appreciations | liste **APCONT_Appreciations** |
-| APCONT_Parametres | liste **APCONT_Parametres** |
-| APCONT_CourrielPaie | votre adresse (tests) |
-| APCONT_LienApplication | lien web de l'application PréProd (après import) |
-| APCONT_CourrielSoutien | *[adresse du soutien]* |
+| SRHVQ_SiteWeb-RHSST-AppreciationContribution | **RH Power Apps Données PréProd** (*[adresse URL]*) |
+| SRHVQ_Appreciations | liste **SRHVQ_Appreciations** |
+| SRHVQ_Parametres | liste **SRHVQ_Parametres** |
+| SRHVQ_CourrielPaie | votre adresse (tests) |
+| SRHVQ_LienApplication | lien web de l'application PréProd (après import) |
+| SRHVQ_CourrielSoutien | *[adresse du soutien]* |
 
 Ce tableau est aussi dans l'onglet **Variables** du fichier Excel.
 
 # Partie B — La solution dans le bac à sable
 
-## B1. Créer le groupe APCONT_Utilisateurs dans le bac à sable aussi
+## B1. Créer le groupe SRHVQ_Utilisateurs dans le bac à sable aussi
 
-Le flux 1 va maintenant retirer le groupe **APCONT_Utilisateurs** de chaque dossier. Ce groupe doit donc exister **dans tous les sites**, bac à sable compris.
+Le flux 1 va maintenant retirer le groupe **SRHVQ_Utilisateurs** de chaque dossier. Ce groupe doit donc exister **dans tous les sites**, bac à sable compris.
 
-1. Sur le site du bac à sable, refaites l'étape **A2** pour **APCONT_Utilisateurs** et ajoutez-y vos testeurs.
-2. Sur la liste **Appreciations** du bac à sable, refaites l'étape **A4** : retirez Membres et Visiteurs, puis ajoutez APCONT_Utilisateurs (Collaboration) et RH – Appréciations (Lecture).
+1. Sur le site du bac à sable, refaites l'étape **A2** pour **SRHVQ_Utilisateurs** et ajoutez-y vos testeurs.
+2. Sur la liste **Appreciations** du bac à sable, refaites l'étape **A4** : retirez Membres et Visiteurs, puis ajoutez SRHVQ_Utilisateurs (Collaboration) et RH – Appréciations (Lecture).
 
 > Ne renommez **pas** les listes du bac à sable pour l'instant : un changement de nom de liste peut changer le nom de la source de données dans l'application et créer des centaines d'erreurs. Les listes PréProd et Prod portent déjà les bons noms, et la variable d'environnement fait le lien.
 
@@ -148,14 +150,14 @@ Le flux 1 va maintenant retirer le groupe **APCONT_Utilisateurs** de chaque doss
 
 | Ancien nom d'affichage | Nouveau nom d'affichage | Nom de schéma (inchangé) |
 |---|---|---|
-| Site Appréciations | APCONT_SiteWeb-RHSST-AppreciationContribution | rhdsst_SiteApprciations |
-| Liste Appreciations | APCONT_Appreciations | rhdsst_ListeAppreciations |
-| Liste Parametres | APCONT_Parametres | rhdsst_ListeParametres |
-| Courriel paie | APCONT_CourrielPaie | rhdsst_Courrielpaie |
-| Lienapplication | APCONT_LienApplication | rhdsst_Lienapplication |
+| Site Appréciations | SRHVQ_SiteWeb-RHSST-AppreciationContribution | rhdsst_SiteApprciations |
+| Liste Appreciations | SRHVQ_Appreciations | rhdsst_ListeAppreciations |
+| Liste Parametres | SRHVQ_Parametres | rhdsst_ListeParametres |
+| Courriel paie | SRHVQ_CourrielPaie | rhdsst_Courrielpaie |
+| Lienapplication | SRHVQ_LienApplication | rhdsst_Lienapplication |
 
 3. **Nouvelle variable :** **+ Nouveau › Plus › Variable d'environnement**.
-   - Nom d'affichage : **APCONT_CourrielSoutien** ; Type : **Texte**.
+   - Nom d'affichage : **SRHVQ_CourrielSoutien** ; Type : **Texte**.
    - Valeur actuelle : votre adresse.
    - **Enregistrer**.
 
@@ -174,7 +176,7 @@ Après le renommage, les expressions qui contiennent l'ancien nom (ex. `paramete
 
 **Pour chaque flux** (Solutions › la solution › le flux › **Modifier**) :
 
-1. **Champs « Adresse du site » et « Nom de la liste »** (déclencheurs et actions SharePoint) : cliquez dans le champ, effacez, puis choisissez la variable dans le **contenu dynamique**, section **Variables d'environnement** (ex. APCONT_Appreciations).
+1. **Champs « Adresse du site » et « Nom de la liste »** (déclencheurs et actions SharePoint) : cliquez dans le champ, effacez, puis choisissez la variable dans le **contenu dynamique**, section **Variables d'environnement** (ex. SRHVQ_Appreciations).
 2. **Champs avec une expression** (URI des requêtes HTTP, variables LienApp et CourrielPaie) : recopiez l'expression de FLUX-FINAUX.txt.
 3. **Enregistrer**. Le vérificateur de flux ne doit indiquer aucune erreur.
 
@@ -184,15 +186,15 @@ Après le renommage, les expressions qui contiennent l'ancien nom (ex. `paramete
 | **Flux 2** | Déclencheur ; LienApp ; CourrielPaie ; Changements ; 4a, 4b ; 6.4a, 6.4b, 6.4c ; Date paie |
 | **Flux 3** | Pièces jointes ; Supprimer la pièce jointe ; Ajouter PDF |
 
-## B5. Flux 1 : retirer le groupe APCONT_Utilisateurs (au lieu des Membres)
+## B5. Flux 1 : retirer le groupe SRHVQ_Utilisateurs (au lieu des Membres)
 
 Dans le flux 1, action **« Groupe Membres »** : **gardez le nom de l'action** et remplacez seulement l'**URI** par :
 
 ```
-_api/web/sitegroups/getbyname('APCONT_Utilisateurs')?$select=Id
+_api/web/sitegroups/getbyname('SRHVQ_Utilisateurs')?$select=Id
 ```
 
-L'action 4 « Retirer les Membres » n'a pas à changer : elle retire maintenant APCONT_Utilisateurs du dossier.
+L'action 4 « Retirer les Membres » n'a pas à changer : elle retire maintenant SRHVQ_Utilisateurs du dossier.
 
 ## B6. Gestion des erreurs dans les 3 flux (exigence 6)
 
@@ -203,7 +205,7 @@ Pour **chaque** flux :
 3. **Sous** l'étendue (à l'extérieur), ajoutez **Office 365 Outlook › Envoyer un courriel (V2)** et renommez-la **Courriel erreur**.
 4. Sur Courriel erreur : **⋯ › Paramètres** (ou « Configurer l'exécution après ») : cochez **a échoué** et **a expiré**, décochez **a réussi**.
 5. Remplissez :
-   - **À :** variable **APCONT_CourrielSoutien** ;
+   - **À :** variable **SRHVQ_CourrielSoutien** ;
    - **Objet** et **Corps** : voir FLUX-FINAUX.txt, section « Gestion des erreurs ».
 6. **Flux 3 seulement :** ajoutez, sous Courriel erreur, une action **Répondre à une application ou à un flux Power Apps** avec la sortie **lien** vide. L'application affiche alors un message clair au lieu d'une erreur.
 7. **Enregistrer.**
@@ -271,7 +273,7 @@ S'il manque quelque chose, un message jaune liste les champs à compléter, et *
 
    OnSelect : `Navigate(scrAPropos; ScreenTransition.None)`
 
-Le nom, le téléphone et le courriel du soutien sont lus dans la liste **APCONT_Parametres**. On les change sans republier l'application.
+Le nom, le téléphone et le courriel du soutien sont lus dans la liste **SRHVQ_Parametres**. On les change sans republier l'application.
 
 ## C7. Écran d'aide (modèle Didacticiel) (exigence 8)
 
@@ -300,7 +302,7 @@ Le nom, le téléphone et le courriel du soutien sont lus dans la liste **APCONT
 3. Version : **1.0.0.4**.
 4. **Exporter** › **Gérée** › **Exporter**. Téléchargez `Solution-ApplicationAppreciation_1_0_0_4_managed.zip`.
 5. Remettez-le aux TI avec le tableau des valeurs PréProd (A5).
-6. Mettez à jour le document **APCONT_Revision-versions** (partie E).
+6. Mettez à jour le document **SRHVQ_Revision-versions** (partie E).
 
 # Partie E — La documentation dans « Documents TI » (exigence 1)
 
@@ -308,12 +310,12 @@ Déposez dans la bibliothèque **Documents TI** du site PréProd (et plus tard d
 
 | Exigence | Fichier fourni (dossier documents-TI) |
 |---|---|
-| 1a. Matrice de sécurité | **APCONT_Matrice-securite.xlsx** |
-| 1b. Matrice de métadonnées | **APCONT_Matrice-metadonnees.xlsx** |
-| 1c. Architecture et fonctionnalités | **APCONT_Architecture-application.docx** |
-| 1d. Pipeline (dev, PréProd, Prod et sites) | Inclus dans **APCONT_Architecture-application.docx**, partie 4 |
-| 1e. Liste des utilisateurs | **APCONT_Liste-utilisateurs.xlsx** |
-| 1f. Révision des versions | **APCONT_Revision-versions.docx** |
+| 1a. Matrice de sécurité | **SRHVQ_Matrice-securite.xlsx** |
+| 1b. Matrice de métadonnées | **SRHVQ_Matrice-metadonnees.xlsx** |
+| 1c. Architecture et fonctionnalités | **SRHVQ_Architecture-application.docx** |
+| 1d. Pipeline (dev, PréProd, Prod et sites) | Inclus dans **SRHVQ_Architecture-application.docx**, partie 4 |
+| 1e. Liste des utilisateurs | **SRHVQ_Liste-utilisateurs.xlsx** |
+| 1f. Révision des versions | **SRHVQ_Revision-versions.docx** |
 | Complément | GUIDE-MISE-EN-PRODUCTION.docx, FLUX-FINAUX.txt, Schema-solution.jpg |
 
 Avant de déposer : remplacez les ***[éléments entre crochets]*** (adresses des sites, groupes Entra, téléphone du soutien, durée de conservation).
@@ -327,7 +329,7 @@ Avant de déposer : remplacez les ***[éléments entre crochets]*** (adresses de
 | 1 | Un testeur ouvre l'application | Elle s'ouvre (pas de message de groupe de sécurité) | |
 | 2 | Enregistrer et déposer avec un champ obligatoire vide | Message jaune ; rien n'est créé | |
 | 3 | Enregistrer et déposer un nouveau dossier complet | Fenêtre de confirmation ; Oui › message vert | |
-| 4 | Gérer l'accès du dossier, dans SharePoint | Propriétaires, APCONT_RH, personnes du dossier. **Pas** APCONT_Utilisateurs | |
+| 4 | Gérer l'accès du dossier, dans SharePoint | Propriétaires, SRHVQ_RH, personnes du dossier. **Pas** SRHVQ_Utilisateurs | |
 | 5 | Un autre testeur, sans lien avec ce dossier | Ne le voit pas, ni dans l'application ni dans SharePoint | |
 | 6 | Circuit complet jusqu'à Complété | Courriels reçus ; lecture seule ; Transmis aux RH | |
 | 7 | Aperçu PDF, puis Ouvrir le PDF | PDF joint au dossier, type de rencontre et cotes à 4 niveaux visibles | |
@@ -342,17 +344,17 @@ Notez les résultats dans le **DOSSIER-AUTORISATION-TI**, tableau des tests.
 
 **Vous n'avez pas à créer de liste dans un autre site** (ni votre site d'équipe, ni un site d'affaires). Le modèle des TI prévoit **un site de données par environnement**, partagé entre plusieurs applications :
 
-| Environnement | Site de données | Listes APCONT |
+| Environnement | Site de données | Listes SRHVQ |
 |---|---|---|
 | Bac à sable | SandBoxAnnieAudet | Appreciations, Parametres (inchangées) |
-| PréProd | **RH Power Apps Données PréProd** | APCONT_Appreciations, APCONT_Parametres |
-| Prod | Site de données Prod des TI (*[nom à confirmer, ex. « RH Power Apps Données Prod »]*) | APCONT_Appreciations, APCONT_Parametres |
+| PréProd | **RH Power Apps Données PréProd** | SRHVQ_Appreciations, SRHVQ_Parametres |
+| Prod | Site de données Prod des TI (*[nom à confirmer, ex. « RH Power Apps Données Prod »]*) | SRHVQ_Appreciations, SRHVQ_Parametres |
 
-Ces sites peuvent contenir les listes de **plusieurs applications**. C'est pourquoi on **brise l'héritage sur chaque liste** et qu'on ne donne accès qu'aux groupes de l'application (APCONT_Utilisateurs, APCONT_RH). Les Membres et Visiteurs du site, qui peuvent appartenir à d'autres applications, sont retirés de nos listes.
+Ces sites peuvent contenir les listes de **plusieurs applications**. C'est pourquoi on **brise l'héritage sur chaque liste** et qu'on ne donne accès qu'aux groupes de l'application (SRHVQ_Utilisateurs, SRHVQ_RH). Les Membres et Visiteurs du site, qui peuvent appartenir à d'autres applications, sont retirés de nos listes.
 
 **Au moment de la Prod**, refaites les parties **A2 à A4** sur le site de données Prod, avec :
-- le groupe Entra **G-IS-APP-xxxxx de Prod** dans APCONT_Utilisateurs ;
-- **Environnement = PROD** dans APCONT_Parametres.
+- le groupe Entra **G-IS-APP-xxxxx de Prod** dans SRHVQ_Utilisateurs ;
+- **Environnement = PROD** dans SRHVQ_Parametres.
 
 Les TI importent ensuite la **même** solution gérée et saisissent les valeurs de Prod des variables.
 

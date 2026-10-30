@@ -1,4 +1,4 @@
-FORMULES DE CONFORMITÉ — APPLICATION APCONT (Appréciation de la contribution)
+FORMULES DE CONFORMITÉ — APPLICATION SRHVQ (Appréciation de la contribution)
 VERSION FINALE — 30 octobre 2026 — syntaxe FRANÇAISE (« ; » et « ;; »)
 =====================================================================================
 À utiliser avec GUIDE-PREPROD-ET-CONFORMITE.docx, partie C.
@@ -218,7 +218,7 @@ Notify(
     NotificationType.Error
 );;
 Trace(
-    "APCONT - erreur";
+    "SRHVQ - erreur";
     TraceSeverity.Error;
     {Source: FirstError.Source; Message: FirstError.Message; Utilisateur: User().Email}
 )

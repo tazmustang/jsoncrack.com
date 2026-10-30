@@ -1,5 +1,5 @@
 ---
-title: "APCONT — Détail de révision des versions"
+title: "SRHVQ — Détail de révision des versions"
 subtitle: "Application « Appréciation de la contribution » · Solution-ApplicationAppreciation"
 lang: fr-CA
 ---
@@ -21,15 +21,15 @@ Les numéros de version sont ceux de la solution Power Platform : **majeure.mine
 | 1.0.0.1 | 28 octobre 2026 | Bac à sable | Version finale initiale | Flux PDF (flux 3), PDF joint au dossier, écran allégé, corrections des tests | Annie Audet |
 | 1.0.0.2 | 29 octobre 2026 | Bac à sable | Correction | Type de rencontre conservé et affiché dans le PDF | Annie Audet |
 | 1.0.0.3 | 30 octobre 2026 | Bac à sable | Modification | Échelle des postures de leadership à 4 niveaux, avec la note 1 | Annie Audet |
-| **1.0.0.4** | *[date d'export]* | **PréProd** (puis Prod) | Conformité aux exigences des TI | Noms APCONT, groupes d'application, validation, confirmation, gestion des erreurs, À propos, Aide | Annie Audet |
+| **1.0.0.4** | *[date d'export]* | **PréProd** (puis Prod) | Conformité aux exigences des TI | Noms SRHVQ, groupes d'application, validation, confirmation, gestion des erreurs, À propos, Aide | Annie Audet |
 
 # 2. Détail des changements
 
 ## 1.0.0.4 — Conformité aux exigences des TI
 
-- Variables d'environnement renommées selon la convention (APCONT_…) ; nouvelle variable **APCONT_CourrielSoutien** ; bascule « Exporter la valeur » à **Non** pour les 6 variables.
-- Listes PréProd et Prod nommées **APCONT_Appreciations** et **APCONT_Parametres**.
-- Flux 1 : retire le groupe local **APCONT_Utilisateurs** (au lieu des Membres du site) de chaque nouveau dossier.
+- Variables d'environnement renommées selon la convention (SRHVQ_…) ; nouvelle variable **SRHVQ_CourrielSoutien** ; bascule « Exporter la valeur » à **Non** pour les 6 variables.
+- Listes PréProd et Prod nommées **SRHVQ_Appreciations** et **SRHVQ_Parametres**.
+- Flux 1 : retire le groupe local **SRHVQ_Utilisateurs** (au lieu des Membres du site) de chaque nouveau dossier.
 - Flux 1, 2 et 3 : gestion des erreurs (étendue Essayer + courriel au soutien).
 - Application :
   - commentaires et mise en forme des formules ;

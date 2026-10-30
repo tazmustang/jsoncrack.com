@@ -1,5 +1,5 @@
 ---
-title: "APCONT — Document d'architecture de l'application « Appréciation de la contribution »"
+title: "SRHVQ — Document d'architecture de l'application « Appréciation de la contribution »"
 subtitle: "VERSION FINALE — 30 octobre 2026 · Version de la solution : 1.0.0.4"
 lang: fr-CA
 ---
@@ -9,7 +9,7 @@ lang: fr-CA
 | | |
 |---|---|
 | **Application** | Appréciation de la contribution |
-| **Acronyme** | APCONT |
+| **Acronyme** | SRHVQ |
 | **Service** | Ressources humaines — Division de la santé et de la sécurité au travail (RHSST) |
 | **Responsable fonctionnelle** | Annie Audet, conseillère en ressources humaines |
 | **Soutien** | *[nom]* — *[téléphone]* — *[courriel]* (aussi affiché dans l'écran « À propos » de l'application) |
@@ -45,18 +45,18 @@ L'application remplace le formulaire Word d'appréciation de la contribution (ve
 | Composant | Nom | Rôle |
 |---|---|---|
 | Application canevas | Appréciation de la contribution | 4 écrans : scrMesDossiers, scrFormulaire, scrAPropos, scrAide (didacticiel) ; fenêtre de confirmation dans scrFormulaire |
-| Flux 1 | Appréciation – Permissions à la création | À la création d'un dossier : coupe l'héritage, retire APCONT_Utilisateurs, donne Collaboration aux personnes du dossier |
+| Flux 1 | Appréciation – Permissions à la création | À la création d'un dossier : coupe l'héritage, retire SRHVQ_Utilisateurs, donne Collaboration aux personnes du dossier |
 | Flux 2 | Appréciation – Suivi des étapes | À chaque modification : courriels d'étape, accès du directeur, et à « Complété » : courriel aux RH, avis à tous, lecture seule, date de transmission |
 | Flux 3 | GenererPDFAppreciation | Appelé par l'application : HTML › PDF (OneDrive du compte de service, fichier temporaire supprimé), joint au dossier |
 | Références de connexion | SharePoint Appreciation · Utilisateurs Office 365 Appreciations · Outlook Appreciations · OneDrive Appreciations | Connexions du compte de service en PréProd et en Prod |
-| Variables d'environnement | APCONT_SiteWeb-RHSST-AppreciationContribution · APCONT_Appreciations · APCONT_Parametres · APCONT_CourrielPaie · APCONT_LienApplication · APCONT_CourrielSoutien | Valeurs propres à chaque environnement ; **valeur non exportée** |
+| Variables d'environnement | SRHVQ_SiteWeb-RHSST-AppreciationContribution · SRHVQ_Appreciations · SRHVQ_Parametres · SRHVQ_CourrielPaie · SRHVQ_LienApplication · SRHVQ_CourrielSoutien | Valeurs propres à chaque environnement ; **valeur non exportée** |
 
 ## 3.2 Données
 
 | Liste | Contenu | Détail |
 |---|---|---|
-| APCONT_Appreciations | Un élément par dossier (34 colonnes + pièce jointe PDF) | APCONT_Matrice-metadonnees.xlsx |
-| APCONT_Parametres | Paramètres de l'environnement (Environnement, CourrielSoutien, SupportNom, SupportTelephone) | Idem |
+| SRHVQ_Appreciations | Un élément par dossier (34 colonnes + pièce jointe PDF) | SRHVQ_Matrice-metadonnees.xlsx |
+| SRHVQ_Parametres | Paramètres de l'environnement (Environnement, CourrielSoutien, SupportNom, SupportTelephone) | Idem |
 
 Les sections à plusieurs lignes (objectifs, postures, compétences, valeurs, développement) sont enregistrées en **JSON** dans des colonnes « Plusieurs lignes de texte brut », puis relues par l'application (ParseJSON).
 
@@ -71,9 +71,9 @@ SharePoint, Utilisateurs d'Office 365, Office 365 Outlook, OneDrive Entreprise, 
 | Environnement Power Platform | *[nom de l'environnement bac à sable]* | *[nom de l'environnement PréProd]* | *[nom de l'environnement Prod]* |
 | Type de solution | **Non gérée** (modifications et tests) | **Gérée** | **Gérée** |
 | Site SharePoint des données | https://villedequebec.sharepoint.com/sites/SandBoxAnnieAudet | **RH Power Apps Données PréProd** (*[adresse URL]*) | site de données Prod des TI (*[nom et adresse à confirmer, ex. « RH Power Apps Données Prod »]*) |
-| Listes | Appreciations, Parametres | APCONT_Appreciations, APCONT_Parametres | APCONT_Appreciations, APCONT_Parametres |
+| Listes | Appreciations, Parametres | SRHVQ_Appreciations, SRHVQ_Parametres | SRHVQ_Appreciations, SRHVQ_Parametres |
 | Groupe Entra d'application | Groupe de sécurité du bac à sable | G-IS-APP-*[xxxxx]* (PréProd) | G-IS-APP-*[xxxxx]* (Prod) |
-| Groupes SharePoint locaux | APCONT_Utilisateurs, RH – Appréciations | APCONT_Utilisateurs, APCONT_RH | APCONT_Utilisateurs, APCONT_RH |
+| Groupes SharePoint locaux | SRHVQ_Utilisateurs, RH – Appréciations | SRHVQ_Utilisateurs, SRHVQ_RH | SRHVQ_Utilisateurs, SRHVQ_RH |
 | Parametres › Environnement | DEV | PRE-PROD | PROD |
 | Connexions | Développeuse | Compte de service | Compte de service |
 | Utilisateurs | Développeuse, testeurs | Testeurs RH, TI | 500+ utilisateurs |
@@ -86,15 +86,15 @@ SharePoint, Utilisateurs d'Office 365, Office 365 Outlook, OneDrive Entreprise, 
 4. Les TI importent en **PréProd** (mise à niveau). Ils choisissent les connexions du compte de service et saisissent les valeurs des variables à la première importation.
 5. Tests en PréProd (liste du guide de mise en production).
 6. Les TI importent la **même** solution gérée en **Prod**.
-7. Mettre à jour **APCONT_Revision-versions**.
+7. Mettre à jour **SRHVQ_Revision-versions**.
 
 # 5. Sécurité (résumé)
 
-Le détail est dans **APCONT_Matrice-securite.xlsx**.
+Le détail est dans **SRHVQ_Matrice-securite.xlsx**.
 
 - **Accès à l'application :** groupe Entra G-IS-APP-xxxxx de l'environnement (sécurité de l'environnement et partage de l'application).
-- **Accès aux données :** le groupe Entra est imbriqué dans le groupe SharePoint local **APCONT_Utilisateurs**. Ce groupe n'a aucun droit sur le site, et a **Collaboration** sur APCONT_Appreciations (pour créer son dossier) et **Lecture** sur APCONT_Parametres. Les Membres et Visiteurs du site sont retirés des listes.
-- **Accès à chaque dossier :** autorisations uniques posées par le flux 1. Seuls y ont accès la personne, ses supérieurs, le directeur au besoin, **APCONT_RH** (Lecture) et les propriétaires. À « Complété », tout le monde passe en Lecture.
+- **Accès aux données :** le groupe Entra est imbriqué dans le groupe SharePoint local **SRHVQ_Utilisateurs**. Ce groupe n'a aucun droit sur le site, et a **Collaboration** sur SRHVQ_Appreciations (pour créer son dossier) et **Lecture** sur SRHVQ_Parametres. Les Membres et Visiteurs du site sont retirés des listes.
+- **Accès à chaque dossier :** autorisations uniques posées par le flux 1. Seuls y ont accès la personne, ses supérieurs, le directeur au besoin, **SRHVQ_RH** (Lecture) et les propriétaires. À « Complété », tout le monde passe en Lecture.
 - **Courriels :** aucun contenu d'évaluation, sauf l'évaluation globale envoyée aux RH à la fin.
 
 # 6. Cycle de vie des données
@@ -116,7 +116,7 @@ Le détail est dans **APCONT_Matrice-securite.xlsx**.
 |---|---|
 | Application | **App.OnError** : message clair et invitation à joindre le soutien (À propos) ; Trace pour le diagnostic. L'enregistrement affiche l'erreur précise de SharePoint ; le PDF affiche un message s'il échoue |
 | Validation | Champs obligatoires vérifiés avant tout enregistrement (message listant les champs manquants) |
-| Flux | Étendue **Essayer** + action **Courriel erreur** (exécutée si échec ou délai dépassé) envoyée à **APCONT_CourrielSoutien**, avec le lien vers l'exécution en erreur |
+| Flux | Étendue **Essayer** + action **Courriel erreur** (exécutée si échec ou délai dépassé) envoyée à **SRHVQ_CourrielSoutien**, avec le lien vers l'exécution en erreur |
 | Soutien | Écran **À propos** : nom, téléphone, courriel du soutien et formulaire d'envoi de courriel |
 
 # 8. Conformité aux exigences des TI
@@ -132,7 +132,7 @@ Le détail est dans **APCONT_Matrice-securite.xlsx**.
 | 7 | Écran À propos | scrAPropos, accessible depuis Mes dossiers et le formulaire, avec téléphone et formulaire de courriel |
 | 8 | Écran d'aide (modèle Didacticiel) | scrAide : 5 pages décrivant chaque écran |
 | 9 | Cycle de vie des données | Partie 6 ; durée de conservation et destruction à confirmer avec la gestion documentaire |
-| 10 | Solution et variables d'environnement | Une solution gérée ; 6 variables nommées APCONT_… ; valeur non exportée ; listes APCONT_… |
+| 10 | Solution et variables d'environnement | Une solution gérée ; 6 variables nommées SRHVQ_… ; valeur non exportée ; listes SRHVQ_… |
 
 # 9. Volumétrie et limites
 

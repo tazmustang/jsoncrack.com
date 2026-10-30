@@ -1,27 +1,27 @@
-FLUX POWER AUTOMATE — VERSION FINALE (28 octobre 2026, mise à jour du 30 octobre : noms APCONT, groupe APCONT_Utilisateurs, gestion des erreurs)
+FLUX POWER AUTOMATE — VERSION FINALE (28 octobre 2026, mise à jour du 30 octobre : noms SRHVQ, groupe SRHVQ_Utilisateurs, gestion des erreurs)
 Solution « Solution-ApplicationAppreciation » — 3 flux
 =======================================================
 Noms d'affichage des variables (convention des TI, 30 octobre) — « nom d'affichage (nom de schéma) » :
 
-  APCONT_Appreciations (rhdsst_ListeAppreciations)
-  APCONT_Parametres (rhdsst_ListeParametres)
-  APCONT_LienApplication (rhdsst_Lienapplication)
-  APCONT_CourrielPaie (rhdsst_Courrielpaie)
-  APCONT_SiteWeb-RHSST-AppreciationContribution (rhdsst_SiteApprciations)
-  APCONT_CourrielSoutien (rhdsst_APCONT_CourrielSoutien)   ← NOUVELLE (vérifiez le nom de schéma créé)
+  SRHVQ_Appreciations (rhdsst_ListeAppreciations)
+  SRHVQ_Parametres (rhdsst_ListeParametres)
+  SRHVQ_LienApplication (rhdsst_Lienapplication)
+  SRHVQ_CourrielPaie (rhdsst_Courrielpaie)
+  SRHVQ_SiteWeb-RHSST-AppreciationContribution (rhdsst_SiteApprciations)
+  SRHVQ_CourrielSoutien (rhdsst_SRHVQ_CourrielSoutien)   ← NOUVELLE (vérifiez le nom de schéma créé)
 
 Dans un champ « Adresse du site » ou « Nom de la liste » : choisissez la variable dans le
 contenu dynamique (section Variables d'environnement). Ne la tapez pas.
 Les noms d'actions entre « » doivent être exacts : les formules s'y réfèrent
 (Power Automate remplace les espaces par « _ »).
-Toutes les requêtes HTTP : Adresse du site = variable APCONT_SiteWeb-RHSST-AppreciationContribution,
+Toutes les requêtes HTTP : Adresse du site = variable SRHVQ_SiteWeb-RHSST-AppreciationContribution,
 en-tête Accept = application/json;odata=nometadata
 
 
 =====================================================================
 FLUX 1 — « Appréciation – Permissions à la création »
 Déclencheur : SharePoint › Lors de la création d'un élément
-  Adresse du site = APCONT_SiteWeb-RHSST-AppreciationContribution ; Nom de la liste = APCONT_Appreciations
+  Adresse du site = SRHVQ_SiteWeb-RHSST-AppreciationContribution ; Nom de la liste = SRHVQ_Appreciations
 =====================================================================
 
 [1] « Id dossier » — Variable › Initialiser la variable
@@ -30,18 +30,18 @@ Déclencheur : SharePoint › Lors de la création d'un élément
 [2] « Couper l'héritage » — SharePoint › Envoyer une requête HTTP à SharePoint
     Méthode : POST
     URI :
-_api/web/lists(guid'@{parameters('APCONT_Appreciations (rhdsst_ListeAppreciations)')}')/items(@{variables('IdDossier')})/breakroleinheritance(copyRoleAssignments=true,clearSubscopes=true)
+_api/web/lists(guid'@{parameters('SRHVQ_Appreciations (rhdsst_ListeAppreciations)')}')/items(@{variables('IdDossier')})/breakroleinheritance(copyRoleAssignments=true,clearSubscopes=true)
 
 [3] « Groupe Membres » — Envoyer une requête HTTP à SharePoint   (gardez ce nom d'action)
     Méthode : GET
     URI (30 octobre : le groupe local de l'application, au lieu des Membres du site) :
-_api/web/sitegroups/getbyname('APCONT_Utilisateurs')?$select=Id
+_api/web/sitegroups/getbyname('SRHVQ_Utilisateurs')?$select=Id
 
-[4] « Retirer les Membres » (retire maintenant APCONT_Utilisateurs du dossier) — Envoyer une requête HTTP à SharePoint
+[4] « Retirer les Membres » (retire maintenant SRHVQ_Utilisateurs du dossier) — Envoyer une requête HTTP à SharePoint
     Méthode : POST
     En-tête supplémentaire : X-HTTP-Method = DELETE
     URI :
-_api/web/lists(guid'@{parameters('APCONT_Appreciations (rhdsst_ListeAppreciations)')}')/items(@{variables('IdDossier')})/roleassignments/getbyprincipalid(@{body('Groupe_Membres')?['Id']})
+_api/web/lists(guid'@{parameters('SRHVQ_Appreciations (rhdsst_ListeAppreciations)')}')/items(@{variables('IdDossier')})/roleassignments/getbyprincipalid(@{body('Groupe_Membres')?['Id']})
 
 [5] « Personnes du dossier » — Opérations de données › Filtrer un tableau
     *** … › Configurer l'exécution après : sous « Retirer les Membres », cocher
@@ -64,17 +64,17 @@ createArray(triggerOutputs()?['body/CourrielPersonne'], triggerOutputs()?['body/
   [6b] « Donner Collaboration » — Envoyer une requête HTTP à SharePoint
        Méthode : POST
        URI :
-_api/web/lists(guid'@{parameters('APCONT_Appreciations (rhdsst_ListeAppreciations)')}')/items(@{variables('IdDossier')})/roleassignments/addroleassignment(principalid=@{body('Assurer_utilisateur')?['Id']},roledefid=1073741827)
+_api/web/lists(guid'@{parameters('SRHVQ_Appreciations (rhdsst_ListeAppreciations)')}')/items(@{variables('IdDossier')})/roleassignments/addroleassignment(principalid=@{body('Assurer_utilisateur')?['Id']},roledefid=1073741827)
 
 Résultat attendu (Gérer l'accès sur un nouveau dossier) : Propriétaires du site,
-APCONT_RH (lecture ; RH – Appréciations dans le bac à sable) et les personnes du dossier
-(modification). PAS APCONT_Utilisateurs. Personne d'autre.
+SRHVQ_RH (lecture ; RH – Appréciations dans le bac à sable) et les personnes du dossier
+(modification). PAS SRHVQ_Utilisateurs. Personne d'autre.
 
 
 =====================================================================
 FLUX 2 — « Appréciation – Suivi des étapes »
 Déclencheur : SharePoint › Lors de la création ou de la modification d'un élément
-  Adresse du site = APCONT_SiteWeb-RHSST-AppreciationContribution ; Nom de la liste = APCONT_Appreciations
+  Adresse du site = SRHVQ_SiteWeb-RHSST-AppreciationContribution ; Nom de la liste = SRHVQ_Appreciations
 =====================================================================
 
 STRUCTURE (cartes refermées, dans cet ordre, au même niveau) :
@@ -84,13 +84,13 @@ STRUCTURE (cartes refermées, dans cet ordre, au même niveau) :
        Avisé au supérieur | Certifié | Approuvé SI | Approuvé SH | Complété
 
 [1] « LienApp » — Initialiser la variable — Nom : LienApp — Type : Chaîne — Valeur (expression) :
-concat(parameters('APCONT_LienApplication (rhdsst_Lienapplication)'), '&ID=', triggerOutputs()?['body/ID'])
+concat(parameters('SRHVQ_LienApplication (rhdsst_Lienapplication)'), '&ID=', triggerOutputs()?['body/ID'])
 
 [2] « CourrielPaie » — Initialiser la variable — Nom : CourrielPaie — Type : Chaîne — Valeur (expression) :
-parameters('APCONT_CourrielPaie (rhdsst_Courrielpaie)')
+parameters('SRHVQ_CourrielPaie (rhdsst_Courrielpaie)')
 
 [3] « Changements » — SharePoint › Obtenir les modifications d'un élément ou d'un fichier
-    Site / Liste : variables APCONT_SiteWeb-RHSST-AppreciationContribution et APCONT_Appreciations
+    Site / Liste : variables SRHVQ_SiteWeb-RHSST-AppreciationContribution et SRHVQ_Appreciations
     ID : ID (contenu dynamique)
     Depuis (expression) :
 triggerOutputs()?['body/{TriggerWindowStartToken}']
@@ -111,7 +111,7 @@ triggerOutputs()?['body/{TriggerWindowEndToken}']
   [4b] « Accès directeur » — Envoyer une requête HTTP à SharePoint
        Méthode : POST
        URI :
-_api/web/lists(guid'@{parameters('APCONT_Appreciations (rhdsst_ListeAppreciations)')}')/items(@{triggerOutputs()?['body/ID']})/roleassignments/addroleassignment(principalid=@{body('Assurer_directeur')?['Id']},roledefid=1073741827)
+_api/web/lists(guid'@{parameters('SRHVQ_Appreciations (rhdsst_ListeAppreciations)')}')/items(@{triggerOutputs()?['body/ID']})/roleassignments/addroleassignment(principalid=@{body('Assurer_directeur')?['Id']},roledefid=1073741827)
 
 [5] « Statut changé » — Condition — SOUS « Directeur ajouté » (pas dedans !)
     body('Changements')?['ColumnHasChanged']?['Statut']   est égal à   true
@@ -178,10 +178,10 @@ body('Personnes_finales')
 { "logonName": "i:0#.f|membership|@{item()}" }
 
     [6.4b] « Retirer accès » — HTTP — POST — en-tête X-HTTP-Method = DELETE — URI :
-_api/web/lists(guid'@{parameters('APCONT_Appreciations (rhdsst_ListeAppreciations)')}')/items(@{triggerOutputs()?['body/ID']})/roleassignments/getbyprincipalid(@{body('Assurer_personne')?['Id']})
+_api/web/lists(guid'@{parameters('SRHVQ_Appreciations (rhdsst_ListeAppreciations)')}')/items(@{triggerOutputs()?['body/ID']})/roleassignments/getbyprincipalid(@{body('Assurer_personne')?['Id']})
 
     [6.4c] « Donner Lecture » — HTTP — POST — URI :
-_api/web/lists(guid'@{parameters('APCONT_Appreciations (rhdsst_ListeAppreciations)')}')/items(@{triggerOutputs()?['body/ID']})/roleassignments/addroleassignment(principalid=@{body('Assurer_personne')?['Id']},roledefid=1073741826)
+_api/web/lists(guid'@{parameters('SRHVQ_Appreciations (rhdsst_ListeAppreciations)')}')/items(@{triggerOutputs()?['body/ID']})/roleassignments/addroleassignment(principalid=@{body('Assurer_personne')?['Id']},roledefid=1073741826)
 
   [6.5] « Date paie » — SharePoint › Mettre à jour l'élément — EN DERNIER, sous la boucle
         Site / Liste : variables ; ID : ID ; Titre : Titre ; tous les autres champs vides, sauf :
@@ -199,11 +199,14 @@ Déclencheur : Power Apps (V2) — 3 entrées, dans cet ordre :
 =====================================================================
 
 [1] OneDrive Entreprise › Créer un fichier
-    Dossier : /     Nom : nomFichier + .html     Contenu : html
+    Dossier : /     Contenu : html
+    Nom (expression, recommandé le 30 octobre : nom temporaire unique) :
+concat(triggerBody()?['text'], '-', guid(), '.html')
+    (Prérequis : le compte de service a une licence avec OneDrive, et son OneDrive est initialisé.)
 [2] OneDrive Entreprise › Convertir un fichier
     Fichier : Id (de l'action 1)     Type cible : PDF
 [3] « Pieces jointes » — SharePoint › Obtenir les pièces jointes
-    Site : APCONT_SiteWeb-RHSST-AppreciationContribution     Liste : APCONT_Appreciations     Id : idDossier
+    Site : SRHVQ_SiteWeb-RHSST-AppreciationContribution     Liste : SRHVQ_Appreciations     Id : idDossier
 [4] « Anciennes versions » — Appliquer à chacun sur le Corps de « Pieces jointes »
     Condition : Nom d'affichage (DisplayName)  est égal à  (expression fx) :
 concat(triggerBody()?['text'], '.pdf')
@@ -238,9 +241,9 @@ Structure de chaque flux :
        Paramètres › Exécuter après : « Essayer » a échoué + a expiré (PAS « a réussi »)
 
 « Courriel erreur »
-  À : variable APCONT_CourrielSoutien (contenu dynamique › Variables d'environnement)
+  À : variable SRHVQ_CourrielSoutien (contenu dynamique › Variables d'environnement)
   Objet (expression) :
-concat('APCONT – échec du flux ', workflow()?['tags']?['flowDisplayName'])
+concat('SRHVQ – échec du flux ', workflow()?['tags']?['flowDisplayName'])
   Corps (mode code </>) :
 Le flux <b>@{workflow()?['tags']?['flowDisplayName']}</b> a échoué.<br>Environnement : @{workflow()?['tags']?['environmentName']}<br>Date : @{utcNow()}<br><br><a href="@{concat('https://make.powerautomate.com/environments/', workflow()?['tags']?['environmentName'], '/flows/', workflow()?['name'], '/runs/', workflow()?['run']?['name'])}">Voir l'exécution en erreur</a>
 
@@ -252,5 +255,5 @@ flux Power Apps » (Exécuter après : Courriel erreur a réussi + a échoué), 
 « lien » = vide. L'application affiche alors « Le PDF n'a pas pu être créé ».
 
 Remarque : dans le flux 1, l'action 4 « Retirer les Membres » garde son « Exécuter après »
-(a réussi + a échoué) sur l'action 5. Le groupe APCONT_Utilisateurs étant toujours présent
+(a réussi + a échoué) sur l'action 5. Le groupe SRHVQ_Utilisateurs étant toujours présent
 sur la liste, l'action 4 ne devrait plus échouer.
