@@ -20,11 +20,11 @@ Le formulaire des TI est **court**. Avec le *Guide de mise en production* et le 
 
 **Texte pour « Commentaires » :**
 
-> Première mise en PréProd de la solution Solution-ApplicationAppreciation (version 1.0.0.4, gérée). Contenu : 1 application canevas, 3 flux (Appréciation – Permissions à la création, Appréciation – Suivi des étapes, GenererPDFAppreciation), 5 variables d'environnement et 4 références de connexion (SharePoint Appreciation, Utilisateurs Office 365 Appreciations, Outlook Appreciations, OneDrive Appreciations). Connecteurs standard seulement, aucune licence Premium.
+> Première mise en PréProd de la solution Solution-ApplicationAppreciation (version 1.0.0.4, gérée). Contenu : 1 application canevas, 3 flux (Appréciation – Permissions à la création, Appréciation – Suivi des étapes, GenererPDFAppreciation), 6 variables d'environnement (SRHVQ_…) et 6 références de connexion (SharePoint Appreciations, Outlook Appreciations, Utilisateurs Office 365 Appreciations, OneDrive Entreprise RHDSSTDAAT-1b68d, SharePoint RHDSSTDAAT-11da3, Office 365 Outlook Gestion_formulaire_approb…). Connecteurs standard seulement, aucune licence Premium.
 >
 > Préalables à l'import : un site SharePoint de PréProd avec la liste Appreciations (35 colonnes), la liste Parametres (pièces jointes activées sur Appreciations) et le groupe RH – Appréciations. La structure et les autorisations sont dans l'onglet « SharePoint » du fichier Excel et dans la partie 4 du guide joint.
 >
-> Connexions : merci d'utiliser un compte de service, propriétaire du site, pour les 4 références de connexion.
+> Connexions : merci d'utiliser un compte de service, propriétaire du site, pour les 6 références de connexion. Le compte de service doit avoir une licence incluant OneDrive, avec un OneDrive initialisé (conversion PDF du flux GenererPDFAppreciation).
 >
 > Testeurs : merci d'ajouter au groupe de sécurité de l'environnement PréProd (et au groupe Membres du site SharePoint de PréProd) les personnes suivantes, qui feront les tests avec du contenu fictif : *[noms des collègues]*. Actuellement, elles reçoivent le message « You are not a member of the environment's security group ».
 >

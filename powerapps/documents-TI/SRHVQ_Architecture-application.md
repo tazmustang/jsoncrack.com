@@ -48,7 +48,7 @@ L'application remplace le formulaire Word d'appréciation de la contribution (ve
 | Flux 1 | Appréciation – Permissions à la création | À la création d'un dossier : coupe l'héritage, retire SRHVQ_Utilisateurs, donne Collaboration aux personnes du dossier |
 | Flux 2 | Appréciation – Suivi des étapes | À chaque modification : courriels d'étape, accès du directeur, et à « Complété » : courriel aux RH, avis à tous, lecture seule, date de transmission |
 | Flux 3 | GenererPDFAppreciation | Appelé par l'application : HTML › PDF (OneDrive du compte de service, fichier temporaire supprimé), joint au dossier |
-| Références de connexion | SharePoint Appreciation · Utilisateurs Office 365 Appreciations · Outlook Appreciations · OneDrive Appreciations | Connexions du compte de service en PréProd et en Prod |
+| Références de connexion (6) | SharePoint Appreciations · Outlook Appreciations · Utilisateurs Office 365 Appreciations · OneDrive Entreprise RHDSSTDAAT-1b68d · SharePoint RHDSSTDAAT-11da3 · Office 365 Outlook Gestion_formulaire_approb… | Connexions du compte de service en PréProd et en Prod |
 | Variables d'environnement | SRHVQ_SiteWeb-RHSST-AppreciationContribution · SRHVQ_Appreciations · SRHVQ_Parametres · SRHVQ_CourrielPaie · SRHVQ_LienApplication · SRHVQ_CourrielSoutien | Valeurs propres à chaque environnement ; **valeur non exportée** |
 
 ## 3.2 Données
