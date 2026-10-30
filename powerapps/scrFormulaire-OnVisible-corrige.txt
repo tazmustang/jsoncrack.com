@@ -1,4 +1,4 @@
-// scrFormulaire.OnVisible — VERSION FINALE — 28 octobre 2026, mises à jour du 29 et du 30 octobre (coller tout le contenu de ce fichier)
+// scrFormulaire.OnVisible — VERSION FINALE — 28 octobre 2026, mises à jour du 29 et du 30 octobre (conformité TI) (coller tout le contenu de ce fichier)
 // ---------- Paramètres de l'environnement (liste Parametres) ----------
 Set(varEnv; Coalesce(LookUp(Parametres; Title = "Environnement").Valeur; "PROD"));;
 Set(varCourrielSoutien; LookUp(Parametres; Title = "CourrielSoutien").Valeur);;
@@ -202,4 +202,7 @@ Set(varEvalGlobale; Coalesce(varDossier.EvaluationGlobale.Value; ""));;
 
 // ---------- Cases « Type de rencontre » : relire le dossier à chaque ouverture ----------
 Reset(chkEssai);; Reset(chkPremiere);; Reset(chkMiAnnee);; Reset(chkBilan);; Reset(chkAutre);;
-Set(varLienPDF; Blank())
+Set(varLienPDF; Blank());;
+
+// ---------- Fenêtre de confirmation de création fermée à l'ouverture (30 octobre) ----------
+UpdateContext({locConfirmer: false})

@@ -25,6 +25,8 @@ Ce guide complète le **« Guide complet — Application Appréciation de la con
 | `btnApercuPDF-OnSelect.txt` | La formule complète du bouton **Aperçu PDF** |
 | `CORRECTION-TYPE-RENCONTRE.docx` | Correction du 29 octobre : le type de rencontre reste dans le dossier et paraît dans le PDF |
 | `MISE-A-JOUR-ECHELLE-POSTURES.docx` | Mise à jour du 30 octobre : échelle des postures de leadership à 4 niveaux |
+| `preprod/` | **Guide du site PréProd et de la conformité aux exigences des TI**, formules de conformité |
+| `documents-TI/` | Les 5 documents à déposer dans « Documents TI » |
 | `transmission-TI/` | Le paquet à envoyer aux TI pour la PréProd (bordereau, courriel, ZIP) |
 | `MISE-A-JOUR-28-OCTOBRE.docx` | Journal des derniers changements (PDF joint au dossier, écran allégé), étape par étape |
 | `barre-etapes-formules.txt` | Les 7 formules de la barre d'étapes |
@@ -81,6 +83,7 @@ Tout utilise des connecteurs **standard** : aucune licence Premium.
 | 26 | panelOnglets.Height | Référençait les panneaux supprimés. | `20 + If(panelAide.Visible; panelAide.Height; 0) + 20` |
 | 27 | Cases Type de rencontre (29 oct.) | Les cases se décochaient après « Enregistrer et déposer » et le type de rencontre n'était pas dans le PDF : le texte exact des choix ne correspondait pas, ou le dossier ouvert depuis Mes dossiers arrivait incomplet. | Comparaison par **mot-clé** (`"essai" in Value`…) dans Checked et dans btnDeposer ; **relecture du dossier** au début d'OnVisible. Voir `CORRECTION-TYPE-RENCONTRE.docx`. |
 | 28 | Section B, échelle (30 oct.) | Nouvelle échelle des postures de leadership : 4 niveaux (Insatisfaisant, Partiellement satisfaisant, Complètement satisfaisant, Supérieur), nouvelles descriptions et note 1. | `colEchelle` à 4 niveaux avec descriptions (OnVisible) ; `echelleLegend` lit colEchelle. Voir `MISE-A-JOUR-ECHELLE-POSTURES.docx`. |
+| 29 | Conformité TI (30 oct.) | Exigences des TI : documentation, commentaires, confirmation, validation, erreurs, À propos, Aide, conventions de nommage APCONT, groupes d'application. | Voir `preprod/GUIDE-PREPROD-ET-CONFORMITE.docx` et `documents-TI/`. |
 | 19 | Tests avec d'autres comptes | « You are not a member of the environment's security group » | Normal dans le bac à sable : seules les personnes du **groupe de sécurité** de l'environnement peuvent ouvrir l'application. Les TI doivent y ajouter les testeurs, et prévoir le bon groupe en pré-prod et en prod. |
 | 13 | Flux 1, action 4 | « Retirer les Membres » échoue (404 NotFound) quand les Membres n'ont pas de droit sur le dossier, et le flux s'arrêtait. | Sur « Personnes du dossier » : Configurer l'exécution après = **a réussi + a échoué**. |
 | 14 | Flux 2, structure | « Statut changé » était placée **dans** « Directeur ajouté », et « Date paie » était **hors** du cas Complété. | Structure corrigée (partie 6.2). |
@@ -253,15 +256,15 @@ Pour les tests de courriels, utilisez des comptes de test, ou mettez temporairem
    - les **4 références de connexion**.
 
    S'il manque un élément : **Ajouter existant**.
-2. Pour chacune des 5 variables : ouvrez-la, puis sous **Valeur actuelle**, faites **… › Retirer de cette solution**. Laissez la valeur par défaut vide.
+2. Pour chacune des **6** variables : ouvrez-la, section **Avancé**, bascule d'export de la valeur à **Non** (la valeur n'est pas exportée). Laissez la valeur par défaut vide. *(Méthode exigée par les TI ; remplace « Retirer de cette solution ».)*
 3. **Publier toutes les personnalisations.**
-4. Augmentez la **version** (ex. 1.0.0.3 pour la remise du 30 octobre).
+4. Augmentez la **version** (ex. 1.0.0.4 pour la remise PréProd).
 
 ## 9.2 Exporter
 
 1. **Exporter la solution**, puis **Vérifier**.
 2. Choisissez **Gérée**, puis **Exporter**.
-3. Téléchargez le .zip (ex. `Solution-ApplicationAppreciation_1_0_0_3_managed.zip`).
+3. Téléchargez le .zip (ex. `Solution-ApplicationAppreciation_1_0_0_4_managed.zip`).
 
 ## 9.3 Remettre aux TI
 

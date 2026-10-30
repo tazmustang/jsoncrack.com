@@ -1,0 +1,354 @@
+FORMULES DE CONFORMITÉ — APPLICATION APCONT (Appréciation de la contribution)
+VERSION FINALE — 30 octobre 2026 — syntaxe FRANÇAISE (« ; » et « ;; »)
+=====================================================================================
+À utiliser avec GUIDE-PREPROD-ET-CONFORMITE.docx, partie C.
+Règles : coller dans la BARRE fx (jamais dans le panneau de droite), puis cliquer sur
+« Mettre en forme le texte » (sous la barre fx) pour rendre la formule lisible.
+Les lignes qui commencent par // sont des commentaires : Power Apps les ignore.
+
+
+#####################################################################
+# C1. COMMENTAIRES À AJOUTER AU DÉBUT DES FORMULES
+#####################################################################
+(Collez la ligne au tout début de la formule, puis Entrée. La formule elle-même ne change pas.)
+
+App.OnError ................. (déjà commenté, section C5)
+App.OnStart (s'il existe) ... // App.OnStart — Initialisation générale de l'application
+scrMesDossiers.OnVisible .... // scrMesDossiers.OnVisible — Prépare la liste des dossiers de la personne connectée
+galDossiers.Items ........... // Dossiers où la personne connectée est la personne, le SI, le SH ou le directeur, filtrés et triés
+btnOuvrir.OnSelect .......... // Ouvre le dossier choisi dans l'écran formulaire
+btnNouveauDossier.OnSelect .. // Vide l'écran et ouvre un nouveau formulaire
+scrFormulaire.OnVisible ..... (déjà commenté par section : recoller scrFormulaire-OnVisible-corrige.txt)
+btnDeposer.OnSelect ......... (section C4, déjà commentée)
+btnDeposerExec.OnSelect ..... (section C3, déjà commentée)
+btnAviser.OnSelect .......... // Aviser — Passe le statut à « Avisé au supérieur » ; le flux 2 envoie le courriel au SI
+btnCertifier.OnSelect ....... // Certifier — Verrouille le contenu de la personne et passe au statut « Certifié »
+btnApprouver.OnSelect ....... // Approuver — Enregistre l'approbation du rôle connecté (SI, SH ou directeur) et passe à l'étape suivante
+chkDirRequis.OnCheck ........ // Indique qu'un directeur ou une directrice doit approuver en dernier
+cboDirecteur.Items .......... // Recherche du directeur ou de la directrice dans l'annuaire Office 365
+btnApercuPDF.OnSelect ....... (déjà commenté)
+btnOuvrirPDF.OnSelect ....... // Ouvre le PDF joint au dossier, produit par le bouton Aperçu PDF
+galEtapes.Items ............. // Les 7 étapes du circuit, avec leur date (barre d'étapes)
+p1CboCadre.OnChange ......... // Enregistre à l'écran la cote de la personne pour ce comportement (même chose pour p2, p3, p4)
+p1CboSup.OnChange ........... // Enregistre à l'écran la cote du supérieur pour ce comportement (même chose pour p2, p3, p4)
+btn…AjouterLigne.OnSelect ... // Ajoute une ligne vide au tableau
+btnAPropos.OnSelect ......... // Ouvre l'écran À propos (soutien et contact)
+btnAide.OnSelect ............ // Ouvre l'écran d'aide (didacticiel)
+Toute autre formule d'action . // <Nom du contrôle> — <ce que fait le bouton, en une phrase>
+
+
+#####################################################################
+# C3. CONFIRMATION DE CRÉATION — bouton caché et fenêtre de confirmation
+#####################################################################
+
+--- 1) Bouton caché qui enregistre : btnDeposerExec ---
+Copiez btnDeposer (Ctrl+C, Ctrl+V) et renommez la copie btnDeposerExec.
+
+btnDeposerExec.Visible
+false
+(Si le bouton ne réagit pas au Select : mettez Visible à true, Width à 1, Height à 1, X à 0, Y à 0.)
+
+btnDeposerExec.OnSelect   (l'ancienne formule complète, avec ses commentaires)
+// btnDeposerExec.OnSelect — Enregistre le dossier dans SharePoint (lancé par btnDeposer après validation)
+// 1) Création : si le dossier n'existe pas encore, on le crée avec la personne et ses supérieurs (annuaire)
+If(IsBlank(varDossier);
+    If(CurrentRoleID <> "cadre";
+        Notify("Ouvrez d'abord le dossier de la personne depuis « Mes dossiers »."; NotificationType.Warning);
+        With({si: IfError('Utilisateursd’Office365'.ManagerV2(User().Email); Blank())};
+        With({sh: IfError('Utilisateursd’Office365'.ManagerV2(si.mail); Blank())};
+            Set(varDossier; Patch(Appreciations; Defaults(Appreciations); {
+                Title: txtNom.Text;
+                Annee: Year(Today());
+                VersionFormulaire: "15 octobre 2026";
+                Statut: {Value: "Brouillon"};
+                PersonneAppreciation: {Claims: "i:0#.f|membership|" & varMoi;
+                    DisplayName: User().FullName; Email: User().Email;
+                    Department: ""; JobTitle: ""; Picture: ""};
+                CourrielPersonne: varMoi;
+                SuperieurImmediat: If(!IsBlank(si.mail); {Claims: "i:0#.f|membership|" & Lower(si.mail);
+                    DisplayName: si.displayName; Email: si.mail;
+                    Department: ""; JobTitle: ""; Picture: ""});
+                CourrielSI: Lower(si.mail);
+                SuperieurHierarchique: If(!IsBlank(sh.mail); {Claims: "i:0#.f|membership|" & Lower(sh.mail);
+                    DisplayName: sh.displayName; Email: sh.mail;
+                    Department: ""; JobTitle: ""; Picture: ""});
+                CourrielSH: Lower(sh.mail)
+            }))))));;
+
+// 2) Mise à jour : on enregistre tout le contenu du formulaire dans le dossier
+If(!IsBlank(varDossier);
+    Set(varDossier; Patch(Appreciations; varDossier; {
+        Title: txtNom.Text;
+        IdEmploye: txtId.Text;
+        Poste: Coalesce(txtPoste.Text; varDossier.Poste; 'Utilisateursd’Office365'.MyProfileV2().jobTitle);
+        TypePoste: If(CurrentPosteID = ""; Blank();
+            {Value: LookUp(colPostes; PosteID = CurrentPosteID).PosteLabel});
+        TypeRencontre: Filter(Choices(Appreciations.TypeRencontre);
+            ("essai" in Value And chkEssai.Checked) Or
+            ("premi" in Value And chkPremiere.Checked) Or
+            ("mi-ann" in Value And chkMiAnnee.Checked) Or
+            ("bilan annuel" in Value And chkBilan.Checked) Or
+            (StartsWith(Value; "Autre") And chkAutre.Checked));
+        TypeRencontreAutre: txtAutre.Text;
+        ObjectifsActuels: JSON(ForAll(colObjActuels;
+            {objectif: Objectif; indicateur: Indicateur; actions: Actions}));
+        ObjectifsAvenir: JSON(ForAll(colObjAvenir;
+            {objectif: Objectif; indicateur: Indicateur}));
+        Postures: JSON({
+            cotes: ForAll(colComportements; {k: CompKey; cadre: CoteCadre; sup: CoteSup});
+            commentaires: ForAll(colPostures; {p: PostureID; texte: Commentaire})});
+        Competences: JSON(ForAll(colCompetences; {id: CompID; exemple: Exemple}));
+        Valeurs: JSON(ForAll(colValeurs; {s: Slug; coche: Coche; ex1: Ex1; ex2: Ex2}));
+        DevPrecedents: JSON(ForAll(colDevPrecedents; {objectif: Objectif; moyens: Moyens; impacts: Impacts}));
+        DevNouveaux: JSON(ForAll(colDevNouveaux; {besoin: Besoin; moyen: Moyen}));
+        BilanSuperieur: txtBilanSup.Text;
+        BilanPersonne: txtBilanPersonne.Text;
+        EvaluationGlobale: If(varEvalGlobale = ""; Blank(); {Value: varEvalGlobale});
+        DirecteurRequis: chkDirRequis.Checked;
+        Directeur: If(!IsBlank(cboDirecteur.Selected);
+            {Claims: "i:0#.f|membership|" & Lower(cboDirecteur.Selected.Mail);
+             DisplayName: cboDirecteur.Selected.DisplayName; Email: cboDirecteur.Selected.Mail;
+             Department: ""; JobTitle: ""; Picture: ""};
+            varDossier.Directeur);
+        CourrielDirecteur: If(!IsBlank(cboDirecteur.Selected);
+            Lower(cboDirecteur.Selected.Mail); varDossier.CourrielDirecteur)
+    }));;
+    // 3) Résultat : message vert, ou message rouge avec l'erreur précise de SharePoint
+    If(IsEmpty(Errors(Appreciations));
+        Notify("Dossier enregistré."; NotificationType.Success);
+        Notify("Erreur : " & First(Errors(Appreciations)).Message; NotificationType.Error)))
+
+--- 2) Fenêtre de confirmation (sur scrFormulaire) ---
+Insérer › Disposition › Conteneur : renommez-le conConfirmer.
+Dans l'Arborescence : ⋯ › Réorganiser › Mettre au premier plan (il doit être AU-DESSUS de tout).
+
+conConfirmer.X ........ 0
+conConfirmer.Y ........ 0
+conConfirmer.Width .... Parent.Width
+conConfirmer.Height ... Parent.Height
+conConfirmer.Fill ..... RGBA(0; 0; 0; 0,45)
+conConfirmer.Visible .. locConfirmer
+
+Dans conConfirmer, insérez un 2e Conteneur : conBoite
+conBoite.Width ........ 540
+conBoite.Height ....... 250
+conBoite.X ............ (Parent.Width - Self.Width) / 2
+conBoite.Y ............ (Parent.Height - Self.Height) / 2
+conBoite.Fill ......... Color.White
+conBoite.RadiusTopLeft / TopRight / BottomLeft / BottomRight ... 8
+
+Dans conBoite :
+
+lblConfirmerTitre.Text
+"Créer votre dossier d'appréciation ?"
+lblConfirmerTitre : X 24 ; Y 20 ; Width Parent.Width - 48 ; FontWeight Bold ; Size 16
+
+lblConfirmerTexte.Text
+"Un nouveau dossier sera créé dans SharePoint à votre nom. Votre supérieur(e) immédiat(e) et votre supérieur(e) hiérarchique y auront accès. Voulez-vous continuer ?"
+lblConfirmerTexte : X 24 ; Y 64 ; Width Parent.Width - 48 ; Height 100
+
+btnConfirmerOui.Text
+"Oui, créer le dossier"
+btnConfirmerOui : Width 210 ; X Parent.Width - 24 - Self.Width ; Y Parent.Height - 24 - Self.Height
+btnConfirmerOui.OnSelect
+// Création confirmée : on ferme la fenêtre et on enregistre (btnDeposerExec)
+UpdateContext({locConfirmer: false});;
+Select(btnDeposerExec)
+
+btnConfirmerNon.Text
+"Annuler"
+btnConfirmerNon : Width 120 ; X btnConfirmerOui.X - 16 - Self.Width ; Y btnConfirmerOui.Y
+btnConfirmerNon.OnSelect
+// Création annulée : on ferme la fenêtre, rien n'est enregistré
+UpdateContext({locConfirmer: false});;
+Notify("Création annulée. Rien n'a été enregistré."; NotificationType.Information)
+
+--- 3) À la fin de scrFormulaire.OnVisible, ajoutez : ---
+// Fenêtre de confirmation fermée à l'ouverture de l'écran
+UpdateContext({locConfirmer: false})
+(Mettez « ;; » à la fin de la ligne précédente.)
+
+
+#####################################################################
+# C4. VALIDATION DES CHAMPS — btnDeposer.OnSelect (remplace l'ancienne formule)
+#####################################################################
+
+// btnDeposer.OnSelect — « Enregistrer et déposer »
+// 1) Vérifie les champs obligatoires ; 2) demande une confirmation si le dossier est nouveau ;
+// 3) lance l'enregistrement (btnDeposerExec)
+With(
+    {
+        manquants: Concat(
+            Filter(
+                Table(
+                    {Champ: "Nom"; Ok: !IsBlank(Trim(txtNom.Text))};
+                    {Champ: "ID de l'employé"; Ok: !IsBlank(Trim(txtId.Text))};
+                    {Champ: "Type de poste"; Ok: CurrentPosteID <> ""};
+                    {Champ: "Type de rencontre"; Ok: chkEssai.Checked Or chkPremiere.Checked Or chkMiAnnee.Checked Or chkBilan.Checked Or chkAutre.Checked};
+                    {Champ: "Précision du type « Autre »"; Ok: !chkAutre.Checked Or !IsBlank(Trim(txtAutre.Text))};
+                    {Champ: "Directeur ou directrice"; Ok: !chkDirRequis.Checked Or !IsBlank(cboDirecteur.Selected) Or !IsBlank(varDossier.CourrielDirecteur)}
+                );
+                !Ok
+            );
+            Champ;
+            ", "
+        )
+    };
+    If(
+        // Des champs obligatoires sont vides : on avertit et on n'enregistre rien
+        manquants <> "";
+        Notify("Avant d'enregistrer, complétez : " & manquants; NotificationType.Warning);
+        // Nouveau dossier : on demande la confirmation de création
+        IsBlank(varDossier);
+        UpdateContext({locConfirmer: true});
+        // Dossier existant : on enregistre directement
+        Select(btnDeposerExec)
+    )
+)
+
+
+#####################################################################
+# C5. GESTION DES ERREURS — App.OnError
+#####################################################################
+Arborescence › App › propriété OnError
+
+// App.OnError — Gestion globale des erreurs : message clair à l'utilisateur et trace pour le soutien
+Notify(
+    "Une erreur est survenue : " & FirstError.Message & " — Si le problème persiste, cliquez sur « ℹ️ À propos » pour joindre le soutien.";
+    NotificationType.Error
+);;
+Trace(
+    "APCONT - erreur";
+    TraceSeverity.Error;
+    {Source: FirstError.Source; Message: FirstError.Message; Utilisateur: User().Email}
+)
+
+
+#####################################################################
+# C6. ÉCRAN « À PROPOS… » — scrAPropos
+#####################################################################
+Avant : Données › Ajouter des données › Office 365 Outlook (choisir la référence de connexion
+« Outlook Appreciations » si elle est proposée). Dans les formules, tapez « Office365O » et
+choisissez le nom proposé par la liste (ex. Office365Outlook).
+
+Nouvel écran › Vide › renommez-le scrAPropos.
+
+scrAPropos.OnVisible
+// scrAPropos.OnVisible — Lit les coordonnées du soutien dans la liste Parametres (modifiables sans republier)
+Set(varEnv; Coalesce(LookUp(Parametres; Title = "Environnement").Valeur; "PROD"));;
+Set(varSupportNom; LookUp(Parametres; Title = "SupportNom").Valeur);;
+Set(varSupportTel; LookUp(Parametres; Title = "SupportTelephone").Valeur);;
+Set(varCourrielSoutien; LookUp(Parametres; Title = "CourrielSoutien").Valeur)
+
+lblAProposTitre.Text
+"À propos"
+(Size 22, FontWeight Bold, X 40, Y 30)
+
+lblAppNom.Text
+"Appréciation de la contribution"
+(Size 18, FontWeight Semibold, X 40, Y 80)
+
+lblVersion.Text
+"Version 1.0.0.4 — Environnement : " & varEnv
+(X 40, Y 115 ; changez le numéro à chaque nouvelle version)
+
+lblDescriptionApp.Text
+"Application de la Ville de Québec pour l'appréciation annuelle de la contribution des cadres et des professionnels non syndiqués. Responsable : Ressources humaines, Division de la santé et de la sécurité au travail."
+(X 40, Y 150, Width Parent.Width - 80, Height 60)
+
+lblSupport.Text
+"Soutien de l'application" & Char(10) &
+"Responsable : " & Coalesce(varSupportNom; "—") & Char(10) &
+"📞 Téléphone : " & Coalesce(varSupportTel; "—") & Char(10) &
+"✉️ Courriel : " & Coalesce(varCourrielSoutien; "—")
+(X 40, Y 220, Width Parent.Width - 80, Height 110, Size 14)
+
+lblFormulaireTitre.Text
+"Écrire au soutien"
+(X 40, Y 350, FontWeight Bold)
+
+txtSujet.Default
+"Appréciation de la contribution — demande de soutien"
+(Entrée de texte ; X 40 ; Y 385 ; Width 600)
+
+txtMessage.Default
+""
+txtMessage.Mode
+TextMode.MultiLine
+txtMessage.HintText
+"Décrivez votre question ou le problème rencontré (écran, bouton, message d'erreur)."
+(X 40 ; Y 430 ; Width 600 ; Height 160)
+
+btnEnvoyerSoutien.Text
+"✉️ Envoyer"
+btnEnvoyerSoutien.OnSelect
+// btnEnvoyerSoutien.OnSelect — Envoie le message au soutien par courriel (Office 365 Outlook)
+// Le courriel contient le message, la personne qui l'envoie, l'environnement et le dossier ouvert s'il y en a un
+If(
+    IsBlank(Trim(txtMessage.Text));
+    Notify("Écrivez votre message avant d'envoyer."; NotificationType.Warning);
+    IsBlank(varCourrielSoutien);
+    Notify("L'adresse du soutien n'est pas configurée (liste Parametres, CourrielSoutien)."; NotificationType.Error);
+    IfError(
+        Office365Outlook.SendEmailV2(
+            varCourrielSoutien;
+            txtSujet.Text;
+            "<p>" & Substitute(txtMessage.Text; Char(10); "<br>") & "</p><hr>" &
+            "<p>Envoyé par : " & User().FullName & " (" & User().Email & ")<br>" &
+            "Environnement : " & varEnv &
+            If(IsBlank(varDossier); ""; "<br>Dossier n° " & varDossier.ID) & "</p>"
+        );
+        // Échec de l'envoi : on l'indique clairement
+        Notify("Le message n'a pas pu être envoyé : " & FirstError.Message; NotificationType.Error);
+        // Succès
+        Notify("Message envoyé au soutien. Merci !"; NotificationType.Success);;
+        Reset(txtMessage)
+    )
+)
+(X 40 ; Y 605 ; Width 160)
+
+btnAProposRetour.Text
+"← Retour"
+btnAProposRetour.OnSelect
+// Revient à l'écran précédent
+Back()
+(X 40 ; Y en bas, ou en haut à droite)
+
+--- Boutons d'accès (sur scrMesDossiers ET dans la barre de gauche de scrFormulaire) ---
+btnAPropos.Text
+"ℹ️ À propos"
+btnAPropos.OnSelect
+// Ouvre l'écran À propos (soutien et contact)
+Navigate(scrAPropos; ScreenTransition.None)
+
+btnAide.Text
+"❓ Aide"
+btnAide.OnSelect
+// Ouvre l'écran d'aide (didacticiel)
+Navigate(scrAide; ScreenTransition.None)
+
+
+#####################################################################
+# C7. ÉCRAN D'AIDE — modèle Didacticiel (scrAide)
+#####################################################################
+Nouvel écran › Didacticiel › renommez-le scrAide. Remplacez les étapes du modèle par ces 5 pages.
+Si le modèle utilise une TABLE d'étapes (propriété Items d'une galerie, ou OnVisible),
+remplacez-la par la table ci-dessous ; sinon, copiez les titres et textes dans chaque étape.
+
+// Étapes du didacticiel : une par écran de l'application
+Table(
+    {Etape: 1; Titre: "Bienvenue";
+     Texte: "L'application Appréciation de la contribution remplace le formulaire Word. Un seul dossier par appréciation, visible seulement par la personne, ses supérieurs et les RH. L'application avise automatiquement la bonne personne à chaque étape."};
+    {Etape: 2; Titre: "Mes dossiers";
+     Texte: "L'écran d'accueil liste vos dossiers avec votre rôle et le statut. Filtres : Tous, En cours, À approuver par moi, Complétés. « Ouvrir » ouvre un dossier ; « Nouveau formulaire » commence votre appréciation."};
+    {Etape: 3; Titre: "Le formulaire";
+     Texte: "Choisissez votre type de poste, vérifiez l'identification et remplissez les sections A à F. Seules les sections de votre rôle sont modifiables. « Enregistrer et déposer » enregistre votre travail ; une confirmation est demandée à la création."};
+    {Etape: 4; Titre: "Le circuit et le PDF";
+     Texte: "Section G : Aviser, Certifier puis Approuver (SI, SH, directeur au besoin). La barre d'étapes montre l'avancement et les dates. « Aperçu PDF » produit le PDF complet, joint au dossier ; « Ouvrir le PDF » l'affiche."};
+    {Etape: 5; Titre: "À propos et soutien";
+     Texte: "Le bouton « À propos » donne le nom et le téléphone de la personne responsable du soutien, et permet de lui écrire directement depuis l'application."}
+)
+
+Bouton de fin ou de retour du didacticiel :
+// Quitte l'aide et revient à l'écran précédent
+Back()
