@@ -28,6 +28,6 @@ L'appréciation annuelle des **cadres avec ou sans équipe** et des **profession
 
 **Bon à savoir :** les courriels ne contiennent aucune évaluation, seulement un lien. Seule l'évaluation globale est transmise aux RH, à la fin. Une section grisée est réservée à un autre rôle ou à une autre étape.
 
-**Pour commencer :** ouvrez l'application : **[lien de l'application]**. Personne en appréciation : **📝 Nouveau formulaire**. Gestionnaire : le lien du courriel, ou **Mes dossiers**. Guide d'utilisation et vidéo : **[lien]**.
+**Pour commencer :** ouvrez l'application **« Appréciation de la contribution »**. Personne en appréciation : **📝 Nouveau formulaire**. Gestionnaire : le lien du courriel, ou **Mes dossiers**.
 
-**Besoin d'aide ?** Bouton **ℹ️ À propos** dans l'application · Soutien : [nom] · [téléphone] · [courriel]
+**Besoin d'aide ?** Bouton **ℹ️ À propos** dans l'application · Personne-ressource : **Annie Audet** · annie.audet@ville.quebec.qc.ca

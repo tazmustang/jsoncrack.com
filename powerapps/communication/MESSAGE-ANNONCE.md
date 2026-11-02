@@ -10,7 +10,7 @@ lang: fr-CA
 
 Bonjour,
 
-À compter du *[date]*, l'**appréciation de la contribution** se fait dans une **application en ligne**, qui remplace les formulaires Word. Le contenu reste le même : ce sont les formulaires du 15 octobre 2026, pour les cadres avec équipe, les cadres sans équipe et les professionnels non syndiqués.
+À compter du *[date]*, l'**appréciation de la contribution** se fait dans une **application en ligne**, qui remplace les formulaires Word. Le contenu reste le même : ce sont les mêmes formulaires, pour les cadres avec équipe, les cadres sans équipe et les professionnels non syndiqués.
 
 **Ce qui change pour vous :**
 

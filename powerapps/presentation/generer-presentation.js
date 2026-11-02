@@ -101,14 +101,14 @@ irritants.forEach(([t, d], i) => {
   s.addText(t, { x: x + 0.25, y: y + 0.18, w: 3.9, h: 0.4, fontSize: 17, bold: true, color: C.accent5, margin: 0, isTextBox: true });
   s.addText(d, { x: x + 0.25, y: y + 0.62, w: 3.9, h: 0.8, fontSize: 14, color: C.text1, margin: 0, isTextBox: true });
 });
-s.addNotes("Nouveaux formulaires du 15 octobre 2026 : cadre avec équipe, cadre sans équipe, professionnel non syndiqué. Le contenu ne change pas, c'est la façon de le remplir et de le faire circuler qui change.");
+s.addNotes("Nouveaux formulaires : cadre avec équipe, cadre sans équipe, professionnel non syndiqué. Le contenu ne change pas, c'est la façon de le remplir et de le faire circuler qui change.");
 
 // ---------- 4. Objectifs et contraintes ----------
 s = contenu("Point de départ", "Nos objectifs et nos contraintes");
 carte(s, 0.5, 1.25, 4.4, 3.75, C.background2, "objectifs");
 s.addText("Objectifs", { x: 0.75, y: 1.4, w: 4, h: 0.4, fontSize: 18, bold: true, color: C.text2, margin: 0, isTextBox: true });
 s.addText([
-  { text: "Intégrer les 3 formulaires du 15 octobre 2026", options: { bullet: true, breakLine: true } },
+  { text: "Intégrer les 3 nouveaux formulaires", options: { bullet: true, breakLine: true } },
   { text: "Circuit : personne, supérieur immédiat, hiérarchique, directeur au besoin", options: { bullet: true, breakLine: true } },
   { text: "Courriels de suivi automatiques", options: { bullet: true, breakLine: true } },
   { text: "Transmission de l'évaluation globale aux RH", options: { bullet: true, breakLine: true } },

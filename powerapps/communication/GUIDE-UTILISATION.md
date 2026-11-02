@@ -1,6 +1,6 @@
 ---
 title: "Appréciation de la contribution — Guide d'utilisation"
-subtitle: "VERSION FINALE — 28 octobre 2026 · Pour les personnes en appréciation et les gestionnaires (formulaires du 15 octobre 2026)"
+subtitle: "VERSION FINALE — 28 octobre 2026 · Pour les personnes en appréciation et les gestionnaires"
 lang: fr-CA
 ---
 

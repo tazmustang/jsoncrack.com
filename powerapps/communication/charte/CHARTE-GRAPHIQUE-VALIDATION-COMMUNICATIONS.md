@@ -122,7 +122,7 @@ Le bouton « Aperçu PDF » produit un PDF complet de l'appréciation, joint au 
 | Sous-titres (postures) | 11 pt, bleu #074B98 |
 | En-têtes de tableaux | Fond #E8EEF7, texte marine, bordure #C7D2E3 |
 | Cellules | Bordure #D1D5DB ; libellés sur fond #F3F4F6, en gras |
-| Pied de page | « Document produit le [date] à partir de l'application Appréciation de la contribution. Version du formulaire : 15 octobre 2026. » |
+| Pied de page | « Document produit le [date] à partir de l'application Appréciation de la contribution. » |
 
 > Un exemple de PDF peut vous être transmis sur demande (dossier fictif).
 

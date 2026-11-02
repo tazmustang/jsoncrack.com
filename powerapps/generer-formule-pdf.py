@@ -41,7 +41,7 @@ P = parts.append
 P(s("<html><head><meta charset='utf-8'><style>" + CSS + "</style></head><body>"))
 P(s("<h1>Appréciation de la contribution</h1><p class=sous>") +
   ' & LookUp(colPostes; PosteID = CurrentPosteID).PosteLabel & ' +
-  s(" — formulaire du 15 octobre 2026 — dossier no ") + ' & varDossier.ID & ' +
+  s(" — dossier no ") + ' & varDossier.ID & ' +
   s(" — statut : ") + ' & Coalesce(varDossier.Statut.Value; "Brouillon") & ' + s("</p>"))
 
 # Identification
@@ -138,7 +138,7 @@ P(g("Approbation du supérieur hiérarchique", 'Coalesce(varDossier.SuperieurHie
 P('If(chkDirRequis.Checked; ' + g("Approbation du directeur", 'Coalesce(varDossier.Directeur.DisplayName; "—")', 'varDossier.ApprouveDirLe') + '; "")')
 P(g("Transmis aux RH", '"—"', 'varDossier.TransmisPaieLe'))
 P(s("</table><p class=pied>Document produit le ") + ' & Text(Now(); "d mmmm yyyy") & " à " & Text(Now(); "hh:mm") & ' +
-  s(" à partir de l'application Appréciation de la contribution. Version du formulaire : 15 octobre 2026.</p></body></html>"))
+  s(" à partir de l'application Appréciation de la contribution.</p></body></html>"))
 
 # ---------------------------------------------------------------------------
 # PDF « Plan de développement » (bouton « Imprimer ce plan » de l'onglet Plan)
