@@ -301,6 +301,7 @@ Voir l'onglet **Checklist TI** du fichier Excel :
 
 | Message | Cause | Solution |
 |---|---|---|
+| « [Appreciations] List not found » (PréProd) | La liste a été supprimée puis recréée : la variable d'environnement pointe vers l'ancien identifiant (GUID) | Mettre à jour la valeur de la variable avec la nouvelle liste ; désactiver puis réactiver les flux 1 et 2 ; revérifier colonnes, index et autorisations de la nouvelle liste |
 | « The workflow parameter '…' is not found » | Mauvais nom de variable dans un flux | Noms de la partie 4.3 |
 | « Impossible de trouver le principal dont l'ID est 5 » | Les Membres n'ont pas de droit sur le dossier | Normal : exécution après « a échoué » (partie 6.1) |
 | « Impossible de modifier le type de cette colonne car il est en cours d'indexation » | Colonne indexée | Supprimer l'index (Paramètres de la liste › Colonnes indexées) |

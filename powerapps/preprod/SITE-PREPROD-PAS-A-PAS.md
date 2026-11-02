@@ -234,3 +234,16 @@ Votre demande aux TI contient la solution exportée **1.0.0.1**, **avant** les a
 2. **Sinon :** laissez l'import de la 1.0.0.1 se faire, testez avec des données fictives, puis transmettez la **1.0.0.4** conforme comme **mise à niveau**. Les valeurs des variables et les données sont conservées.
 
 Dans les deux cas : chaque nouvel export doit avoir un **numéro de version plus élevé** que le précédent, et être en **Gérée**.
+
+# Dépannage — « List not found » après avoir supprimé et recréé une liste
+
+La variable d'environnement d'une liste SharePoint mémorise l'**identifiant unique (GUID)** de la liste, et non son nom. Une liste supprimée puis recréée a un **nouvel identifiant**, même avec le même nom. L'application et les flux cherchent donc l'ancienne liste, qui n'existe plus : c'est le message « List not found ».
+
+**Pour corriger :**
+
+1. **Mettre à jour la valeur de la variable** de la liste des dossiers en PréProd : choisir le site, puis la **nouvelle** liste. Faites-le vous-même si vous en avez les droits, sinon les TI.
+2. **Désactiver puis réactiver** les flux 1 et 2. Leur déclencheur SharePoint s'abonne ainsi à la nouvelle liste.
+3. Rouvrir l'application dans un **nouvel onglet** (Ctrl + F5).
+4. **Revérifier la nouvelle liste** (étapes 7 et 9) : colonnes et noms internes, versions, pièces jointes, 6 index, héritage arrêté et groupes.
+
+**À l'avenir :** ne supprimez jamais une liste utilisée par l'application. Ajoutez plutôt les colonnes manquantes à la liste existante.
