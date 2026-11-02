@@ -13,3 +13,4 @@
 | Schemas-operationnels-et-avantages.pdf | Présentation | Les 4 schémas dans un seul PDF (à projeter en réunion) |
 | schemas-operationnels.html, generer-images.js | — | Sources pour modifier les schémas |
 | charte/CHARTE-GRAPHIQUE-VALIDATION-COMMUNICATIONS.docx | Service des communications | Couleurs (codes), polices, éléments graphiques, captures d'écran, PDF, visuels, textes, et grille de validation |
+| video/ | Vous | Trousse de la vidéo pour les gestionnaires : scénario, cartes de titre, sous-titres |

@@ -1,0 +1,79 @@
+1
+00:00:00,000 --> 00:00:15,000
+Bonjour ! Dans cette courte vidéo, nous allons voir comment compléter l'appréciation de la contribution d'une personne de votre équipe, dans la nouvelle application.
+
+2
+00:00:15,000 --> 00:00:35,000
+L'appréciation se fait maintenant dans une application, et non plus dans un document Word. Un seul dossier par appréciation, visible seulement par la personne, ses supérieurs et les RH. Et l'application vous avise par courriel quand c'est votre tour.
+
+3
+00:00:35,000 --> 00:00:40,000
+Étape 1 : recevoir et ouvrir le dossier.
+
+4
+00:00:40,000 --> 00:01:00,000
+Quand la personne a rempli sa partie, vous recevez ce courriel. Il ne contient aucune information d'évaluation : seulement un lien. Cliquez sur « Ouvrir le dossier ».
+
+5
+00:01:00,000 --> 00:01:20,000
+Vous pouvez aussi ouvrir l'application et aller dans Mes dossiers. Le filtre « À approuver par moi » montre les dossiers qui attendent votre action. Cliquez sur Ouvrir.
+
+6
+00:01:20,000 --> 00:01:40,000
+L'application reconnaît votre rôle automatiquement : ici, supérieur immédiat. La barre d'étapes, en haut, montre où en est le dossier, avec les dates.
+
+7
+00:01:40,000 --> 00:01:45,000
+Étape 2 : compléter votre partie.
+
+8
+00:01:45,000 --> 00:02:10,000
+Prenez connaissance des objectifs, des valeurs et du développement inscrits par la personne. Avant la certification, vous pouvez compléter ces sections avec elle, par exemple pendant la rencontre.
+
+9
+00:02:10,000 --> 00:02:40,000
+Dans la section B, l'échelle à quatre niveaux est rappelée en haut : insatisfaisant, partiellement satisfaisant, complètement satisfaisant et supérieur. Pour chaque comportement, choisissez votre cote dans votre colonne. La cote de la personne est affichée à côté.
+
+10
+00:02:40,000 --> 00:03:00,000
+Dans la section E, rédigez votre bilan annuel de la contribution.
+
+11
+00:03:00,000 --> 00:03:20,000
+Puis choisissez l'évaluation globale. C'est la seule information qui sera transmise aux RH, à la fin du processus.
+
+12
+00:03:20,000 --> 00:03:35,000
+Cliquez sur « Enregistrer et déposer ». Un message vert confirme l'enregistrement. Vous pouvez fermer et revenir plus tard : rien n'est perdu.
+
+13
+00:03:35,000 --> 00:03:40,000
+Étape 3 : approuver.
+
+14
+00:03:40,000 --> 00:04:05,000
+Une fois la rencontre faite et le dossier certifié par la personne, allez à la section G. Cochez la case de confirmation, puis cliquez sur Approuver. Le supérieur hiérarchique reçoit automatiquement le dossier à approuver.
+
+15
+00:04:05,000 --> 00:04:20,000
+Si un directeur ou une directrice doit aussi approuver, cochez cette case et choisissez la personne. Elle approuvera en dernier.
+
+16
+00:04:20,000 --> 00:04:25,000
+Étape 4 : le PDF et la suite.
+
+17
+00:04:25,000 --> 00:04:45,000
+Le bouton Aperçu PDF produit le PDF complet de l'appréciation, en quelques secondes. Il est joint au dossier. Cliquez ensuite sur Ouvrir le PDF.
+
+18
+00:04:45,000 --> 00:05:05,000
+Quand toutes les approbations sont faites, le dossier passe à « Complété ». L'évaluation globale est transmise aux RH, tout le monde est avisé, et le dossier devient en lecture seule.
+
+19
+00:05:05,000 --> 00:05:20,000
+Besoin d'aide ? Le bouton Aide présente chaque écran, et le bouton À propos donne les coordonnées du soutien, avec un formulaire pour nous écrire.
+
+20
+00:05:20,000 --> 00:05:30,000
+Merci, et bonnes rencontres d'appréciation !
