@@ -1,0 +1,72 @@
+// Couleurs de la palette (Appréciation de la contribution)
+cOr = RGBA(133, 118, 80, 1); // #857650
+cMarine = RGBA(0, 40, 94, 1); // #00285E
+cBleu = RGBA(7, 75, 152, 1); // #074B98
+cVert = RGBA(0, 158, 73, 1); // #009E49
+cSarcelle = RGBA(0, 121, 107, 1); // #00796B
+cViolet = RGBA(107, 63, 160, 1); // #6B3FA0
+cRouge = RGBA(200, 0, 0, 1); // #C80000
+cTexte = RGBA(31, 41, 55, 1); // #1F2937
+cTexte2 = RGBA(107, 114, 128, 1); // #6B7280
+cGrisLib = RGBA(156, 163, 175, 1); // #9CA3AF
+cBordure = RGBA(229, 231, 235, 1); // #E5E7EB
+cBleuPale = RGBA(236, 241, 247, 1); // #ECF1F7
+cFond = RGBA(249, 250, 251, 1); // #F9FAFB
+cVersion = "2026-11";
+// Courriels configurables dans la liste SST_Ref_Listes (Liste = Config, colonne Courriel)
+cCourrielSST = LookUp(SST_Ref_Listes, Title = "Config" && Valeur = "CourrielSST", Courriel);
+cCourrielBouclier = LookUp(SST_Ref_Listes, Title = "Config" && Valeur = "CourrielComiteBouclier", Courriel);
+// Zones du schéma corporel
+tZones = Table(
+  {Id: "thorax", Libelle: "Thorax / poitrine", Partie: "Poitrine/thorax", Cote: "Non applicable"},
+  {Id: "hautDos", Libelle: "Haut du dos", Partie: "Dos", Cote: "Non applicable"},
+  {Id: "abdomen", Libelle: "Abdomen", Partie: "Abdomen", Cote: "Non applicable"},
+  {Id: "basDos", Libelle: "Bas du dos / lombaires", Partie: "Dos", Cote: "Non applicable"},
+  {Id: "tete", Libelle: "Tête", Partie: "Tête", Cote: "Non applicable"},
+  {Id: "crane", Libelle: "Arrière de la tête", Partie: "Tête", Cote: "Non applicable"},
+  {Id: "cou", Libelle: "Cou / gorge", Partie: "Gorge", Cote: "Non applicable"},
+  {Id: "nuque", Libelle: "Nuque", Partie: "Nuque", Cote: "Non applicable"},
+  {Id: "brasG", Libelle: "Bras gauche", Partie: "Bras", Cote: "Gauche"},
+  {Id: "brasGdos", Libelle: "Bras gauche", Partie: "Bras", Cote: "Gauche"},
+  {Id: "brasD", Libelle: "Bras droit", Partie: "Bras", Cote: "Droit"},
+  {Id: "brasDdos", Libelle: "Bras droit", Partie: "Bras", Cote: "Droit"},
+  {Id: "epauleG", Libelle: "Épaule gauche", Partie: "Épaule", Cote: "Gauche"},
+  {Id: "epauleGdos", Libelle: "Épaule gauche", Partie: "Épaule", Cote: "Gauche"},
+  {Id: "epauleD", Libelle: "Épaule droite", Partie: "Épaule", Cote: "Droit"},
+  {Id: "epauleDdos", Libelle: "Épaule droite", Partie: "Épaule", Cote: "Droit"},
+  {Id: "coudeG", Libelle: "Coude gauche", Partie: "Coude", Cote: "Gauche"},
+  {Id: "coudeGdos", Libelle: "Coude gauche", Partie: "Coude", Cote: "Gauche"},
+  {Id: "coudeD", Libelle: "Coude droit", Partie: "Coude", Cote: "Droit"},
+  {Id: "coudeDdos", Libelle: "Coude droit", Partie: "Coude", Cote: "Droit"},
+  {Id: "avantbrasG", Libelle: "Avant-bras gauche", Partie: "Avant-bras", Cote: "Gauche"},
+  {Id: "avantbrasGdos", Libelle: "Avant-bras gauche", Partie: "Avant-bras", Cote: "Gauche"},
+  {Id: "avantbrasD", Libelle: "Avant-bras droit", Partie: "Avant-bras", Cote: "Droit"},
+  {Id: "avantbrasDdos", Libelle: "Avant-bras droit", Partie: "Avant-bras", Cote: "Droit"},
+  {Id: "mainG", Libelle: "Main gauche", Partie: "Main", Cote: "Gauche"},
+  {Id: "mainGdos", Libelle: "Main gauche", Partie: "Main", Cote: "Gauche"},
+  {Id: "mainD", Libelle: "Main droite", Partie: "Main", Cote: "Droit"},
+  {Id: "mainDdos", Libelle: "Main droite", Partie: "Main", Cote: "Droit"},
+  {Id: "hancheG", Libelle: "Hanche / bassin gauche", Partie: "Hanche", Cote: "Gauche"},
+  {Id: "fessierG", Libelle: "Fessier gauche", Partie: "Fessier", Cote: "Gauche"},
+  {Id: "hancheD", Libelle: "Hanche / bassin droit", Partie: "Hanche", Cote: "Droit"},
+  {Id: "fessierD", Libelle: "Fessier droit", Partie: "Fessier", Cote: "Droit"},
+  {Id: "cuisseG", Libelle: "Cuisse gauche", Partie: "Cuisse", Cote: "Gauche"},
+  {Id: "cuisseGdos", Libelle: "Arrière cuisse gauche", Partie: "Cuisse", Cote: "Gauche"},
+  {Id: "cuisseD", Libelle: "Cuisse droite", Partie: "Cuisse", Cote: "Droit"},
+  {Id: "cuisseDdos", Libelle: "Arrière cuisse droite", Partie: "Cuisse", Cote: "Droit"},
+  {Id: "genouG", Libelle: "Genou gauche", Partie: "Genou", Cote: "Gauche"},
+  {Id: "genouGdos", Libelle: "Genou gauche", Partie: "Genou", Cote: "Gauche"},
+  {Id: "genouD", Libelle: "Genou droit", Partie: "Genou", Cote: "Droit"},
+  {Id: "genouDdos", Libelle: "Genou droit", Partie: "Genou", Cote: "Droit"},
+  {Id: "jambeG", Libelle: "Jambe gauche", Partie: "Jambes", Cote: "Gauche"},
+  {Id: "molletG", Libelle: "Mollet gauche", Partie: "Jambes", Cote: "Gauche"},
+  {Id: "jambeD", Libelle: "Jambe droite", Partie: "Jambes", Cote: "Droit"},
+  {Id: "molletD", Libelle: "Mollet droit", Partie: "Jambes", Cote: "Droit"},
+  {Id: "chevilleG", Libelle: "Cheville gauche", Partie: "Cheville", Cote: "Gauche"},
+  {Id: "chevilleGdos", Libelle: "Cheville gauche", Partie: "Cheville", Cote: "Gauche"},
+  {Id: "chevilleD", Libelle: "Cheville droite", Partie: "Cheville", Cote: "Droit"},
+  {Id: "chevilleDdos", Libelle: "Cheville droite", Partie: "Cheville", Cote: "Droit"},
+  {Id: "piedG", Libelle: "Pied gauche", Partie: "Pied", Cote: "Gauche"},
+  {Id: "talonG", Libelle: "Talon gauche", Partie: "Pied", Cote: "Gauche"},
+  {Id: "piedD", Libelle: "Pied droit", Partie: "Pied", Cote: "Droit"},
+  {Id: "talonD", Libelle: "Talon droit", Partie: "Pied", Cote: "Droit"});

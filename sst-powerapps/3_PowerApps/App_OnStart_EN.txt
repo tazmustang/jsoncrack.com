@@ -1,0 +1,15 @@
+Set(varMoi, Lower(User().Email));
+Concurrent(
+  ClearCollect(colListes, ForAll(SST_Ref_Listes, {Liste: Title, Value: Valeur, Ordre: Ordre, Aide: Aide, Courriel: Courriel})),
+  ClearCollect(colOrg, ForAll(SST_Ref_Org, {Service: Title, Niveau: Niveau, Value: Valeur, Ordre: Ordre})),
+  ClearCollect(colTitres, ForAll(SST_Ref_Titres, {Syndicat: Title, Classe: Classe, Value: Valeur, Ordre: Ordre})),
+  ClearCollect(colRoles, ForAll(SST_Roles, {Courriel: Lower(Title), Role: Role}))
+);
+Set(varEstSST, CountRows(Filter(colRoles, Courriel = varMoi && Role = "Conseiller SST")) > 0);
+Set(varRole, If(varEstSST, "Conseiller SST", "Gestionnaire"));
+Set(varDossier, Defaults(SST_Dossiers));
+Set(varNouveauType, "Accident");
+Set(varAutoEnvoi, false);
+Set(varVue, "face");
+Set(varB1Zone, "");
+Set(varB2Zone, "")

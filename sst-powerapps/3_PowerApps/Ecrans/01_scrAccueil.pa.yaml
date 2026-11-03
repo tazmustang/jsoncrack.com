@@ -1,0 +1,538 @@
+Screens:
+  scrAccueil:
+    Properties:
+      Fill: =cFond
+    Children:
+      - acc0_bandeau:
+          Control: Rectangle@2.3.0
+          Properties:
+            Fill: =cOr
+            BorderThickness: =0
+            X: =0
+            Y: =0
+            Width: =Parent.Width
+            Height: =64
+      - acc0_titre:
+          Control: Label@2.5.1
+          Properties:
+            Text: ="Santé et sécurité au travail"
+            Color: =Color.White
+            Size: =20
+            X: =0
+            Y: =6
+            Width: =Parent.Width
+            Height: =32
+            FontWeight: =FontWeight.Bold
+            Align: =Align.Center
+      - acc0_sousTitre:
+          Control: Label@2.5.1
+          Properties:
+            Text: ="Déclarations, enquêtes et analyses d'évènements"
+            Color: =Color.White
+            Size: =12
+            X: =0
+            Y: =36
+            Width: =Parent.Width
+            Height: =22
+            Align: =Align.Center
+      - acc0_pilRole:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="👤 " & varRole
+            OnSelect: =false
+            Fill: =cVert
+            Color: =Color.White
+            BorderThickness: =0
+            HoverFill: =cVert
+            PressedFill: =cVert
+            HoverColor: =Color.White
+            PressedColor: =Color.White
+            DisabledFill: =cVert
+            DisabledColor: =Color.White
+            DisplayMode: =DisplayMode.View
+            Size: =10
+            FontWeight: =FontWeight.Semibold
+            Height: =28
+            RadiusTopLeft: =14
+            RadiusTopRight: =14
+            RadiusBottomLeft: =14
+            RadiusBottomRight: =14
+            TabIndex: =-1
+            X: =Parent.Width - 224
+            Y: =18
+            Width: =200
+      - acc0_barre:
+          Control: Rectangle@2.3.0
+          Properties:
+            Fill: =Color.White
+            BorderThickness: =0
+            X: =0
+            Y: =64
+            Width: =Parent.Width
+            Height: =52
+      - acc0_barreLigne:
+          Control: Rectangle@2.3.0
+          Properties:
+            Fill: =cBordure
+            BorderThickness: =0
+            X: =0
+            Y: =115
+            Width: =Parent.Width
+            Height: =1
+      - acc0_btnAide:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="❓ Comment remplir"
+            OnSelect: =Navigate(scrAide, ScreenTransition.None)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =cOr
+            Color: =Color.White
+            BorderThickness: =0
+            HoverFill: =ColorFade(cOr, -0.15)
+            PressedFill: =ColorFade(cOr, -0.3)
+            HoverColor: =Color.White
+            PressedColor: =Color.White
+            X: =24
+            Y: =72
+            Width: =170
+            Height: =36
+      - acc0_btnDossiers:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="📂 Mes dossiers"
+            OnSelect: =Navigate(scrDossiers, ScreenTransition.None)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =Color.White
+            Color: =cBleu
+            BorderColor: =cBleu
+            BorderThickness: =2
+            HoverFill: =cBleuPale
+            HoverColor: =cBleu
+            HoverBorderColor: =cBleu
+            PressedFill: =cBordure
+            PressedColor: =cBleu
+            PressedBorderColor: =cBleu
+            X: =Parent.Width - 194
+            Y: =72
+            Width: =162
+            Height: =36
+      - acc0_btnApropos:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="ℹ️ À propos"
+            OnSelect: |-
+              =Navigate(scrAide, ScreenTransition.None, {locAideOnglet: 5})
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =Color.White
+            Color: =cBleu
+            BorderColor: =cBleu
+            BorderThickness: =2
+            HoverFill: =cBleuPale
+            HoverColor: =cBleu
+            HoverBorderColor: =cBleu
+            PressedFill: =cBordure
+            PressedColor: =cBleu
+            PressedBorderColor: =cBleu
+            X: =Parent.Width - 334
+            Y: =72
+            Width: =132
+            Height: =36
+      - acc0_imgMarque:
+          Control: Image@2.2.3
+          Properties:
+            Image: =""
+            X: =(Parent.Width - 520) / 2
+            Y: =132
+            Width: =520
+            Height: =60
+            ImagePosition: =ImagePosition.Fit
+            Visible: =!IsBlank(Self.Image)
+      - acc0_lblVous:
+          Control: Label@2.5.1
+          Properties:
+            Text: ="VOUS ÊTES :"
+            Color: =cTexte2
+            Size: =11
+            X: =(Parent.Width - 640) / 2
+            Y: =202
+            Width: =120
+            Height: =36
+            FontWeight: =FontWeight.Bold
+      - acc0_btnRole0:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="Gestionnaire"
+            OnSelect: =Set(varRole, "Gestionnaire")
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =If(varRole = "Gestionnaire", cVert, Color.White)
+            Color: =If(varRole = "Gestionnaire", Color.White, cVert)
+            BorderThickness: =2
+            HoverFill: =If(varRole = "Gestionnaire", ColorFade(cVert, -0.15), cBleuPale)
+            PressedFill: =ColorFade(If(varRole = "Gestionnaire", cVert, Color.White), -0.3)
+            HoverColor: =If(varRole = "Gestionnaire", Color.White, cVert)
+            PressedColor: =Color.White
+            BorderColor: =cVert
+            X: =(Parent.Width - 640) / 2 + 130
+            Y: =202
+            Width: =160
+            Height: =36
+            Visible: =true
+      - acc0_btnRole1:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="Employé"
+            OnSelect: =Set(varRole, "Employé")
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =If(varRole = "Employé", cVert, Color.White)
+            Color: =If(varRole = "Employé", Color.White, cVert)
+            BorderThickness: =2
+            HoverFill: =If(varRole = "Employé", ColorFade(cVert, -0.15), cBleuPale)
+            PressedFill: =ColorFade(If(varRole = "Employé", cVert, Color.White), -0.3)
+            HoverColor: =If(varRole = "Employé", Color.White, cVert)
+            PressedColor: =Color.White
+            BorderColor: =cVert
+            X: =(Parent.Width - 640) / 2 + 302
+            Y: =202
+            Width: =160
+            Height: =36
+            Visible: =true
+      - acc0_btnRole2:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="Conseiller SST"
+            OnSelect: =Set(varRole, "Conseiller SST")
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =If(varRole = "Conseiller SST", cVert, Color.White)
+            Color: =If(varRole = "Conseiller SST", Color.White, cVert)
+            BorderThickness: =2
+            HoverFill: =If(varRole = "Conseiller SST", ColorFade(cVert, -0.15), cBleuPale)
+            PressedFill: =ColorFade(If(varRole = "Conseiller SST", cVert, Color.White), -0.3)
+            HoverColor: =If(varRole = "Conseiller SST", Color.White, cVert)
+            PressedColor: =Color.White
+            BorderColor: =cVert
+            X: =(Parent.Width - 640) / 2 + 474
+            Y: =202
+            Width: =160
+            Height: =36
+            Visible: =varEstSST
+      - acc0_cartes:
+          Control: GroupContainer@1.3.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =Color.Transparent
+            BorderThickness: =0
+            DropShadow: =DropShadow.None
+            LayoutDirection: =LayoutDirection.Horizontal
+            LayoutGap: =20
+            LayoutAlignItems: =LayoutAlignItems.Start
+            X: =24
+            Y: =262
+            Width: =Parent.Width - 48
+            Height: =290
+            LayoutJustifyContent: =LayoutJustifyContent.Center
+          Children:
+            - acc0_carteAcc:
+                Control: GroupContainer@1.3.0
+                Variant: ManualLayout
+                Properties:
+                  Fill: =Color.White
+                  BorderThickness: =1
+                  DropShadow: =DropShadow.None
+                  Width: =320
+                  Height: =270
+                  Visible: =varRole <> "Employé"
+                  FillPortions: =0
+                  BorderColor: =cBordure
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                Children:
+                  - acc0_barreAcc:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        Fill: =cBleu
+                        BorderThickness: =0
+                        X: =0
+                        Y: =0
+                        Width: =6
+                        Height: =Parent.Height
+                  - acc0_icoAcc:
+                      Control: Label@2.5.1
+                      Properties:
+                        Text: ="🩹"
+                        Color: =cTexte
+                        Size: =24
+                        X: =20
+                        Y: =16
+                        Width: =50
+                        Height: =40
+                  - acc0_titAcc:
+                      Control: Label@2.5.1
+                      Properties:
+                        Text: ="Accident ou incident de travail"
+                        Color: =cMarine
+                        Size: =15
+                        X: =20
+                        Y: =60
+                        Width: =Parent.Width - 40
+                        Height: =52
+                        FontWeight: =FontWeight.Bold
+                        Wrap: =true
+                        VerticalAlign: =VerticalAlign.Top
+                  - acc0_desAcc:
+                      Control: Label@2.5.1
+                      Properties:
+                        Text: ="Déclarer immédiatement tout accident ou incident, peu importe sa gravité. Rempli par le gestionnaire avec l'employé, la journée même. Mène à l'enquête et à l'analyse 5 Pourquoi."
+                        Color: =cTexte2
+                        Size: =11
+                        X: =20
+                        Y: =112
+                        Width: =Parent.Width - 40
+                        Height: =92
+                        Wrap: =true
+                        VerticalAlign: =VerticalAlign.Top
+                  - acc0_btnAcc:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: ="Commencer →"
+                        OnSelect: =Set(varDossier, Defaults(SST_Dossiers)); Set(varNouveauType, "Accident"); Navigate(scrAccident, ScreenTransition.None)
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =6
+                        RadiusTopRight: =6
+                        RadiusBottomLeft: =6
+                        RadiusBottomRight: =6
+                        Fill: =cBleu
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =ColorFade(cBleu, -0.15)
+                        PressedFill: =ColorFade(cBleu, -0.3)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        X: =20
+                        Y: =Parent.Height - 56
+                        Width: =Parent.Width - 40
+                        Height: =38
+            - acc0_carteSit:
+                Control: GroupContainer@1.3.0
+                Variant: ManualLayout
+                Properties:
+                  Fill: =Color.White
+                  BorderThickness: =1
+                  DropShadow: =DropShadow.None
+                  Width: =320
+                  Height: =270
+                  Visible: =true
+                  FillPortions: =0
+                  BorderColor: =cBordure
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                Children:
+                  - acc0_barreSit:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        Fill: =cOr
+                        BorderThickness: =0
+                        X: =0
+                        Y: =0
+                        Width: =6
+                        Height: =Parent.Height
+                  - acc0_icoSit:
+                      Control: Label@2.5.1
+                      Properties:
+                        Text: ="⚠️"
+                        Color: =cTexte
+                        Size: =24
+                        X: =20
+                        Y: =16
+                        Width: =50
+                        Height: =40
+                  - acc0_titSit:
+                      Control: Label@2.5.1
+                      Properties:
+                        Text: ="Situation dangereuse"
+                        Color: =cMarine
+                        Size: =15
+                        X: =20
+                        Y: =60
+                        Width: =Parent.Width - 40
+                        Height: =52
+                        FontWeight: =FontWeight.Bold
+                        Wrap: =true
+                        VerticalAlign: =VerticalAlign.Top
+                  - acc0_desSit:
+                      Control: Label@2.5.1
+                      Properties:
+                        Text: ="Vous observez une situation dangereuse qui ne peut être corrigée immédiatement ? Sécurisez les lieux, avisez votre gestionnaire et signalez-la ici."
+                        Color: =cTexte2
+                        Size: =11
+                        X: =20
+                        Y: =112
+                        Width: =Parent.Width - 40
+                        Height: =92
+                        Wrap: =true
+                        VerticalAlign: =VerticalAlign.Top
+                  - acc0_btnSit:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: ="Commencer →"
+                        OnSelect: =Set(varDossier, Defaults(SST_Dossiers)); Navigate(scrSituation, ScreenTransition.None)
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =6
+                        RadiusTopRight: =6
+                        RadiusBottomLeft: =6
+                        RadiusBottomRight: =6
+                        Fill: =cOr
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =ColorFade(cOr, -0.15)
+                        PressedFill: =ColorFade(cOr, -0.3)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        X: =20
+                        Y: =Parent.Height - 56
+                        Width: =Parent.Width - 40
+                        Height: =38
+            - acc0_carteVio:
+                Control: GroupContainer@1.3.0
+                Variant: ManualLayout
+                Properties:
+                  Fill: =Color.White
+                  BorderThickness: =1
+                  DropShadow: =DropShadow.None
+                  Width: =320
+                  Height: =270
+                  Visible: =varRole <> "Employé"
+                  FillPortions: =0
+                  BorderColor: =cBordure
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                Children:
+                  - acc0_barreVio:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        Fill: =cViolet
+                        BorderThickness: =0
+                        X: =0
+                        Y: =0
+                        Width: =6
+                        Height: =Parent.Height
+                  - acc0_icoVio:
+                      Control: Label@2.5.1
+                      Properties:
+                        Text: ="🛡️"
+                        Color: =cTexte
+                        Size: =24
+                        X: =20
+                        Y: =16
+                        Width: =50
+                        Height: =40
+                  - acc0_titVio:
+                      Control: Label@2.5.1
+                      Properties:
+                        Text: ="Évènement traumatisant ou acte de violence"
+                        Color: =cMarine
+                        Size: =15
+                        X: =20
+                        Y: =60
+                        Width: =Parent.Width - 40
+                        Height: =52
+                        FontWeight: =FontWeight.Bold
+                        Wrap: =true
+                        VerticalAlign: =VerticalAlign.Top
+                  - acc0_desVio:
+                      Control: Label@2.5.1
+                      Properties:
+                        Text: ="Évènement potentiellement traumatique, agression, incivilité ou harcèlement subi par un employé de la part d'un citoyen ou d'un partenaire externe."
+                        Color: =cTexte2
+                        Size: =11
+                        X: =20
+                        Y: =112
+                        Width: =Parent.Width - 40
+                        Height: =92
+                        Wrap: =true
+                        VerticalAlign: =VerticalAlign.Top
+                  - acc0_btnVio:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: ="Commencer →"
+                        OnSelect: =Set(varDossier, Defaults(SST_Dossiers)); Navigate(scrViolence, ScreenTransition.None)
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =6
+                        RadiusTopRight: =6
+                        RadiusBottomLeft: =6
+                        RadiusBottomRight: =6
+                        Fill: =cViolet
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =ColorFade(cViolet, -0.15)
+                        PressedFill: =ColorFade(cViolet, -0.3)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        X: =20
+                        Y: =Parent.Height - 56
+                        Width: =Parent.Width - 40
+                        Height: =38
+      - acc0_urgence:
+          Control: Label@2.5.1
+          Properties:
+            Text: ="En cas d'urgence, composez le 911 (assistance policière ou transport par ambulance). Les situations entre collègues ou avec un gestionnaire relèvent de la Politique pour contrer l'incivilité, le harcèlement et la violence au travail."
+            Color: =cMarine
+            Size: =11
+            X: =(Parent.Width - 1000) / 2
+            Y: =562
+            Width: =1000
+            Height: =60
+            Fill: =cBleuPale
+            Align: =Align.Center
+            Wrap: =true
+            BorderColor: =cBordure
+            BorderThickness: =1
+      - acc0_pied:
+          Control: Label@2.5.1
+          Properties:
+            Text: ="© Ville de Québec — Division de la santé et de la sécurité au travail · Version " & cVersion
+            Color: =cTexte2
+            Size: =9
+            X: =0
+            Y: =Parent.Height - 30
+            Width: =Parent.Width
+            Height: =24
+            Align: =Align.Center

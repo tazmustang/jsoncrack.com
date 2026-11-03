@@ -1,0 +1,935 @@
+Screens:
+  scrEnquete:
+    Properties:
+      Fill: =cFond
+      OnVisible: |-
+        =UpdateContext({locReset: true});
+        UpdateContext({locReset: false})
+    Children:
+      - enq_bandeau:
+          Control: Rectangle@2.3.0
+          Properties:
+            Fill: =cOr
+            BorderThickness: =0
+            X: =0
+            Y: =0
+            Width: =Parent.Width
+            Height: =64
+      - enq_titre:
+          Control: Label@2.5.1
+          Properties:
+            Text: ="Enquête — la collecte des faits"
+            Color: =Color.White
+            Size: =20
+            X: =0
+            Y: =6
+            Width: =Parent.Width
+            Height: =32
+            FontWeight: =FontWeight.Bold
+            Align: =Align.Center
+      - enq_sousTitre:
+          Control: Label@2.5.1
+          Properties:
+            Text: ="Dossier n° " & varDossier.ID & " · " & varDossier.Title
+            Color: =Color.White
+            Size: =12
+            X: =0
+            Y: =36
+            Width: =Parent.Width
+            Height: =22
+            Align: =Align.Center
+      - enq_pilRole:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="👤 " & varRole
+            OnSelect: =false
+            Fill: =cVert
+            Color: =Color.White
+            BorderThickness: =0
+            HoverFill: =cVert
+            PressedFill: =cVert
+            HoverColor: =Color.White
+            PressedColor: =Color.White
+            DisabledFill: =cVert
+            DisabledColor: =Color.White
+            DisplayMode: =DisplayMode.View
+            Size: =10
+            FontWeight: =FontWeight.Semibold
+            Height: =28
+            RadiusTopLeft: =14
+            RadiusTopRight: =14
+            RadiusBottomLeft: =14
+            RadiusBottomRight: =14
+            TabIndex: =-1
+            X: =Parent.Width - 224
+            Y: =18
+            Width: =200
+      - enq_barre:
+          Control: Rectangle@2.3.0
+          Properties:
+            Fill: =Color.White
+            BorderThickness: =0
+            X: =0
+            Y: =64
+            Width: =Parent.Width
+            Height: =52
+      - enq_barreLigne:
+          Control: Rectangle@2.3.0
+          Properties:
+            Fill: =cBordure
+            BorderThickness: =0
+            X: =0
+            Y: =115
+            Width: =Parent.Width
+            Height: =1
+      - enq_btnAccueil:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="🏠 Accueil"
+            OnSelect: =Navigate(scrAccueil, ScreenTransition.None)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =Color.White
+            Color: =cBleu
+            BorderColor: =cBleu
+            BorderThickness: =2
+            HoverFill: =cBleuPale
+            HoverColor: =cBleu
+            HoverBorderColor: =cBleu
+            PressedFill: =cBordure
+            PressedColor: =cBleu
+            PressedBorderColor: =cBleu
+            X: =24
+            Y: =72
+            Width: =120
+            Height: =36
+      - enq_btnDossiers:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="📂 Mes dossiers"
+            OnSelect: =Navigate(scrDossiers, ScreenTransition.None)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =Color.White
+            Color: =cBleu
+            BorderColor: =cBleu
+            BorderThickness: =2
+            HoverFill: =cBleuPale
+            HoverColor: =cBleu
+            HoverBorderColor: =cBleu
+            PressedFill: =cBordure
+            PressedColor: =cBleu
+            PressedBorderColor: =cBleu
+            X: =152
+            Y: =72
+            Width: =150
+            Height: =36
+      - enq_btnAide:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="❓ Comment remplir"
+            OnSelect: =Navigate(scrAide, ScreenTransition.None)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =cOr
+            Color: =Color.White
+            BorderThickness: =0
+            HoverFill: =ColorFade(cOr, -0.15)
+            PressedFill: =ColorFade(cOr, -0.3)
+            HoverColor: =Color.White
+            PressedColor: =Color.White
+            X: =310
+            Y: =72
+            Width: =170
+            Height: =36
+      - enq_btnSauver:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="☁️ Enregistrer l'enquête"
+            OnSelect: =Select(enq_btnSauverBas)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =cVert
+            Color: =Color.White
+            BorderThickness: =0
+            HoverFill: =ColorFade(cVert, -0.15)
+            PressedFill: =ColorFade(cVert, -0.3)
+            HoverColor: =Color.White
+            PressedColor: =Color.White
+            X: =Parent.Width - 264
+            Y: =72
+            Width: =232
+            Height: =36
+      - enq_btnApercu:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="🖨️ Aperçu PDF"
+            OnSelect: =Navigate(scrApercu, ScreenTransition.None)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =Color.White
+            Color: =cBleu
+            BorderColor: =cBleu
+            BorderThickness: =2
+            HoverFill: =cBleuPale
+            HoverColor: =cBleu
+            HoverBorderColor: =cBleu
+            PressedFill: =cBordure
+            PressedColor: =cBleu
+            PressedBorderColor: =cBleu
+            X: =Parent.Width - 424
+            Y: =72
+            Width: =152
+            Height: =36
+      - enq_fondEtapes:
+          Control: Rectangle@2.3.0
+          Properties:
+            Fill: =Color.White
+            BorderThickness: =0
+            X: =0
+            Y: =116
+            Width: =Parent.Width
+            Height: =76
+      - enq_galEtapes:
+          Control: Gallery@2.15.0
+          Variant: Horizontal
+          Properties:
+            Items: |-
+              =Switch(varDossier.TypeFormulaire,
+                "Situation dangereuse", Table(
+                  {n: 1, t: "Signalement", d: varDossier.DateDeclaration},
+                  {n: 2, t: "Prise en charge", d: varDossier.DateEnquete},
+                  {n: 3, t: "Mesure corrective", d: varDossier.DatePlanAction},
+                  {n: 4, t: "Fermeture", d: varDossier.DateFermeture}),
+                "Violence", Table(
+                  {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},
+                  {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},
+                  {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},
+                  {n: 4, t: "Suivi SST / Bouclier", d: varDossier.DateEnquete},
+                  {n: 5, t: "Fermeture", d: varDossier.DateFermeture}),
+                Table(
+                  {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},
+                  {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},
+                  {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},
+                  {n: 4, t: "Enquête", d: varDossier.DateEnquete},
+                  {n: 5, t: "Analyse 5 Pourquoi", d: varDossier.DateAnalyse},
+                  {n: 6, t: "Plan d'action", d: varDossier.DatePlanAction},
+                  {n: 7, t: "Fermeture", d: varDossier.DateFermeture}))
+            TemplateSize: =150
+            TemplatePadding: =0
+            ShowScrollbar: =false
+            X: |-
+              =Max(210, (Parent.Width - 150 * CountRows(Switch(varDossier.TypeFormulaire,   "Situation dangereuse", Table(     {n: 1, t: "Signalement", d: varDossier.DateDeclaration},     {n: 2, t: "Prise en charge", d: varDossier.DateEnquete},     {n: 3, t: "Mesure corrective", d: varDossier.DatePlanAction},     {n: 4, t: "Fermeture", d: varDossier.DateFermeture}),   "Violence", Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Suivi SST / Bouclier", d: varDossier.DateEnquete},     {n: 5, t: "Fermeture", d: varDossier.DateFermeture}),   Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Enquête", d: varDossier.DateEnquete},     {n: 5, t: "Analyse 5 Pourquoi", d: varDossier.DateAnalyse},     {n: 6, t: "Plan d'action", d: varDossier.DatePlanAction},     {n: 7, t: "Fermeture", d: varDossier.DateFermeture})))) / 2)
+            Y: =118
+            Width: |-
+              =150 * CountRows(Switch(varDossier.TypeFormulaire,   "Situation dangereuse", Table(     {n: 1, t: "Signalement", d: varDossier.DateDeclaration},     {n: 2, t: "Prise en charge", d: varDossier.DateEnquete},     {n: 3, t: "Mesure corrective", d: varDossier.DatePlanAction},     {n: 4, t: "Fermeture", d: varDossier.DateFermeture}),   "Violence", Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Suivi SST / Bouclier", d: varDossier.DateEnquete},     {n: 5, t: "Fermeture", d: varDossier.DateFermeture}),   Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Enquête", d: varDossier.DateEnquete},     {n: 5, t: "Analyse 5 Pourquoi", d: varDossier.DateAnalyse},     {n: 6, t: "Plan d'action", d: varDossier.DatePlanAction},     {n: 7, t: "Fermeture", d: varDossier.DateFermeture})))
+            Height: =72
+            BorderThickness: =0
+          Children:
+            - enq_stpLigne:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: |-
+                    =If(!IsBlank(LookUp(Switch(varDossier.TypeFormulaire,   "Situation dangereuse", Table(     {n: 1, t: "Signalement", d: varDossier.DateDeclaration},     {n: 2, t: "Prise en charge", d: varDossier.DateEnquete},     {n: 3, t: "Mesure corrective", d: varDossier.DatePlanAction},     {n: 4, t: "Fermeture", d: varDossier.DateFermeture}),   "Violence", Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Suivi SST / Bouclier", d: varDossier.DateEnquete},     {n: 5, t: "Fermeture", d: varDossier.DateFermeture}),   Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Enquête", d: varDossier.DateEnquete},     {n: 5, t: "Analyse 5 Pourquoi", d: varDossier.DateAnalyse},     {n: 6, t: "Plan d'action", d: varDossier.DatePlanAction},     {n: 7, t: "Fermeture", d: varDossier.DateFermeture})), n = ThisItem.n + 1).d), cVert, cBordure)
+                  BorderThickness: =0
+                  X: =75.0
+                  Y: =21
+                  Width: =150
+                  Height: =3
+                  Visible: |-
+                    =ThisItem.n < CountRows(Switch(varDossier.TypeFormulaire,   "Situation dangereuse", Table(     {n: 1, t: "Signalement", d: varDossier.DateDeclaration},     {n: 2, t: "Prise en charge", d: varDossier.DateEnquete},     {n: 3, t: "Mesure corrective", d: varDossier.DatePlanAction},     {n: 4, t: "Fermeture", d: varDossier.DateFermeture}),   "Violence", Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Suivi SST / Bouclier", d: varDossier.DateEnquete},     {n: 5, t: "Fermeture", d: varDossier.DateFermeture}),   Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Enquête", d: varDossier.DateEnquete},     {n: 5, t: "Analyse 5 Pourquoi", d: varDossier.DateAnalyse},     {n: 6, t: "Plan d'action", d: varDossier.DatePlanAction},     {n: 7, t: "Fermeture", d: varDossier.DateFermeture})))
+            - enq_stpRond:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  Text: =If(IsBlank(ThisItem.d), Text(ThisItem.n), "✓")
+                  OnSelect: =false
+                  Fill: =If(IsBlank(ThisItem.d), cGrisLib, cVert)
+                  Color: =Color.White
+                  BorderThickness: =0
+                  HoverFill: =If(IsBlank(ThisItem.d), cGrisLib, cVert)
+                  PressedFill: =If(IsBlank(ThisItem.d), cGrisLib, cVert)
+                  HoverColor: =Color.White
+                  PressedColor: =Color.White
+                  DisabledFill: =If(IsBlank(ThisItem.d), cGrisLib, cVert)
+                  DisabledColor: =Color.White
+                  DisplayMode: =DisplayMode.View
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  Height: =32
+                  RadiusTopLeft: =16
+                  RadiusTopRight: =16
+                  RadiusBottomLeft: =16
+                  RadiusBottomRight: =16
+                  TabIndex: =-1
+                  X: =59.0
+                  Y: =6
+                  Width: =32
+            - enq_stpNom:
+                Control: Label@2.5.1
+                Properties:
+                  Text: =ThisItem.t
+                  Color: =If(IsBlank(ThisItem.d), cTexte2, cTexte)
+                  Size: =10
+                  X: =0
+                  Y: =40
+                  Width: =150
+                  Height: =18
+                  Align: =Align.Center
+                  FontWeight: =FontWeight.Semibold
+            - enq_stpDate:
+                Control: Label@2.5.1
+                Properties:
+                  Text: =If(IsBlank(ThisItem.d), "", Text(ThisItem.d, "yyyy-mm-dd"))
+                  Color: =cTexte2
+                  Size: =9
+                  X: =0
+                  Y: =56
+                  Width: =150
+                  Height: =16
+                  Align: =Align.Center
+      - enq_pilNo:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: =If(IsBlank(varDossier.ID), "Nouveau dossier", "Dossier n° " & varDossier.ID)
+            OnSelect: =false
+            Fill: =cBleuPale
+            Color: =cMarine
+            BorderThickness: =0
+            HoverFill: =cBleuPale
+            PressedFill: =cBleuPale
+            HoverColor: =cMarine
+            PressedColor: =cMarine
+            DisabledFill: =cBleuPale
+            DisabledColor: =cMarine
+            DisplayMode: =DisplayMode.View
+            Size: =10
+            FontWeight: =FontWeight.Semibold
+            Height: =28
+            RadiusTopLeft: =14
+            RadiusTopRight: =14
+            RadiusBottomLeft: =14
+            RadiusBottomRight: =14
+            TabIndex: =-1
+            X: =24
+            Y: =124
+            Width: =170
+      - enq_pilStatut:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: =Coalesce(varDossier.Statut, "Brouillon")
+            OnSelect: =false
+            Fill: =cBordure
+            Color: =cMarine
+            BorderThickness: =0
+            HoverFill: =cBordure
+            PressedFill: =cBordure
+            HoverColor: =cMarine
+            PressedColor: =cMarine
+            DisabledFill: =cBordure
+            DisabledColor: =cMarine
+            DisplayMode: =DisplayMode.View
+            Size: =10
+            FontWeight: =FontWeight.Semibold
+            Height: =28
+            RadiusTopLeft: =14
+            RadiusTopRight: =14
+            RadiusBottomLeft: =14
+            RadiusBottomRight: =14
+            TabIndex: =-1
+            X: =24
+            Y: =158
+            Width: =170
+      - enq_ligneEtapes:
+          Control: Rectangle@2.3.0
+          Properties:
+            Fill: =cBordure
+            BorderThickness: =0
+            X: =0
+            Y: =191
+            Width: =Parent.Width
+            Height: =1
+      - enq_conCorps:
+          Control: GroupContainer@1.3.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =Color.White
+            BorderThickness: =1
+            DropShadow: =DropShadow.None
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =6
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            BorderColor: =cBordure
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            X: =24
+            Y: =204
+            Width: =Parent.Width - 48
+            Height: =Parent.Height - 220
+            LayoutOverflowY: =LayoutOverflow.Scroll
+            PaddingTop: =16
+            PaddingBottom: =32
+            PaddingLeft: =Max(24, (Self.Width - 940) / 2)
+            PaddingRight: =Max(24, (Self.Width - 940) / 2)
+          Children:
+            - enq_info0:
+                Control: Label@2.5.1
+                Properties:
+                  Text: |-
+                    ="L'enquête et l'analyse d'accident forment un processus en deux étapes pour éviter qu'un accident ne se reproduise. L'ENQUÊTE (la collecte) : la recherche immédiate des faits. On recueille les indices, prend des photos et interroge les témoins pour savoir ce qui s'est passé. Cette collecte s'appuie sur trois axes : l'organisation du travail (consignes, formations, planification et répartition des tâches); l'environnement et les équipements (état du matériel, aménagement des lieux et contraintes physiques); le comportement des personnes concernées (actions, faits et décisions observés lors de l'évènement). L'ANALYSE (la compréhension) : la recherche des causes. On étudie les faits collectés pour comprendre pourquoi cela s'est passé et identifier les failles. En résumé : l'enquête rassemble les pièces du puzzle, l'analyse les assemble pour corriger le problème."
+                  Color: =cMarine
+                  Size: =11
+                  AutoHeight: =true
+                  Wrap: =true
+                  Fill: =cBleuPale
+                  PaddingLeft: =12
+                  PaddingRight: =12
+                  PaddingTop: =8
+                  PaddingBottom: =8
+                  BorderColor: =cBleu
+                  BorderThickness: =1
+            - enq_sec1:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="L'organisation du travail"
+                  Color: =cMarine
+                  Size: =16
+                  FontWeight: =FontWeight.Bold
+                  AutoHeight: =true
+                  PaddingTop: =14
+                  PaddingBottom: =2
+            - enq_ligne2:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =cOr
+                  BorderThickness: =0
+                  Height: =2
+            - enq_lblFactOrganisation:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Facteurs constatés" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - enq_aideFactOrganisation:
+                Control: Label@2.5.1
+                Properties:
+                  Text: |-
+                    ="Cet axe examine le cadre, les méthodes et la planification mis en place par l'organisation avant que l'évènement ne survienne. On cherche à savoir si les conditions de travail théoriques étaient adéquates et sécuritaires. Ce qu'on évalue : la clarté des consignes et des procédures de travail; la formation reçue par le travailleur (était-il qualifié/informé des risques ?); la gestion du temps, le rythme de travail, la charge de travail et le niveau de fatigue; la répartition des tâches et la qualité de la supervision sur le terrain. Plusieurs choix possibles."
+                  Color: =cTexte2
+                  Size: =10.5
+                  AutoHeight: =true
+                  Wrap: =true
+            - enq_galFactOrganisation:
+                Control: Gallery@2.15.0
+                Variant: Vertical
+                Properties:
+                  Items: =Sort(Filter(colListes, Liste = "FacteurOrganisation"), Ordre)
+                  WrapCount: =2
+                  TemplateSize: =40
+                  TemplatePadding: =0
+                  ShowScrollbar: =false
+                  Height: =RoundUp(CountRows(Sort(Filter(colListes, Liste = "FacteurOrganisation"), Ordre)) / 2, 0) * 40 + 4
+                  BorderThickness: =0
+                Children:
+                  - enq_chkFactOrganisation:
+                      Control: Classic/CheckBox@2.1.0
+                      Properties:
+                        Text: =ThisItem.Value
+                        Default: =ThisItem.Value in Split(varDossier.FactOrganisation, "; ").Value
+                        Reset: =locReset
+                        Size: =11
+                        Color: =cTexte
+                        CheckboxBorderColor: =cTexte2
+                        X: =0
+                        Y: =0
+                        Width: =Parent.TemplateWidth - 8
+                        Height: =Parent.TemplateHeight - 4
+            - enq_lblFactOrgAutre:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Autre (préciser)"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - enq_txtFactOrgAutre:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.FactOrgAutre
+                  HintText: =""
+                  Height: =38
+            - enq_sec8:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="L'environnement et les équipements"
+                  Color: =cMarine
+                  Size: =16
+                  FontWeight: =FontWeight.Bold
+                  AutoHeight: =true
+                  PaddingTop: =14
+                  PaddingBottom: =2
+            - enq_ligne9:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =cOr
+                  BorderThickness: =0
+                  Height: =2
+            - enq_lblFactEnvironnement:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Facteurs constatés" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - enq_aideFactEnvironnement:
+                Control: Label@2.5.1
+                Properties:
+                  Text: |-
+                    ="Cet axe examine le milieu physique et le matériel utilisé au moment de l'évènement. L'objectif est d'identifier toutes les anomalies ou contraintes matérielles ayant pu jouer un rôle déclencheur ou aggravant. Ce qu'on évalue : l'état des équipements (outils, machines, équipements de protection individuelle); l'entretien, le bon fonctionnement et la présence des protecteurs/dispositifs de sécurité; les conditions des lieux (éclairage, bruit, température, ventilation, encombrement du sol, état des surfaces); la disposition et l'ergonomie du poste de travail. Plusieurs choix possibles."
+                  Color: =cTexte2
+                  Size: =10.5
+                  AutoHeight: =true
+                  Wrap: =true
+            - enq_galFactEnvironnement:
+                Control: Gallery@2.15.0
+                Variant: Vertical
+                Properties:
+                  Items: =Sort(Filter(colListes, Liste = "FacteurEnvironnement"), Ordre)
+                  WrapCount: =2
+                  TemplateSize: =40
+                  TemplatePadding: =0
+                  ShowScrollbar: =false
+                  Height: =RoundUp(CountRows(Sort(Filter(colListes, Liste = "FacteurEnvironnement"), Ordre)) / 2, 0) * 40 + 4
+                  BorderThickness: =0
+                Children:
+                  - enq_chkFactEnvironnement:
+                      Control: Classic/CheckBox@2.1.0
+                      Properties:
+                        Text: =ThisItem.Value
+                        Default: =ThisItem.Value in Split(varDossier.FactEnvironnement, "; ").Value
+                        Reset: =locReset
+                        Size: =11
+                        Color: =cTexte
+                        CheckboxBorderColor: =cTexte2
+                        X: =0
+                        Y: =0
+                        Width: =Parent.TemplateWidth - 8
+                        Height: =Parent.TemplateHeight - 4
+            - enq_lblFactEnvAutre:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Autre (préciser)"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - enq_txtFactEnvAutre:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.FactEnvAutre
+                  HintText: =""
+                  Height: =38
+            - enq_sec15:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Le comportement des personnes concernées"
+                  Color: =cMarine
+                  Size: =16
+                  FontWeight: =FontWeight.Bold
+                  AutoHeight: =true
+                  PaddingTop: =14
+                  PaddingBottom: =2
+            - enq_ligne16:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =cOr
+                  BorderThickness: =0
+                  Height: =2
+            - enq_lblFactComportement:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Facteurs constatés" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - enq_aideFactComportement:
+                Control: Label@2.5.1
+                Properties:
+                  Text: |-
+                    ="Cet axe documente les actions, les faits et les décisions des personnes impliquées juste avant et pendant l'évènement. Attention : il ne s'agit pas de blâmer, mais de comprendre pourquoi une action a été posée dans ce contexte précis. Ce qu'on évalue : les gestes effectifs et la position du corps au moment de l'évènement; le respect ou l'écart par rapport aux méthodes de travail habituelles ou prescrites; la perception du danger par le travailleur (était-il conscient du risque ?); la communication ou la coordination entre les membres de l'équipe au moment des faits. Plusieurs choix possibles."
+                  Color: =cTexte2
+                  Size: =10.5
+                  AutoHeight: =true
+                  Wrap: =true
+            - enq_galFactComportement:
+                Control: Gallery@2.15.0
+                Variant: Vertical
+                Properties:
+                  Items: =Sort(Filter(colListes, Liste = "FacteurComportement"), Ordre)
+                  WrapCount: =2
+                  TemplateSize: =40
+                  TemplatePadding: =0
+                  ShowScrollbar: =false
+                  Height: =RoundUp(CountRows(Sort(Filter(colListes, Liste = "FacteurComportement"), Ordre)) / 2, 0) * 40 + 4
+                  BorderThickness: =0
+                Children:
+                  - enq_chkFactComportement:
+                      Control: Classic/CheckBox@2.1.0
+                      Properties:
+                        Text: =ThisItem.Value
+                        Default: =ThisItem.Value in Split(varDossier.FactComportement, "; ").Value
+                        Reset: =locReset
+                        Size: =11
+                        Color: =cTexte
+                        CheckboxBorderColor: =cTexte2
+                        X: =0
+                        Y: =0
+                        Width: =Parent.TemplateWidth - 8
+                        Height: =Parent.TemplateHeight - 4
+            - enq_lblFactCompAutre:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Autre (préciser)"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - enq_txtFactCompAutre:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.FactCompAutre
+                  HintText: =""
+                  Height: =38
+            - enq_sec22:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Mesures correctives suggérées"
+                  Color: =cMarine
+                  Size: =16
+                  FontWeight: =FontWeight.Bold
+                  AutoHeight: =true
+                  PaddingTop: =14
+                  PaddingBottom: =2
+            - enq_ligne23:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =cOr
+                  BorderThickness: =0
+                  Height: =2
+            - enq_lblMesuresSuggerees:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Mesures suggérées" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - enq_aideMesuresSuggerees:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Proposer des mesures correctives réalistes afin d'éviter qu'une situation semblable ne survienne à nouveau. Plusieurs choix possibles."
+                  Color: =cTexte2
+                  Size: =10.5
+                  AutoHeight: =true
+                  Wrap: =true
+            - enq_galMesuresSuggerees:
+                Control: Gallery@2.15.0
+                Variant: Vertical
+                Properties:
+                  Items: =Sort(Filter(colListes, Liste = "MesureCorrective"), Ordre)
+                  WrapCount: =2
+                  TemplateSize: =40
+                  TemplatePadding: =0
+                  ShowScrollbar: =false
+                  Height: =RoundUp(CountRows(Sort(Filter(colListes, Liste = "MesureCorrective"), Ordre)) / 2, 0) * 40 + 4
+                  BorderThickness: =0
+                Children:
+                  - enq_chkMesuresSuggerees:
+                      Control: Classic/CheckBox@2.1.0
+                      Properties:
+                        Text: =ThisItem.Value
+                        Default: =ThisItem.Value in Split(varDossier.MesuresSuggerees, "; ").Value
+                        Reset: =locReset
+                        Size: =11
+                        Color: =cTexte
+                        CheckboxBorderColor: =cTexte2
+                        X: =0
+                        Y: =0
+                        Width: =Parent.TemplateWidth - 8
+                        Height: =Parent.TemplateHeight - 4
+            - enq_lblMesuresSuggAutre:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Autre (préciser)"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - enq_txtMesuresSuggAutre:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.MesuresSuggAutre
+                  HintText: =""
+                  Height: =38
+            - enq_sec29:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Version de l'employeur ou tout autre commentaire"
+                  Color: =cMarine
+                  Size: =16
+                  FontWeight: =FontWeight.Bold
+                  AutoHeight: =true
+                  PaddingTop: =14
+                  PaddingBottom: =2
+            - enq_ligne30:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =cOr
+                  BorderThickness: =0
+                  Height: =2
+            - enq_lblGestAccord:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Le gestionnaire opérationnel est-il en accord avec la version du travailleur ?" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - enq_rdoGestAccord:
+                Control: Classic/Radio@2.3.0
+                Properties:
+                  Items: =["Oui", "Non"]
+                  Default: =varDossier.GestAccord
+                  Reset: =locReset
+                  Size: =12
+                  Color: =cTexte
+                  RadioSelectionFill: =cBleu
+                  RadioBorderColor: =cTexte2
+                  Layout: =Layout.Horizontal
+                  Height: =40
+            - enq_lblGestVersion:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Description détaillée de l'évènement selon le gestionnaire opérationnel" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =enq_rdoGestAccord.Selected.Value = "Non"
+            - enq_aideGestVersion:
+                Control: Label@2.5.1
+                Properties:
+                  Text: |-
+                    ="Décrivez clairement la série d'évènements qui a entraîné l'accident ou l'incident (MELITO : Moment/Temps, Équipement/Matériel, Lieu/Environnement, Individu, Tâche, Organisation). Répondre aux questions Qui? Quoi? Où? Quand? Comment? Moins de 255 caractères."
+                  Color: =cTexte2
+                  Size: =10.5
+                  AutoHeight: =true
+                  Wrap: =true
+                  Visible: =enq_rdoGestAccord.Selected.Value = "Non"
+            - enq_txmGestVersion:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.GestVersion
+                  HintText: =""
+                  Height: =90
+                  Mode: =TextMode.MultiLine
+                  MaxLength: =255
+                  Visible: =enq_rdoGestAccord.Selected.Value = "Non"
+            - enq_cptGestVersion:
+                Control: Label@2.5.1
+                Properties:
+                  Text: =Len(enq_txmGestVersion.Text) & " / 255"
+                  Color: =If(Len(enq_txmGestVersion.Text) >= 255, cRouge, cTexte2)
+                  Size: =10
+                  Align: =Align.Right
+                  Height: =20
+                  Visible: =enq_rdoGestAccord.Selected.Value = "Non"
+            - enq_lblEnqueteurNom:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Enquête réalisée par"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - enq_txtEnqueteurNom:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =Coalesce(varDossier.EnqueteurNom, User().FullName)
+                  HintText: =""
+                  Height: =38
+            - enq_navBas:
+                Control: GroupContainer@1.3.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =Color.Transparent
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGap: =12
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutJustifyContent: =LayoutJustifyContent.End
+                  Height: =60
+                  PaddingTop: =16
+                  FillPortions: =0
+                Children:
+                  - enq_btnSauverBas:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: ="☁️ Enregistrer l'enquête"
+                        OnSelect: |-
+                          =UpdateContext({locManquants: Concat(Filter(Table(
+                              {c: "Facteurs constatés", ok: !(true) || !(IsBlank(Concat(Filter(enq_galFactOrganisation.AllItems, enq_chkFactOrganisation.Value), Value, "; ")))},
+                              {c: "Facteurs constatés", ok: !(true) || !(IsBlank(Concat(Filter(enq_galFactEnvironnement.AllItems, enq_chkFactEnvironnement.Value), Value, "; ")))},
+                              {c: "Facteurs constatés", ok: !(true) || !(IsBlank(Concat(Filter(enq_galFactComportement.AllItems, enq_chkFactComportement.Value), Value, "; ")))},
+                              {c: "Mesures suggérées", ok: !(true) || !(IsBlank(Concat(Filter(enq_galMesuresSuggerees.AllItems, enq_chkMesuresSuggerees.Value), Value, "; ")))},
+                              {c: "Le gestionnaire opérationnel est-il en accord avec la version du travailleur ?", ok: !(true) || !(IsBlank(enq_rdoGestAccord.Selected.Value))},
+                              {c: "Description détaillée de l'évènement selon le gestionnaire opérationnel", ok: !((enq_rdoGestAccord.Selected.Value = "Non") && (true)) || !(IsBlank(enq_txmGestVersion.Text))}), !ok), c, " • ")});
+                          IfError(
+                            Set(varDossier, Patch(SST_Dossiers, varDossier, {FactOrganisation: Concat(Filter(enq_galFactOrganisation.AllItems, enq_chkFactOrganisation.Value), Value, "; "),
+                            FactOrgAutre: enq_txtFactOrgAutre.Text,
+                            FactEnvironnement: Concat(Filter(enq_galFactEnvironnement.AllItems, enq_chkFactEnvironnement.Value), Value, "; "),
+                            FactEnvAutre: enq_txtFactEnvAutre.Text,
+                            FactComportement: Concat(Filter(enq_galFactComportement.AllItems, enq_chkFactComportement.Value), Value, "; "),
+                            FactCompAutre: enq_txtFactCompAutre.Text,
+                            MesuresSuggerees: Concat(Filter(enq_galMesuresSuggerees.AllItems, enq_chkMesuresSuggerees.Value), Value, "; "),
+                            MesuresSuggAutre: enq_txtMesuresSuggAutre.Text,
+                            GestAccord: enq_rdoGestAccord.Selected.Value,
+                            GestVersion: enq_txmGestVersion.Text,
+                            EnqueteurNom: enq_txtEnqueteurNom.Text,
+                            DateEnquete: If(IsBlank(locManquants), Coalesce(varDossier.DateEnquete, Today()), varDossier.DateEnquete),
+                            Statut: If(varDossier.Statut = "Fermé", "Fermé", IsBlank(locManquants), If(varDossier.Statut in ["Plan d'action"], varDossier.Statut, "Analyse en cours"), "Enquête en cours")}));
+                            Notify(If(IsBlank(locManquants), "Enquête enregistrée et complète.", "Enquête enregistrée (incomplète : " & locManquants & ")"), If(IsBlank(locManquants), NotificationType.Success, NotificationType.Warning)),
+                            Notify("Erreur : " & FirstError.Message, NotificationType.Error))
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =6
+                        RadiusTopRight: =6
+                        RadiusBottomLeft: =6
+                        RadiusBottomRight: =6
+                        Fill: =cVert
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =ColorFade(cVert, -0.15)
+                        PressedFill: =ColorFade(cVert, -0.3)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        Width: =230
+                        Height: =38
+                  - enq_btnVersAnalyse:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: ="🌳 Passer à l'analyse 5 Pourquoi →"
+                        OnSelect: |-
+                          =Select(enq_btnSauverBas);
+                          Navigate(scrAnalyse, ScreenTransition.None)
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =6
+                        RadiusTopRight: =6
+                        RadiusBottomLeft: =6
+                        RadiusBottomRight: =6
+                        Fill: =cBleu
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =ColorFade(cBleu, -0.15)
+                        PressedFill: =ColorFade(cBleu, -0.3)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        Width: =300
+                        Height: =38

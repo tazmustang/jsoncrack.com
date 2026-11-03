@@ -1,0 +1,1263 @@
+[
+{
+"n": 1,
+"q": "Catégorie de déclaration",
+"opts": [
+"Accident = l'employé a eu une blessure physique apparente ou non",
+"Incident = c'est un passé proche, l'employé aurait pu se blesser. (Il n'y a aucune blessure ni même de douleur, sinon il s'agit d'un accident)"
+],
+"meta": ""
+},
+{
+"n": 2,
+"q": "Avez-vous remis une trousse d'assignation temporaire à votre employé?",
+"opts": [
+"La trousse d'assignation temporaire est obligatoire dans toute les situations à l'exception d'un incident!",
+"Oui",
+"Non"
+],
+"meta": ""
+},
+{
+"n": 3,
+"q": "Pour quelle raison la trousse d'assignation temporaire n'a pas été remise?",
+"opts": [
+"La trousse d'assignation temporaire est obligatoire dans toute les situations à l'exception d'un incident!"
+],
+"meta": ""
+},
+{
+"n": 4,
+"q": "Selon les premières constatations, est-ce que cet accident impliquera une absence de l’employé au-delà de sa journée de travail ?",
+"opts": [
+"Oui (cet accident impliquera une absence)",
+"Non (employé au travail)"
+],
+"meta": ""
+},
+{
+"n": 5,
+"q": "Nom de l'employé",
+"opts": [],
+"meta": ""
+},
+{
+"n": 6,
+"q": "Prénom de l'employé",
+"opts": [],
+"meta": ""
+},
+{
+"n": 7,
+"q": "ID de l'employé",
+"opts": [],
+"meta": ""
+},
+{
+"n": 8,
+"q": "Service auquel est rattaché l’employé (unité administrative)",
+"opts": [
+"Service des affaires juridiques",
+"Service des approvisionnements",
+"Arrondissements des Rivières, de la Haute-Saint-Charles et de Sainte-Foy-Sillery -Cap-Rouge",
+"Arrondissement de Beauport, de Charlesbourg et de La Cité-Limoilou",
+"Bureau de la gestion des actifs",
+"Bureau de la sécurité civile",
+"Bureau de l'ombudsman",
+"Bureau pivot du tramway de Québec",
+"Conseil municipal",
+"Coordination stratégique et relations internationales",
+"Service de la culture et du patrimoine",
+"Destination Québec cité",
+"Développement économique et grands projets",
+"Direction générale",
+"Évaluation",
+"ExpoCité",
+"Finances",
+"Gestion des équipements motorisés",
+"Gestion des immeubles",
+"Gestion des matières résiduelles et valorisation",
+"Greffe et archives",
+"Ingénierie",
+"Loisirs, sports et vie communautaire",
+"Planification de l'aménagement et de l'environnement",
+"Police",
+"Protection contre l'incendie",
+"Relations citoyennes et communications",
+"Ressources humaines",
+"Technologies de l'information",
+"Traitement des eaux",
+"Transport et mobilité intelligente",
+"Travaux Publics",
+"Vérificateur général"
+],
+"meta": ""
+},
+{
+"n": 9,
+"q": "Service des affaires juridiques",
+"opts": [
+"Droit pénal",
+"Soutien judiciaire",
+"Droit civil",
+"Droit public et projets stratégiques"
+],
+"meta": "Division (organigramme intranet 2026-06-17)"
+},
+{
+"n": 10,
+"q": "Service des affaires juridiques",
+"opts": [
+"Greffe de la cour municipale de la Ville de Québec",
+"Programmes de justices adaptée",
+"Responsabilité civile de la gestion du risque et de la perception",
+"Affaires contractuelles et immobilières",
+"Soutien aux projets stratégiques"
+],
+"meta": "Section (organigramme intranet 2026-06-17)"
+},
+{
+"n": 11,
+"q": "Service des approvisionnements",
+"opts": [
+"Acquisitions des services corporatifs et opérationnels",
+"Acquisitions des infrastructures et des projets industriels",
+"Systèmes et amélioration continue",
+"Gestion des stocks"
+],
+"meta": "Division (organigramme intranet 2025-08-28)"
+},
+{
+"n": 12,
+"q": "Service des approvisionnements",
+"opts": [
+"Magasins secteur industriel et centre de distribution",
+"Magasins secteur mécanique et services de proximité"
+],
+"meta": "Section (organigramme intranet 2025-08-28)"
+},
+{
+"n": 13,
+"q": "Arrondissements des Rivières, de la Haute-Saint-Charles et de Sainte-Foy-Sillery -Cap-Rouge",
+"opts": [
+"Gestion du cadre bâti",
+"Gestion territoriale",
+"Contrôle du milieu",
+"Soutien aux arrondissements et à la gestion du territoire"
+],
+"meta": "Division (organigramme intranet 2025-08-15)"
+},
+{
+"n": 14,
+"q": "Arrondissements des Rivières, de la Haute-Saint-Charles et de Sainte-Foy-Sillery -Cap-Rouge",
+"opts": [
+"Permis résidentiels",
+"Administration des permis",
+"Permis majeurs, commerciaux et industriels",
+"Soutien aux arrondissements et à la gestion du territoire",
+"Système et processus",
+"Urbanisme de proximité",
+"Inspections résidentielles",
+"Inspections commerciales et industrielles",
+"Subventions aux bâtiments"
+],
+"meta": "Section (organigramme intranet 2025-08-15)"
+},
+{
+"n": 15,
+"q": "Arrondissement de Beauport, de Charlesbourg et de La Cité-Limoilou",
+"opts": [
+"Prévention et contrôle environnemental",
+"Foresterie urbaine et horticulture",
+"Soutiens aux arrondissements et à la prévention et à la qualité du milieu"
+],
+"meta": "Division (organigramme intranet 2025-11-14)"
+},
+{
+"n": 16,
+"q": "Arrondissement de Beauport, de Charlesbourg et de La Cité-Limoilou",
+"opts": [
+"Suivi des systèmes hydriques et biodiversité",
+"Suivi des réseaux et des milieux de vie",
+"Suivi des sites contaminés et des industries",
+"Foresterie",
+"Horticulture",
+"Protection et conservation",
+"Brigade scolaire",
+"Gestion animalière"
+],
+"meta": "Section (organigramme intranet 2025-11-14)"
+},
+{
+"n": 17,
+"q": "Bureau de la sécurité civile",
+"opts": [
+"Opérations en sécurité civile",
+"Gestion des risques en sécurité civile",
+"Interventions et rétablissement en sécurité civile"
+],
+"meta": "Organigramme intranet 2026-05-06"
+},
+{
+"n": 18,
+"q": "Bureau pivot du tramway de Québec",
+"opts": [
+"Technique",
+"Planification, ordonnancement et coordination",
+"Gestion financière",
+"Soutien à la direction",
+"Encadrement de la construction",
+"Communication du tramway de Québec"
+],
+"meta": "Organigramme intranet 2026-01-16"
+},
+{
+"n": 19,
+"q": "Coordination stratégique et relations internationales",
+"opts": [
+"Performance et transformation organisationnelle",
+"Bureau des relations internationales"
+],
+"meta": "Organigramme intranet 2026-05-20"
+},
+{
+"n": 20,
+"q": "Service de la culture et du patrimoine",
+"opts": [
+"Culture et patrimoine",
+"Bibliothèques, art public et mise en valeur du patrimoine",
+"Programmes et actions culturelles",
+"Biens patrimoniaux et archéologie"
+],
+"meta": "Organigramme intranet 2025-08-29"
+},
+{
+"n": 21,
+"q": "Destination Québec cité",
+"opts": [
+"Développement des affaires et de la destination",
+"Intelligence d'affaires et de l'innovation numérique"
+],
+"meta": "Division (Organigramme intranet 2026-03-16)"
+},
+{
+"n": 22,
+"q": "Développement économique et grands projets",
+"opts": [
+"Activités et expertise immobilières",
+"Expertise immobilière",
+"Développement de l’entrepreneuriat,des entreprises et de la région",
+"Développement des espaces d’innovation et de l’essor commercial"
+],
+"meta": "Organigramme intranet 2025-11-21"
+},
+{
+"n": 23,
+"q": "Évaluation",
+"opts": [
+"Opérations",
+"Stratégie et amélioration des pratiques"
+],
+"meta": "Division (Organigramme intranet 2026-04-22)"
+},
+{
+"n": 24,
+"q": "Évaluation",
+"opts": [
+"Gestion de l'inventaire du résidentiel et des terrains",
+"Évaluation du résidentiel et des terrains",
+"Gestion de l'inventaire du non résidentiel et multifamilial",
+"Évaluation du non résidentiel et du multifamilial"
+],
+"meta": "Section (Organigramme intranet 2026-04-22)"
+},
+{
+"n": 25,
+"q": "ExpoCité",
+"opts": [
+"Service aux événements",
+"Logistique et exploitation"
+],
+"meta": "Organigramme intranet 2025-10-09"
+},
+{
+"n": 26,
+"q": "Finances",
+"opts": [
+"Budget et planification financière",
+"Comptabilité financière",
+"Revenus"
+],
+"meta": "Division (Organigramme intranet 2025-05-16)"
+},
+{
+"n": 27,
+"q": "Finances",
+"opts": [
+"Performance financière et systèmes financiers",
+"Coordination et suivi budgétaire",
+"Expertise comptable et rapports financiers",
+"Comptes à payer",
+"Facturation et perception"
+],
+"meta": "Section (Organigramme intranet 2025-05-16)"
+},
+{
+"n": 28,
+"q": "Gestion des équipements motorisés",
+"opts": [
+"Maintenance véhiculaire",
+"Gestion du parc véhiculaire"
+],
+"meta": "Division (Organigramme intranet 2026-06-11)"
+},
+{
+"n": 29,
+"q": "Gestion des équipements motorisés",
+"opts": [
+"Entretien véhiculaire secteur EST",
+"Entretien véhiculaire secteur OUEST",
+"Acquisition et de l'expertise technique",
+"Formation-Sécurité-Conformité"
+],
+"meta": "Section (Organigramme intranet 2026-06-11)"
+},
+{
+"n": 30,
+"q": "Gestion des immeubles",
+"opts": [
+"Grands projets de construction, des bâtiments et des parcs",
+"Stratégies immobilières",
+"Ingénierie et soutien technique",
+"Exploitation et entretien"
+],
+"meta": "Division (Organigramme intranet 2026-01-05)"
+},
+{
+"n": 31,
+"q": "Gestion des immeubles",
+"opts": [
+"Projets des bâtiments",
+"Parcs",
+"Gestion de projets de maintien d'actifs",
+"Exploitation et entretien Centre",
+"Exploitation et entretien OUEST",
+"Éclairage public et signalisation lumineuse"
+],
+"meta": "Section (Organigramme intranet 2026-01-05)"
+},
+{
+"n": 32,
+"q": "Gestion des matières résiduelles et valorisation",
+"opts": [
+"Valorisation énergétique",
+"Gestion des matières résiduelles"
+],
+"meta": "Division (Organigramme intranet 2025-10-30)"
+},
+{
+"n": 33,
+"q": "Gestion des matières résiduelles et valorisation",
+"opts": [
+"Opérations",
+"Entretien",
+"Collecte des matières résiduelles",
+"Valorisation des matières résiduelles",
+"Conformité et soutien opérationnel"
+],
+"meta": "Section (Organigramme intranet 2025-10-30)"
+},
+{
+"n": 34,
+"q": "Greffe et archives",
+"opts": [
+"Secrétariat aux instances décisionnelles et à l'accès à l'information",
+"Gestion des documents et des archives"
+],
+"meta": "Organigramme intranet 2025-07-08"
+},
+{
+"n": 35,
+"q": "Ingénierie",
+"opts": [
+"Planification de la fonctionnalité des infrastructures",
+"Support et exploitation des réseaux",
+"Planification de l'état des infrastructures",
+"Arpentage et géomatique",
+"Réalisation des projets de fonctionnalité",
+"Réalisation des projets d'état",
+"Éclairage et réseau techniques urbains",
+"Gestion du plan d'investissement et de l'amélioration continue"
+],
+"meta": "Organigramme intranet 2024-03-01"
+},
+{
+"n": 36,
+"q": "Loisirs, sports et vie communautaire",
+"opts": [
+"Installation et équipements",
+"Vie Active",
+"Loisir, événements et animation urbaine",
+"Développement social",
+"Performance organisationnelle"
+],
+"meta": "Division (Organigramme intranet 2025-11-14)"
+},
+{
+"n": 37,
+"q": "Loisirs, sports et vie communautaire",
+"opts": [
+"Secteur Est",
+"Secteur Ouest",
+"Sports",
+"Plein air",
+"Loisir communautaire",
+"Intervention communautaire",
+"Planification des infrastructures",
+"Affaires administratives",
+"Ressources financières"
+],
+"meta": "Section (Organigramme intranet 2025-11-14)"
+},
+{
+"n": 38,
+"q": "Planification de l'aménagement et de l'environnement",
+"opts": [
+"Biodiversité et changement climatiques",
+"Planification du territoire",
+"Développement des milieux de vie, de l’habitation et de l’immobilier",
+"Coordination des projets d'’aménagement et de mobilité durable"
+],
+"meta": "Division (Organigramme intranet 2025-06-20)"
+},
+{
+"n": 39,
+"q": "Planification de l'aménagement et de l'environnement",
+"opts": [
+"Écosystèmes hydriques",
+"Écosystèmes urbains",
+"Urbanisme",
+"Mise en valeur des milieux bâtis",
+"Habitation",
+"Conception des milieux de vie durables",
+"Planification de la mobilité durable",
+"Coordination des projets intégrés d’aménagement et de mobilité"
+],
+"meta": "Section (Organigramme intranet 2025-06-20)"
+},
+{
+"n": 40,
+"q": "Police",
+"opts": [
+"Direction adjointe Surveillance du territoire",
+"Direction adjointe Enquêtes et services spécialisés",
+"Direction adjointe Développement organisationnel et affaires policières",
+"Communications en sécurité publique",
+"Affaires administratives et financières",
+"Soutien juridique"
+],
+"meta": "Division (Organigramme intranet 2026-03-16)"
+},
+{
+"n": 41,
+"q": "Police",
+"opts": [
+"Patrouille",
+"Soutien à la surveillance du territoire",
+"Soutien aux opérations policières",
+"Unités de support",
+"Coordination et gestions des appels d'urgence",
+"Enquêtes",
+"Services spécialisés",
+"Analyse stratégique",
+"Services aux affaires policières",
+"Bureau de projet",
+"Logistique et innovation",
+"Activités administratives",
+"Développement de la performance opérationnelle"
+],
+"meta": "Section (Organigramme intranet 2026-03-16)"
+},
+{
+"n": 42,
+"q": "Protection contre l'incendie",
+"opts": [
+"Direction adjointe intervention et développement opérationnel",
+"Direction adjointe Soutien organisationnel et relations avec la communauté",
+"Direction adjointe Soutien et conseil à la direction"
+],
+"meta": "Direction (Organigramme intranet 2026-03-10)"
+},
+{
+"n": 43,
+"q": "Protection contre l'incendie",
+"opts": [
+"Peloton 1",
+"Peloton 2",
+"Peloton 3",
+"Peloton 4",
+"Performance opérationnelle et opérations spécialisées",
+"Santé, sécurité au travail et formation incendie",
+"Commissariat et prévention",
+"Quartier maître sécurité publique",
+"Affaires administratives et financières",
+"Développement technologique et conformité",
+"Grands projets"
+],
+"meta": "Division (Organigramme intranet 2026-03-10)"
+},
+{
+"n": 44,
+"q": "Protection contre l'incendie",
+"opts": [
+"Chef de district 1",
+"Chef de district 2",
+"Chef de district 3",
+"Chef de district 4",
+"Groupe intervention en matières dangereuses",
+"Groupe sauvetage technique",
+"Groupe sauvetage nautique et intervention en milieu isolé",
+"Santé, sécurité au travail",
+"Formation incendie",
+"Commissariat aux incendies",
+"Prévention incendies",
+"Soutien opérationnel",
+"Logistique",
+"Ressources matérielles et acquisitions",
+"Activités administratives"
+],
+"meta": "Section (Organigramme intranet 2026-03-10)"
+},
+{
+"n": 45,
+"q": "Relations citoyennes et des communications",
+"opts": [
+"Réponse citoyenne",
+"Communication pour le tramway de Québec",
+"Communications publiques et organisationnelles",
+"Multimédia et édition",
+"Interaction citoyenne et innovation"
+],
+"meta": "Division (Organigramme intranet 2026-03-16)"
+},
+{
+"n": 46,
+"q": "Relations citoyennes et des communications",
+"opts": [
+"Territoire",
+"Citoyen",
+"Capital humain et actifs"
+],
+"meta": "Section (Organigramme intranet 2026-03-16)"
+},
+{
+"n": 47,
+"q": "Ressources humaines",
+"opts": [
+"Bureau de la retraite",
+"Relations de travail",
+"Attraction et gestion des talents",
+"Santé et sécurité au travail",
+"Formation et développement organisationnel",
+"Rémunération, systèmes d'information ressources humaines et des projets"
+],
+"meta": "Division (Organigramme intranet 2026-03-05)"
+},
+{
+"n": 48,
+"q": "Ressources humaines",
+"opts": [
+"Paie",
+"Opérations de dotation"
+],
+"meta": "Section (Organigramme intranet 2026-03-05)"
+},
+{
+"n": 49,
+"q": "Technologies de l'information",
+"opts": [
+"Relation d'affaires et gestion du portefeuille de services",
+"Conception et entretien des services d’affaires A",
+"Conception et entretien des services d’affaires B",
+"Conception et entretien des services communs",
+"Conception et entretien des services d’infrastructures"
+],
+"meta": "Division (Organigramme intranet 2026-06-18)"
+},
+{
+"n": 50,
+"q": "Technologies de l'information",
+"opts": [
+"Gestion de la demande et des ententes de services",
+"Centre de services",
+"Soutien technologique",
+"Conception des systèmes de gouvernance",
+"Entretien des systèmes de gouvernance",
+"Conception des systèmes de soutien au milieu",
+"Entretien des systèmes de soutien au milieu",
+"Conception des systèmes de sécurité urbaine",
+"Entretien des systèmes de sécurité urbaine",
+"Conception des systèmes institutionnels et industriel",
+"Entretien des systèmes institutionnels et industriel",
+"Centre d’expertise en valorisation des données",
+"Centre d’expertise en infonuagique",
+"Stokage, sauvegarde et bases de données",
+"Conception des services d’infrastructure technologique",
+"Centre d’expertise en réseaux technologiques",
+"Centre d’expertise en environnement de travail"
+],
+"meta": "Section (Organigramme intranet 2026-06-18)"
+},
+{
+"n": 51,
+"q": "Traitement des eaux",
+"opts": [
+"Opérations du traitement des eaux",
+"Qualité des eaux et des laboratoires",
+"Projets industriels",
+"Entretien et gestion des actifs"
+],
+"meta": "Division (Organigramme intranet 2026-06-11)"
+},
+{
+"n": 52,
+"q": "Traitement des eaux",
+"opts": [
+"Opérations eaux usées",
+"Opérations eau potable",
+"Planification et optimisation des activités d’entretien",
+"Gestion des travaux d’entretien"
+],
+"meta": "Section (Organigramme intranet 2026-06-11)"
+},
+{
+"n": 53,
+"q": "Transport et mobilité intelligente",
+"opts": [
+"Planification et conception du transport",
+"Exploitation et mobilité intelligente",
+"Gestion du stationnement"
+],
+"meta": "Division (Organigramme intranet 2026-03-19)"
+},
+{
+"n": 54,
+"q": "Transport et mobilité intelligente",
+"opts": [
+"Infrastructures routières",
+"Mobilité et sécurité Routière",
+"Gestion des réseaux de transport",
+"Transport intelligent"
+],
+"meta": "Section (Organigramme intranet 2026-03-19)"
+},
+{
+"n": 55,
+"q": "Travaux publics",
+"opts": [
+"Planification, performance et innovation",
+"Soutien technique",
+"Opérations en régie OUEST",
+"Opérations en régie EST",
+"Opérations en régie et spécialisées",
+"Soutien aux activités du service"
+],
+"meta": "Division (Organigramme intranet 2025-09-16)"
+},
+{
+"n": 56,
+"q": "Travaux publics",
+"opts": [
+"Gestion des programmes",
+"Gestion de la performance et de l’innovation",
+"Soutien opérationnel",
+"Soutien spécialisé",
+"Formation et SST",
+"Opérations - Saulois",
+"Opérations - Outilleurs",
+"Opérations – de Lestres",
+"Opérations – Jean-Talon",
+"Opérations - Canardière",
+"Opérations – Raymond",
+"Opérations – Aéroport",
+"Opérations – Marie-de-l’Incarnation"
+],
+"meta": "Section (Organigramme intranet 2025-09-16)"
+},
+{
+"n": 57,
+"q": "Vérificateur général",
+"opts": [
+"Vérification de l’optimisation des ressources et des mandats spéciaux",
+"Vérification financière et de la sécurité informatique"
+],
+"meta": "Organigramme intranet 2024-11-15"
+},
+{
+"n": 58,
+"q": "Syndicat auquel l'employé est rattaché",
+"opts": [
+"Alliance internationale des employés de scène et de théâtre (IATSÉ)",
+"Alliance des professionnels et des professionnelles de la Ville de Québec (ALLPPVQ)",
+"Association du personnel de direction de la Ville de Québec (APDVQ)",
+"Brigadiers et brigadières scolaires (SFCP)",
+"Employé Non-syndiqué",
+"Occasionnels Loisir (SFMQ)",
+"Personnel aquatique (SCFP)",
+"Personnel occasionnel d'ExpoCité (FISA)",
+"Personnel de stationnement d'ExpoCité (CSN)",
+"Syndicat des fonctionnaires municipaux de Québec (SFMQ)",
+"Syndicat des employés manuels de la Ville de Québec (SEMVQ)",
+"Union des commis de bar d'ExpoCité (FISA)",
+"Autre"
+],
+"meta": ""
+},
+{
+"n": 59,
+"q": "Classe d'emploi (SFMQ) de l'employé",
+"opts": [
+"Classe 1 ou 2",
+"Classe 3 ou 4",
+"Classe 5",
+"Classe 6",
+"Classe 7"
+],
+"meta": ""
+},
+{
+"n": 60,
+"q": "SFMQ | Titre d'emploi de l'employé Classe 1 et 2",
+"opts": [
+"(Classe 1) Auxiliaire à la messagerie",
+"(Classe 1) Auxiliaire à la pesée",
+"(Classe 1) Auxiliaire aux données d'assignation",
+"(Classe 1) Auxiliaire aux données de circulation",
+"(Classe 1) Auxiliaire de bureau",
+"(Classe 1) Préposée ou préposé à l'accueil et à la réception",
+"(Classe 2) Auxiliaire aux opérations de déneigement",
+"(Classe 2) Auxiliaire aux systèmes audio-visuels",
+"(Classe 2) Auxiliaire de laboratoire",
+"(Classe 2) Auxiliaire de plateaux",
+"(Classe 2) Auxiliaire technique",
+"(Classe 2) Commis à la bibliothèque",
+"(Classe 2) Commis à l'information touristique",
+"(Classe 2) Commis auxiliaire",
+"(Classe 2) Manœuvre de fouilles archéologiques",
+"(Classe 2) Préposée ou préposé au secrétariat",
+"(Classe 2) Répartitrice ou répartiteur d’autobus touristiques"
+],
+"meta": ""
+},
+{
+"n": 61,
+"q": "SFMQ | Titre d'emploi de l'employé Classe 3 et 4",
+"opts": [
+"(Classe 3) Agente ou agent à la production informatique",
+"(Classe 3) Agente ou agent à la réglementation de la circulation",
+"(Classe 3) Agente ou agent à un système informatique",
+"(Classe 3) Agente ou agent au service à la clientèle",
+"(Classe 3) Agente ou agent de bureau",
+"(Classe 3) Agente ou agent de secrétariat",
+"(Classe 3) Commis au traitement du courrier",
+"(Classe 3) Commis intermédiaire",
+"(Classe 4) Acheteuse spécialisée ou acheteur spécialisé",
+"(Classe 4) Acheteuse-magasinière ou acheteur-magasinier",
+"(Classe 4) Agente ou agent à la circulation et au transport",
+"(Classe 4) Agente ou agent de perception",
+"(Classe 4) Agente ou agent de protocole",
+"(Classe 4) Commis à l’administration de la paie",
+"(Classe 4) Commis spécialisé",
+"(Classe 4) Coordonnatrice ou coordonnateur aux services à la clientèle",
+"(Classe 4) Dessinatrice technique ou dessinateur technique",
+"(Classe 4) Greffière-audiencière ou greffier-audiencier",
+"(Classe 4) Monitrice ou moniteur à l’opération d’équipements motorisés",
+"(Classe 4) Perceptrice ou percepteur des amendes",
+"(Classe 4) Préposée ou préposé à l’administration",
+"(Classe 4) Préposée ou préposé à l’administration des ressources humaines",
+"(Classe 4) Préposée ou préposé à l’audio-visuel ou à la photographie",
+"(Classe 4) Préposée ou préposé à la billetterie",
+"(Classe 4) Préposée ou préposé à la facturation",
+"(Classe 4) Préposée ou préposé à la répartition des appels d'urgence",
+"(Classe 4) Préposée ou préposé à la surveillance des travaux",
+"(Classe 4) Préposée ou préposé au cadastre et au zonage",
+"(Classe 4) Préposée ou préposé aux comptes à payer",
+"(Classe 4) Préposée ou préposé aux demandes de permis",
+"(Classe 4) Préposée ou préposé aux enquêtes d’incendie",
+"(Classe 4) Préposée ou préposé aux relevés d’arpentage",
+"(Classe 4) Préposée ou préposé aux revenus",
+"(Classe 4) Préposée ou préposé aux statistiques",
+"(Classe 4) Technicienne ou technicien à l'entretien du réseau",
+"(Classe 4) Technicienne ou technicien aux réseaux routiers",
+"(Classe 4) Technicienne ou technicien aux systèmes d’informations",
+"(Classe 4) Technicienne ou technicien en aménagement du territoire (jusqu’au 31 décembre 2009)",
+"(Classe 4) Technicienne ou technicien en archéologie ou en muséologie",
+"(Classe 4) Technicienne ou technicien en documentation",
+"(Classe 4) Technicienne-inspectrice ou technicien-inspecteur en évaluation foncière - Résidentielle",
+"(Classe 4) Technicienne-surveillante ou technicien-surveillant en électricité"
+],
+"meta": ""
+},
+{
+"n": 62,
+"q": "SFMQ | Titre d'emploi de l'employé Classe 5",
+"opts": [
+"(Classe 5) Adjointe administrative ou adjoint administratif",
+"(Classe 5) Agente ou agent aux demandes de subvention",
+"(Classe 5) Agente ou agent aux réclamations",
+"(Classe 5) Agente ou agent en culture et en relations internationales",
+"(Classe 5) Coordonnatrice ou coordonnateur au centre d’expérience client",
+"(Classe 5) Coordonnatrice ou coordonnateur aux équipements de loisir",
+"(Classe 5) Coordonnatrice ou coordonnateur aux opérations d’entreposage ou d’archivage",
+"(Classe 5) Coordonnatrice ou coordonnateur aux opérations de stationnement",
+"(Classe 5) Inspectrice ou inspecteur en gestion des matières résiduelles",
+"(Classe 5) Instructrice ou instructeur de tir",
+"(Classe 5) Instructrice-examinatrice ou instructeur-examinateur en équipement motorisé",
+"(Classe 5) Première commis ou premier commis",
+"(Classe 5) Préposée ou préposé au contrôle de la qualité des données du centre 9-1-1",
+"(Classe 5) Pressière ou pressier",
+"(Classe 5) Technicienne coordonnatrice ou technicien coordonnateur à la gestion des stocks",
+"(Classe 5) Technicienne coordonnatrice ou technicien coordonnateur en bibliothèque",
+"(Classe 5) Technicienne coordonnatrice ou technicien coordonnateur en zonage",
+"(Classe 5) Technicienne ou technicien à la recherche",
+"(Classe 5) Technicienne ou technicien à la recherche et à la planification",
+"(Classe 5) Technicienne ou technicien au rôle d’évaluation",
+"(Classe 5) Technicienne ou technicien aux régimes de retraite",
+"(Classe 5) Technicienne ou technicien de laboratoire",
+"(Classe 5) Technicienne ou technicien en administration",
+"(Classe 5) Technicienne ou technicien en administration des ressources humaines",
+"(Classe 5) Technicienne ou technicien en aménagement du territoire (à compter du 1er janvier 2010)",
+"(Classe 5) Technicienne ou technicien en aménagement et design urbain",
+"(Classe 5) Technicienne ou technicien en architecture",
+"(Classe 5) Technicienne ou technicien en communications ou en multi-média",
+"(Classe 5) Technicienne ou technicien en géomatique",
+"(Classe 5) Technicienne ou technicien en hygiène et sécurité au travail",
+"(Classe 5) Technicienne ou technicien en informatique",
+"(Classe 5) Technicienne ou technicien en promotion touristique",
+"(Classe 5) Technicienne ou technicien en système informatique",
+"(Classe 5) Technicienne ou technicien juridique",
+"(Classe 5) Technicienne-dessinatrice ou technicien-dessinateur",
+"(Classe 5) Technicienne-inspectrice ou technicien-inspecteur aux infrastructures",
+"(Classe 5) Technicienne-inspectrice ou technicien-inspecteur des travaux de réseaux techniques urbains",
+"(Classe 5) Technicienne-inspectrice ou technicien-inspecteur en évaluation foncière – Industrielle, commerciale et institutionnelle",
+"(Classe 5) Technicienne-surveillante ou technicien-surveillant en génie civil"
+],
+"meta": ""
+},
+{
+"n": 63,
+"q": "SFMQ | Titre d'emploi de l'employé Classe 6",
+"opts": [
+"(Classe 6) Acheteuse principale ou acheteur principal",
+"(Classe 6) Coordonnatrice ou coordonnateur du centre 9-1-1",
+"(Classe 6) Première adjointe administrative ou premier adjoint administratif",
+"(Classe 6) Première technicienne ou premier technicien à la circulation et au transport",
+"(Classe 6) Première technicienne ou premier technicien aux finances",
+"(Classe 6) Première technicienne ou premier technicien dessinateur",
+"(Classe 6) Première technicienne ou premier technicien en administration",
+"(Classe 6) Première technicienne ou premier technicien en administration des ressources humaines",
+"(Classe 6) Première technicienne ou premier technicien en aménagement du territoire",
+"(Classe 6) Première technicienne ou premier technicien en aménagement et en design urbain",
+"(Classe 6) Première technicienne ou premier technicien en foresterie ou en horticulture",
+"(Classe 6) Première technicienne ou premier technicien en géomatique",
+"(Classe 6) Première technicienne ou premier technicien en promotion touristique",
+"(Classe 6) Technicienne coordonnatrice ou technicien coordonnateur à la Cour municipale",
+"(Classe 6) Technicienne coordonnatrice ou technicien coordonnateur aux équipements motorisés",
+"(Classe 6) Technicienne coordonnatrice ou technicien coordonnateur aux finances ou aux procédés administratifs",
+"(Classe 6) Technicienne coordonnatrice ou technicien coordonnateur en archéologie",
+"(Classe 6) Technicienne coordonnatrice ou technicien coordonnateur en architecture",
+"(Classe 6) Technicienne coordonnatrice ou technicien coordonnateur en zonage",
+"(Classe 6) Technicienne ou technicien à la circulation et au transport",
+"(Classe 6) Technicienne ou technicien à la recherche en patrimoine",
+"(Classe 6) Technicienne ou technicien à la recherche et au développement",
+"(Classe 6) Technicienne ou technicien aux acquisitions au Quartier-Maître Sécurité publique et projets spéciaux",
+"(Classe 6) Technicienne ou technicien aux équipements motorisés",
+"(Classe 6) Technicienne ou technicien aux signaux lumineux",
+"(Classe 6) Technicienne ou technicien du bâtiment et de la salubrité",
+"(Classe 6) Technicienne ou technicien en arpentage",
+"(Classe 6) Technicienne ou technicien en assainissement de l’eau",
+"(Classe 6) Technicienne ou technicien en électricité",
+"(Classe 6) Technicienne ou technicien en électronique",
+"(Classe 6) Technicienne ou technicien en environnement et salubrité",
+"(Classe 6) Technicienne ou technicien en évaluation foncière ou aux affaires immobilières",
+"(Classe 6) Technicienne ou technicien en foresterie urbaine",
+"(Classe 6) Technicienne ou technicien en traitement de l'eau",
+"(Classe 6) Technicienne planificatrice ou technicien planificateur à l’entretien",
+"(Classe 6) Technicienne-analyste ou technicien-analyste en informatique"
+],
+"meta": ""
+},
+{
+"n": 64,
+"q": "SFMQ | Titre d'emploi de l'employé Classe 7",
+"opts": [
+"(Classe 7) Première technicienne ou premier technicien aux bâtiments",
+"(Classe 7) Première technicienne ou premier technicien en électricité ou aux signaux lumineux",
+"(Classe 7) Première technicienne ou premier technicien en environnement et salubrité",
+"(Classe 7) Première technicienne ou premier technicien en évaluation foncière",
+"(Classe 7) Première technicienne ou premier technicien en génie civil",
+"(Classe 7) Première technicienne ou premier technicien en gestion du parc véhiculaire",
+"(Classe 7) Première technicienne ou premier technicien en mécanique du bâtiment",
+"(Classe 7) Première technicienne ou premier technicien en réseaux techniques urbains",
+"(Classe 7) Première technicienne ou premier technicien en sécurité du bâtiment",
+"(Classe 7) Première technicienne ou premier technicien en taxation",
+"(Classe 7) Première technicienne-coordonnatrice ou premier technicien-coordonnateur aux approvisionnements",
+"(Classe 7) Technicienne coordonnatrice ou technicien coordonnateur à la circulation - chantiers et grands évènements",
+"(Classe 7) Technicienne coordonnatrice ou technicien coordonnateur aux grands évènements",
+"(Classe 7) Technicienne coordonnatrice ou technicien coordonnateur des programmes de subventions"
+],
+"meta": ""
+},
+{
+"n": 65,
+"q": "SEMVQ | Titre d'emploi de l'employé lors de l'événement",
+"opts": [
+"Pers. manuel à l'essai et auxiliaire",
+"(Classe 1) Journalier",
+"(Classe 1) Préposé à l’entretien ménager",
+"(Classe 2) Préposé au magasin",
+"(Classe 2) Préposé aux travaux d’entretien",
+"(Classe 2) Commissionnaire",
+"(Classe 2) Préposé à la centrale d’équipements",
+"(Classe 2) Chauffeur niveau 2",
+"(Classe 3) Préposé aux usines de traitement des eaux",
+"(Classe 3) Éboueur",
+"(Classe 3) Préposé aux véhicules",
+"(Classe 3) Opérateur niveau 3",
+"(Classe 4) Chauffeur de camion sanitaire à chargement frontal",
+"(Classe 4) Chauffeur de camion sanitaire à chargement latéral niveau 2",
+"(Classe 4) Chauffeur niveau 1",
+"(Classe 4) Préposé à l’entretien du mobilier urbain et des équipements de loisirs",
+"(Classe 4) Préposé à la préparation des surfaces",
+"(Classe 4) Préposé à la signalisation",
+"(Classe 4) Préposé au centre de récupération des matières organiques",
+"(Classe 4) Préposé aux coffrages",
+"(Classe 4) Préposé aux loisirs",
+"(Classe 5) Chauffeur de camion sanitaire à chargement latéral niveau 1",
+"(Classe 5) Préposé au service des usines de traitement des eaux",
+"(Classe 6) Préposé à la maintenance des équipements de loisirs",
+"(Classe 6) Releveur-réparateur de compteur d’eau",
+"(Classe 6) Préposé au service d’équipements motorisés (M)",
+"(Classe 6) Préposé aux réseaux d’aqueduc & d’égout",
+"(Classe 6) Chauffeur-opérateur à l’entretien des réseaux",
+"(Classe 6) Opérateur niveau 2",
+"(Classe 6) Râteleur d’asphalte",
+"(Classe 7) Préposé à la réparation de composantes hydrauliques et pneumatiques (M)",
+"(Classe 7) Horticulteur (M)",
+"(Classe 8) Cimentier-applicateur (M)",
+"(Classe 8) Chauffeur-gardien",
+"(Classe 8) Opérateur niveau 1",
+"(Classe 8) Peintre (M)",
+"(Classe 8) Tuyauteur aux réseaux d’aqueduc & d’égout",
+"(Classe 9) Briqueteur-maçon (M)",
+"(Classe 9) Mécanicien d’équipements motorisés niveau 2 (M)",
+"(Classe 10) Peintre-débosseleur (M)",
+"(Classe 10) Menuisier (M)",
+"(Classe 10) Soudeur (M)",
+"(Classe 10) Opérateur mécanicien de machinerie fixe niveau 2 (M)",
+"(Classe 11) Machiniste (M)",
+"(Classe 11) Mécanicien aux usines de traitement des eaux (M)",
+"(Classe 11) Mécanicien d’équipements motorisés niveau 1 (M)",
+"(Classe 11) Mécanicien d’équipements incendie (M)",
+"(Classe 11) Électricien (M)",
+"(Classe 11) Électricien à l’éclairage (M)",
+"(Classe 11) Électricien aux signaux lumineux (M)",
+"(Classe 11) Tuyauteur-frigoriste (M)",
+"(Classe 11) Tuyauteur de plomberie, appareils de chauffage et gaz (M)",
+"(Classe 12) Technicien en mécanique (M)",
+"(Classe 12) Technicien aux systèmes ordinés (M)",
+"(Classe 12) Technicien en électronique et électrotechnique (M)",
+"(Classe 12) Mécanicien-technicien en mécanique du bâtiment (M)",
+"(Classe 12) Technicien-électronicien (M)",
+"(Classe 12) Technicien-opérateur à l’assainissement des eaux (M)",
+"(Classe 12) Technicien-opérateur au traitement de l’eau potable (M)",
+"(Classe 12) Opérateur mécanicien de machinerie fixe niveau 1 (M)"
+],
+"meta": ""
+},
+{
+"n": 66,
+"q": "ALLPPVQ | Titre d'emploi de l'employé",
+"opts": [
+"(Classe 1) Agent de recherche",
+"(Classe 1) Archiviste",
+"(Classe 1) Conseiller en évaluation foncière",
+"(Classe 1) Conseiller en formation",
+"(Classe 2) Assistant-greffier d'arrondissement",
+"(Classe 2) Conseiller à l’administration des régimes de retraite",
+"(Classe 2) Conseiller à la planification des opérations de formation",
+"(Classe 2) Conseiller à l’information",
+"(Classe 2) Conseiller au cinéma et à la télévision",
+"(Classe 2) Conseiller aux communautés culturelles",
+"(Classe 2) Conseiller en approvisionnement",
+"(Classe 2) Conseiller en consultations publiques",
+"(Classe 2) Conseillère ou conseiller en développement des affaires et partenariats",
+"(Classe 2) Conseillère ou conseiller en développement organisationnel",
+"(Classe 2) Conseillère ou conseiller en développement touristique",
+"(Classe 2) Conseillère ou conseiller au greffe",
+"(Classe 2) Conseillère ou conseiller en planification d’évènements",
+"(Classe 2) Conseillère ou conseiller professionnel en architecture ou ingénierie",
+"(Classe 2) Conseillère ou conseiller en relations internationales",
+"(Classe 2) Conseillère ou conseiller en sécurité civile",
+"(Classe 2) Greffière adjointe ou greffier adjoint à la cour municipale",
+"(Classe 3) Archéologue",
+"(Classe 3) Chargé de comptes",
+"(Classe 3) Conseillère ou conseiller à la direction d’arrondissement ou de service",
+"(Classe 3) Conseillère ou conseiller à la liaison et aux opérations des programmes à la cour municipale",
+"(Classe 3) Conseillère ou conseiller à la mise en valeur du patrimoine",
+"(Classe 3) Conseillère ou conseiller à la planification des projets d'infrastructures",
+"(Classe 3) Conseillère ou conseiller à la planification et au développement de la sécurité civile",
+"(Classe 3) Conseillère ou conseiller en communication",
+"(Classe 3) Conseillère ou conseiller en marketing",
+"(Classe 3) Conseillère ou conseiller culture, loisirs et vie communautaire",
+"(Classe 3) Conseillère ou conseiller en développement économique",
+"(Classe 3) Conseillère ou conseiller en gestion financière",
+"(Classe 3) Conseillère ou conseiller en planification du transport",
+"(Classe 3) Conseillère ou conseiller en sauvetage nautique",
+"(Classe 3) Conseillère ou conseiller en stratégie policière",
+"(Classe 3) Conseillère ou conseiller en systèmes d’information",
+"(Classe 3) Conseillère ou conseiller en technologie de l’information",
+"(Classe 3) Conseillère ou conseiller en urbanisme",
+"(Classe 3) Économiste",
+"(Classe 3) Évaluatrice agréée I ou évaluateur agréé I",
+"(Classe 3) Géomaticienne ou géomaticien",
+"(Classe 4) Analyste comptable",
+"(Classe 4) Analyste en taxes à la consommation",
+"(Classe 4) Architecte-paysagiste",
+"(Classe 4) Automaticien en contrôle de procédés",
+"(Classe 4) Chef d’équipe – consultations publiques",
+"(Classe 4) Chef d’équipe – développement économique",
+"(Classe 4) Chef d'équipe – planification, recherche et développement touristique",
+"(Classe 4) Chef d'équipe à l’amélioration continue",
+"(Classe 4) Chef d’équipe aux communications",
+"(Classe 4) Chef d’équipe comptes payables",
+"(Classe 4) Chimiste",
+"(Classe 4) Conseillère ou conseiller à la mise en œuvre de projets d'aménagement et de patrimoine",
+"(Classe 4) Conseillère ou conseiller aux grands projets économiques",
+"(Classe 4) Conseillère ou conseiller en architecture et design urbain",
+"(Classe 4) Conseillère ou conseiller en environnement",
+"Classe 4) Conseillère ou conseiller en placement",
+"(Classe 4) Conseillère ou conseiller en planification et soutien à l’amélioration",
+"(Classe 4) Évaluatrice agréée ou évaluateur agréé aux activités et expertises immobilières",
+"(Classe 5) Architecte",
+"(Classe 5) Architecte à la planification des projets d'infrastructures",
+"(Classe 5) Chef de laboratoire – chimie",
+"(Classe 5) Chef de laboratoire – microbiologie",
+"(Classe 5) Chef d’équipe – archéologue",
+"(Classe 5) Chef d’équipe – architecte-paysagiste",
+"(Classe 5) Chef d’équipe – arpenteur géomètre",
+"(Classe 5) Chef d’équipe – développement et aménagement du territoire",
+"(Classe 5) Chef d’équipe – évaluateur(trice) agréé(e) aux activités et expertises immobilières",
+"(Classe 5) Chef d'équipe – gestion des matières résiduelles",
+"(Classe 5) Chef d'équipe – urbanisme",
+"(Classe 5) Chef d’équipe en planification du transport",
+"(Classe 5) Évaluatrice agréée II ou évaluateur agréé II",
+"(Classe 5) Ingénieure ou ingénieur",
+"(Classe 6) Avocate ou avocat",
+"(Classe 6) Notaire",
+"(Classe 7) Chef d'équipe – architecte",
+"(Classe 7) Chef d’équipe – ingénieur"
+],
+"meta": ""
+},
+{
+"n": 67,
+"q": "APDVQ | Titre d'emploi de l'employé(e)",
+"opts": [
+"Gestionnaire",
+"Autre"
+],
+"meta": ""
+},
+{
+"n": 68,
+"q": "Personnel Bar ExpoCité (FISA) | Titre d'emploi de l'employé",
+"opts": [
+"Préposé au bar",
+"Autre"
+],
+"meta": ""
+},
+{
+"n": 69,
+"q": "Occasionnels Loisir (SFMQ) | Titre d'emploi de l'employé",
+"opts": [
+"(Classe 1) Préposé à l'accueil",
+"(Classe 1) Surveillant",
+"(Classe 1) Animateur",
+"(Classe 2) Guichetier",
+"(Classe 2) Guide",
+"(Classe 2) Préposé au stade municipal",
+"(Classe 2) Préposé à la location",
+"(Classe 3) Guide-animateur",
+"(Classe 3) Préposé à un équipement récréatif",
+"(Classe 3) Préposé à l'opération technique",
+"(Classe 4) Préposé aux activités",
+"(Classe 5) Coordonnateur d'activités"
+],
+"meta": ""
+},
+{
+"n": 70,
+"q": "Personnel de stationnement d'ExpoCité (CSN) | Titre d'emploi de l'employé",
+"opts": [
+"Préposé perception",
+"Préposé placier"
+],
+"meta": ""
+},
+{
+"n": 71,
+"q": "Personnel aquatique (SCFP) | Titre d'emploi de l'employé",
+"opts": [
+"(Classe 1) Guichetier",
+"(Classe 1) Préposé aux admissions",
+"(Classe 2) Assistant-sauveteur",
+"(Classe 2) Assistant-moniteur",
+"(Classe 3) Sauveteur",
+"(Classe 3) Sauveteur-plage",
+"(Classe 4) Moniteur",
+"(Classe 4) Moniteur spécialisé",
+"(Classe 4) Moniteur/instructeur Croix-Rouge",
+"(Classe 4) Moniteur Société de sauvetage",
+"(Classe 6) Moniteur-chef",
+"(Classe 6) Sauveteur-chef",
+"(Classe 6) Responsable adjoint aux activités aquatiques",
+"Option 2"
+],
+"meta": ""
+},
+{
+"n": 72,
+"q": "Alliance internationale des employés de scène et de théâtre (IATSÉ) | Titre d'emploi de l'employé",
+"opts": [
+"Chef machiniste",
+"Chef éclairagiste",
+"Chef sonorisateur",
+"Chef cintrier",
+"Chef accessoiriste",
+"Chef habilleuse",
+"Chef monteur de câbles",
+"Assistant",
+"Projectionniste",
+"Opérateur de projecteur de poursuite",
+"Machiniste",
+"Fonction non prévue",
+"Habilleuse",
+"Préposé au chargement et déchargement",
+"Monteur de câble"
+],
+"meta": ""
+},
+{
+"n": 73,
+"q": "Employés non syndiqué",
+"opts": [
+"Cadre de la Direction générale, directrices et directeurs de service et d'arrondissement",
+"Personnel de la direction",
+"Occasionnels non syndiqués ExpoCité",
+"Personnel politique",
+"Professionnels non syndiquée"
+],
+"meta": ""
+},
+{
+"n": 74,
+"q": "Autre | Titre d'emploi de l'employé(e)",
+"opts": [
+"Étudiant",
+"Autre"
+],
+"meta": ""
+},
+{
+"n": 75,
+"q": "Occasionnels non syndiqués ExpoCité | Titre d'emploi de l'employé",
+"opts": [
+"Responsable sécurité",
+"Responsable stationnement",
+"Responsable accueil",
+"Responsable quai"
+],
+"meta": ""
+},
+{
+"n": 76,
+"q": "Adresse de l’établissement auquel est rattaché l’employé",
+"opts": [
+"10, de la Découverte",
+"10, rue Hughes-Pommier",
+"100, Chemin de la Baie de Beauport",
+"105, Chemin de la Baie de Beauport",
+"1130, Route de l'Église",
+"1210, Montmorency",
+"1235, Montmorency",
+"1245, du Torrent",
+"1252, Canardière",
+"1300, Pompadour",
+"1455, rue Le May",
+"160, 76e rue Est",
+"1615, Jean-Talon",
+"1900, du Loiret",
+"2, rue des Jardins",
+"2, rue du Fargy",
+"2000, Lebourgneuf",
+"2100, des Outilleurs",
+"214, Saint-Sacrement",
+"2160, rue Cyrille-Duquet",
+"220, Av. Chanoine Côté",
+"220, Chanoine-Côté",
+"2200, de la Faune",
+"2280, Monseigneur-Gosselin",
+"250A, Boul. Wilfrid-Hamel",
+"250F, Boul. Wilfrid-Hamel",
+"250L, Boul. Wilfrid-Hamel",
+"2650, D'Alembert",
+"285, de la Maréchaussée",
+"2850, Einstein",
+"295, Boul. Charest Est",
+"2964, de la Faune",
+"3020, Boul. Hochelaga",
+"305, Champlain",
+"305, Boul. Charest Est",
+"3137, Laberge",
+"330, rue Chabot",
+"3400, Marie-Louise Marmette",
+"3460, rue Rochambeau",
+"3490, route de l'Aéroport",
+"3494, route de l'Aéroport",
+"3500, rue Cambronne",
+"3705, Chauveau",
+"380, Beaucage",
+"380, rue Godin",
+"3825, Chemin Ste-Foy",
+"399, rue Saint-Joseph",
+"415, Boul. Raymond",
+"4155, Chemin de la plage Jacques-Cartier",
+"50, Marie de l'Incarnation",
+"500, du Pont",
+"5125, Rideau",
+"575, rue Arago Ouest",
+"640, Bourg-Royal",
+"65, rue St-Anne",
+"655, Blvd des Chutes",
+"715, Avenue de Lestres",
+"750, rue de la Sorbonne",
+"8001, Saulois",
+"825, boulevard Lebourgneuf",
+"95, rue de la Sérénité",
+"999, Rochebelle",
+"Autre"
+],
+"meta": ""
+},
+{
+"n": 77,
+"q": "Nom supérieur immédiat",
+"opts": [
+"78. Nom de l'employé *",
+"79. Prénom de l'employé *"
+],
+"meta": ""
+}
+]

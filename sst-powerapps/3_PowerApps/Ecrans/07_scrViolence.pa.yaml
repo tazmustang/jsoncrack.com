@@ -1,0 +1,1591 @@
+Screens:
+  scrViolence:
+    Properties:
+      Fill: =cFond
+      OnVisible: |-
+        =UpdateContext({locReset: true});
+        UpdateContext({locReset: false})
+    Children:
+      - vio_bandeau:
+          Control: Rectangle@2.3.0
+          Properties:
+            Fill: =cOr
+            BorderThickness: =0
+            X: =0
+            Y: =0
+            Width: =Parent.Width
+            Height: =64
+      - vio_titre:
+          Control: Label@2.5.1
+          Properties:
+            Text: ="Évènement traumatisant et acte de violence"
+            Color: =Color.White
+            Size: =20
+            X: =0
+            Y: =6
+            Width: =Parent.Width
+            Height: =32
+            FontWeight: =FontWeight.Bold
+            Align: =Align.Center
+      - vio_sousTitre:
+          Control: Label@2.5.1
+          Properties:
+            Text: |-
+              ="Formulaire : déclaration à l'égard d'un employé (citoyen ou partenaire externe)"
+            Color: =Color.White
+            Size: =12
+            X: =0
+            Y: =36
+            Width: =Parent.Width
+            Height: =22
+            Align: =Align.Center
+      - vio_pilRole:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="👤 " & varRole
+            OnSelect: =false
+            Fill: =cVert
+            Color: =Color.White
+            BorderThickness: =0
+            HoverFill: =cVert
+            PressedFill: =cVert
+            HoverColor: =Color.White
+            PressedColor: =Color.White
+            DisabledFill: =cVert
+            DisabledColor: =Color.White
+            DisplayMode: =DisplayMode.View
+            Size: =10
+            FontWeight: =FontWeight.Semibold
+            Height: =28
+            RadiusTopLeft: =14
+            RadiusTopRight: =14
+            RadiusBottomLeft: =14
+            RadiusBottomRight: =14
+            TabIndex: =-1
+            X: =Parent.Width - 224
+            Y: =18
+            Width: =200
+      - vio_barre:
+          Control: Rectangle@2.3.0
+          Properties:
+            Fill: =Color.White
+            BorderThickness: =0
+            X: =0
+            Y: =64
+            Width: =Parent.Width
+            Height: =52
+      - vio_barreLigne:
+          Control: Rectangle@2.3.0
+          Properties:
+            Fill: =cBordure
+            BorderThickness: =0
+            X: =0
+            Y: =115
+            Width: =Parent.Width
+            Height: =1
+      - vio_btnAccueil:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="🏠 Accueil"
+            OnSelect: =Navigate(scrAccueil, ScreenTransition.None)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =Color.White
+            Color: =cBleu
+            BorderColor: =cBleu
+            BorderThickness: =2
+            HoverFill: =cBleuPale
+            HoverColor: =cBleu
+            HoverBorderColor: =cBleu
+            PressedFill: =cBordure
+            PressedColor: =cBleu
+            PressedBorderColor: =cBleu
+            X: =24
+            Y: =72
+            Width: =120
+            Height: =36
+      - vio_btnDossiers:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="📂 Mes dossiers"
+            OnSelect: =Navigate(scrDossiers, ScreenTransition.None)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =Color.White
+            Color: =cBleu
+            BorderColor: =cBleu
+            BorderThickness: =2
+            HoverFill: =cBleuPale
+            HoverColor: =cBleu
+            HoverBorderColor: =cBleu
+            PressedFill: =cBordure
+            PressedColor: =cBleu
+            PressedBorderColor: =cBleu
+            X: =152
+            Y: =72
+            Width: =150
+            Height: =36
+      - vio_btnAide:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="❓ Comment remplir"
+            OnSelect: =Navigate(scrAide, ScreenTransition.None)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =cOr
+            Color: =Color.White
+            BorderThickness: =0
+            HoverFill: =ColorFade(cOr, -0.15)
+            PressedFill: =ColorFade(cOr, -0.3)
+            HoverColor: =Color.White
+            PressedColor: =Color.White
+            X: =310
+            Y: =72
+            Width: =170
+            Height: =36
+      - vio_btnDeposer:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="☁️ Enregistrer et déposer"
+            OnSelect: =Select(vio_btnDeposerBas)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =cVert
+            Color: =Color.White
+            BorderThickness: =0
+            HoverFill: =ColorFade(cVert, -0.15)
+            PressedFill: =ColorFade(cVert, -0.3)
+            HoverColor: =Color.White
+            PressedColor: =Color.White
+            X: =Parent.Width - 274
+            Y: =72
+            Width: =242
+            Height: =36
+      - vio_btnSauver:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="☁️ Enregistrer"
+            OnSelect: |-
+              =IfError(
+                Set(varDossier, Patch(SST_Dossiers, If(IsBlank(varDossier.ID), Defaults(SST_Dossiers), varDossier),
+                {DeclarantRole: vio_rdoDeclarantRole.Selected.Value,
+                EmpNom: vio_txtEmpNom.Text,
+                EmpPrenom: vio_txtEmpPrenom.Text,
+                EmpID: vio_txtEmpID.Text,
+                EmpSyndicat: vio_drpEmpSyndicat.Selected.Value,
+                EmpSuperieur: vio_txtEmpSuperieur.Text,
+                EmpService: vio_drpEmpService.Selected.Value,
+                EmpDirection: vio_drpEmpDirection.Selected.Value,
+                EmpDivision: vio_drpEmpDivision.Selected.Value,
+                EmpSection: vio_drpEmpSection.Selected.Value,
+                EvtDate: vio_dteEvtDate.SelectedDate,
+                EvtHeure: vio_txtEvtHeure.Text,
+                EvtAdresse: vio_txtEvtAdresse.Text,
+                Tache: vio_txmTache.Text,
+                ViolTypes: Concat(Filter(vio_galViolTypes.AllItems, vio_chkViolTypes.Value), Value, "; "),
+                Description: vio_txmDescription.Text,
+                AuteurNom: vio_txtAuteurNom.Text,
+                AuteurAdresse: vio_txtAuteurAdresse.Text,
+                AuteurInfo: vio_txmAuteurInfo.Text,
+                Recidive: vio_rdoRecidive.Selected.Value,
+                RecidiveDetails: vio_txmRecidiveDetails.Text,
+                Temoins: vio_rdoTemoins.Selected.Value,
+                TemoinsNoms: vio_txmTemoinsNoms.Text,
+                TemoinsCoord: vio_txmTemoinsCoord.Text,
+                ViolMesuresPrises: Concat(Filter(vio_galViolMesuresPrises.AllItems, vio_chkViolMesuresPrises.Value), Value, "; "),
+                MesurePrev: vio_txmMesurePrev.Text,
+                ViolMesuresPar: vio_txtViolMesuresPar.Text,
+                ComiteBouclier: vio_rdoComiteBouclier.Selected.Value,
+                GestNom: vio_txtGestNom.Text,
+                ApprobationEmp: vio_rdoApprobationEmp.Selected.Value,
+                FormatCopie: vio_rdoFormatCopie.Selected.Value,
+                EmpCourriel: vio_txtEmpCourriel.Text,
+                TypeFormulaire: "Violence",
+                Title: "Violence – " & vio_txtEmpNom.Text & ", " & vio_txtEmpPrenom.Text & " – " & Text(vio_dteEvtDate.SelectedDate, "yyyy-mm-dd"),
+                CreeParCourriel: Coalesce(varDossier.CreeParCourriel, varMoi),
+                CreeParNom: Coalesce(varDossier.CreeParNom, User().FullName),
+                DateMesures: If(IsBlank(vio_txmMesurePrev.Text), varDossier.DateMesures, Coalesce(varDossier.DateMesures, Today())),
+                DateApprobation: If(vio_rdoApprobationEmp.Selected.Value = "Oui", Coalesce(varDossier.DateApprobation, Today()), varDossier.DateApprobation),
+                Statut: Coalesce(varDossier.Statut, "Brouillon")}));
+                Notify("Brouillon enregistré (dossier n° " & varDossier.ID & ").", NotificationType.Success),
+                Notify("Erreur d'enregistrement : " & FirstError.Message, NotificationType.Error))
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =Color.White
+            Color: =cBleu
+            BorderColor: =cBleu
+            BorderThickness: =2
+            HoverFill: =cBleuPale
+            HoverColor: =cBleu
+            HoverBorderColor: =cBleu
+            PressedFill: =cBordure
+            PressedColor: =cBleu
+            PressedBorderColor: =cBleu
+            X: =Parent.Width - 424
+            Y: =72
+            Width: =142
+            Height: =36
+      - vio_btnNouveau:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="📝 Nouveau formulaire"
+            OnSelect: =Navigate(scrAccueil, ScreenTransition.None)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =Color.White
+            Color: =cRouge
+            BorderColor: =cRouge
+            BorderThickness: =2
+            HoverFill: =cBleuPale
+            HoverColor: =cRouge
+            HoverBorderColor: =cRouge
+            PressedFill: =cBordure
+            PressedColor: =cRouge
+            PressedBorderColor: =cRouge
+            X: =Parent.Width - 634
+            Y: =72
+            Width: =202
+            Height: =36
+      - vio_fondEtapes:
+          Control: Rectangle@2.3.0
+          Properties:
+            Fill: =Color.White
+            BorderThickness: =0
+            X: =0
+            Y: =116
+            Width: =Parent.Width
+            Height: =76
+      - vio_galEtapes:
+          Control: Gallery@2.15.0
+          Variant: Horizontal
+          Properties:
+            Items: |-
+              =Switch(varDossier.TypeFormulaire,
+                "Situation dangereuse", Table(
+                  {n: 1, t: "Signalement", d: varDossier.DateDeclaration},
+                  {n: 2, t: "Prise en charge", d: varDossier.DateEnquete},
+                  {n: 3, t: "Mesure corrective", d: varDossier.DatePlanAction},
+                  {n: 4, t: "Fermeture", d: varDossier.DateFermeture}),
+                "Violence", Table(
+                  {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},
+                  {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},
+                  {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},
+                  {n: 4, t: "Suivi SST / Bouclier", d: varDossier.DateEnquete},
+                  {n: 5, t: "Fermeture", d: varDossier.DateFermeture}),
+                Table(
+                  {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},
+                  {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},
+                  {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},
+                  {n: 4, t: "Enquête", d: varDossier.DateEnquete},
+                  {n: 5, t: "Analyse 5 Pourquoi", d: varDossier.DateAnalyse},
+                  {n: 6, t: "Plan d'action", d: varDossier.DatePlanAction},
+                  {n: 7, t: "Fermeture", d: varDossier.DateFermeture}))
+            TemplateSize: =150
+            TemplatePadding: =0
+            ShowScrollbar: =false
+            X: |-
+              =Max(210, (Parent.Width - 150 * CountRows(Switch(varDossier.TypeFormulaire,   "Situation dangereuse", Table(     {n: 1, t: "Signalement", d: varDossier.DateDeclaration},     {n: 2, t: "Prise en charge", d: varDossier.DateEnquete},     {n: 3, t: "Mesure corrective", d: varDossier.DatePlanAction},     {n: 4, t: "Fermeture", d: varDossier.DateFermeture}),   "Violence", Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Suivi SST / Bouclier", d: varDossier.DateEnquete},     {n: 5, t: "Fermeture", d: varDossier.DateFermeture}),   Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Enquête", d: varDossier.DateEnquete},     {n: 5, t: "Analyse 5 Pourquoi", d: varDossier.DateAnalyse},     {n: 6, t: "Plan d'action", d: varDossier.DatePlanAction},     {n: 7, t: "Fermeture", d: varDossier.DateFermeture})))) / 2)
+            Y: =118
+            Width: |-
+              =150 * CountRows(Switch(varDossier.TypeFormulaire,   "Situation dangereuse", Table(     {n: 1, t: "Signalement", d: varDossier.DateDeclaration},     {n: 2, t: "Prise en charge", d: varDossier.DateEnquete},     {n: 3, t: "Mesure corrective", d: varDossier.DatePlanAction},     {n: 4, t: "Fermeture", d: varDossier.DateFermeture}),   "Violence", Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Suivi SST / Bouclier", d: varDossier.DateEnquete},     {n: 5, t: "Fermeture", d: varDossier.DateFermeture}),   Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Enquête", d: varDossier.DateEnquete},     {n: 5, t: "Analyse 5 Pourquoi", d: varDossier.DateAnalyse},     {n: 6, t: "Plan d'action", d: varDossier.DatePlanAction},     {n: 7, t: "Fermeture", d: varDossier.DateFermeture})))
+            Height: =72
+            BorderThickness: =0
+          Children:
+            - vio_stpLigne:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: |-
+                    =If(!IsBlank(LookUp(Switch(varDossier.TypeFormulaire,   "Situation dangereuse", Table(     {n: 1, t: "Signalement", d: varDossier.DateDeclaration},     {n: 2, t: "Prise en charge", d: varDossier.DateEnquete},     {n: 3, t: "Mesure corrective", d: varDossier.DatePlanAction},     {n: 4, t: "Fermeture", d: varDossier.DateFermeture}),   "Violence", Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Suivi SST / Bouclier", d: varDossier.DateEnquete},     {n: 5, t: "Fermeture", d: varDossier.DateFermeture}),   Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Enquête", d: varDossier.DateEnquete},     {n: 5, t: "Analyse 5 Pourquoi", d: varDossier.DateAnalyse},     {n: 6, t: "Plan d'action", d: varDossier.DatePlanAction},     {n: 7, t: "Fermeture", d: varDossier.DateFermeture})), n = ThisItem.n + 1).d), cVert, cBordure)
+                  BorderThickness: =0
+                  X: =75.0
+                  Y: =21
+                  Width: =150
+                  Height: =3
+                  Visible: |-
+                    =ThisItem.n < CountRows(Switch(varDossier.TypeFormulaire,   "Situation dangereuse", Table(     {n: 1, t: "Signalement", d: varDossier.DateDeclaration},     {n: 2, t: "Prise en charge", d: varDossier.DateEnquete},     {n: 3, t: "Mesure corrective", d: varDossier.DatePlanAction},     {n: 4, t: "Fermeture", d: varDossier.DateFermeture}),   "Violence", Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Suivi SST / Bouclier", d: varDossier.DateEnquete},     {n: 5, t: "Fermeture", d: varDossier.DateFermeture}),   Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Enquête", d: varDossier.DateEnquete},     {n: 5, t: "Analyse 5 Pourquoi", d: varDossier.DateAnalyse},     {n: 6, t: "Plan d'action", d: varDossier.DatePlanAction},     {n: 7, t: "Fermeture", d: varDossier.DateFermeture})))
+            - vio_stpRond:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  Text: =If(IsBlank(ThisItem.d), Text(ThisItem.n), "✓")
+                  OnSelect: =false
+                  Fill: =If(IsBlank(ThisItem.d), cGrisLib, cVert)
+                  Color: =Color.White
+                  BorderThickness: =0
+                  HoverFill: =If(IsBlank(ThisItem.d), cGrisLib, cVert)
+                  PressedFill: =If(IsBlank(ThisItem.d), cGrisLib, cVert)
+                  HoverColor: =Color.White
+                  PressedColor: =Color.White
+                  DisabledFill: =If(IsBlank(ThisItem.d), cGrisLib, cVert)
+                  DisabledColor: =Color.White
+                  DisplayMode: =DisplayMode.View
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  Height: =32
+                  RadiusTopLeft: =16
+                  RadiusTopRight: =16
+                  RadiusBottomLeft: =16
+                  RadiusBottomRight: =16
+                  TabIndex: =-1
+                  X: =59.0
+                  Y: =6
+                  Width: =32
+            - vio_stpNom:
+                Control: Label@2.5.1
+                Properties:
+                  Text: =ThisItem.t
+                  Color: =If(IsBlank(ThisItem.d), cTexte2, cTexte)
+                  Size: =10
+                  X: =0
+                  Y: =40
+                  Width: =150
+                  Height: =18
+                  Align: =Align.Center
+                  FontWeight: =FontWeight.Semibold
+            - vio_stpDate:
+                Control: Label@2.5.1
+                Properties:
+                  Text: =If(IsBlank(ThisItem.d), "", Text(ThisItem.d, "yyyy-mm-dd"))
+                  Color: =cTexte2
+                  Size: =9
+                  X: =0
+                  Y: =56
+                  Width: =150
+                  Height: =16
+                  Align: =Align.Center
+      - vio_pilNo:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: =If(IsBlank(varDossier.ID), "Nouveau dossier", "Dossier n° " & varDossier.ID)
+            OnSelect: =false
+            Fill: =cBleuPale
+            Color: =cMarine
+            BorderThickness: =0
+            HoverFill: =cBleuPale
+            PressedFill: =cBleuPale
+            HoverColor: =cMarine
+            PressedColor: =cMarine
+            DisabledFill: =cBleuPale
+            DisabledColor: =cMarine
+            DisplayMode: =DisplayMode.View
+            Size: =10
+            FontWeight: =FontWeight.Semibold
+            Height: =28
+            RadiusTopLeft: =14
+            RadiusTopRight: =14
+            RadiusBottomLeft: =14
+            RadiusBottomRight: =14
+            TabIndex: =-1
+            X: =24
+            Y: =124
+            Width: =170
+      - vio_pilStatut:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: =Coalesce(varDossier.Statut, "Brouillon")
+            OnSelect: =false
+            Fill: =cBordure
+            Color: =cMarine
+            BorderThickness: =0
+            HoverFill: =cBordure
+            PressedFill: =cBordure
+            HoverColor: =cMarine
+            PressedColor: =cMarine
+            DisabledFill: =cBordure
+            DisabledColor: =cMarine
+            DisplayMode: =DisplayMode.View
+            Size: =10
+            FontWeight: =FontWeight.Semibold
+            Height: =28
+            RadiusTopLeft: =14
+            RadiusTopRight: =14
+            RadiusBottomLeft: =14
+            RadiusBottomRight: =14
+            TabIndex: =-1
+            X: =24
+            Y: =158
+            Width: =170
+      - vio_ligneEtapes:
+          Control: Rectangle@2.3.0
+          Properties:
+            Fill: =cBordure
+            BorderThickness: =0
+            X: =0
+            Y: =191
+            Width: =Parent.Width
+            Height: =1
+      - vio_conCorps:
+          Control: GroupContainer@1.3.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =Color.White
+            BorderThickness: =1
+            DropShadow: =DropShadow.None
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =6
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            BorderColor: =cBordure
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            X: =24
+            Y: =204
+            Width: =Parent.Width - 48
+            Height: =Parent.Height - 220
+            LayoutOverflowY: =LayoutOverflow.Scroll
+            PaddingTop: =16
+            PaddingBottom: =32
+            PaddingLeft: =Max(24, (Self.Width - 940) / 2)
+            PaddingRight: =Max(24, (Self.Width - 940) / 2)
+          Children:
+            - vio_info0:
+                Control: Label@2.5.1
+                Properties:
+                  Text: |-
+                    ="Ce formulaire vise à déclarer un évènement potentiellement traumatique, un acte violent, une agression, une situation impliquant un manque de respect, de l'incivilité ou du harcèlement subi par un employé de la Ville, de la part d'un citoyen ou d'un partenaire externe (sous-traitants, fournisseurs, etc.). Avant de le compléter : 1) composez le 911 si la situation requiert l'assistance de la police ou un transport par ambulance; 2) gérez la situation et les priorités sur le terrain, si possible. ATTENTION : les évènements en lien avec des collègues ou des gestionnaires ne doivent pas être adressés via ce formulaire (voir la Politique pour contrer l'incivilité, le harcèlement et la violence au travail). Ce formulaire ne s'applique pas au service de police et de protection contre les incendies."
+                  Color: =cMarine
+                  Size: =11
+                  AutoHeight: =true
+                  Wrap: =true
+                  Fill: =cBleuPale
+                  PaddingLeft: =12
+                  PaddingRight: =12
+                  PaddingTop: =8
+                  PaddingBottom: =8
+                  BorderColor: =cBleu
+                  BorderThickness: =1
+            - vio_sec1:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Informations générales"
+                  Color: =cMarine
+                  Size: =16
+                  FontWeight: =FontWeight.Bold
+                  AutoHeight: =true
+                  PaddingTop: =14
+                  PaddingBottom: =2
+            - vio_ligne2:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =cOr
+                  BorderThickness: =0
+                  Height: =2
+            - vio_lblDeclarantRole:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Identification de la personne qui déclare la situation" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - vio_rdoDeclarantRole:
+                Control: Classic/Radio@2.3.0
+                Properties:
+                  Items: =["La victime", "Le témoin de la situation"]
+                  Default: =varDossier.DeclarantRole
+                  Reset: =locReset
+                  Size: =12
+                  Color: =cTexte
+                  RadioSelectionFill: =cBleu
+                  RadioBorderColor: =cTexte2
+                  Layout: =Layout.Horizontal
+                  Height: =40
+            - vio_lblEmpNom:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Nom de l'employé qui déclare la situation" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - vio_txtEmpNom:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.EmpNom
+                  HintText: =""
+                  Height: =38
+            - vio_lblEmpPrenom:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Prénom de l'employé qui déclare la situation" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - vio_txtEmpPrenom:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.EmpPrenom
+                  HintText: =""
+                  Height: =38
+            - vio_lblEmpID:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Numéro d'employé (ID)" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - vio_aideEmpID:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Inscrire seulement les 6 chiffres (si plus d'un employé, inscrire seulement un ID ici)."
+                  Color: =cTexte2
+                  Size: =10.5
+                  AutoHeight: =true
+                  Wrap: =true
+            - vio_txtEmpID:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.EmpID
+                  HintText: =""
+                  Height: =38
+                  MaxLength: =6
+                  Width: =200
+                  AlignInContainer: =AlignInContainer.Start
+            - vio_lblEmpSyndicat:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Syndicat auquel l'employé est rattaché" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - vio_drpEmpSyndicat:
+                Control: Classic/DropDown@2.3.1
+                Properties:
+                  BorderColor: =cBordure
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Items: =Sort(Filter(colListes, Liste = "Syndicat"), Ordre).Value
+                  Default: =varDossier.EmpSyndicat
+                  AllowEmptySelection: =true
+                  Height: =38
+                  ChevronBackground: =cBleu
+                  ChevronFill: =Color.White
+                  SelectionFill: =cBleu
+            - vio_lblEmpSuperieur:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Prénom et nom du supérieur immédiat" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - vio_txtEmpSuperieur:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.EmpSuperieur
+                  HintText: =""
+                  Height: =38
+            - vio_lblEmpService:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Service auquel est rattaché l'employé (unité administrative)" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - vio_drpEmpService:
+                Control: Classic/DropDown@2.3.1
+                Properties:
+                  BorderColor: =cBordure
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Items: =Sort(Filter(colListes, Liste = "Service"), Ordre).Value
+                  Default: =varDossier.EmpService
+                  AllowEmptySelection: =true
+                  Height: =38
+                  ChevronBackground: =cBleu
+                  ChevronFill: =Color.White
+                  SelectionFill: =cBleu
+            - vio_lblEmpDirection:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Direction"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =CountRows(Sort(Filter(colOrg, Service = vio_drpEmpService.Selected.Value && Niveau = "Direction"), Ordre).Value) > 0
+            - vio_drpEmpDirection:
+                Control: Classic/DropDown@2.3.1
+                Properties:
+                  BorderColor: =cBordure
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Items: =Sort(Filter(colOrg, Service = vio_drpEmpService.Selected.Value && Niveau = "Direction"), Ordre).Value
+                  Default: =varDossier.EmpDirection
+                  AllowEmptySelection: =true
+                  Height: =38
+                  ChevronBackground: =cBleu
+                  ChevronFill: =Color.White
+                  SelectionFill: =cBleu
+                  Visible: =CountRows(Sort(Filter(colOrg, Service = vio_drpEmpService.Selected.Value && Niveau = "Direction"), Ordre).Value) > 0
+            - vio_lblEmpDivision:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Division"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =CountRows(Sort(Filter(colOrg, Service = vio_drpEmpService.Selected.Value && Niveau = "Division"), Ordre).Value) > 0
+            - vio_drpEmpDivision:
+                Control: Classic/DropDown@2.3.1
+                Properties:
+                  BorderColor: =cBordure
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Items: =Sort(Filter(colOrg, Service = vio_drpEmpService.Selected.Value && Niveau = "Division"), Ordre).Value
+                  Default: =varDossier.EmpDivision
+                  AllowEmptySelection: =true
+                  Height: =38
+                  ChevronBackground: =cBleu
+                  ChevronFill: =Color.White
+                  SelectionFill: =cBleu
+                  Visible: =CountRows(Sort(Filter(colOrg, Service = vio_drpEmpService.Selected.Value && Niveau = "Division"), Ordre).Value) > 0
+            - vio_lblEmpSection:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Section"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =CountRows(Sort(Filter(colOrg, Service = vio_drpEmpService.Selected.Value && Niveau = "Section"), Ordre).Value) > 0
+            - vio_drpEmpSection:
+                Control: Classic/DropDown@2.3.1
+                Properties:
+                  BorderColor: =cBordure
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Items: =Sort(Filter(colOrg, Service = vio_drpEmpService.Selected.Value && Niveau = "Section"), Ordre).Value
+                  Default: =varDossier.EmpSection
+                  AllowEmptySelection: =true
+                  Height: =38
+                  ChevronBackground: =cBleu
+                  ChevronFill: =Color.White
+                  SelectionFill: =cBleu
+                  Visible: =CountRows(Sort(Filter(colOrg, Service = vio_drpEmpService.Selected.Value && Niveau = "Section"), Ordre).Value) > 0
+            - vio_lblEvtDate:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Date de l'évènement" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - vio_dteEvtDate:
+                Control: Classic/DatePicker@2.6.0
+                Properties:
+                  BorderColor: =cBordure
+                  Color: =cTexte
+                  Reset: =locReset
+                  DefaultDate: =varDossier.EvtDate
+                  Format: ="yyyy-mm-dd"
+                  Height: =38
+                  Width: =260
+                  AlignInContainer: =AlignInContainer.Start
+            - vio_lblEvtHeure:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Heure exacte ou approximative de l'évènement" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - vio_txtEvtHeure:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.EvtHeure
+                  HintText: |-
+                    ="ex. : 18:45"
+                  Height: =38
+                  Width: =200
+                  AlignInContainer: =AlignInContainer.Start
+            - vio_lblEvtAdresse:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Lieu de l'évènement" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - vio_aideEvtAdresse:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="S'il n'y a pas d'adresse, indiquez le numéro civique le plus près."
+                  Color: =cTexte2
+                  Size: =10.5
+                  AutoHeight: =true
+                  Wrap: =true
+            - vio_txtEvtAdresse:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.EvtAdresse
+                  HintText: =""
+                  Height: =38
+                  MaxLength: =255
+            - vio_lblTache:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Précisez les tâches au moment de l'évènement" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - vio_txmTache:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.Tache
+                  HintText: =""
+                  Height: =70
+                  Mode: =TextMode.MultiLine
+                  MaxLength: =255
+            - vio_cptTache:
+                Control: Label@2.5.1
+                Properties:
+                  Text: =Len(vio_txmTache.Text) & " / 255"
+                  Color: =If(Len(vio_txmTache.Text) >= 255, cRouge, cTexte2)
+                  Size: =10
+                  Align: =Align.Right
+                  Height: =20
+            - vio_sec34:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Circonstances et type d'évènement"
+                  Color: =cMarine
+                  Size: =16
+                  FontWeight: =FontWeight.Bold
+                  AutoHeight: =true
+                  PaddingTop: =14
+                  PaddingBottom: =2
+            - vio_ligne35:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =cOr
+                  BorderThickness: =0
+                  Height: =2
+            - vio_lblViolTypes:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Type d'évènement" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - vio_aideViolTypes:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Plusieurs choix possibles."
+                  Color: =cTexte2
+                  Size: =10.5
+                  AutoHeight: =true
+                  Wrap: =true
+            - vio_galViolTypes:
+                Control: Gallery@2.15.0
+                Variant: Vertical
+                Properties:
+                  Items: =Sort(Filter(colListes, Liste = "TypeViolence"), Ordre)
+                  WrapCount: =2
+                  TemplateSize: =40
+                  TemplatePadding: =0
+                  ShowScrollbar: =false
+                  Height: =RoundUp(CountRows(Sort(Filter(colListes, Liste = "TypeViolence"), Ordre)) / 2, 0) * 40 + 4
+                  BorderThickness: =0
+                Children:
+                  - vio_chkViolTypes:
+                      Control: Classic/CheckBox@2.1.0
+                      Properties:
+                        Text: =ThisItem.Value
+                        Default: =ThisItem.Value in Split(varDossier.ViolTypes, "; ").Value
+                        Reset: =locReset
+                        Size: =11
+                        Color: =cTexte
+                        CheckboxBorderColor: =cTexte2
+                        X: =0
+                        Y: =0
+                        Width: =Parent.TemplateWidth - 8
+                        Height: =Parent.TemplateHeight - 4
+            - vio_lblDescription:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Description de l'évènement, selon la version de l'employé" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - vio_aideDescription:
+                Control: Label@2.5.1
+                Properties:
+                  Text: |-
+                    ="Inscrivez le maximum de détails (ex. : les paroles dites, les gestes posés, les causes probables...)."
+                  Color: =cTexte2
+                  Size: =10.5
+                  AutoHeight: =true
+                  Wrap: =true
+            - vio_txmDescription:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.Description
+                  HintText: =""
+                  Height: =110
+                  Mode: =TextMode.MultiLine
+                  MaxLength: =255
+            - vio_cptDescription:
+                Control: Label@2.5.1
+                Properties:
+                  Text: =Len(vio_txmDescription.Text) & " / 255"
+                  Color: =If(Len(vio_txmDescription.Text) >= 255, cRouge, cTexte2)
+                  Size: =10
+                  Align: =Align.Right
+                  Height: =20
+            - vio_sec43:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Informations sur le ou les auteurs de l'acte"
+                  Color: =cMarine
+                  Size: =16
+                  FontWeight: =FontWeight.Bold
+                  AutoHeight: =true
+                  PaddingTop: =14
+                  PaddingBottom: =2
+            - vio_ligne44:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =cOr
+                  BorderThickness: =0
+                  Height: =2
+            - vio_lblAuteurNom:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Nom et prénom de l'individu (si connu)"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - vio_txtAuteurNom:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.AuteurNom
+                  HintText: =""
+                  Height: =38
+            - vio_lblAuteurAdresse:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Adresse de l'individu (si connue)"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - vio_txtAuteurAdresse:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.AuteurAdresse
+                  HintText: =""
+                  Height: =38
+            - vio_lblAuteurInfo:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Informations supplémentaires"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - vio_txmAuteurInfo:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.AuteurInfo
+                  HintText: =""
+                  Height: =70
+                  Mode: =TextMode.MultiLine
+            - vio_lblRecidive:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Récidive (employé ayant déjà été victime d'un évènement similaire)" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - vio_rdoRecidive:
+                Control: Classic/Radio@2.3.0
+                Properties:
+                  Items: =["Oui", "Non"]
+                  Default: =varDossier.Recidive
+                  Reset: =locReset
+                  Size: =12
+                  Color: =cTexte
+                  RadioSelectionFill: =cBleu
+                  RadioBorderColor: =cTexte2
+                  Layout: =Layout.Horizontal
+                  Height: =40
+            - vio_lblRecidiveDetails:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Détails supplémentaires sur la récidive"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =vio_rdoRecidive.Selected.Value = "Oui"
+            - vio_txmRecidiveDetails:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.RecidiveDetails
+                  HintText: =""
+                  Height: =70
+                  Mode: =TextMode.MultiLine
+                  Visible: =vio_rdoRecidive.Selected.Value = "Oui"
+            - vio_sec55:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Témoins"
+                  Color: =cMarine
+                  Size: =16
+                  FontWeight: =FontWeight.Bold
+                  AutoHeight: =true
+                  PaddingTop: =14
+                  PaddingBottom: =2
+            - vio_ligne56:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =cOr
+                  BorderThickness: =0
+                  Height: =2
+            - vio_lblTemoins:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Est-ce qu'il y a des témoins ?" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - vio_rdoTemoins:
+                Control: Classic/Radio@2.3.0
+                Properties:
+                  Items: =["Oui", "Aucun"]
+                  Default: =varDossier.Temoins
+                  Reset: =locReset
+                  Size: =12
+                  Color: =cTexte
+                  RadioSelectionFill: =cBleu
+                  RadioBorderColor: =cTexte2
+                  Layout: =Layout.Horizontal
+                  Height: =40
+            - vio_lblTemoinsNoms:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Nom du/des témoin(s)"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =vio_rdoTemoins.Selected.Value = "Oui"
+            - vio_txmTemoinsNoms:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.TemoinsNoms
+                  HintText: =""
+                  Height: =60
+                  Mode: =TextMode.MultiLine
+                  Visible: =vio_rdoTemoins.Selected.Value = "Oui"
+            - vio_lblTemoinsCoord:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Coordonnées du/des témoin(s)"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =vio_rdoTemoins.Selected.Value = "Oui"
+            - vio_txmTemoinsCoord:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.TemoinsCoord
+                  HintText: =""
+                  Height: =60
+                  Mode: =TextMode.MultiLine
+                  Visible: =vio_rdoTemoins.Selected.Value = "Oui"
+            - vio_sec63:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Mesures correctives immédiates"
+                  Color: =cMarine
+                  Size: =16
+                  FontWeight: =FontWeight.Bold
+                  AutoHeight: =true
+                  PaddingTop: =14
+                  PaddingBottom: =2
+            - vio_ligne64:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =cOr
+                  BorderThickness: =0
+                  Height: =2
+            - vio_lblViolMesuresPrises:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Mesures prises (plusieurs choix possibles)"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - vio_galViolMesuresPrises:
+                Control: Gallery@2.15.0
+                Variant: Vertical
+                Properties:
+                  Items: =Sort(Filter(colListes, Liste = "MesuresPrisesViolence"), Ordre)
+                  WrapCount: =2
+                  TemplateSize: =40
+                  TemplatePadding: =0
+                  ShowScrollbar: =false
+                  Height: =RoundUp(CountRows(Sort(Filter(colListes, Liste = "MesuresPrisesViolence"), Ordre)) / 2, 0) * 40 + 4
+                  BorderThickness: =0
+                Children:
+                  - vio_chkViolMesuresPrises:
+                      Control: Classic/CheckBox@2.1.0
+                      Properties:
+                        Text: =ThisItem.Value
+                        Default: =ThisItem.Value in Split(varDossier.ViolMesuresPrises, "; ").Value
+                        Reset: =locReset
+                        Size: =11
+                        Color: =cTexte
+                        CheckboxBorderColor: =cTexte2
+                        X: =0
+                        Y: =0
+                        Width: =Parent.TemplateWidth - 8
+                        Height: =Parent.TemplateHeight - 4
+            - vio_lblMesurePrev:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Mesures correctives immédiates" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - vio_aideMesurePrev:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Décrivez les mesures correctives immédiates mises en œuvre après l'évènement."
+                  Color: =cTexte2
+                  Size: =10.5
+                  AutoHeight: =true
+                  Wrap: =true
+            - vio_txmMesurePrev:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.MesurePrev
+                  HintText: =""
+                  Height: =90
+                  Mode: =TextMode.MultiLine
+            - vio_lblViolMesuresPar:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Mesures correctives mises en œuvre par" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - vio_txtViolMesuresPar:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.ViolMesuresPar
+                  HintText: =""
+                  Height: =38
+            - vio_sec72:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Comité bouclier"
+                  Color: =cMarine
+                  Size: =16
+                  FontWeight: =FontWeight.Bold
+                  AutoHeight: =true
+                  PaddingTop: =14
+                  PaddingBottom: =2
+            - vio_ligne73:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =cOr
+                  BorderThickness: =0
+                  Height: =2
+            - vio_info74:
+                Control: Label@2.5.1
+                Properties:
+                  Text: |-
+                    ="Le Comité bouclier a pour mission : 1) de soutenir et protéger les employés victimes de harcèlement, d'intimidation, de diffamation ou de gestes violents commis par un citoyen, un fournisseur ou tout autre tiers externe; 2) d'accompagner les gestionnaires dans la gestion de ces situations; 3) d'analyser chaque situation dénoncée et, le cas échéant, de prendre des mesures pour la corriger. Actions possibles : juridiques, policières, communications internes ou externes, soutien à l'employé. Le comité est formé de gestionnaires de la Direction générale, du Service de police, des Ressources humaines, de l'Interaction citoyenne, des Communications, des Affaires juridiques, de l'Arrondissement de La Cité-Limoilou, de la Gestion du territoire et de la Gestion des matières résiduelles et de la valorisation."
+                  Color: =cTexte2
+                  Size: =11
+                  AutoHeight: =true
+                  Wrap: =true
+            - vio_lblComiteBouclier:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="En plus de déclarer cet évènement à la Division SST, j'aimerais, en tant que gestionnaire, solliciter l'aide du Comité bouclier" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - vio_rdoComiteBouclier:
+                Control: Classic/Radio@2.3.0
+                Properties:
+                  Items: =["Oui", "Non"]
+                  Default: =varDossier.ComiteBouclier
+                  Reset: =locReset
+                  Size: =12
+                  Color: =cTexte
+                  RadioSelectionFill: =cBleu
+                  RadioBorderColor: =cTexte2
+                  Layout: =Layout.Horizontal
+                  Height: =40
+            - vio_sec77:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Confirmation de la déclaration"
+                  Color: =cMarine
+                  Size: =16
+                  FontWeight: =FontWeight.Bold
+                  AutoHeight: =true
+                  PaddingTop: =14
+                  PaddingBottom: =2
+            - vio_ligne78:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =cOr
+                  BorderThickness: =0
+                  Height: =2
+            - vio_lblGestNom:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Nom du gestionnaire qui complète le formulaire" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - vio_txtGestNom:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =Coalesce(varDossier.GestNom, User().FullName)
+                  HintText: =""
+                  Height: =38
+            - vio_lblApprobationEmp:
+                Control: Label@2.5.1
+                Properties:
+                  Text: |-
+                    ="Employé impliqué : « J'étais présent(e) lorsque mon gestionnaire a complété ce formulaire. Il s'agit de ma version des faits et je confirme que la description de l'évènement est exacte. »" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - vio_aideApprobationEmp:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Approbation de l'employé (fait office de signature)."
+                  Color: =cTexte2
+                  Size: =10.5
+                  AutoHeight: =true
+                  Wrap: =true
+            - vio_rdoApprobationEmp:
+                Control: Classic/Radio@2.3.0
+                Properties:
+                  Items: =["Oui", "Non, pour des raisons exceptionnelles, l'employé n'est pas en mesure d'approuver la déclaration"]
+                  Default: =varDossier.ApprobationEmp
+                  Reset: =locReset
+                  Size: =12
+                  Color: =cTexte
+                  RadioSelectionFill: =cBleu
+                  RadioBorderColor: =cTexte2
+                  Layout: =Layout.Vertical
+                  Height: =74
+            - vio_lblFormatCopie:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="L'employé désire recevoir sa copie de la déclaration dans le format suivant" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - vio_rdoFormatCopie:
+                Control: Classic/Radio@2.3.0
+                Properties:
+                  Items: =["Copie courriel", "Copie papier", "Copie courriel et papier"]
+                  Default: =varDossier.FormatCopie
+                  Reset: =locReset
+                  Size: =12
+                  Color: =cTexte
+                  RadioSelectionFill: =cBleu
+                  RadioBorderColor: =cTexte2
+                  Layout: =Layout.Vertical
+                  Height: =108
+            - vio_lblEmpCourriel:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Courriel de l'employé" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - vio_aideEmpCourriel:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Inscrire un seul courriel (personnel ou Ville)."
+                  Color: =cTexte2
+                  Size: =10.5
+                  AutoHeight: =true
+                  Wrap: =true
+            - vio_txtEmpCourriel:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.EmpCourriel
+                  HintText: =""
+                  Height: =38
+            - vio_navBas:
+                Control: GroupContainer@1.3.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =Color.Transparent
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGap: =12
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutJustifyContent: =LayoutJustifyContent.End
+                  Height: =60
+                  PaddingTop: =16
+                  FillPortions: =0
+                Children:
+                  - vio_btnDeposerBas:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: ="☁️ Enregistrer et déposer"
+                        OnSelect: |-
+                          =UpdateContext({locManquants: Concat(Filter(Table(
+                              {c: "Identification de la personne qui déclare la situation", ok: !(true) || !(IsBlank(vio_rdoDeclarantRole.Selected.Value))},
+                              {c: "Nom de l'employé qui déclare la situation", ok: !(true) || !(IsBlank(vio_txtEmpNom.Text))},
+                              {c: "Prénom de l'employé qui déclare la situation", ok: !(true) || !(IsBlank(vio_txtEmpPrenom.Text))},
+                              {c: "Numéro d'employé (ID)", ok: !(true) || !(IsBlank(vio_txtEmpID.Text))},
+                              {c: "ID (6 chiffres)", ok: !(true) || !(!IsMatch(vio_txtEmpID.Text, "\d{6}"))},
+                              {c: "Syndicat auquel l'employé est rattaché", ok: !(true) || !(IsBlank(vio_drpEmpSyndicat.Selected.Value))},
+                              {c: "Prénom et nom du supérieur immédiat", ok: !(true) || !(IsBlank(vio_txtEmpSuperieur.Text))},
+                              {c: "Service auquel est rattaché l'employé (unité administrative)", ok: !(true) || !(IsBlank(vio_drpEmpService.Selected.Value))},
+                              {c: "Date de l'évènement", ok: !(true) || !(IsBlank(vio_dteEvtDate.SelectedDate))},
+                              {c: "Heure exacte ou approximative de l'évènement", ok: !(true) || !(IsBlank(vio_txtEvtHeure.Text))},
+                              {c: "Lieu de l'évènement", ok: !(true) || !(IsBlank(vio_txtEvtAdresse.Text))},
+                              {c: "Précisez les tâches au moment de l'évènement", ok: !(true) || !(IsBlank(vio_txmTache.Text))},
+                              {c: "Type d'évènement", ok: !(true) || !(IsBlank(Concat(Filter(vio_galViolTypes.AllItems, vio_chkViolTypes.Value), Value, "; ")))},
+                              {c: "Description de l'évènement, selon la version de l'employé", ok: !(true) || !(IsBlank(vio_txmDescription.Text))},
+                              {c: "Récidive (employé ayant déjà été victime d'un évènement similaire)", ok: !(true) || !(IsBlank(vio_rdoRecidive.Selected.Value))},
+                              {c: "Est-ce qu'il y a des témoins ?", ok: !(true) || !(IsBlank(vio_rdoTemoins.Selected.Value))},
+                              {c: "Mesures correctives immédiates", ok: !(true) || !(IsBlank(vio_txmMesurePrev.Text))},
+                              {c: "Mesures correctives mises en œuvre par", ok: !(true) || !(IsBlank(vio_txtViolMesuresPar.Text))},
+                              {c: "En plus de déclarer cet évènement à la Division SST, j'aimerais, en tant que gestionnaire, solliciter l'aide du Comité bouclier", ok: !(true) || !(IsBlank(vio_rdoComiteBouclier.Selected.Value))},
+                              {c: "Nom du gestionnaire qui complète le formulaire", ok: !(true) || !(IsBlank(vio_txtGestNom.Text))},
+                              {c: "Employé impliqué : « J'étais présent(e) lorsque mon gestionnaire a complété ce formulaire. Il s'agit de ma version des faits et je confirme que la description de l'évènement est exacte. »", ok: !(true) || !(IsBlank(vio_rdoApprobationEmp.Selected.Value))},
+                              {c: "L'employé désire recevoir sa copie de la déclaration dans le format suivant", ok: !(true) || !(IsBlank(vio_rdoFormatCopie.Selected.Value))},
+                              {c: "Courriel de l'employé", ok: !(true) || !(IsBlank(vio_txtEmpCourriel.Text))},
+                              {c: "Courriel de l'employé (format invalide)", ok: !(true) || !(!IsMatch(vio_txtEmpCourriel.Text, Match.Email))}), !ok), c, " • ")});
+                          If(!IsBlank(locManquants),
+                            Notify("Champs obligatoires à compléter : " & locManquants, NotificationType.Error),
+                            IfError(
+                            Set(varDossier, Patch(SST_Dossiers, If(IsBlank(varDossier.ID), Defaults(SST_Dossiers), varDossier),
+                            {DeclarantRole: vio_rdoDeclarantRole.Selected.Value,
+                            EmpNom: vio_txtEmpNom.Text,
+                            EmpPrenom: vio_txtEmpPrenom.Text,
+                            EmpID: vio_txtEmpID.Text,
+                            EmpSyndicat: vio_drpEmpSyndicat.Selected.Value,
+                            EmpSuperieur: vio_txtEmpSuperieur.Text,
+                            EmpService: vio_drpEmpService.Selected.Value,
+                            EmpDirection: vio_drpEmpDirection.Selected.Value,
+                            EmpDivision: vio_drpEmpDivision.Selected.Value,
+                            EmpSection: vio_drpEmpSection.Selected.Value,
+                            EvtDate: vio_dteEvtDate.SelectedDate,
+                            EvtHeure: vio_txtEvtHeure.Text,
+                            EvtAdresse: vio_txtEvtAdresse.Text,
+                            Tache: vio_txmTache.Text,
+                            ViolTypes: Concat(Filter(vio_galViolTypes.AllItems, vio_chkViolTypes.Value), Value, "; "),
+                            Description: vio_txmDescription.Text,
+                            AuteurNom: vio_txtAuteurNom.Text,
+                            AuteurAdresse: vio_txtAuteurAdresse.Text,
+                            AuteurInfo: vio_txmAuteurInfo.Text,
+                            Recidive: vio_rdoRecidive.Selected.Value,
+                            RecidiveDetails: vio_txmRecidiveDetails.Text,
+                            Temoins: vio_rdoTemoins.Selected.Value,
+                            TemoinsNoms: vio_txmTemoinsNoms.Text,
+                            TemoinsCoord: vio_txmTemoinsCoord.Text,
+                            ViolMesuresPrises: Concat(Filter(vio_galViolMesuresPrises.AllItems, vio_chkViolMesuresPrises.Value), Value, "; "),
+                            MesurePrev: vio_txmMesurePrev.Text,
+                            ViolMesuresPar: vio_txtViolMesuresPar.Text,
+                            ComiteBouclier: vio_rdoComiteBouclier.Selected.Value,
+                            GestNom: vio_txtGestNom.Text,
+                            ApprobationEmp: vio_rdoApprobationEmp.Selected.Value,
+                            FormatCopie: vio_rdoFormatCopie.Selected.Value,
+                            EmpCourriel: vio_txtEmpCourriel.Text,
+                            TypeFormulaire: "Violence",
+                            Title: "Violence – " & vio_txtEmpNom.Text & ", " & vio_txtEmpPrenom.Text & " – " & Text(vio_dteEvtDate.SelectedDate, "yyyy-mm-dd"),
+                            CreeParCourriel: Coalesce(varDossier.CreeParCourriel, varMoi),
+                            CreeParNom: Coalesce(varDossier.CreeParNom, User().FullName),
+                            DateMesures: If(IsBlank(vio_txmMesurePrev.Text), varDossier.DateMesures, Coalesce(varDossier.DateMesures, Today())),
+                            DateApprobation: If(vio_rdoApprobationEmp.Selected.Value = "Oui", Coalesce(varDossier.DateApprobation, Today()), varDossier.DateApprobation),
+                            Statut: If(IsBlank(varDossier.Statut) || varDossier.Statut = "Brouillon", "Déposé", varDossier.Statut),
+                            DateDeclaration: Coalesce(varDossier.DateDeclaration, Today())}));
+                            Notify("Dossier n° " & varDossier.ID & " déposé.", NotificationType.Success);
+                            Set(varAutoEnvoi, true);
+                            Navigate(scrApercu, ScreenTransition.None),
+                            Notify("Erreur d'enregistrement : " & FirstError.Message, NotificationType.Error)))
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =6
+                        RadiusTopRight: =6
+                        RadiusBottomLeft: =6
+                        RadiusBottomRight: =6
+                        Fill: =cVert
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =ColorFade(cVert, -0.15)
+                        PressedFill: =ColorFade(cVert, -0.3)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        Width: =240
+                        Height: =38

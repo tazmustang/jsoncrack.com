@@ -1,0 +1,878 @@
+Screens:
+  scrSituation:
+    Properties:
+      Fill: =cFond
+      OnVisible: |-
+        =UpdateContext({locReset: true});
+        UpdateContext({locReset: false})
+    Children:
+      - sit_bandeau:
+          Control: Rectangle@2.3.0
+          Properties:
+            Fill: =cOr
+            BorderThickness: =0
+            X: =0
+            Y: =0
+            Width: =Parent.Width
+            Height: =64
+      - sit_titre:
+          Control: Label@2.5.1
+          Properties:
+            Text: ="Signalement d'une situation dangereuse"
+            Color: =Color.White
+            Size: =20
+            X: =0
+            Y: =6
+            Width: =Parent.Width
+            Height: =32
+            FontWeight: =FontWeight.Bold
+            Align: =Align.Center
+      - sit_sousTitre:
+          Control: Label@2.5.1
+          Properties:
+            Text: |-
+              ="Formulaire : situation dangereuse"
+            Color: =Color.White
+            Size: =12
+            X: =0
+            Y: =36
+            Width: =Parent.Width
+            Height: =22
+            Align: =Align.Center
+      - sit_pilRole:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="👤 " & varRole
+            OnSelect: =false
+            Fill: =cVert
+            Color: =Color.White
+            BorderThickness: =0
+            HoverFill: =cVert
+            PressedFill: =cVert
+            HoverColor: =Color.White
+            PressedColor: =Color.White
+            DisabledFill: =cVert
+            DisabledColor: =Color.White
+            DisplayMode: =DisplayMode.View
+            Size: =10
+            FontWeight: =FontWeight.Semibold
+            Height: =28
+            RadiusTopLeft: =14
+            RadiusTopRight: =14
+            RadiusBottomLeft: =14
+            RadiusBottomRight: =14
+            TabIndex: =-1
+            X: =Parent.Width - 224
+            Y: =18
+            Width: =200
+      - sit_barre:
+          Control: Rectangle@2.3.0
+          Properties:
+            Fill: =Color.White
+            BorderThickness: =0
+            X: =0
+            Y: =64
+            Width: =Parent.Width
+            Height: =52
+      - sit_barreLigne:
+          Control: Rectangle@2.3.0
+          Properties:
+            Fill: =cBordure
+            BorderThickness: =0
+            X: =0
+            Y: =115
+            Width: =Parent.Width
+            Height: =1
+      - sit_btnAccueil:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="🏠 Accueil"
+            OnSelect: =Navigate(scrAccueil, ScreenTransition.None)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =Color.White
+            Color: =cBleu
+            BorderColor: =cBleu
+            BorderThickness: =2
+            HoverFill: =cBleuPale
+            HoverColor: =cBleu
+            HoverBorderColor: =cBleu
+            PressedFill: =cBordure
+            PressedColor: =cBleu
+            PressedBorderColor: =cBleu
+            X: =24
+            Y: =72
+            Width: =120
+            Height: =36
+      - sit_btnDossiers:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="📂 Mes dossiers"
+            OnSelect: =Navigate(scrDossiers, ScreenTransition.None)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =Color.White
+            Color: =cBleu
+            BorderColor: =cBleu
+            BorderThickness: =2
+            HoverFill: =cBleuPale
+            HoverColor: =cBleu
+            HoverBorderColor: =cBleu
+            PressedFill: =cBordure
+            PressedColor: =cBleu
+            PressedBorderColor: =cBleu
+            X: =152
+            Y: =72
+            Width: =150
+            Height: =36
+      - sit_btnAide:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="❓ Comment remplir"
+            OnSelect: =Navigate(scrAide, ScreenTransition.None)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =cOr
+            Color: =Color.White
+            BorderThickness: =0
+            HoverFill: =ColorFade(cOr, -0.15)
+            PressedFill: =ColorFade(cOr, -0.3)
+            HoverColor: =Color.White
+            PressedColor: =Color.White
+            X: =310
+            Y: =72
+            Width: =170
+            Height: =36
+      - sit_btnDeposer:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="☁️ Enregistrer et déposer"
+            OnSelect: =Select(sit_btnDeposerBas)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =cVert
+            Color: =Color.White
+            BorderThickness: =0
+            HoverFill: =ColorFade(cVert, -0.15)
+            PressedFill: =ColorFade(cVert, -0.3)
+            HoverColor: =Color.White
+            PressedColor: =Color.White
+            X: =Parent.Width - 274
+            Y: =72
+            Width: =242
+            Height: =36
+      - sit_btnSauver:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="☁️ Enregistrer"
+            OnSelect: |-
+              =IfError(
+                Set(varDossier, Patch(SST_Dossiers, If(IsBlank(varDossier.ID), Defaults(SST_Dossiers), varDossier),
+                {EmpNom: sit_txtEmpNom.Text,
+                EmpPrenom: sit_txtEmpPrenom.Text,
+                EmpID: sit_txtEmpID.Text,
+                EmpService: sit_drpEmpService.Selected.Value,
+                EmpCourriel: sit_txtEmpCourriel.Text,
+                DiscuteGest: sit_rdoDiscuteGest.Selected.Value,
+                SyndicatCopie: sit_rdoSyndicatCopie.Selected.Value,
+                EmpSyndicat: sit_drpEmpSyndicat.Selected.Value,
+                EvtAdresse: sit_txtEvtAdresse.Text,
+                EvtDate: sit_dteEvtDate.SelectedDate,
+                Description: sit_txmDescription.Text,
+                MesurePrev: sit_txmMesurePrev.Text,
+                TypeFormulaire: "Situation dangereuse",
+                Title: "Situation dangereuse – " & sit_txtEmpNom.Text & ", " & sit_txtEmpPrenom.Text & " – " & Text(sit_dteEvtDate.SelectedDate, "yyyy-mm-dd"),
+                CreeParCourriel: Coalesce(varDossier.CreeParCourriel, varMoi),
+                CreeParNom: Coalesce(varDossier.CreeParNom, User().FullName),
+                Statut: Coalesce(varDossier.Statut, "Brouillon")}));
+                Notify("Brouillon enregistré (dossier n° " & varDossier.ID & ").", NotificationType.Success),
+                Notify("Erreur d'enregistrement : " & FirstError.Message, NotificationType.Error))
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =Color.White
+            Color: =cBleu
+            BorderColor: =cBleu
+            BorderThickness: =2
+            HoverFill: =cBleuPale
+            HoverColor: =cBleu
+            HoverBorderColor: =cBleu
+            PressedFill: =cBordure
+            PressedColor: =cBleu
+            PressedBorderColor: =cBleu
+            X: =Parent.Width - 424
+            Y: =72
+            Width: =142
+            Height: =36
+      - sit_btnNouveau:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="📝 Nouveau formulaire"
+            OnSelect: =Navigate(scrAccueil, ScreenTransition.None)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =Color.White
+            Color: =cRouge
+            BorderColor: =cRouge
+            BorderThickness: =2
+            HoverFill: =cBleuPale
+            HoverColor: =cRouge
+            HoverBorderColor: =cRouge
+            PressedFill: =cBordure
+            PressedColor: =cRouge
+            PressedBorderColor: =cRouge
+            X: =Parent.Width - 634
+            Y: =72
+            Width: =202
+            Height: =36
+      - sit_fondEtapes:
+          Control: Rectangle@2.3.0
+          Properties:
+            Fill: =Color.White
+            BorderThickness: =0
+            X: =0
+            Y: =116
+            Width: =Parent.Width
+            Height: =76
+      - sit_galEtapes:
+          Control: Gallery@2.15.0
+          Variant: Horizontal
+          Properties:
+            Items: |-
+              =Switch(varDossier.TypeFormulaire,
+                "Situation dangereuse", Table(
+                  {n: 1, t: "Signalement", d: varDossier.DateDeclaration},
+                  {n: 2, t: "Prise en charge", d: varDossier.DateEnquete},
+                  {n: 3, t: "Mesure corrective", d: varDossier.DatePlanAction},
+                  {n: 4, t: "Fermeture", d: varDossier.DateFermeture}),
+                "Violence", Table(
+                  {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},
+                  {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},
+                  {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},
+                  {n: 4, t: "Suivi SST / Bouclier", d: varDossier.DateEnquete},
+                  {n: 5, t: "Fermeture", d: varDossier.DateFermeture}),
+                Table(
+                  {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},
+                  {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},
+                  {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},
+                  {n: 4, t: "Enquête", d: varDossier.DateEnquete},
+                  {n: 5, t: "Analyse 5 Pourquoi", d: varDossier.DateAnalyse},
+                  {n: 6, t: "Plan d'action", d: varDossier.DatePlanAction},
+                  {n: 7, t: "Fermeture", d: varDossier.DateFermeture}))
+            TemplateSize: =150
+            TemplatePadding: =0
+            ShowScrollbar: =false
+            X: |-
+              =Max(210, (Parent.Width - 150 * CountRows(Switch(varDossier.TypeFormulaire,   "Situation dangereuse", Table(     {n: 1, t: "Signalement", d: varDossier.DateDeclaration},     {n: 2, t: "Prise en charge", d: varDossier.DateEnquete},     {n: 3, t: "Mesure corrective", d: varDossier.DatePlanAction},     {n: 4, t: "Fermeture", d: varDossier.DateFermeture}),   "Violence", Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Suivi SST / Bouclier", d: varDossier.DateEnquete},     {n: 5, t: "Fermeture", d: varDossier.DateFermeture}),   Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Enquête", d: varDossier.DateEnquete},     {n: 5, t: "Analyse 5 Pourquoi", d: varDossier.DateAnalyse},     {n: 6, t: "Plan d'action", d: varDossier.DatePlanAction},     {n: 7, t: "Fermeture", d: varDossier.DateFermeture})))) / 2)
+            Y: =118
+            Width: |-
+              =150 * CountRows(Switch(varDossier.TypeFormulaire,   "Situation dangereuse", Table(     {n: 1, t: "Signalement", d: varDossier.DateDeclaration},     {n: 2, t: "Prise en charge", d: varDossier.DateEnquete},     {n: 3, t: "Mesure corrective", d: varDossier.DatePlanAction},     {n: 4, t: "Fermeture", d: varDossier.DateFermeture}),   "Violence", Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Suivi SST / Bouclier", d: varDossier.DateEnquete},     {n: 5, t: "Fermeture", d: varDossier.DateFermeture}),   Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Enquête", d: varDossier.DateEnquete},     {n: 5, t: "Analyse 5 Pourquoi", d: varDossier.DateAnalyse},     {n: 6, t: "Plan d'action", d: varDossier.DatePlanAction},     {n: 7, t: "Fermeture", d: varDossier.DateFermeture})))
+            Height: =72
+            BorderThickness: =0
+          Children:
+            - sit_stpLigne:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: |-
+                    =If(!IsBlank(LookUp(Switch(varDossier.TypeFormulaire,   "Situation dangereuse", Table(     {n: 1, t: "Signalement", d: varDossier.DateDeclaration},     {n: 2, t: "Prise en charge", d: varDossier.DateEnquete},     {n: 3, t: "Mesure corrective", d: varDossier.DatePlanAction},     {n: 4, t: "Fermeture", d: varDossier.DateFermeture}),   "Violence", Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Suivi SST / Bouclier", d: varDossier.DateEnquete},     {n: 5, t: "Fermeture", d: varDossier.DateFermeture}),   Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Enquête", d: varDossier.DateEnquete},     {n: 5, t: "Analyse 5 Pourquoi", d: varDossier.DateAnalyse},     {n: 6, t: "Plan d'action", d: varDossier.DatePlanAction},     {n: 7, t: "Fermeture", d: varDossier.DateFermeture})), n = ThisItem.n + 1).d), cVert, cBordure)
+                  BorderThickness: =0
+                  X: =75.0
+                  Y: =21
+                  Width: =150
+                  Height: =3
+                  Visible: |-
+                    =ThisItem.n < CountRows(Switch(varDossier.TypeFormulaire,   "Situation dangereuse", Table(     {n: 1, t: "Signalement", d: varDossier.DateDeclaration},     {n: 2, t: "Prise en charge", d: varDossier.DateEnquete},     {n: 3, t: "Mesure corrective", d: varDossier.DatePlanAction},     {n: 4, t: "Fermeture", d: varDossier.DateFermeture}),   "Violence", Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Suivi SST / Bouclier", d: varDossier.DateEnquete},     {n: 5, t: "Fermeture", d: varDossier.DateFermeture}),   Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Enquête", d: varDossier.DateEnquete},     {n: 5, t: "Analyse 5 Pourquoi", d: varDossier.DateAnalyse},     {n: 6, t: "Plan d'action", d: varDossier.DatePlanAction},     {n: 7, t: "Fermeture", d: varDossier.DateFermeture})))
+            - sit_stpRond:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  Text: =If(IsBlank(ThisItem.d), Text(ThisItem.n), "✓")
+                  OnSelect: =false
+                  Fill: =If(IsBlank(ThisItem.d), cGrisLib, cVert)
+                  Color: =Color.White
+                  BorderThickness: =0
+                  HoverFill: =If(IsBlank(ThisItem.d), cGrisLib, cVert)
+                  PressedFill: =If(IsBlank(ThisItem.d), cGrisLib, cVert)
+                  HoverColor: =Color.White
+                  PressedColor: =Color.White
+                  DisabledFill: =If(IsBlank(ThisItem.d), cGrisLib, cVert)
+                  DisabledColor: =Color.White
+                  DisplayMode: =DisplayMode.View
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  Height: =32
+                  RadiusTopLeft: =16
+                  RadiusTopRight: =16
+                  RadiusBottomLeft: =16
+                  RadiusBottomRight: =16
+                  TabIndex: =-1
+                  X: =59.0
+                  Y: =6
+                  Width: =32
+            - sit_stpNom:
+                Control: Label@2.5.1
+                Properties:
+                  Text: =ThisItem.t
+                  Color: =If(IsBlank(ThisItem.d), cTexte2, cTexte)
+                  Size: =10
+                  X: =0
+                  Y: =40
+                  Width: =150
+                  Height: =18
+                  Align: =Align.Center
+                  FontWeight: =FontWeight.Semibold
+            - sit_stpDate:
+                Control: Label@2.5.1
+                Properties:
+                  Text: =If(IsBlank(ThisItem.d), "", Text(ThisItem.d, "yyyy-mm-dd"))
+                  Color: =cTexte2
+                  Size: =9
+                  X: =0
+                  Y: =56
+                  Width: =150
+                  Height: =16
+                  Align: =Align.Center
+      - sit_pilNo:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: =If(IsBlank(varDossier.ID), "Nouveau dossier", "Dossier n° " & varDossier.ID)
+            OnSelect: =false
+            Fill: =cBleuPale
+            Color: =cMarine
+            BorderThickness: =0
+            HoverFill: =cBleuPale
+            PressedFill: =cBleuPale
+            HoverColor: =cMarine
+            PressedColor: =cMarine
+            DisabledFill: =cBleuPale
+            DisabledColor: =cMarine
+            DisplayMode: =DisplayMode.View
+            Size: =10
+            FontWeight: =FontWeight.Semibold
+            Height: =28
+            RadiusTopLeft: =14
+            RadiusTopRight: =14
+            RadiusBottomLeft: =14
+            RadiusBottomRight: =14
+            TabIndex: =-1
+            X: =24
+            Y: =124
+            Width: =170
+      - sit_pilStatut:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: =Coalesce(varDossier.Statut, "Brouillon")
+            OnSelect: =false
+            Fill: =cBordure
+            Color: =cMarine
+            BorderThickness: =0
+            HoverFill: =cBordure
+            PressedFill: =cBordure
+            HoverColor: =cMarine
+            PressedColor: =cMarine
+            DisabledFill: =cBordure
+            DisabledColor: =cMarine
+            DisplayMode: =DisplayMode.View
+            Size: =10
+            FontWeight: =FontWeight.Semibold
+            Height: =28
+            RadiusTopLeft: =14
+            RadiusTopRight: =14
+            RadiusBottomLeft: =14
+            RadiusBottomRight: =14
+            TabIndex: =-1
+            X: =24
+            Y: =158
+            Width: =170
+      - sit_ligneEtapes:
+          Control: Rectangle@2.3.0
+          Properties:
+            Fill: =cBordure
+            BorderThickness: =0
+            X: =0
+            Y: =191
+            Width: =Parent.Width
+            Height: =1
+      - sit_conCorps:
+          Control: GroupContainer@1.3.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =Color.White
+            BorderThickness: =1
+            DropShadow: =DropShadow.None
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =6
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            BorderColor: =cBordure
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            X: =24
+            Y: =204
+            Width: =Parent.Width - 48
+            Height: =Parent.Height - 220
+            LayoutOverflowY: =LayoutOverflow.Scroll
+            PaddingTop: =16
+            PaddingBottom: =32
+            PaddingLeft: =Max(24, (Self.Width - 940) / 2)
+            PaddingRight: =Max(24, (Self.Width - 940) / 2)
+          Children:
+            - sit_info0:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Si vous observez dans votre milieu de travail une situation dangereuse, sécurisez immédiatement les lieux et avisez votre gestionnaire afin qu'il prenne en charge la problématique. Si la situation dangereuse ne peut être corrigée immédiatement, vous devez remplir ce formulaire."
+                  Color: =cMarine
+                  Size: =11
+                  AutoHeight: =true
+                  Wrap: =true
+                  Fill: =cBleuPale
+                  PaddingLeft: =12
+                  PaddingRight: =12
+                  PaddingTop: =8
+                  PaddingBottom: =8
+                  BorderColor: =cBleu
+                  BorderThickness: =1
+            - sit_sec1:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Vos coordonnées"
+                  Color: =cMarine
+                  Size: =16
+                  FontWeight: =FontWeight.Bold
+                  AutoHeight: =true
+                  PaddingTop: =14
+                  PaddingBottom: =2
+            - sit_ligne2:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =cOr
+                  BorderThickness: =0
+                  Height: =2
+            - sit_lblEmpNom:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Votre nom" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - sit_txtEmpNom:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.EmpNom
+                  HintText: =""
+                  Height: =38
+            - sit_lblEmpPrenom:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Votre prénom" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - sit_txtEmpPrenom:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.EmpPrenom
+                  HintText: =""
+                  Height: =38
+            - sit_lblEmpID:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Votre ID" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - sit_aideEmpID:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Les 6 chiffres de votre ID (incluant le ou les 0)."
+                  Color: =cTexte2
+                  Size: =10.5
+                  AutoHeight: =true
+                  Wrap: =true
+            - sit_txtEmpID:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.EmpID
+                  HintText: =""
+                  Height: =38
+                  MaxLength: =6
+                  Width: =200
+                  AlignInContainer: =AlignInContainer.Start
+            - sit_lblEmpService:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Votre unité administrative" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - sit_drpEmpService:
+                Control: Classic/DropDown@2.3.1
+                Properties:
+                  BorderColor: =cBordure
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Items: =Sort(Filter(colListes, Liste = "Service"), Ordre).Value
+                  Default: =varDossier.EmpService
+                  AllowEmptySelection: =true
+                  Height: =38
+                  ChevronBackground: =cBleu
+                  ChevronFill: =Color.White
+                  SelectionFill: =cBleu
+            - sit_lblEmpCourriel:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Votre courriel" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - sit_aideEmpCourriel:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Inscrire un seul courriel (personnel ou Ville)."
+                  Color: =cTexte2
+                  Size: =10.5
+                  AutoHeight: =true
+                  Wrap: =true
+            - sit_txtEmpCourriel:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =Coalesce(varDossier.EmpCourriel, User().Email)
+                  HintText: =""
+                  Height: =38
+            - sit_sec15:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Situation dangereuse observée"
+                  Color: =cMarine
+                  Size: =16
+                  FontWeight: =FontWeight.Bold
+                  AutoHeight: =true
+                  PaddingTop: =14
+                  PaddingBottom: =2
+            - sit_ligne16:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =cOr
+                  BorderThickness: =0
+                  Height: =2
+            - sit_lblDiscuteGest:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="En avez-vous discuté avec votre gestionnaire ?" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - sit_rdoDiscuteGest:
+                Control: Classic/Radio@2.3.0
+                Properties:
+                  Items: =["Oui", "Non"]
+                  Default: =varDossier.DiscuteGest
+                  Reset: =locReset
+                  Size: =12
+                  Color: =cTexte
+                  RadioSelectionFill: =cBleu
+                  RadioBorderColor: =cTexte2
+                  Layout: =Layout.Horizontal
+                  Height: =40
+            - sit_lblSyndicatCopie:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Désirez-vous que votre syndicat / association soit mis en copie de votre signalement ?" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - sit_rdoSyndicatCopie:
+                Control: Classic/Radio@2.3.0
+                Properties:
+                  Items: =["Oui", "Non"]
+                  Default: =varDossier.SyndicatCopie
+                  Reset: =locReset
+                  Size: =12
+                  Color: =cTexte
+                  RadioSelectionFill: =cBleu
+                  RadioBorderColor: =cTexte2
+                  Layout: =Layout.Horizontal
+                  Height: =40
+            - sit_lblEmpSyndicat:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Syndicat / association auquel vous êtes rattaché et qui sera mis en copie" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =sit_rdoSyndicatCopie.Selected.Value = "Oui"
+            - sit_drpEmpSyndicat:
+                Control: Classic/DropDown@2.3.1
+                Properties:
+                  BorderColor: =cBordure
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Items: =Sort(Filter(colListes, Liste = "Syndicat"), Ordre).Value
+                  Default: =varDossier.EmpSyndicat
+                  AllowEmptySelection: =true
+                  Height: =38
+                  ChevronBackground: =cBleu
+                  ChevronFill: =Color.White
+                  SelectionFill: =cBleu
+                  Visible: =sit_rdoSyndicatCopie.Selected.Value = "Oui"
+            - sit_lblEvtAdresse:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Indiquez l'adresse et le lieu précis où vous avez observé la situation dangereuse" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - sit_txtEvtAdresse:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.EvtAdresse
+                  HintText: =""
+                  Height: =38
+            - sit_lblEvtDate:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Date de l'observation" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - sit_dteEvtDate:
+                Control: Classic/DatePicker@2.6.0
+                Properties:
+                  BorderColor: =cBordure
+                  Color: =cTexte
+                  Reset: =locReset
+                  DefaultDate: =varDossier.EvtDate
+                  Format: ="yyyy-mm-dd"
+                  Height: =38
+                  Width: =260
+                  AlignInContainer: =AlignInContainer.Start
+            - sit_lblDescription:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Décrire brièvement la situation dangereuse que vous avez observée" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - sit_txmDescription:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.Description
+                  HintText: =""
+                  Height: =110
+                  Mode: =TextMode.MultiLine
+            - sit_lblMesurePrev:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Décrire les mesures de prévention immédiates ou correctives que vous suggérez" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - sit_txmMesurePrev:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.MesurePrev
+                  HintText: =""
+                  Height: =110
+                  Mode: =TextMode.MultiLine
+            - sit_info31:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="En cas de besoin, conservez une ou vos photos dans vos dossiers personnels pour la suite des choses."
+                  Color: =cTexte2
+                  Size: =11
+                  AutoHeight: =true
+                  Wrap: =true
+            - sit_navBas:
+                Control: GroupContainer@1.3.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =Color.Transparent
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGap: =12
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutJustifyContent: =LayoutJustifyContent.End
+                  Height: =60
+                  PaddingTop: =16
+                  FillPortions: =0
+                Children:
+                  - sit_btnDeposerBas:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: ="☁️ Enregistrer et déposer"
+                        OnSelect: |-
+                          =UpdateContext({locManquants: Concat(Filter(Table(
+                              {c: "Votre nom", ok: !(true) || !(IsBlank(sit_txtEmpNom.Text))},
+                              {c: "Votre prénom", ok: !(true) || !(IsBlank(sit_txtEmpPrenom.Text))},
+                              {c: "Votre ID", ok: !(true) || !(IsBlank(sit_txtEmpID.Text))},
+                              {c: "Votre unité administrative", ok: !(true) || !(IsBlank(sit_drpEmpService.Selected.Value))},
+                              {c: "Votre courriel", ok: !(true) || !(IsBlank(sit_txtEmpCourriel.Text))},
+                              {c: "Courriel (format invalide)", ok: !(true) || !(!IsMatch(sit_txtEmpCourriel.Text, Match.Email))},
+                              {c: "En avez-vous discuté avec votre gestionnaire ?", ok: !(true) || !(IsBlank(sit_rdoDiscuteGest.Selected.Value))},
+                              {c: "Désirez-vous que votre syndicat / association soit mis en copie de votre signalement ?", ok: !(true) || !(IsBlank(sit_rdoSyndicatCopie.Selected.Value))},
+                              {c: "Syndicat / association auquel vous êtes rattaché et qui sera mis en copie", ok: !((sit_rdoSyndicatCopie.Selected.Value = "Oui") && (true)) || !(IsBlank(sit_drpEmpSyndicat.Selected.Value))},
+                              {c: "Indiquez l'adresse et le lieu précis où vous avez observé la situation dangereuse", ok: !(true) || !(IsBlank(sit_txtEvtAdresse.Text))},
+                              {c: "Date de l'observation", ok: !(true) || !(IsBlank(sit_dteEvtDate.SelectedDate))},
+                              {c: "Décrire brièvement la situation dangereuse que vous avez observée", ok: !(true) || !(IsBlank(sit_txmDescription.Text))},
+                              {c: "Décrire les mesures de prévention immédiates ou correctives que vous suggérez", ok: !(true) || !(IsBlank(sit_txmMesurePrev.Text))}), !ok), c, " • ")});
+                          If(!IsBlank(locManquants),
+                            Notify("Champs obligatoires à compléter : " & locManquants, NotificationType.Error),
+                            IfError(
+                            Set(varDossier, Patch(SST_Dossiers, If(IsBlank(varDossier.ID), Defaults(SST_Dossiers), varDossier),
+                            {EmpNom: sit_txtEmpNom.Text,
+                            EmpPrenom: sit_txtEmpPrenom.Text,
+                            EmpID: sit_txtEmpID.Text,
+                            EmpService: sit_drpEmpService.Selected.Value,
+                            EmpCourriel: sit_txtEmpCourriel.Text,
+                            DiscuteGest: sit_rdoDiscuteGest.Selected.Value,
+                            SyndicatCopie: sit_rdoSyndicatCopie.Selected.Value,
+                            EmpSyndicat: sit_drpEmpSyndicat.Selected.Value,
+                            EvtAdresse: sit_txtEvtAdresse.Text,
+                            EvtDate: sit_dteEvtDate.SelectedDate,
+                            Description: sit_txmDescription.Text,
+                            MesurePrev: sit_txmMesurePrev.Text,
+                            TypeFormulaire: "Situation dangereuse",
+                            Title: "Situation dangereuse – " & sit_txtEmpNom.Text & ", " & sit_txtEmpPrenom.Text & " – " & Text(sit_dteEvtDate.SelectedDate, "yyyy-mm-dd"),
+                            CreeParCourriel: Coalesce(varDossier.CreeParCourriel, varMoi),
+                            CreeParNom: Coalesce(varDossier.CreeParNom, User().FullName),
+                            Statut: If(IsBlank(varDossier.Statut) || varDossier.Statut = "Brouillon", "Déposé", varDossier.Statut),
+                            DateDeclaration: Coalesce(varDossier.DateDeclaration, Today())}));
+                            Notify("Dossier n° " & varDossier.ID & " déposé.", NotificationType.Success);
+                            Set(varAutoEnvoi, true);
+                            Navigate(scrApercu, ScreenTransition.None),
+                            Notify("Erreur d'enregistrement : " & FirstError.Message, NotificationType.Error)))
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =6
+                        RadiusTopRight: =6
+                        RadiusBottomLeft: =6
+                        RadiusBottomRight: =6
+                        Fill: =cVert
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =ColorFade(cVert, -0.15)
+                        PressedFill: =ColorFade(cVert, -0.3)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        Width: =240
+                        Height: =38

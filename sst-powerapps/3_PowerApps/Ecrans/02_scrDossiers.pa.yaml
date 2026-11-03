@@ -1,0 +1,401 @@
+Screens:
+  scrDossiers:
+    Properties:
+      Fill: =cFond
+    Children:
+      - dos_bandeau:
+          Control: Rectangle@2.3.0
+          Properties:
+            Fill: =cOr
+            BorderThickness: =0
+            X: =0
+            Y: =0
+            Width: =Parent.Width
+            Height: =64
+      - dos_titre:
+          Control: Label@2.5.1
+          Properties:
+            Text: ="Mes dossiers"
+            Color: =Color.White
+            Size: =20
+            X: =0
+            Y: =6
+            Width: =Parent.Width
+            Height: =32
+            FontWeight: =FontWeight.Bold
+            Align: =Align.Center
+      - dos_sousTitre:
+          Control: Label@2.5.1
+          Properties:
+            Text: =If(varRole = "Conseiller SST", "Tous les dossiers (conseiller SST)", "Dossiers que vous avez créés")
+            Color: =Color.White
+            Size: =12
+            X: =0
+            Y: =36
+            Width: =Parent.Width
+            Height: =22
+            Align: =Align.Center
+      - dos_pilRole:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="👤 " & varRole
+            OnSelect: =false
+            Fill: =cVert
+            Color: =Color.White
+            BorderThickness: =0
+            HoverFill: =cVert
+            PressedFill: =cVert
+            HoverColor: =Color.White
+            PressedColor: =Color.White
+            DisabledFill: =cVert
+            DisabledColor: =Color.White
+            DisplayMode: =DisplayMode.View
+            Size: =10
+            FontWeight: =FontWeight.Semibold
+            Height: =28
+            RadiusTopLeft: =14
+            RadiusTopRight: =14
+            RadiusBottomLeft: =14
+            RadiusBottomRight: =14
+            TabIndex: =-1
+            X: =Parent.Width - 224
+            Y: =18
+            Width: =200
+      - dos_barre:
+          Control: Rectangle@2.3.0
+          Properties:
+            Fill: =Color.White
+            BorderThickness: =0
+            X: =0
+            Y: =64
+            Width: =Parent.Width
+            Height: =52
+      - dos_barreLigne:
+          Control: Rectangle@2.3.0
+          Properties:
+            Fill: =cBordure
+            BorderThickness: =0
+            X: =0
+            Y: =115
+            Width: =Parent.Width
+            Height: =1
+      - dos_btnAccueil:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="🏠 Accueil"
+            OnSelect: =Navigate(scrAccueil, ScreenTransition.None)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =Color.White
+            Color: =cBleu
+            BorderColor: =cBleu
+            BorderThickness: =2
+            HoverFill: =cBleuPale
+            HoverColor: =cBleu
+            HoverBorderColor: =cBleu
+            PressedFill: =cBordure
+            PressedColor: =cBleu
+            PressedBorderColor: =cBleu
+            X: =24
+            Y: =72
+            Width: =120
+            Height: =36
+      - dos_btnDossiers:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="📂 Mes dossiers"
+            OnSelect: =Navigate(scrDossiers, ScreenTransition.None)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =Color.White
+            Color: =cBleu
+            BorderColor: =cBleu
+            BorderThickness: =2
+            HoverFill: =cBleuPale
+            HoverColor: =cBleu
+            HoverBorderColor: =cBleu
+            PressedFill: =cBordure
+            PressedColor: =cBleu
+            PressedBorderColor: =cBleu
+            X: =152
+            Y: =72
+            Width: =150
+            Height: =36
+      - dos_btnAide:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="❓ Comment remplir"
+            OnSelect: =Navigate(scrAide, ScreenTransition.None)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =cOr
+            Color: =Color.White
+            BorderThickness: =0
+            HoverFill: =ColorFade(cOr, -0.15)
+            PressedFill: =ColorFade(cOr, -0.3)
+            HoverColor: =Color.White
+            PressedColor: =Color.White
+            X: =310
+            Y: =72
+            Width: =170
+            Height: =36
+      - dos_btnNouveau:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="📝 Nouveau formulaire"
+            OnSelect: =Navigate(scrAccueil, ScreenTransition.None)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =Color.White
+            Color: =cRouge
+            BorderColor: =cRouge
+            BorderThickness: =2
+            HoverFill: =cBleuPale
+            HoverColor: =cRouge
+            HoverBorderColor: =cRouge
+            PressedFill: =cBordure
+            PressedColor: =cRouge
+            PressedBorderColor: =cRouge
+            X: =Parent.Width - 234
+            Y: =72
+            Width: =202
+            Height: =36
+      - dos_lblType:
+          Control: Label@2.5.1
+          Properties:
+            Text: ="Type"
+            Color: =cTexte2
+            Size: =10
+            X: =24
+            Y: =128
+            Width: =200
+            Height: =20
+            FontWeight: =FontWeight.Semibold
+      - dos_drpType:
+          Control: Classic/DropDown@2.3.1
+          Properties:
+            Items: =["Tous", "Accident", "Incident", "Situation dangereuse", "Violence"]
+            X: =24
+            Y: =148
+            Width: =220
+            Height: =36
+            ChevronBackground: =cBleu
+            SelectionFill: =cBleu
+            BorderColor: =cBordure
+            Size: =11
+      - dos_lblStatut:
+          Control: Label@2.5.1
+          Properties:
+            Text: ="Statut"
+            Color: =cTexte2
+            Size: =10
+            X: =260
+            Y: =128
+            Width: =200
+            Height: =20
+            FontWeight: =FontWeight.Semibold
+      - dos_drpStatut:
+          Control: Classic/DropDown@2.3.1
+          Properties:
+            Items: |-
+              =Ungroup(Table({t: ["Tous"]}, {t: Sort(Filter(colListes, Liste = "Statut"), Ordre).Value}), t)
+            X: =260
+            Y: =148
+            Width: =220
+            Height: =36
+            ChevronBackground: =cBleu
+            SelectionFill: =cBleu
+            BorderColor: =cBordure
+            Size: =11
+      - dos_lblRech:
+          Control: Label@2.5.1
+          Properties:
+            Text: ="Recherche (nom de l'employé, début)"
+            Color: =cTexte2
+            Size: =10
+            X: =496
+            Y: =128
+            Width: =300
+            Height: =20
+            FontWeight: =FontWeight.Semibold
+      - dos_txtRech:
+          Control: Classic/TextInput@2.3.2
+          Properties:
+            BorderColor: =cBordure
+            HoverBorderColor: =cBleu
+            FocusedBorderColor: =cBleu
+            FocusedBorderThickness: =2
+            Color: =cTexte
+            Size: =11
+            Fill: =Color.White
+            X: =496
+            Y: =148
+            Width: =300
+            Height: =36
+            HintText: |-
+              ="ex. : Tremblay"
+            Default: =""
+      - dos_galDossiers:
+          Control: Gallery@2.15.0
+          Variant: Vertical
+          Properties:
+            Items: |-
+              =SortByColumns(Filter(SST_Dossiers,
+                (varRole = "Conseiller SST" || CreeParCourriel = varMoi) &&
+                (dos_drpType.Selected.Value = "Tous" || TypeFormulaire = dos_drpType.Selected.Value) &&
+                (dos_drpStatut.Selected.Value = "Tous" || Statut = dos_drpStatut.Selected.Value) &&
+                (IsBlank(dos_txtRech.Text) || StartsWith(EmpNom, dos_txtRech.Text))),
+                "ID", SortOrder.Descending)
+            TemplateSize: =84
+            TemplatePadding: =0
+            X: =24
+            Y: =200
+            Width: =Parent.Width - 48
+            Height: =Parent.Height - 216
+            OnSelect: =Set(varDossier, ThisItem); Navigate(scrApercu, ScreenTransition.None)
+            BorderThickness: =0
+          Children:
+            - dos_carte:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =Color.White
+                  BorderThickness: =1
+                  X: =0
+                  Y: =0
+                  Width: =Parent.TemplateWidth
+                  Height: =Parent.TemplateHeight - 8
+                  BorderColor: =cBordure
+            - dos_barreType:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =Switch(ThisItem.TypeFormulaire, "Accident", cBleu, "Incident", cSarcelle, "Situation dangereuse", cOr, "Violence", cViolet, cTexte2)
+                  BorderThickness: =0
+                  X: =0
+                  Y: =0
+                  Width: =6
+                  Height: =Parent.TemplateHeight - 8
+            - dos_galTitre:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="N° " & ThisItem.ID & " — " & Coalesce(ThisItem.Title, "(sans titre)")
+                  Color: =cMarine
+                  Size: =13
+                  X: =20
+                  Y: =8
+                  Width: =Parent.TemplateWidth - 420
+                  Height: =28
+                  FontWeight: =FontWeight.Semibold
+            - dos_galDetails:
+                Control: Label@2.5.1
+                Properties:
+                  Text: |-
+                    ="Évènement : " & Coalesce(Text(ThisItem.EvtDate, "yyyy-mm-dd"), "—") & "   ·   Déposé : " & Coalesce(Text(ThisItem.DateDeclaration, "yyyy-mm-dd"), "—") & "   ·   Créé par : " & ThisItem.CreeParNom
+                  Color: =cTexte2
+                  Size: =10.5
+                  X: =20
+                  Y: =38
+                  Width: =Parent.TemplateWidth - 420
+                  Height: =24
+            - dos_galType:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  Text: =ThisItem.TypeFormulaire
+                  OnSelect: =false
+                  Fill: =Switch(ThisItem.TypeFormulaire, "Accident", cBleu, "Incident", cSarcelle, "Situation dangereuse", cOr, "Violence", cViolet, cTexte2)
+                  Color: =Color.White
+                  BorderThickness: =0
+                  HoverFill: =Switch(ThisItem.TypeFormulaire, "Accident", cBleu, "Incident", cSarcelle, "Situation dangereuse", cOr, "Violence", cViolet, cTexte2)
+                  PressedFill: =Switch(ThisItem.TypeFormulaire, "Accident", cBleu, "Incident", cSarcelle, "Situation dangereuse", cOr, "Violence", cViolet, cTexte2)
+                  HoverColor: =Color.White
+                  PressedColor: =Color.White
+                  DisabledFill: =Switch(ThisItem.TypeFormulaire, "Accident", cBleu, "Incident", cSarcelle, "Situation dangereuse", cOr, "Violence", cViolet, cTexte2)
+                  DisabledColor: =Color.White
+                  DisplayMode: =DisplayMode.View
+                  Size: =10
+                  FontWeight: =FontWeight.Semibold
+                  Height: =28
+                  RadiusTopLeft: =14
+                  RadiusTopRight: =14
+                  RadiusBottomLeft: =14
+                  RadiusBottomRight: =14
+                  TabIndex: =-1
+                  X: =Parent.TemplateWidth - 400
+                  Y: =10
+                  Width: =170
+            - dos_galStatut:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  Text: =Coalesce(ThisItem.Statut, "Brouillon")
+                  OnSelect: =false
+                  Fill: =cBordure
+                  Color: =cMarine
+                  BorderThickness: =0
+                  HoverFill: =cBordure
+                  PressedFill: =cBordure
+                  HoverColor: =cMarine
+                  PressedColor: =cMarine
+                  DisabledFill: =cBordure
+                  DisabledColor: =cMarine
+                  DisplayMode: =DisplayMode.View
+                  Size: =10
+                  FontWeight: =FontWeight.Semibold
+                  Height: =28
+                  RadiusTopLeft: =14
+                  RadiusTopRight: =14
+                  RadiusBottomLeft: =14
+                  RadiusBottomRight: =14
+                  TabIndex: =-1
+                  X: =Parent.TemplateWidth - 220
+                  Y: =10
+                  Width: =150
+            - dos_galEtapes:
+                Control: Label@2.5.1
+                Properties:
+                  Text: |-
+                    ="Étapes : " & CountRows(Filter(Table({d: ThisItem.DateDeclaration}, {d: If(ThisItem.TypeFormulaire <> "Situation dangereuse", ThisItem.DateMesures)}, {d: If(ThisItem.TypeFormulaire <> "Situation dangereuse", ThisItem.DateApprobation)}, {d: ThisItem.DateEnquete}, {d: If(ThisItem.TypeFormulaire in ["Accident", "Incident"], ThisItem.DateAnalyse)}, {d: If(ThisItem.TypeFormulaire <> "Violence", ThisItem.DatePlanAction)}, {d: ThisItem.DateFermeture}), !IsBlank(d))) & " / " & Switch(ThisItem.TypeFormulaire, "Situation dangereuse", 4, "Violence", 5, 7)
+                  Color: =cTexte2
+                  Size: =10
+                  X: =Parent.TemplateWidth - 400
+                  Y: =42
+                  Width: =330
+                  Height: =22
+                  Align: =Align.Right
+            - dos_galChevron:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="›"
+                  Color: =cBleu
+                  Size: =26
+                  X: =Parent.TemplateWidth - 50
+                  Y: =10
+                  Width: =40
+                  Height: =50
+      - dos_vide:
+          Control: Label@2.5.1
+          Properties:
+            Text: ="Aucun dossier à afficher."
+            Color: =cTexte2
+            Size: =12
+            X: =24
+            Y: =220
+            Width: =Parent.Width - 48
+            Height: =40
+            Align: =Align.Center
+            Visible: =CountRows(dos_galDossiers.AllItems) = 0
+            Italic: =true

@@ -1,0 +1,1076 @@
+Screens:
+  scrAnalyse:
+    Properties:
+      Fill: =cFond
+      OnVisible: |-
+        =ClearCollect(colNoeuds, ForAll(Filter(SST_Pourquoi, DossierID = varDossier.ID), {Chemin: Chemin, Niveau: Niveau, Texte: Texte, CauseRacine: CauseRacine, ActionTexte: ActionTexte, ActionResp: ActionResp, ActionEcheance: ActionEcheance, ActionStatut: ActionStatut}));
+        UpdateContext({locGuide: false});
+        UpdateContext({locReset: true});
+        UpdateContext({locReset: false})
+    Children:
+      - ana_bandeau:
+          Control: Rectangle@2.3.0
+          Properties:
+            Fill: =cOr
+            BorderThickness: =0
+            X: =0
+            Y: =0
+            Width: =Parent.Width
+            Height: =64
+      - ana_titre:
+          Control: Label@2.5.1
+          Properties:
+            Text: ="Analyse des causes — 5 Pourquoi"
+            Color: =Color.White
+            Size: =20
+            X: =0
+            Y: =6
+            Width: =Parent.Width
+            Height: =32
+            FontWeight: =FontWeight.Bold
+            Align: =Align.Center
+      - ana_sousTitre:
+          Control: Label@2.5.1
+          Properties:
+            Text: ="Dossier n° " & varDossier.ID & " · " & varDossier.Title
+            Color: =Color.White
+            Size: =12
+            X: =0
+            Y: =36
+            Width: =Parent.Width
+            Height: =22
+            Align: =Align.Center
+      - ana_pilRole:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="👤 " & varRole
+            OnSelect: =false
+            Fill: =cVert
+            Color: =Color.White
+            BorderThickness: =0
+            HoverFill: =cVert
+            PressedFill: =cVert
+            HoverColor: =Color.White
+            PressedColor: =Color.White
+            DisabledFill: =cVert
+            DisabledColor: =Color.White
+            DisplayMode: =DisplayMode.View
+            Size: =10
+            FontWeight: =FontWeight.Semibold
+            Height: =28
+            RadiusTopLeft: =14
+            RadiusTopRight: =14
+            RadiusBottomLeft: =14
+            RadiusBottomRight: =14
+            TabIndex: =-1
+            X: =Parent.Width - 224
+            Y: =18
+            Width: =200
+      - ana_barre:
+          Control: Rectangle@2.3.0
+          Properties:
+            Fill: =Color.White
+            BorderThickness: =0
+            X: =0
+            Y: =64
+            Width: =Parent.Width
+            Height: =52
+      - ana_barreLigne:
+          Control: Rectangle@2.3.0
+          Properties:
+            Fill: =cBordure
+            BorderThickness: =0
+            X: =0
+            Y: =115
+            Width: =Parent.Width
+            Height: =1
+      - ana_btnAccueil:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="🏠 Accueil"
+            OnSelect: =Navigate(scrAccueil, ScreenTransition.None)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =Color.White
+            Color: =cBleu
+            BorderColor: =cBleu
+            BorderThickness: =2
+            HoverFill: =cBleuPale
+            HoverColor: =cBleu
+            HoverBorderColor: =cBleu
+            PressedFill: =cBordure
+            PressedColor: =cBleu
+            PressedBorderColor: =cBleu
+            X: =24
+            Y: =72
+            Width: =120
+            Height: =36
+      - ana_btnDossiers:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="📂 Mes dossiers"
+            OnSelect: =Navigate(scrDossiers, ScreenTransition.None)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =Color.White
+            Color: =cBleu
+            BorderColor: =cBleu
+            BorderThickness: =2
+            HoverFill: =cBleuPale
+            HoverColor: =cBleu
+            HoverBorderColor: =cBleu
+            PressedFill: =cBordure
+            PressedColor: =cBleu
+            PressedBorderColor: =cBleu
+            X: =152
+            Y: =72
+            Width: =150
+            Height: =36
+      - ana_btnAide:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="❓ Comment remplir"
+            OnSelect: =Navigate(scrAide, ScreenTransition.None)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =cOr
+            Color: =Color.White
+            BorderThickness: =0
+            HoverFill: =ColorFade(cOr, -0.15)
+            PressedFill: =ColorFade(cOr, -0.3)
+            HoverColor: =Color.White
+            PressedColor: =Color.White
+            X: =310
+            Y: =72
+            Width: =170
+            Height: =36
+      - ana_btnSauver:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="☁️ Enregistrer l'analyse"
+            OnSelect: =Select(ana_btnSauverBas)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =cVert
+            Color: =Color.White
+            BorderThickness: =0
+            HoverFill: =ColorFade(cVert, -0.15)
+            PressedFill: =ColorFade(cVert, -0.3)
+            HoverColor: =Color.White
+            PressedColor: =Color.White
+            X: =Parent.Width - 264
+            Y: =72
+            Width: =232
+            Height: =36
+      - ana_btnApercu:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="🖨️ Aperçu PDF"
+            OnSelect: =Navigate(scrApercu, ScreenTransition.None)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =Color.White
+            Color: =cBleu
+            BorderColor: =cBleu
+            BorderThickness: =2
+            HoverFill: =cBleuPale
+            HoverColor: =cBleu
+            HoverBorderColor: =cBleu
+            PressedFill: =cBordure
+            PressedColor: =cBleu
+            PressedBorderColor: =cBleu
+            X: =Parent.Width - 424
+            Y: =72
+            Width: =152
+            Height: =36
+      - ana_btnEnquete:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="🔍 Enquête"
+            OnSelect: =Navigate(scrEnquete, ScreenTransition.None)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =Color.White
+            Color: =cBleu
+            BorderColor: =cBleu
+            BorderThickness: =2
+            HoverFill: =cBleuPale
+            HoverColor: =cBleu
+            HoverBorderColor: =cBleu
+            PressedFill: =cBordure
+            PressedColor: =cBleu
+            PressedBorderColor: =cBleu
+            X: =Parent.Width - 554
+            Y: =72
+            Width: =122
+            Height: =36
+      - ana_fondEtapes:
+          Control: Rectangle@2.3.0
+          Properties:
+            Fill: =Color.White
+            BorderThickness: =0
+            X: =0
+            Y: =116
+            Width: =Parent.Width
+            Height: =76
+      - ana_galEtapes:
+          Control: Gallery@2.15.0
+          Variant: Horizontal
+          Properties:
+            Items: |-
+              =Switch(varDossier.TypeFormulaire,
+                "Situation dangereuse", Table(
+                  {n: 1, t: "Signalement", d: varDossier.DateDeclaration},
+                  {n: 2, t: "Prise en charge", d: varDossier.DateEnquete},
+                  {n: 3, t: "Mesure corrective", d: varDossier.DatePlanAction},
+                  {n: 4, t: "Fermeture", d: varDossier.DateFermeture}),
+                "Violence", Table(
+                  {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},
+                  {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},
+                  {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},
+                  {n: 4, t: "Suivi SST / Bouclier", d: varDossier.DateEnquete},
+                  {n: 5, t: "Fermeture", d: varDossier.DateFermeture}),
+                Table(
+                  {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},
+                  {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},
+                  {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},
+                  {n: 4, t: "Enquête", d: varDossier.DateEnquete},
+                  {n: 5, t: "Analyse 5 Pourquoi", d: varDossier.DateAnalyse},
+                  {n: 6, t: "Plan d'action", d: varDossier.DatePlanAction},
+                  {n: 7, t: "Fermeture", d: varDossier.DateFermeture}))
+            TemplateSize: =150
+            TemplatePadding: =0
+            ShowScrollbar: =false
+            X: |-
+              =Max(210, (Parent.Width - 150 * CountRows(Switch(varDossier.TypeFormulaire,   "Situation dangereuse", Table(     {n: 1, t: "Signalement", d: varDossier.DateDeclaration},     {n: 2, t: "Prise en charge", d: varDossier.DateEnquete},     {n: 3, t: "Mesure corrective", d: varDossier.DatePlanAction},     {n: 4, t: "Fermeture", d: varDossier.DateFermeture}),   "Violence", Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Suivi SST / Bouclier", d: varDossier.DateEnquete},     {n: 5, t: "Fermeture", d: varDossier.DateFermeture}),   Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Enquête", d: varDossier.DateEnquete},     {n: 5, t: "Analyse 5 Pourquoi", d: varDossier.DateAnalyse},     {n: 6, t: "Plan d'action", d: varDossier.DatePlanAction},     {n: 7, t: "Fermeture", d: varDossier.DateFermeture})))) / 2)
+            Y: =118
+            Width: |-
+              =150 * CountRows(Switch(varDossier.TypeFormulaire,   "Situation dangereuse", Table(     {n: 1, t: "Signalement", d: varDossier.DateDeclaration},     {n: 2, t: "Prise en charge", d: varDossier.DateEnquete},     {n: 3, t: "Mesure corrective", d: varDossier.DatePlanAction},     {n: 4, t: "Fermeture", d: varDossier.DateFermeture}),   "Violence", Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Suivi SST / Bouclier", d: varDossier.DateEnquete},     {n: 5, t: "Fermeture", d: varDossier.DateFermeture}),   Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Enquête", d: varDossier.DateEnquete},     {n: 5, t: "Analyse 5 Pourquoi", d: varDossier.DateAnalyse},     {n: 6, t: "Plan d'action", d: varDossier.DatePlanAction},     {n: 7, t: "Fermeture", d: varDossier.DateFermeture})))
+            Height: =72
+            BorderThickness: =0
+          Children:
+            - ana_stpLigne:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: |-
+                    =If(!IsBlank(LookUp(Switch(varDossier.TypeFormulaire,   "Situation dangereuse", Table(     {n: 1, t: "Signalement", d: varDossier.DateDeclaration},     {n: 2, t: "Prise en charge", d: varDossier.DateEnquete},     {n: 3, t: "Mesure corrective", d: varDossier.DatePlanAction},     {n: 4, t: "Fermeture", d: varDossier.DateFermeture}),   "Violence", Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Suivi SST / Bouclier", d: varDossier.DateEnquete},     {n: 5, t: "Fermeture", d: varDossier.DateFermeture}),   Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Enquête", d: varDossier.DateEnquete},     {n: 5, t: "Analyse 5 Pourquoi", d: varDossier.DateAnalyse},     {n: 6, t: "Plan d'action", d: varDossier.DatePlanAction},     {n: 7, t: "Fermeture", d: varDossier.DateFermeture})), n = ThisItem.n + 1).d), cVert, cBordure)
+                  BorderThickness: =0
+                  X: =75.0
+                  Y: =21
+                  Width: =150
+                  Height: =3
+                  Visible: |-
+                    =ThisItem.n < CountRows(Switch(varDossier.TypeFormulaire,   "Situation dangereuse", Table(     {n: 1, t: "Signalement", d: varDossier.DateDeclaration},     {n: 2, t: "Prise en charge", d: varDossier.DateEnquete},     {n: 3, t: "Mesure corrective", d: varDossier.DatePlanAction},     {n: 4, t: "Fermeture", d: varDossier.DateFermeture}),   "Violence", Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Suivi SST / Bouclier", d: varDossier.DateEnquete},     {n: 5, t: "Fermeture", d: varDossier.DateFermeture}),   Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Enquête", d: varDossier.DateEnquete},     {n: 5, t: "Analyse 5 Pourquoi", d: varDossier.DateAnalyse},     {n: 6, t: "Plan d'action", d: varDossier.DatePlanAction},     {n: 7, t: "Fermeture", d: varDossier.DateFermeture})))
+            - ana_stpRond:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  Text: =If(IsBlank(ThisItem.d), Text(ThisItem.n), "✓")
+                  OnSelect: =false
+                  Fill: =If(IsBlank(ThisItem.d), cGrisLib, cVert)
+                  Color: =Color.White
+                  BorderThickness: =0
+                  HoverFill: =If(IsBlank(ThisItem.d), cGrisLib, cVert)
+                  PressedFill: =If(IsBlank(ThisItem.d), cGrisLib, cVert)
+                  HoverColor: =Color.White
+                  PressedColor: =Color.White
+                  DisabledFill: =If(IsBlank(ThisItem.d), cGrisLib, cVert)
+                  DisabledColor: =Color.White
+                  DisplayMode: =DisplayMode.View
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  Height: =32
+                  RadiusTopLeft: =16
+                  RadiusTopRight: =16
+                  RadiusBottomLeft: =16
+                  RadiusBottomRight: =16
+                  TabIndex: =-1
+                  X: =59.0
+                  Y: =6
+                  Width: =32
+            - ana_stpNom:
+                Control: Label@2.5.1
+                Properties:
+                  Text: =ThisItem.t
+                  Color: =If(IsBlank(ThisItem.d), cTexte2, cTexte)
+                  Size: =10
+                  X: =0
+                  Y: =40
+                  Width: =150
+                  Height: =18
+                  Align: =Align.Center
+                  FontWeight: =FontWeight.Semibold
+            - ana_stpDate:
+                Control: Label@2.5.1
+                Properties:
+                  Text: =If(IsBlank(ThisItem.d), "", Text(ThisItem.d, "yyyy-mm-dd"))
+                  Color: =cTexte2
+                  Size: =9
+                  X: =0
+                  Y: =56
+                  Width: =150
+                  Height: =16
+                  Align: =Align.Center
+      - ana_pilNo:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: =If(IsBlank(varDossier.ID), "Nouveau dossier", "Dossier n° " & varDossier.ID)
+            OnSelect: =false
+            Fill: =cBleuPale
+            Color: =cMarine
+            BorderThickness: =0
+            HoverFill: =cBleuPale
+            PressedFill: =cBleuPale
+            HoverColor: =cMarine
+            PressedColor: =cMarine
+            DisabledFill: =cBleuPale
+            DisabledColor: =cMarine
+            DisplayMode: =DisplayMode.View
+            Size: =10
+            FontWeight: =FontWeight.Semibold
+            Height: =28
+            RadiusTopLeft: =14
+            RadiusTopRight: =14
+            RadiusBottomLeft: =14
+            RadiusBottomRight: =14
+            TabIndex: =-1
+            X: =24
+            Y: =124
+            Width: =170
+      - ana_pilStatut:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: =Coalesce(varDossier.Statut, "Brouillon")
+            OnSelect: =false
+            Fill: =cBordure
+            Color: =cMarine
+            BorderThickness: =0
+            HoverFill: =cBordure
+            PressedFill: =cBordure
+            HoverColor: =cMarine
+            PressedColor: =cMarine
+            DisabledFill: =cBordure
+            DisabledColor: =cMarine
+            DisplayMode: =DisplayMode.View
+            Size: =10
+            FontWeight: =FontWeight.Semibold
+            Height: =28
+            RadiusTopLeft: =14
+            RadiusTopRight: =14
+            RadiusBottomLeft: =14
+            RadiusBottomRight: =14
+            TabIndex: =-1
+            X: =24
+            Y: =158
+            Width: =170
+      - ana_ligneEtapes:
+          Control: Rectangle@2.3.0
+          Properties:
+            Fill: =cBordure
+            BorderThickness: =0
+            X: =0
+            Y: =191
+            Width: =Parent.Width
+            Height: =1
+      - ana_conCorps:
+          Control: GroupContainer@1.3.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =Color.White
+            BorderThickness: =1
+            DropShadow: =DropShadow.None
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =6
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            BorderColor: =cBordure
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            X: =24
+            Y: =204
+            Width: =Parent.Width - 48
+            Height: =Parent.Height - 220
+            LayoutOverflowY: =LayoutOverflow.Scroll
+            PaddingTop: =16
+            PaddingBottom: =32
+            PaddingLeft: =Max(24, (Self.Width - 940) / 2)
+            PaddingRight: =Max(24, (Self.Width - 940) / 2)
+          Children:
+            - ana_btnGuide:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  Text: =If(locGuide, "▾ ", "▸ ") & "Qu'est-ce que la méthode des 5 Pourquoi ? (cliquez pour déplier)"
+                  OnSelect: |-
+                    =UpdateContext({locGuide: !locGuide})
+                  Size: =11
+                  FontWeight: =FontWeight.Semibold
+                  RadiusTopLeft: =6
+                  RadiusTopRight: =6
+                  RadiusBottomLeft: =6
+                  RadiusBottomRight: =6
+                  Fill: =Color.Transparent
+                  Color: =cBleu
+                  BorderThickness: =0
+                  HoverFill: =cBleuPale
+                  HoverColor: =cBleu
+                  PressedFill: =cBordure
+                  PressedColor: =cBleu
+                  Align: =Align.Left
+                  Height: =36
+            - ana_htmGuide:
+                Control: HtmlViewer@2.1.0
+                Properties:
+                  HtmlText: |-
+                    ="<div style='font-size:13px;line-height:1.55;color:#1F2937'>
+                    <p>Cette méthode consiste à demander « Pourquoi ? » de façon répétée face à un problème, afin de dépasser sa cause apparente et de remonter jusqu'à sa cause profonde. En général, cinq questions suffisent, mais une chaîne peut être plus courte ou plus longue.</p>
+                    <p style='color:#00285E;font-weight:bold;margin-bottom:2px'>1. Bien poser le problème</p>
+                    <ul><li>Énoncez un fait observable, pas un jugement.</li><li>L'objectif est de comprendre un processus, pas de désigner une personne responsable.</li></ul>
+                    <p style='color:#00285E;font-weight:bold;margin-bottom:2px'>2. Creuser, puis savoir quand s'arrêter</p>
+                    <ul><li>Restez factuel à chaque réponse : appuyez-vous sur ce qui est observé ou vérifiable.</li>
+                    <li>Un problème peut avoir plusieurs causes contributives : ouvrez une branche séparée pour chacune.</li>
+                    <li>Arrêtez de creuser une branche dès que la réponse devient illogique, se répète ou sort du champ d'action de l'équipe : revenez à la réponse précédente et cherchez une autre piste.</li>
+                    <li>Une cause racine est atteinte quand la réponse décrit quelque chose sur lequel l'équipe peut réellement agir.</li></ul>
+                    <p style='color:#00285E;font-weight:bold;margin-bottom:2px'>3. Agir et vérifier</p>
+                    <ul><li>Pour chaque cause racine, définissez une action corrective concrète, avec un responsable et une échéance.</li>
+                    <li>Revenez vérifier que l'action a réellement empêché le problème de se reproduire (statut « Efficacité vérifiée »).</li></ul>
+                    <p style='color:#00285E;font-weight:bold;margin-bottom:2px'>4. Quatre pièges classiques</p>
+                    <ul><li><b>S'arrêter à « l'erreur humaine »</b> : c'est le symptôme d'un système qui l'a rendue possible. L'application signale ces réponses.</li>
+                    <li><b>S'enfermer dans une seule ligne</b> : ouvrez une branche par facteur.</li>
+                    <li><b>S'arrêter à une cause « acceptable »</b> pour éviter un sujet délicat.</li>
+                    <li><b>Remonter trop loin</b>, jusqu'à des causes générales sur lesquelles personne n'a de prise.</li></ul>
+                    <p style='color:#00285E;font-weight:bold;margin-bottom:2px'>5. Test du « Donc »</p>
+                    <p>Relisez la chaîne à l'envers en remplaçant chaque « Pourquoi » par « donc ». Si l'enchaînement ne sonne pas juste, un maillon manque. L'application génère cette relecture automatiquement sous le plan d'action.</p>
+                    <div style='background:#ECF1F7;border-left:4px solid #857650;padding:8px 10px'><b>Astuce :</b> si une réponse dépend de quelque chose hors du contrôle de l'équipe, revenez à la réponse précédente et cherchez une piste qui relève de votre sphère d'influence.</div>
+                    </div>"
+                  AutoHeight: =true
+                  Visible: =locGuide
+                  Size: =11
+                  Color: =cTexte
+            - ana_secInfo:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Informations générales"
+                  Color: =cMarine
+                  Size: =16
+                  FontWeight: =FontWeight.Bold
+                  AutoHeight: =true
+                  PaddingTop: =10
+            - ana_lig1:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =cOr
+                  BorderThickness: =0
+                  Height: =2
+            - ana_lblProb:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Problème identifié"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+            - ana_aideProb:
+                Control: Label@2.5.1
+                Properties:
+                  Text: |-
+                    ="Décrivez le problème de façon précise, factuelle et sans désigner de responsable (ex. : « Pourquoi les évaluations de risque sont-elles incomplètes pour ce type de dossier ? » plutôt qu'un énoncé vague ou accusateur)."
+                  Color: =cTexte2
+                  Size: =10.5
+                  AutoHeight: =true
+                  Wrap: =true
+            - ana_txtProbleme:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Default: =varDossier.Probleme
+                  Mode: =TextMode.MultiLine
+                  Height: =70
+                  Reset: =locReset
+                  HintText: |-
+                    ="ex. : Pourquoi l'employé a-t-il glissé dans l'entrée du garage ?"
+            - ana_lblAnalyste:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Analyse menée par"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+            - ana_txtAnalyste:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Default: =Coalesce(varDossier.AnalysteNom, User().FullName)
+                  Height: =38
+                  Reset: =locReset
+            - ana_lblSugg:
+                Control: Label@2.5.1
+                Properties:
+                  Text: |-
+                    ="Pistes de mesures correctives suggérées lors de l'enquête : " & Coalesce(Substitute(varDossier.MesuresSuggerees, "; ", " • "), "aucune") & If(IsBlank(varDossier.MesuresSuggAutre), "", " • " & varDossier.MesuresSuggAutre)
+                  Color: =cMarine
+                  Size: =11
+                  Fill: =cBleuPale
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingLeft: =10
+                  PaddingRight: =10
+                  PaddingTop: =6
+                  PaddingBottom: =6
+            - ana_barreOutils:
+                Control: GroupContainer@1.3.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =Color.Transparent
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGap: =12
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  Height: =54
+                  PaddingTop: =8
+                  FillPortions: =0
+                Children:
+                  - ana_btnAjouter:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: ="+ Ajouter un Pourquoi"
+                        OnSelect: |-
+                          =Collect(colNoeuds, {Chemin: Text(Coalesce(Max(Filter(colNoeuds, Niveau = 1), Value(Chemin)), 0) + 1, "000"), Niveau: 1, Texte: "", CauseRacine: false, ActionTexte: "", ActionResp: "", ActionEcheance: Blank(), ActionStatut: "À faire"})
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =6
+                        RadiusTopRight: =6
+                        RadiusBottomLeft: =6
+                        RadiusBottomRight: =6
+                        Fill: =cBleu
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =ColorFade(cBleu, -0.15)
+                        PressedFill: =ColorFade(cBleu, -0.3)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        Width: =200
+                        Height: =38
+                  - ana_btnFacteurs:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: ="Créer les branches à partir des facteurs de l'enquête"
+                        OnSelect: |-
+                          =Clear(colTmp);
+                          Collect(colTmp, ForAll(Split(varDossier.FactOrganisation, "; "), {T: "[Organisation du travail] " & ThisRecord.Value, V: ThisRecord.Value}));
+                          Collect(colTmp, ForAll(Split(varDossier.FactEnvironnement, "; "), {T: "[Environnement et équipements] " & ThisRecord.Value, V: ThisRecord.Value}));
+                          Collect(colTmp, ForAll(Split(varDossier.FactComportement, "; "), {T: "[Comportement des personnes concernées] " & ThisRecord.Value, V: ThisRecord.Value}));
+                          Collect(colTmp,
+                            {T: "[Organisation du travail] " & varDossier.FactOrgAutre, V: varDossier.FactOrgAutre},
+                            {T: "[Environnement et équipements] " & varDossier.FactEnvAutre, V: varDossier.FactEnvAutre},
+                            {T: "[Comportement des personnes concernées] " & varDossier.FactCompAutre, V: varDossier.FactCompAutre});
+                          UpdateContext({
+                            locAjout: Filter(colTmp, !IsBlank(V) && !("pas en cause" in V) && !(T in colNoeuds.Texte)),
+                            locBase: Coalesce(Max(Filter(colNoeuds, Niveau = 1), Value(Chemin)), 0)});
+                          ForAll(Sequence(CountRows(locAjout)),
+                            Collect(colNoeuds, {Chemin: Text(locBase + Value, "000"), Niveau: 1, Texte: Index(locAjout, Value).T,
+                              CauseRacine: false, ActionTexte: "", ActionResp: "", ActionEcheance: Blank(), ActionStatut: "À faire"}));
+                          Notify(If(CountRows(locAjout) = 0, "Aucun nouveau facteur à ajouter (cochez des facteurs dans l'enquête, ou ils sont déjà dans l'arbre).", CountRows(locAjout) & " branche(s) « Pourquoi 1 » créée(s)."), NotificationType.Information)
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =6
+                        RadiusTopRight: =6
+                        RadiusBottomLeft: =6
+                        RadiusBottomRight: =6
+                        Fill: =Color.White
+                        Color: =cBleu
+                        BorderColor: =cBleu
+                        BorderThickness: =2
+                        HoverFill: =cBleuPale
+                        HoverColor: =cBleu
+                        HoverBorderColor: =cBleu
+                        PressedFill: =cBordure
+                        PressedColor: =cBleu
+                        PressedBorderColor: =cBleu
+                        Width: =400
+                        Height: =38
+            - ana_htmLegende:
+                Control: HtmlViewer@2.1.0
+                Properties:
+                  HtmlText: ="<div style='font-size:12px;color:#6B7280'><span style='color:#00285E'>■</span> Pourquoi 1 &nbsp; <span style='color:#074B98'>■</span> Pourquoi 2 &nbsp; <span style='color:#00796B'>■</span> Pourquoi 3 &nbsp; <span style='color:#6B3FA0'>■</span> Pourquoi 4 &nbsp; <span style='color:#857650'>■</span> Pourquoi 5 et plus</div>"
+                  Height: =30
+            - ana_secArbre:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Arbre des causes"
+                  Color: =cMarine
+                  Size: =16
+                  FontWeight: =FontWeight.Bold
+                  AutoHeight: =true
+                  PaddingTop: =10
+            - ana_lig2:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =cOr
+                  BorderThickness: =0
+                  Height: =2
+            - ana_videArbre:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Aucun « Pourquoi » pour l'instant. Cliquez sur « + Ajouter un Pourquoi » pour démarrer, ou créez les branches à partir des facteurs cochés dans l'enquête."
+                  Color: =cTexte2
+                  Size: =12
+                  Italic: =true
+                  AutoHeight: =true
+                  Wrap: =true
+                  Visible: =CountRows(colNoeuds) = 0
+            - ana_galArbre:
+                Control: Gallery@2.15.0
+                Variant: Vertical
+                Properties:
+                  Items: =Sort(colNoeuds, Chemin)
+                  TemplateSize: =116
+                  TemplatePadding: =0
+                  Height: =CountRows(colNoeuds) * 116 + 4
+                  ShowScrollbar: =false
+                  BorderThickness: =0
+                  Visible: =CountRows(colNoeuds) > 0
+                Children:
+                  - ana_nCarte:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        Fill: =Color.White
+                        BorderThickness: =2
+                        X: =(ThisItem.Niveau - 1) * 28
+                        Y: =0
+                        Width: =Parent.TemplateWidth - (ThisItem.Niveau - 1) * 28 - 6
+                        Height: =Parent.TemplateHeight - 8
+                        BorderColor: =Switch(Min(ThisItem.Niveau, 5), 1, cMarine, 2, cBleu, 3, cSarcelle, 4, cViolet, cOr)
+                  - ana_nTag:
+                      Control: Label@2.5.1
+                      Properties:
+                        Text: ="POURQUOI " & ThisItem.Niveau & " ?"
+                        Color: =Switch(Min(ThisItem.Niveau, 5), 1, cMarine, 2, cBleu, 3, cSarcelle, 4, cViolet, cOr)
+                        Size: =10
+                        X: =(ThisItem.Niveau - 1) * 28 + 12
+                        Y: =4
+                        Width: =120
+                        Height: =24
+                        FontWeight: =FontWeight.Bold
+                  - ana_nRacine:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: ="CAUSE RACINE"
+                        OnSelect: =false
+                        Fill: =cRouge
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =cRouge
+                        PressedFill: =cRouge
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        DisabledFill: =cRouge
+                        DisabledColor: =Color.White
+                        DisplayMode: =DisplayMode.View
+                        Size: =9
+                        FontWeight: =FontWeight.Semibold
+                        Height: =22
+                        RadiusTopLeft: =14
+                        RadiusTopRight: =14
+                        RadiusBottomLeft: =14
+                        RadiusBottomRight: =14
+                        TabIndex: =-1
+                        X: =(ThisItem.Niveau - 1) * 28 + 136
+                        Y: =4
+                        Width: =120
+                        Visible: =ThisItem.CauseRacine
+                  - ana_nPiege:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: ="⚠ Piège « erreur humaine » ?"
+                        OnSelect: |-
+                          =Notify("Une erreur ou un oubli n'est jamais la cause profonde : cherchez plutôt pourquoi le système a permis cette erreur (formation, charge de travail, ergonomie, consignes...).", NotificationType.Warning)
+                        Fill: =cBleuPale
+                        Color: =cMarine
+                        BorderThickness: =0
+                        HoverFill: =cBleuPale
+                        PressedFill: =cBleuPale
+                        HoverColor: =cMarine
+                        PressedColor: =cMarine
+                        DisabledFill: =cBleuPale
+                        DisabledColor: =cMarine
+                        DisplayMode: =DisplayMode.Edit
+                        Size: =9
+                        FontWeight: =FontWeight.Semibold
+                        Height: =22
+                        RadiusTopLeft: =14
+                        RadiusTopRight: =14
+                        RadiusBottomLeft: =14
+                        RadiusBottomRight: =14
+                        TabIndex: =-1
+                        X: =(ThisItem.Niveau - 1) * 28 + 262
+                        Y: =4
+                        Width: =230
+                        Visible: =CountIf(Filter(colListes, Liste = "MotErreurHumaine"), Value in Lower(ThisItem.Texte)) > 0
+                        Tooltip: |-
+                          ="Une erreur ou un oubli n'est jamais la cause profonde : cherchez plutôt pourquoi le système a permis cette erreur (formation, charge de travail, ergonomie, consignes...)."
+                  - ana_nTexte:
+                      Control: Classic/TextInput@2.3.2
+                      Properties:
+                        BorderColor: =cBordure
+                        HoverBorderColor: =cBleu
+                        FocusedBorderColor: =cBleu
+                        FocusedBorderThickness: =2
+                        Color: =cTexte
+                        Size: =11
+                        Fill: =Color.White
+                        Default: =ThisItem.Texte
+                        OnChange: |-
+                          =Patch(colNoeuds, ThisItem, {Texte: Self.Text})
+                        HintText: ="Réponse factuelle..."
+                        X: =(ThisItem.Niveau - 1) * 28 + 12
+                        Y: =30
+                        Width: =Parent.TemplateWidth - (ThisItem.Niveau - 1) * 28 - 30
+                        Height: =36
+                  - ana_nAjout:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: ="+ Pourquoi (nouvelle cause)"
+                        OnSelect: |-
+                          =With({m: Coalesce(Max(Filter(colNoeuds, StartsWith(Chemin, ThisItem.Chemin & ".") && Niveau = ThisItem.Niveau + 1), Value(Right(Chemin, 3))), 0)}, Collect(colNoeuds, {Chemin: ThisItem.Chemin & "." & Text(m + 1, "000"), Niveau: ThisItem.Niveau + 1, Texte: "", CauseRacine: false, ActionTexte: "", ActionResp: "", ActionEcheance: Blank(), ActionStatut: "À faire"}))
+                        Size: =10
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =6
+                        RadiusTopRight: =6
+                        RadiusBottomLeft: =6
+                        RadiusBottomRight: =6
+                        Fill: =Color.White
+                        Color: =cBleu
+                        BorderColor: =cBleu
+                        BorderThickness: =2
+                        HoverFill: =cBleuPale
+                        HoverColor: =cBleu
+                        HoverBorderColor: =cBleu
+                        PressedFill: =cBordure
+                        PressedColor: =cBleu
+                        PressedBorderColor: =cBleu
+                        X: =(ThisItem.Niveau - 1) * 28 + 12
+                        Y: =72
+                        Width: =210
+                        Height: =28
+                  - ana_nCause:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: =If(ThisItem.CauseRacine, "✓ Cause racine", "Marquer cause racine")
+                        OnSelect: |-
+                          =Patch(colNoeuds, ThisItem, {CauseRacine: !ThisItem.CauseRacine})
+                        Size: =10
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =6
+                        RadiusTopRight: =6
+                        RadiusBottomLeft: =6
+                        RadiusBottomRight: =6
+                        Fill: =If(ThisItem.CauseRacine, cRouge, Color.White)
+                        Color: =If(ThisItem.CauseRacine, Color.White, cRouge)
+                        BorderThickness: =2
+                        HoverFill: =If(ThisItem.CauseRacine, ColorFade(cRouge, -0.15), cBleuPale)
+                        PressedFill: =ColorFade(If(ThisItem.CauseRacine, cRouge, Color.White), -0.3)
+                        HoverColor: =If(ThisItem.CauseRacine, Color.White, cRouge)
+                        PressedColor: =Color.White
+                        BorderColor: =cRouge
+                        X: =(ThisItem.Niveau - 1) * 28 + 230
+                        Y: =72
+                        Width: =180
+                        Height: =28
+                  - ana_nSupp:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: ="Supprimer"
+                        OnSelect: =RemoveIf(colNoeuds, Chemin = ThisItem.Chemin || StartsWith(Chemin, ThisItem.Chemin & "."))
+                        Size: =10
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =6
+                        RadiusTopRight: =6
+                        RadiusBottomLeft: =6
+                        RadiusBottomRight: =6
+                        Fill: =Color.Transparent
+                        Color: =cRouge
+                        BorderThickness: =0
+                        HoverFill: =cBleuPale
+                        HoverColor: =cRouge
+                        PressedFill: =cBordure
+                        PressedColor: =cRouge
+                        Align: =Align.Center
+                        X: =(ThisItem.Niveau - 1) * 28 + 418
+                        Y: =72
+                        Width: =110
+                        Height: =28
+            - ana_secSynth:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Causes racines et suivi des actions (plan d'action)"
+                  Color: =cMarine
+                  Size: =16
+                  FontWeight: =FontWeight.Bold
+                  AutoHeight: =true
+                  PaddingTop: =10
+            - ana_lig3:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =cOr
+                  BorderThickness: =0
+                  Height: =2
+            - ana_videSynth:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Aucune cause n'est encore marquée « cause racine ». Utilisez « Marquer cause racine » sur la réponse où l'équipe a réellement le pouvoir d'agir, puis décrivez l'action corrective ici."
+                  Color: =cTexte2
+                  Size: =12
+                  Italic: =true
+                  AutoHeight: =true
+                  Wrap: =true
+                  Visible: =CountRows(Filter(colNoeuds, CauseRacine)) = 0
+            - ana_galSynth:
+                Control: Gallery@2.15.0
+                Variant: Vertical
+                Properties:
+                  Items: =Filter(Sort(colNoeuds, Chemin), CauseRacine)
+                  TemplateSize: =140
+                  TemplatePadding: =0
+                  Height: =CountRows(Filter(colNoeuds, CauseRacine)) * 140 + 4
+                  ShowScrollbar: =false
+                  BorderThickness: =0
+                  Visible: =CountRows(Filter(colNoeuds, CauseRacine)) > 0
+                Children:
+                  - ana_sCarte:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        Fill: =cBleuPale
+                        BorderThickness: =0
+                        X: =0
+                        Y: =0
+                        Width: =Parent.TemplateWidth
+                        Height: =Parent.TemplateHeight - 8
+                  - ana_sCause:
+                      Control: Label@2.5.1
+                      Properties:
+                        Text: |-
+                          ="Cause racine : " & ThisItem.Texte
+                        Color: =cMarine
+                        Size: =12
+                        X: =12
+                        Y: =4
+                        Width: =Parent.TemplateWidth - 24
+                        Height: =26
+                        FontWeight: =FontWeight.Semibold
+                  - ana_sChemin:
+                      Control: Label@2.5.1
+                      Properties:
+                        Text: |-
+                          ="Chemin : " & Concat(Sort(Filter(colNoeuds, StartsWith(ThisItem.Chemin, Chemin)), Niveau), Coalesce(Texte, "(réponse vide)"), " → ")
+                        Color: =cTexte2
+                        Size: =10
+                        X: =12
+                        Y: =30
+                        Width: =Parent.TemplateWidth - 24
+                        Height: =36
+                        Wrap: =true
+                  - ana_sEnt:
+                      Control: Label@2.5.1
+                      Properties:
+                        Text: ="Action corrective · Responsable · Échéance · Statut"
+                        Color: =cTexte2
+                        Size: =10
+                        X: =12
+                        Y: =64
+                        Width: =500
+                        Height: =20
+                  - ana_sAction:
+                      Control: Classic/TextInput@2.3.2
+                      Properties:
+                        BorderColor: =cBordure
+                        HoverBorderColor: =cBleu
+                        FocusedBorderColor: =cBleu
+                        FocusedBorderThickness: =2
+                        Color: =cTexte
+                        Size: =11
+                        Fill: =Color.White
+                        Default: =ThisItem.ActionTexte
+                        OnChange: |-
+                          =Patch(colNoeuds, ThisItem, {ActionTexte: Self.Text})
+                        HintText: ="Action corrective à mettre en place..."
+                        X: =12
+                        Y: =86
+                        Width: =(Parent.TemplateWidth - 60) * 0.45
+                        Height: =38
+                  - ana_sResp:
+                      Control: Classic/TextInput@2.3.2
+                      Properties:
+                        BorderColor: =cBordure
+                        HoverBorderColor: =cBleu
+                        FocusedBorderColor: =cBleu
+                        FocusedBorderThickness: =2
+                        Color: =cTexte
+                        Size: =11
+                        Fill: =Color.White
+                        Default: =ThisItem.ActionResp
+                        OnChange: |-
+                          =Patch(colNoeuds, ThisItem, {ActionResp: Self.Text})
+                        HintText: ="Responsable"
+                        X: =12 + (Parent.TemplateWidth - 60) * 0.45 + 8
+                        Y: =86
+                        Width: =(Parent.TemplateWidth - 60) * 0.2
+                        Height: =38
+                  - ana_sEch:
+                      Control: Classic/DatePicker@2.6.0
+                      Properties:
+                        DefaultDate: =ThisItem.ActionEcheance
+                        OnChange: |-
+                          =Patch(colNoeuds, ThisItem, {ActionEcheance: Self.SelectedDate})
+                        Format: ="yyyy-mm-dd"
+                        X: =12 + (Parent.TemplateWidth - 60) * 0.65 + 16
+                        Y: =86
+                        Width: =(Parent.TemplateWidth - 60) * 0.17
+                        Height: =38
+                        BorderColor: =cBordure
+                  - ana_sStatut:
+                      Control: Classic/DropDown@2.3.1
+                      Properties:
+                        Items: =Sort(Filter(colListes, Liste = "StatutAction"), Ordre).Value
+                        Default: =ThisItem.ActionStatut
+                        OnChange: |-
+                          =Patch(colNoeuds, ThisItem, {ActionStatut: Self.Selected.Value})
+                        X: =12 + (Parent.TemplateWidth - 60) * 0.82 + 24
+                        Y: =86
+                        Width: =(Parent.TemplateWidth - 60) * 0.18
+                        Height: =38
+                        BorderColor: =cBordure
+                        ChevronBackground: =cBleu
+                        SelectionFill: =cBleu
+                        Size: =11
+            - ana_secDonc:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Vérification logique (test du « Donc »)"
+                  Color: =cTexte2
+                  Size: =13
+                  FontWeight: =FontWeight.Bold
+                  AutoHeight: =true
+                  PaddingTop: =8
+                  Visible: =CountRows(Filter(colNoeuds, CauseRacine)) > 0
+            - ana_galDonc:
+                Control: Gallery@2.15.0
+                Variant: Vertical
+                Properties:
+                  Items: =Filter(Sort(colNoeuds, Chemin), CauseRacine)
+                  TemplateSize: =70
+                  TemplatePadding: =0
+                  Height: =CountRows(Filter(colNoeuds, CauseRacine)) * 70 + 4
+                  ShowScrollbar: =false
+                  BorderThickness: =0
+                  Visible: =CountRows(Filter(colNoeuds, CauseRacine)) > 0
+                Children:
+                  - ana_dBarre:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        Fill: =cBleu
+                        BorderThickness: =0
+                        X: =0
+                        Y: =0
+                        Width: =4
+                        Height: =Parent.TemplateHeight - 8
+                  - ana_dTexte:
+                      Control: Label@2.5.1
+                      Properties:
+                        Text: =Concat(Sort(Filter(colNoeuds, StartsWith(ThisItem.Chemin, Chemin)), Niveau, SortOrder.Descending), Coalesce(Texte, "(vide)"), ", donc ") & ", donc " & Coalesce(ana_txtProbleme.Text, "(problème non défini)")
+                        Color: =cTexte
+                        Size: =11
+                        X: =12
+                        Y: =0
+                        Width: =Parent.TemplateWidth - 16
+                        Height: =Parent.TemplateHeight - 8
+                        Wrap: =true
+                        Fill: =cFond
+                        VerticalAlign: =VerticalAlign.Middle
+            - ana_navBas:
+                Control: GroupContainer@1.3.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =Color.Transparent
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGap: =12
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutJustifyContent: =LayoutJustifyContent.End
+                  Height: =60
+                  PaddingTop: =16
+                  FillPortions: =0
+                Children:
+                  - ana_btnSauverBas:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: ="☁️ Enregistrer l'analyse"
+                        OnSelect: |-
+                          =IfError(
+                            Set(varDossier, Patch(SST_Dossiers, varDossier, {
+                              Probleme: ana_txtProbleme.Text,
+                              AnalysteNom: ana_txtAnalyste.Text,
+                              DateAnalyse: If(CountRows(Filter(colNoeuds, CauseRacine)) > 0, Coalesce(varDossier.DateAnalyse, Today()), varDossier.DateAnalyse),
+                              DatePlanAction: If(CountRows(Filter(colNoeuds, CauseRacine)) > 0 && CountRows(Filter(colNoeuds, CauseRacine && (IsBlank(ActionTexte) || IsBlank(ActionResp) || IsBlank(ActionEcheance)))) = 0,
+                                Coalesce(varDossier.DatePlanAction, Today()), varDossier.DatePlanAction),
+                              Statut: If(varDossier.Statut = "Fermé", "Fermé", CountRows(Filter(colNoeuds, CauseRacine)) > 0, "Plan d'action", "Analyse en cours")}));
+                            RemoveIf(SST_Pourquoi, DossierID = varDossier.ID);
+                            ForAll(colNoeuds, Patch(SST_Pourquoi, Defaults(SST_Pourquoi), {
+                              Title: Left(ThisRecord.Texte, 250), DossierID: varDossier.ID, Chemin: ThisRecord.Chemin, Niveau: ThisRecord.Niveau,
+                              Texte: ThisRecord.Texte, CauseRacine: ThisRecord.CauseRacine, ActionTexte: ThisRecord.ActionTexte,
+                              ActionResp: ThisRecord.ActionResp, ActionEcheance: ThisRecord.ActionEcheance, ActionStatut: ThisRecord.ActionStatut}));
+                            Notify("Analyse enregistrée.", NotificationType.Success),
+                            Notify("Erreur : " & FirstError.Message, NotificationType.Error))
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =6
+                        RadiusTopRight: =6
+                        RadiusBottomLeft: =6
+                        RadiusBottomRight: =6
+                        Fill: =cVert
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =ColorFade(cVert, -0.15)
+                        PressedFill: =ColorFade(cVert, -0.3)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        Width: =230
+                        Height: =38

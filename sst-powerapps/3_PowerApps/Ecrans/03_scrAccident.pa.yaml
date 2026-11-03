@@ -1,0 +1,3941 @@
+Screens:
+  scrAccident:
+    Properties:
+      Fill: =cFond
+      OnVisible: |-
+        =UpdateContext({locOnglet: 1});
+        Set(varB1Zone, varDossier.B1Zone);
+        Set(varB2Zone, varDossier.B2Zone);
+        Set(varVue, "face");
+        UpdateContext({locReset: true});
+        UpdateContext({locReset: false})
+    Children:
+      - acd_bandeau:
+          Control: Rectangle@2.3.0
+          Properties:
+            Fill: =cOr
+            BorderThickness: =0
+            X: =0
+            Y: =0
+            Width: =Parent.Width
+            Height: =64
+      - acd_titre:
+          Control: Label@2.5.1
+          Properties:
+            Text: =If(IsBlank(varDossier.ID), "Déclaration d'accident ou d'incident", varDossier.TypeFormulaire & " — dossier n° " & varDossier.ID)
+            Color: =Color.White
+            Size: =20
+            X: =0
+            Y: =6
+            Width: =Parent.Width
+            Height: =32
+            FontWeight: =FontWeight.Bold
+            Align: =Align.Center
+      - acd_sousTitre:
+          Control: Label@2.5.1
+          Properties:
+            Text: |-
+              ="Formulaire : " & Coalesce(acd_rdoTypeFormulaire.Selected.Value, "Accident") & " · " & Coalesce(acd_drpGravite.Selected.Value, "gravité à préciser")
+            Color: =Color.White
+            Size: =12
+            X: =0
+            Y: =36
+            Width: =Parent.Width
+            Height: =22
+            Align: =Align.Center
+      - acd_pilRole:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="👤 " & varRole
+            OnSelect: =false
+            Fill: =cVert
+            Color: =Color.White
+            BorderThickness: =0
+            HoverFill: =cVert
+            PressedFill: =cVert
+            HoverColor: =Color.White
+            PressedColor: =Color.White
+            DisabledFill: =cVert
+            DisabledColor: =Color.White
+            DisplayMode: =DisplayMode.View
+            Size: =10
+            FontWeight: =FontWeight.Semibold
+            Height: =28
+            RadiusTopLeft: =14
+            RadiusTopRight: =14
+            RadiusBottomLeft: =14
+            RadiusBottomRight: =14
+            TabIndex: =-1
+            X: =Parent.Width - 224
+            Y: =18
+            Width: =200
+      - acd_barre:
+          Control: Rectangle@2.3.0
+          Properties:
+            Fill: =Color.White
+            BorderThickness: =0
+            X: =0
+            Y: =64
+            Width: =Parent.Width
+            Height: =52
+      - acd_barreLigne:
+          Control: Rectangle@2.3.0
+          Properties:
+            Fill: =cBordure
+            BorderThickness: =0
+            X: =0
+            Y: =115
+            Width: =Parent.Width
+            Height: =1
+      - acd_btnAccueil:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="🏠 Accueil"
+            OnSelect: =Navigate(scrAccueil, ScreenTransition.None)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =Color.White
+            Color: =cBleu
+            BorderColor: =cBleu
+            BorderThickness: =2
+            HoverFill: =cBleuPale
+            HoverColor: =cBleu
+            HoverBorderColor: =cBleu
+            PressedFill: =cBordure
+            PressedColor: =cBleu
+            PressedBorderColor: =cBleu
+            X: =24
+            Y: =72
+            Width: =120
+            Height: =36
+      - acd_btnDossiers:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="📂 Mes dossiers"
+            OnSelect: =Navigate(scrDossiers, ScreenTransition.None)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =Color.White
+            Color: =cBleu
+            BorderColor: =cBleu
+            BorderThickness: =2
+            HoverFill: =cBleuPale
+            HoverColor: =cBleu
+            HoverBorderColor: =cBleu
+            PressedFill: =cBordure
+            PressedColor: =cBleu
+            PressedBorderColor: =cBleu
+            X: =152
+            Y: =72
+            Width: =150
+            Height: =36
+      - acd_btnAide:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="❓ Comment remplir"
+            OnSelect: =Navigate(scrAide, ScreenTransition.None)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =cOr
+            Color: =Color.White
+            BorderThickness: =0
+            HoverFill: =ColorFade(cOr, -0.15)
+            PressedFill: =ColorFade(cOr, -0.3)
+            HoverColor: =Color.White
+            PressedColor: =Color.White
+            X: =310
+            Y: =72
+            Width: =170
+            Height: =36
+      - acd_btnDeposer:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="☁️ Enregistrer et déposer"
+            OnSelect: =Select(acd_btnDeposerBas)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =cVert
+            Color: =Color.White
+            BorderThickness: =0
+            HoverFill: =ColorFade(cVert, -0.15)
+            PressedFill: =ColorFade(cVert, -0.3)
+            HoverColor: =Color.White
+            PressedColor: =Color.White
+            X: =Parent.Width - 274
+            Y: =72
+            Width: =242
+            Height: =36
+      - acd_btnSauver:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="☁️ Enregistrer"
+            OnSelect: |-
+              =IfError(
+                Set(varDossier, Patch(SST_Dossiers, If(IsBlank(varDossier.ID), Defaults(SST_Dossiers), varDossier),
+                {TypeFormulaire: acd_rdoTypeFormulaire.Selected.Value,
+                Gravite: acd_drpGravite.Selected.Value,
+                TrousseRemise: acd_rdoTrousseRemise.Selected.Value,
+                TrousseRaison: acd_txmTrousseRaison.Text,
+                AbsenceAuDela: acd_rdoAbsenceAuDela.Selected.Value,
+                EmpNom: acd_txtEmpNom.Text,
+                EmpPrenom: acd_txtEmpPrenom.Text,
+                EmpID: acd_txtEmpID.Text,
+                EmpService: acd_drpEmpService.Selected.Value,
+                EmpDirection: acd_drpEmpDirection.Selected.Value,
+                EmpDivision: acd_drpEmpDivision.Selected.Value,
+                EmpSection: acd_drpEmpSection.Selected.Value,
+                EmpSyndicat: acd_drpEmpSyndicat.Selected.Value,
+                EmpClasse: acd_drpEmpClasse.Selected.Value,
+                EmpTitre: acd_drpEmpTitre.Selected.Value,
+                EmpTitreAutre: acd_txtEmpTitreAutre.Text,
+                EmpAdresseEtab: acd_drpEmpAdresseEtab.Selected.Value,
+                EmpAdresseAutre: acd_txtEmpAdresseAutre.Text,
+                EmpSuperieur: acd_txtEmpSuperieur.Text,
+                GestNom: acd_txtGestNom.Text,
+                GestTitre: acd_txtGestTitre.Text,
+                RempliSeul: If(acd_chkRempliSeul.Value, "Oui", "Non"),
+                EvtDate: acd_dteEvtDate.SelectedDate,
+                EvtHeure: acd_txtEvtHeure.Text,
+                EvtDateDeclEmp: acd_dteEvtDateDeclEmp.SelectedDate,
+                EvtAdresse: acd_txtEvtAdresse.Text,
+                Horaire: Concat(acd_cmbHoraire.SelectedItems, Value, "; "),
+                Temoins: acd_rdoTemoins.Selected.Value,
+                TemoinsNoms: acd_txmTemoinsNoms.Text,
+                Vehicule: acd_rdoVehicule.Selected.Value,
+                VehiculeDesc: acd_txtVehiculeDesc.Text,
+                Tache: acd_txmTache.Text,
+                Description: acd_txmDescription.Text,
+                PSDonnes: acd_rdoPSDonnes.Selected.Value,
+                PSHeure: acd_txtPSHeure.Text,
+                PSNature: acd_txmPSNature.Text,
+                PSSecouriste: acd_txtPSSecouriste.Text,
+                Transport: acd_rdoTransport.Selected.Value,
+                TransportAutre: acd_txtTransportAutre.Text,
+                B1Nature: acd_drpB1Nature.Selected.Value,
+                B1Partie: acd_drpB1Partie.Selected.Value,
+                B1Cote: acd_rdoB1Cote.Selected.Value,
+                B1Precision: acd_txtB1Precision.Text,
+                B1Zone: varB1Zone,
+                B2Nature: acd_drpB2Nature.Selected.Value,
+                B2Partie: acd_drpB2Partie.Selected.Value,
+                B2Cote: acd_rdoB2Cote.Selected.Value,
+                B2Precision: acd_txtB2Precision.Text,
+                B2Zone: varB2Zone,
+                CauseType: acd_drpCauseType.Selected.Value,
+                Activite: acd_drpActivite.Selected.Value,
+                MesurePrev: acd_txmMesurePrev.Text,
+                MesureResp: acd_txtMesureResp.Text,
+                MesureCollab: acd_txmMesureCollab.Text,
+                MesureEcheance: acd_dteMesureEcheance.SelectedDate,
+                EnqueteRequise: acd_rdoEnqueteRequise.Selected.Value,
+                ArretTravail: acd_rdoArretTravail.Selected.Value,
+                DateDernierJour: acd_dteDateDernierJour.SelectedDate,
+                RetourTravail: acd_rdoRetourTravail.Selected.Value,
+                DateRetour: acd_dteDateRetour.SelectedDate,
+                ModaliteRetour: acd_rdoModaliteRetour.Selected.Value,
+                ApprobationEmp: acd_rdoApprobationEmp.Selected.Value,
+                FormatCopie: acd_rdoFormatCopie.Selected.Value,
+                EmpCourriel: acd_txtEmpCourriel.Text,
+                Title: acd_rdoTypeFormulaire.Selected.Value & " – " & acd_txtEmpNom.Text & ", " & acd_txtEmpPrenom.Text & " – " & Text(acd_dteEvtDate.SelectedDate, "yyyy-mm-dd"),
+                CreeParCourriel: Coalesce(varDossier.CreeParCourriel, varMoi),
+                CreeParNom: Coalesce(varDossier.CreeParNom, User().FullName),
+                DateMesures: If(IsBlank(acd_txmMesurePrev.Text), varDossier.DateMesures, Coalesce(varDossier.DateMesures, Today())),
+                DateApprobation: If(acd_rdoApprobationEmp.Selected.Value = "Oui", Coalesce(varDossier.DateApprobation, Today()), varDossier.DateApprobation),
+                Statut: Coalesce(varDossier.Statut, "Brouillon")}));
+                Notify("Brouillon enregistré (dossier n° " & varDossier.ID & ").", NotificationType.Success),
+                Notify("Erreur d'enregistrement : " & FirstError.Message, NotificationType.Error))
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =Color.White
+            Color: =cBleu
+            BorderColor: =cBleu
+            BorderThickness: =2
+            HoverFill: =cBleuPale
+            HoverColor: =cBleu
+            HoverBorderColor: =cBleu
+            PressedFill: =cBordure
+            PressedColor: =cBleu
+            PressedBorderColor: =cBleu
+            X: =Parent.Width - 424
+            Y: =72
+            Width: =142
+            Height: =36
+      - acd_btnNouveau:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="📝 Nouveau formulaire"
+            OnSelect: =Navigate(scrAccueil, ScreenTransition.None)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =Color.White
+            Color: =cRouge
+            BorderColor: =cRouge
+            BorderThickness: =2
+            HoverFill: =cBleuPale
+            HoverColor: =cRouge
+            HoverBorderColor: =cRouge
+            PressedFill: =cBordure
+            PressedColor: =cRouge
+            PressedBorderColor: =cRouge
+            X: =Parent.Width - 634
+            Y: =72
+            Width: =202
+            Height: =36
+      - acd_fondEtapes:
+          Control: Rectangle@2.3.0
+          Properties:
+            Fill: =Color.White
+            BorderThickness: =0
+            X: =0
+            Y: =116
+            Width: =Parent.Width
+            Height: =76
+      - acd_galEtapes:
+          Control: Gallery@2.15.0
+          Variant: Horizontal
+          Properties:
+            Items: |-
+              =Switch(varDossier.TypeFormulaire,
+                "Situation dangereuse", Table(
+                  {n: 1, t: "Signalement", d: varDossier.DateDeclaration},
+                  {n: 2, t: "Prise en charge", d: varDossier.DateEnquete},
+                  {n: 3, t: "Mesure corrective", d: varDossier.DatePlanAction},
+                  {n: 4, t: "Fermeture", d: varDossier.DateFermeture}),
+                "Violence", Table(
+                  {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},
+                  {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},
+                  {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},
+                  {n: 4, t: "Suivi SST / Bouclier", d: varDossier.DateEnquete},
+                  {n: 5, t: "Fermeture", d: varDossier.DateFermeture}),
+                Table(
+                  {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},
+                  {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},
+                  {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},
+                  {n: 4, t: "Enquête", d: varDossier.DateEnquete},
+                  {n: 5, t: "Analyse 5 Pourquoi", d: varDossier.DateAnalyse},
+                  {n: 6, t: "Plan d'action", d: varDossier.DatePlanAction},
+                  {n: 7, t: "Fermeture", d: varDossier.DateFermeture}))
+            TemplateSize: =150
+            TemplatePadding: =0
+            ShowScrollbar: =false
+            X: |-
+              =Max(210, (Parent.Width - 150 * CountRows(Switch(varDossier.TypeFormulaire,   "Situation dangereuse", Table(     {n: 1, t: "Signalement", d: varDossier.DateDeclaration},     {n: 2, t: "Prise en charge", d: varDossier.DateEnquete},     {n: 3, t: "Mesure corrective", d: varDossier.DatePlanAction},     {n: 4, t: "Fermeture", d: varDossier.DateFermeture}),   "Violence", Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Suivi SST / Bouclier", d: varDossier.DateEnquete},     {n: 5, t: "Fermeture", d: varDossier.DateFermeture}),   Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Enquête", d: varDossier.DateEnquete},     {n: 5, t: "Analyse 5 Pourquoi", d: varDossier.DateAnalyse},     {n: 6, t: "Plan d'action", d: varDossier.DatePlanAction},     {n: 7, t: "Fermeture", d: varDossier.DateFermeture})))) / 2)
+            Y: =118
+            Width: |-
+              =150 * CountRows(Switch(varDossier.TypeFormulaire,   "Situation dangereuse", Table(     {n: 1, t: "Signalement", d: varDossier.DateDeclaration},     {n: 2, t: "Prise en charge", d: varDossier.DateEnquete},     {n: 3, t: "Mesure corrective", d: varDossier.DatePlanAction},     {n: 4, t: "Fermeture", d: varDossier.DateFermeture}),   "Violence", Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Suivi SST / Bouclier", d: varDossier.DateEnquete},     {n: 5, t: "Fermeture", d: varDossier.DateFermeture}),   Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Enquête", d: varDossier.DateEnquete},     {n: 5, t: "Analyse 5 Pourquoi", d: varDossier.DateAnalyse},     {n: 6, t: "Plan d'action", d: varDossier.DatePlanAction},     {n: 7, t: "Fermeture", d: varDossier.DateFermeture})))
+            Height: =72
+            BorderThickness: =0
+          Children:
+            - acd_stpLigne:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: |-
+                    =If(!IsBlank(LookUp(Switch(varDossier.TypeFormulaire,   "Situation dangereuse", Table(     {n: 1, t: "Signalement", d: varDossier.DateDeclaration},     {n: 2, t: "Prise en charge", d: varDossier.DateEnquete},     {n: 3, t: "Mesure corrective", d: varDossier.DatePlanAction},     {n: 4, t: "Fermeture", d: varDossier.DateFermeture}),   "Violence", Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Suivi SST / Bouclier", d: varDossier.DateEnquete},     {n: 5, t: "Fermeture", d: varDossier.DateFermeture}),   Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Enquête", d: varDossier.DateEnquete},     {n: 5, t: "Analyse 5 Pourquoi", d: varDossier.DateAnalyse},     {n: 6, t: "Plan d'action", d: varDossier.DatePlanAction},     {n: 7, t: "Fermeture", d: varDossier.DateFermeture})), n = ThisItem.n + 1).d), cVert, cBordure)
+                  BorderThickness: =0
+                  X: =75.0
+                  Y: =21
+                  Width: =150
+                  Height: =3
+                  Visible: |-
+                    =ThisItem.n < CountRows(Switch(varDossier.TypeFormulaire,   "Situation dangereuse", Table(     {n: 1, t: "Signalement", d: varDossier.DateDeclaration},     {n: 2, t: "Prise en charge", d: varDossier.DateEnquete},     {n: 3, t: "Mesure corrective", d: varDossier.DatePlanAction},     {n: 4, t: "Fermeture", d: varDossier.DateFermeture}),   "Violence", Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Suivi SST / Bouclier", d: varDossier.DateEnquete},     {n: 5, t: "Fermeture", d: varDossier.DateFermeture}),   Table(     {n: 1, t: "Déclaration", d: varDossier.DateDeclaration},     {n: 2, t: "Mesures immédiates", d: varDossier.DateMesures},     {n: 3, t: "Approbation employé", d: varDossier.DateApprobation},     {n: 4, t: "Enquête", d: varDossier.DateEnquete},     {n: 5, t: "Analyse 5 Pourquoi", d: varDossier.DateAnalyse},     {n: 6, t: "Plan d'action", d: varDossier.DatePlanAction},     {n: 7, t: "Fermeture", d: varDossier.DateFermeture})))
+            - acd_stpRond:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  Text: =If(IsBlank(ThisItem.d), Text(ThisItem.n), "✓")
+                  OnSelect: =false
+                  Fill: =If(IsBlank(ThisItem.d), cGrisLib, cVert)
+                  Color: =Color.White
+                  BorderThickness: =0
+                  HoverFill: =If(IsBlank(ThisItem.d), cGrisLib, cVert)
+                  PressedFill: =If(IsBlank(ThisItem.d), cGrisLib, cVert)
+                  HoverColor: =Color.White
+                  PressedColor: =Color.White
+                  DisabledFill: =If(IsBlank(ThisItem.d), cGrisLib, cVert)
+                  DisabledColor: =Color.White
+                  DisplayMode: =DisplayMode.View
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  Height: =32
+                  RadiusTopLeft: =16
+                  RadiusTopRight: =16
+                  RadiusBottomLeft: =16
+                  RadiusBottomRight: =16
+                  TabIndex: =-1
+                  X: =59.0
+                  Y: =6
+                  Width: =32
+            - acd_stpNom:
+                Control: Label@2.5.1
+                Properties:
+                  Text: =ThisItem.t
+                  Color: =If(IsBlank(ThisItem.d), cTexte2, cTexte)
+                  Size: =10
+                  X: =0
+                  Y: =40
+                  Width: =150
+                  Height: =18
+                  Align: =Align.Center
+                  FontWeight: =FontWeight.Semibold
+            - acd_stpDate:
+                Control: Label@2.5.1
+                Properties:
+                  Text: =If(IsBlank(ThisItem.d), "", Text(ThisItem.d, "yyyy-mm-dd"))
+                  Color: =cTexte2
+                  Size: =9
+                  X: =0
+                  Y: =56
+                  Width: =150
+                  Height: =16
+                  Align: =Align.Center
+      - acd_pilNo:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: =If(IsBlank(varDossier.ID), "Nouveau dossier", "Dossier n° " & varDossier.ID)
+            OnSelect: =false
+            Fill: =cBleuPale
+            Color: =cMarine
+            BorderThickness: =0
+            HoverFill: =cBleuPale
+            PressedFill: =cBleuPale
+            HoverColor: =cMarine
+            PressedColor: =cMarine
+            DisabledFill: =cBleuPale
+            DisabledColor: =cMarine
+            DisplayMode: =DisplayMode.View
+            Size: =10
+            FontWeight: =FontWeight.Semibold
+            Height: =28
+            RadiusTopLeft: =14
+            RadiusTopRight: =14
+            RadiusBottomLeft: =14
+            RadiusBottomRight: =14
+            TabIndex: =-1
+            X: =24
+            Y: =124
+            Width: =170
+      - acd_pilStatut:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: =Coalesce(varDossier.Statut, "Brouillon")
+            OnSelect: =false
+            Fill: =cBordure
+            Color: =cMarine
+            BorderThickness: =0
+            HoverFill: =cBordure
+            PressedFill: =cBordure
+            HoverColor: =cMarine
+            PressedColor: =cMarine
+            DisabledFill: =cBordure
+            DisabledColor: =cMarine
+            DisplayMode: =DisplayMode.View
+            Size: =10
+            FontWeight: =FontWeight.Semibold
+            Height: =28
+            RadiusTopLeft: =14
+            RadiusTopRight: =14
+            RadiusBottomLeft: =14
+            RadiusBottomRight: =14
+            TabIndex: =-1
+            X: =24
+            Y: =158
+            Width: =170
+      - acd_ligneEtapes:
+          Control: Rectangle@2.3.0
+          Properties:
+            Fill: =cBordure
+            BorderThickness: =0
+            X: =0
+            Y: =191
+            Width: =Parent.Width
+            Height: =1
+      - acd_ong1:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="1. Identification"
+            OnSelect: |-
+              =UpdateContext({locOnglet: 1})
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            Fill: =If(locOnglet = 1, cBleu, Color.White)
+            Color: =If(locOnglet = 1, Color.White, cBleu)
+            BorderThickness: =1
+            HoverFill: =If(locOnglet = 1, ColorFade(cBleu, -0.15), cBleuPale)
+            PressedFill: =ColorFade(If(locOnglet = 1, cBleu, Color.White), -0.3)
+            HoverColor: =If(locOnglet = 1, Color.White, cBleu)
+            PressedColor: =Color.White
+            BorderColor: =cBleu
+            X: =24 + 0 * (Min(190, (Parent.Width - 48) / 6) + 4)
+            Y: =200
+            Width: =Min(190, (Parent.Width - 48) / 6)
+            Height: =36
+            Visible: =true
+      - acd_ong2:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="2. Évènement"
+            OnSelect: |-
+              =UpdateContext({locOnglet: 2})
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            Fill: =If(locOnglet = 2, cBleu, Color.White)
+            Color: =If(locOnglet = 2, Color.White, cBleu)
+            BorderThickness: =1
+            HoverFill: =If(locOnglet = 2, ColorFade(cBleu, -0.15), cBleuPale)
+            PressedFill: =ColorFade(If(locOnglet = 2, cBleu, Color.White), -0.3)
+            HoverColor: =If(locOnglet = 2, Color.White, cBleu)
+            PressedColor: =Color.White
+            BorderColor: =cBleu
+            X: =24 + 1 * (Min(190, (Parent.Width - 48) / 6) + 4)
+            Y: =200
+            Width: =Min(190, (Parent.Width - 48) / 6)
+            Height: =36
+            Visible: =true
+      - acd_ong3:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="3. Premiers soins"
+            OnSelect: |-
+              =UpdateContext({locOnglet: 3})
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            Fill: =If(locOnglet = 3, cBleu, Color.White)
+            Color: =If(locOnglet = 3, Color.White, cBleu)
+            BorderThickness: =1
+            HoverFill: =If(locOnglet = 3, ColorFade(cBleu, -0.15), cBleuPale)
+            PressedFill: =ColorFade(If(locOnglet = 3, cBleu, Color.White), -0.3)
+            HoverColor: =If(locOnglet = 3, Color.White, cBleu)
+            PressedColor: =Color.White
+            BorderColor: =cBleu
+            X: =24 + 2 * (Min(190, (Parent.Width - 48) / 6) + 4)
+            Y: =200
+            Width: =Min(190, (Parent.Width - 48) / 6)
+            Height: =36
+            Visible: =true
+      - acd_ong4:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="4. Blessures"
+            OnSelect: |-
+              =UpdateContext({locOnglet: 4})
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            Fill: =If(locOnglet = 4, cBleu, Color.White)
+            Color: =If(locOnglet = 4, Color.White, cBleu)
+            BorderThickness: =1
+            HoverFill: =If(locOnglet = 4, ColorFade(cBleu, -0.15), cBleuPale)
+            PressedFill: =ColorFade(If(locOnglet = 4, cBleu, Color.White), -0.3)
+            HoverColor: =If(locOnglet = 4, Color.White, cBleu)
+            PressedColor: =Color.White
+            BorderColor: =cBleu
+            X: =24 + 3 * (Min(190, (Parent.Width - 48) / 6) + 4)
+            Y: =200
+            Width: =Min(190, (Parent.Width - 48) / 6)
+            Height: =36
+            Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident"
+      - acd_ong5:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="5. Cause et mesures"
+            OnSelect: |-
+              =UpdateContext({locOnglet: 5})
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            Fill: =If(locOnglet = 5, cBleu, Color.White)
+            Color: =If(locOnglet = 5, Color.White, cBleu)
+            BorderThickness: =1
+            HoverFill: =If(locOnglet = 5, ColorFade(cBleu, -0.15), cBleuPale)
+            PressedFill: =ColorFade(If(locOnglet = 5, cBleu, Color.White), -0.3)
+            HoverColor: =If(locOnglet = 5, Color.White, cBleu)
+            PressedColor: =Color.White
+            BorderColor: =cBleu
+            X: =24 + 4 * (Min(190, (Parent.Width - 48) / 6) + 4)
+            Y: =200
+            Width: =Min(190, (Parent.Width - 48) / 6)
+            Height: =36
+            Visible: =true
+      - acd_ong6:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="6. Approbation"
+            OnSelect: |-
+              =UpdateContext({locOnglet: 6})
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            Fill: =If(locOnglet = 6, cBleu, Color.White)
+            Color: =If(locOnglet = 6, Color.White, cBleu)
+            BorderThickness: =1
+            HoverFill: =If(locOnglet = 6, ColorFade(cBleu, -0.15), cBleuPale)
+            PressedFill: =ColorFade(If(locOnglet = 6, cBleu, Color.White), -0.3)
+            HoverColor: =If(locOnglet = 6, Color.White, cBleu)
+            PressedColor: =Color.White
+            BorderColor: =cBleu
+            X: =24 + 5 * (Min(190, (Parent.Width - 48) / 6) + 4)
+            Y: =200
+            Width: =Min(190, (Parent.Width - 48) / 6)
+            Height: =36
+            Visible: =true
+      - acd_conOnglet1:
+          Control: GroupContainer@1.3.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =Color.White
+            BorderThickness: =1
+            DropShadow: =DropShadow.None
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =6
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            BorderColor: =cBordure
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            X: =24
+            Y: =244
+            Width: =Parent.Width - 48
+            Height: =Parent.Height - 260
+            LayoutOverflowY: =LayoutOverflow.Scroll
+            PaddingTop: =16
+            PaddingBottom: =32
+            PaddingLeft: =Max(24, (Self.Width - 940) / 2)
+            PaddingRight: =Max(24, (Self.Width - 940) / 2)
+            Visible: =locOnglet = 1
+          Children:
+            - acd_sec0:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Catégorie de déclaration"
+                  Color: =cMarine
+                  Size: =16
+                  FontWeight: =FontWeight.Bold
+                  AutoHeight: =true
+                  PaddingTop: =14
+                  PaddingBottom: =2
+            - acd_ligne1:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =cOr
+                  BorderThickness: =0
+                  Height: =2
+            - acd_lblTypeFormulaire:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Catégorie de déclaration" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - acd_aideTypeFormulaire:
+                Control: Label@2.5.1
+                Properties:
+                  Text: |-
+                    ="Accident = l'employé a eu une blessure physique apparente ou non. Incident = passé proche : l'employé aurait pu se blesser (aucune blessure ni douleur, sinon il s'agit d'un accident)."
+                  Color: =cTexte2
+                  Size: =10.5
+                  AutoHeight: =true
+                  Wrap: =true
+            - acd_rdoTypeFormulaire:
+                Control: Classic/Radio@2.3.0
+                Properties:
+                  Items: =["Accident", "Incident"]
+                  Default: =Coalesce(varDossier.TypeFormulaire, varNouveauType, "Accident")
+                  Reset: =locReset
+                  Size: =12
+                  Color: =cTexte
+                  RadioSelectionFill: =cBleu
+                  RadioBorderColor: =cTexte2
+                  Layout: =Layout.Horizontal
+                  Height: =40
+            - acd_lblGravite:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Niveau de gravité (accident) ou de gravité potentielle (incident)" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - acd_aideGravite:
+                Control: Label@2.5.1
+                Properties:
+                  Text: =Concat(Sort(Filter(colListes, Liste = "Gravite" && StartsWith(Value, "Accident")), Ordre), Aide, Char(10))
+                  Color: =cTexte2
+                  Size: =10.5
+                  AutoHeight: =true
+                  Wrap: =true
+            - acd_drpGravite:
+                Control: Classic/DropDown@2.3.1
+                Properties:
+                  BorderColor: =cBordure
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Items: =Sort(Filter(colListes, Liste = "Gravite" && StartsWith(Value, acd_rdoTypeFormulaire.Selected.Value)), Ordre).Value
+                  Default: =varDossier.Gravite
+                  AllowEmptySelection: =true
+                  Height: =38
+                  ChevronBackground: =cBleu
+                  ChevronFill: =Color.White
+                  SelectionFill: =cBleu
+            - acd_lblTrousseRemise:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Avez-vous remis une trousse d'assignation temporaire à votre employé ?" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident"
+            - acd_aideTrousseRemise:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="La trousse d'assignation temporaire est obligatoire dans toutes les situations, à l'exception d'un incident."
+                  Color: =cTexte2
+                  Size: =10.5
+                  AutoHeight: =true
+                  Wrap: =true
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident"
+            - acd_rdoTrousseRemise:
+                Control: Classic/Radio@2.3.0
+                Properties:
+                  Items: =["Oui", "Non"]
+                  Default: =varDossier.TrousseRemise
+                  Reset: =locReset
+                  Size: =12
+                  Color: =cTexte
+                  RadioSelectionFill: =cBleu
+                  RadioBorderColor: =cTexte2
+                  Layout: =Layout.Horizontal
+                  Height: =40
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident"
+            - acd_lblTrousseRaison:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Pour quelle raison la trousse d'assignation temporaire n'a pas été remise ?" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident" && acd_rdoTrousseRemise.Selected.Value = "Non"
+            - acd_txmTrousseRaison:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.TrousseRaison
+                  HintText: =""
+                  Height: =90
+                  Mode: =TextMode.MultiLine
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident" && acd_rdoTrousseRemise.Selected.Value = "Non"
+            - acd_lblAbsenceAuDela:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Selon les premières constatations, est-ce que cet accident impliquera une absence de l'employé au-delà de sa journée de travail ?" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident"
+            - acd_rdoAbsenceAuDela:
+                Control: Classic/Radio@2.3.0
+                Properties:
+                  Items: =["Oui (cet accident impliquera une absence)", "Non (employé au travail)"]
+                  Default: =varDossier.AbsenceAuDela
+                  Reset: =locReset
+                  Size: =12
+                  Color: =cTexte
+                  RadioSelectionFill: =cBleu
+                  RadioBorderColor: =cTexte2
+                  Layout: =Layout.Vertical
+                  Height: =74
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident"
+            - acd_sec15:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Identification de l'employé impliqué"
+                  Color: =cMarine
+                  Size: =16
+                  FontWeight: =FontWeight.Bold
+                  AutoHeight: =true
+                  PaddingTop: =14
+                  PaddingBottom: =2
+            - acd_ligne16:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =cOr
+                  BorderThickness: =0
+                  Height: =2
+            - acd_lblEmpNom:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Nom de l'employé" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - acd_txtEmpNom:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.EmpNom
+                  HintText: =""
+                  Height: =38
+            - acd_lblEmpPrenom:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Prénom de l'employé" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - acd_txtEmpPrenom:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.EmpPrenom
+                  HintText: =""
+                  Height: =38
+            - acd_lblEmpID:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="ID de l'employé" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - acd_aideEmpID:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Inscrire les 6 chiffres de l'ID (incluant le ou les 0)."
+                  Color: =cTexte2
+                  Size: =10.5
+                  AutoHeight: =true
+                  Wrap: =true
+            - acd_txtEmpID:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.EmpID
+                  HintText: =""
+                  Height: =38
+                  MaxLength: =6
+                  Width: =200
+                  AlignInContainer: =AlignInContainer.Start
+            - acd_lblEmpService:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Service auquel est rattaché l'employé (unité administrative)" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - acd_drpEmpService:
+                Control: Classic/DropDown@2.3.1
+                Properties:
+                  BorderColor: =cBordure
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Items: =Sort(Filter(colListes, Liste = "Service"), Ordre).Value
+                  Default: =varDossier.EmpService
+                  AllowEmptySelection: =true
+                  Height: =38
+                  ChevronBackground: =cBleu
+                  ChevronFill: =Color.White
+                  SelectionFill: =cBleu
+            - acd_lblEmpDirection:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Direction"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =CountRows(Sort(Filter(colOrg, Service = acd_drpEmpService.Selected.Value && Niveau = "Direction"), Ordre).Value) > 0
+            - acd_drpEmpDirection:
+                Control: Classic/DropDown@2.3.1
+                Properties:
+                  BorderColor: =cBordure
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Items: =Sort(Filter(colOrg, Service = acd_drpEmpService.Selected.Value && Niveau = "Direction"), Ordre).Value
+                  Default: =varDossier.EmpDirection
+                  AllowEmptySelection: =true
+                  Height: =38
+                  ChevronBackground: =cBleu
+                  ChevronFill: =Color.White
+                  SelectionFill: =cBleu
+                  Visible: =CountRows(Sort(Filter(colOrg, Service = acd_drpEmpService.Selected.Value && Niveau = "Direction"), Ordre).Value) > 0
+            - acd_lblEmpDivision:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Division"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =CountRows(Sort(Filter(colOrg, Service = acd_drpEmpService.Selected.Value && Niveau = "Division"), Ordre).Value) > 0
+            - acd_drpEmpDivision:
+                Control: Classic/DropDown@2.3.1
+                Properties:
+                  BorderColor: =cBordure
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Items: =Sort(Filter(colOrg, Service = acd_drpEmpService.Selected.Value && Niveau = "Division"), Ordre).Value
+                  Default: =varDossier.EmpDivision
+                  AllowEmptySelection: =true
+                  Height: =38
+                  ChevronBackground: =cBleu
+                  ChevronFill: =Color.White
+                  SelectionFill: =cBleu
+                  Visible: =CountRows(Sort(Filter(colOrg, Service = acd_drpEmpService.Selected.Value && Niveau = "Division"), Ordre).Value) > 0
+            - acd_lblEmpSection:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Section"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =CountRows(Sort(Filter(colOrg, Service = acd_drpEmpService.Selected.Value && Niveau = "Section"), Ordre).Value) > 0
+            - acd_drpEmpSection:
+                Control: Classic/DropDown@2.3.1
+                Properties:
+                  BorderColor: =cBordure
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Items: =Sort(Filter(colOrg, Service = acd_drpEmpService.Selected.Value && Niveau = "Section"), Ordre).Value
+                  Default: =varDossier.EmpSection
+                  AllowEmptySelection: =true
+                  Height: =38
+                  ChevronBackground: =cBleu
+                  ChevronFill: =Color.White
+                  SelectionFill: =cBleu
+                  Visible: =CountRows(Sort(Filter(colOrg, Service = acd_drpEmpService.Selected.Value && Niveau = "Section"), Ordre).Value) > 0
+            - acd_lblEmpSyndicat:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Syndicat auquel l'employé est rattaché" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - acd_drpEmpSyndicat:
+                Control: Classic/DropDown@2.3.1
+                Properties:
+                  BorderColor: =cBordure
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Items: =Sort(Filter(colListes, Liste = "Syndicat"), Ordre).Value
+                  Default: =varDossier.EmpSyndicat
+                  AllowEmptySelection: =true
+                  Height: =38
+                  ChevronBackground: =cBleu
+                  ChevronFill: =Color.White
+                  SelectionFill: =cBleu
+            - acd_lblEmpClasse:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Classe d'emploi (SFMQ) de l'employé" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =acd_drpEmpSyndicat.Selected.Value = "Syndicat des fonctionnaires municipaux de Québec (SFMQ)"
+            - acd_drpEmpClasse:
+                Control: Classic/DropDown@2.3.1
+                Properties:
+                  BorderColor: =cBordure
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Items: =Sort(Filter(colListes, Liste = "ClasseSFMQ"), Ordre).Value
+                  Default: =varDossier.EmpClasse
+                  AllowEmptySelection: =true
+                  Height: =38
+                  ChevronBackground: =cBleu
+                  ChevronFill: =Color.White
+                  SelectionFill: =cBleu
+                  Visible: =acd_drpEmpSyndicat.Selected.Value = "Syndicat des fonctionnaires municipaux de Québec (SFMQ)"
+            - acd_lblEmpTitre:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Titre d'emploi de l'employé" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =!IsBlank(acd_drpEmpSyndicat.Selected.Value) && CountRows(Sort(Filter(colTitres, Syndicat = acd_drpEmpSyndicat.Selected.Value && (IsBlank(Classe) || Classe = acd_drpEmpClasse.Selected.Value)), Ordre).Value) > 0
+            - acd_drpEmpTitre:
+                Control: Classic/DropDown@2.3.1
+                Properties:
+                  BorderColor: =cBordure
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Items: =Sort(Filter(colTitres, Syndicat = acd_drpEmpSyndicat.Selected.Value && (IsBlank(Classe) || Classe = acd_drpEmpClasse.Selected.Value)), Ordre).Value
+                  Default: =varDossier.EmpTitre
+                  AllowEmptySelection: =true
+                  Height: =38
+                  ChevronBackground: =cBleu
+                  ChevronFill: =Color.White
+                  SelectionFill: =cBleu
+                  Visible: =!IsBlank(acd_drpEmpSyndicat.Selected.Value) && CountRows(Sort(Filter(colTitres, Syndicat = acd_drpEmpSyndicat.Selected.Value && (IsBlank(Classe) || Classe = acd_drpEmpClasse.Selected.Value)), Ordre).Value) > 0
+            - acd_lblEmpTitreAutre:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Titre d'emploi (préciser)" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =!IsBlank(acd_drpEmpSyndicat.Selected.Value) && (CountRows(Sort(Filter(colTitres, Syndicat = acd_drpEmpSyndicat.Selected.Value && (IsBlank(Classe) || Classe = acd_drpEmpClasse.Selected.Value)), Ordre).Value) = 0 || acd_drpEmpTitre.Selected.Value = "Autre")
+            - acd_txtEmpTitreAutre:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.EmpTitreAutre
+                  HintText: =""
+                  Height: =38
+                  Visible: =!IsBlank(acd_drpEmpSyndicat.Selected.Value) && (CountRows(Sort(Filter(colTitres, Syndicat = acd_drpEmpSyndicat.Selected.Value && (IsBlank(Classe) || Classe = acd_drpEmpClasse.Selected.Value)), Ordre).Value) = 0 || acd_drpEmpTitre.Selected.Value = "Autre")
+            - acd_lblEmpAdresseEtab:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Adresse de l'établissement auquel est rattaché l'employé" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - acd_aideEmpAdresseEtab:
+                Control: Label@2.5.1
+                Properties:
+                  Text: |-
+                    ="Si l'adresse n'est pas dans la liste, choisir « Autre » et l'inscrire comme ceci : 160, 76e Rue Est"
+                  Color: =cTexte2
+                  Size: =10.5
+                  AutoHeight: =true
+                  Wrap: =true
+            - acd_drpEmpAdresseEtab:
+                Control: Classic/DropDown@2.3.1
+                Properties:
+                  BorderColor: =cBordure
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Items: =Sort(Filter(colListes, Liste = "Adresse"), Ordre).Value
+                  Default: =varDossier.EmpAdresseEtab
+                  AllowEmptySelection: =true
+                  Height: =38
+                  ChevronBackground: =cBleu
+                  ChevronFill: =Color.White
+                  SelectionFill: =cBleu
+            - acd_lblEmpAdresseAutre:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Adresse de l'établissement (autre)" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =acd_drpEmpAdresseEtab.Selected.Value = "Autre"
+            - acd_txtEmpAdresseAutre:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.EmpAdresseAutre
+                  HintText: =""
+                  Height: =38
+                  Visible: =acd_drpEmpAdresseEtab.Selected.Value = "Autre"
+            - acd_lblEmpSuperieur:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Nom du supérieur immédiat" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - acd_txtEmpSuperieur:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.EmpSuperieur
+                  HintText: =""
+                  Height: =38
+            - acd_sec47:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Personne qui remplit la déclaration"
+                  Color: =cMarine
+                  Size: =16
+                  FontWeight: =FontWeight.Bold
+                  AutoHeight: =true
+                  PaddingTop: =14
+                  PaddingBottom: =2
+            - acd_ligne48:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =cOr
+                  BorderThickness: =0
+                  Height: =2
+            - acd_lblGestNom:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Nom du gestionnaire" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - acd_txtGestNom:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =Coalesce(varDossier.GestNom, User().FullName)
+                  HintText: =""
+                  Height: =38
+            - acd_lblGestTitre:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Titre / fonction"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - acd_txtGestTitre:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.GestTitre
+                  HintText: =""
+                  Height: =38
+            - acd_chkRempliSeul:
+                Control: Classic/CheckBox@2.1.0
+                Properties:
+                  Text: ="Formulaire rempli seul par le gestionnaire (l'état de santé de l'employé ne permet pas de le remplir avec lui aujourd'hui)"
+                  Default: =varDossier.RempliSeul = "Oui"
+                  Reset: =locReset
+                  Size: =12
+                  Color: =cTexte
+                  CheckboxBorderColor: =cTexte2
+                  CheckmarkFill: =Color.White
+                  CheckboxBackgroundFill: =Color.White
+                  Height: =40
+            - acd_info54:
+                Control: Label@2.5.1
+                Properties:
+                  Text: |-
+                    ="Important : si l'état de santé de l'employé ne lui permet pas de remplir le formulaire avec son gestionnaire la journée même de l'évènement, le gestionnaire remplit seul le formulaire et rencontrera l'employé dès que son état de santé le permettra, afin de valider l'information soumise."
+                  Color: =cMarine
+                  Size: =11
+                  AutoHeight: =true
+                  Wrap: =true
+                  Fill: =cBleuPale
+                  PaddingLeft: =12
+                  PaddingRight: =12
+                  PaddingTop: =8
+                  PaddingBottom: =8
+                  BorderColor: =cBleu
+                  BorderThickness: =1
+                  Visible: =acd_chkRempliSeul.Value
+            - acd_nav1:
+                Control: GroupContainer@1.3.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =Color.Transparent
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGap: =12
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutJustifyContent: =LayoutJustifyContent.End
+                  Height: =60
+                  PaddingTop: =16
+                  FillPortions: =0
+                Children:
+                  - acd_nav1Suiv:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: ="Suivant →"
+                        OnSelect: |-
+                          =UpdateContext({locOnglet: 2})
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =6
+                        RadiusTopRight: =6
+                        RadiusBottomLeft: =6
+                        RadiusBottomRight: =6
+                        Fill: =cBleu
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =ColorFade(cBleu, -0.15)
+                        PressedFill: =ColorFade(cBleu, -0.3)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        Width: =150
+                        Height: =38
+      - acd_conOnglet2:
+          Control: GroupContainer@1.3.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =Color.White
+            BorderThickness: =1
+            DropShadow: =DropShadow.None
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =6
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            BorderColor: =cBordure
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            X: =24
+            Y: =244
+            Width: =Parent.Width - 48
+            Height: =Parent.Height - 260
+            LayoutOverflowY: =LayoutOverflow.Scroll
+            PaddingTop: =16
+            PaddingBottom: =32
+            PaddingLeft: =Max(24, (Self.Width - 940) / 2)
+            PaddingRight: =Max(24, (Self.Width - 940) / 2)
+            Visible: =locOnglet = 2
+          Children:
+            - acd_sec55:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Description de l'évènement"
+                  Color: =cMarine
+                  Size: =16
+                  FontWeight: =FontWeight.Bold
+                  AutoHeight: =true
+                  PaddingTop: =14
+                  PaddingBottom: =2
+            - acd_ligne56:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =cOr
+                  BorderThickness: =0
+                  Height: =2
+            - acd_lblEvtDate:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Date de l'évènement" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - acd_dteEvtDate:
+                Control: Classic/DatePicker@2.6.0
+                Properties:
+                  BorderColor: =cBordure
+                  Color: =cTexte
+                  Reset: =locReset
+                  DefaultDate: =varDossier.EvtDate
+                  Format: ="yyyy-mm-dd"
+                  Height: =38
+                  Width: =260
+                  AlignInContainer: =AlignInContainer.Start
+            - acd_lblEvtHeure:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Heure de l'évènement" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - acd_txtEvtHeure:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.EvtHeure
+                  HintText: |-
+                    ="ex. : 18:45"
+                  Height: =38
+                  Width: =200
+                  AlignInContainer: =AlignInContainer.Start
+            - acd_lblEvtDateDeclEmp:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Date de déclaration de l'employé" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - acd_aideEvtDateDeclEmp:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Date à laquelle l'employé a informé son gestionnaire ou toute autre personne en autorité de la survenue de l'évènement."
+                  Color: =cTexte2
+                  Size: =10.5
+                  AutoHeight: =true
+                  Wrap: =true
+            - acd_dteEvtDateDeclEmp:
+                Control: Classic/DatePicker@2.6.0
+                Properties:
+                  BorderColor: =cBordure
+                  Color: =cTexte
+                  Reset: =locReset
+                  DefaultDate: =varDossier.EvtDateDeclEmp
+                  Format: ="yyyy-mm-dd"
+                  Height: =38
+                  Width: =260
+                  AlignInContainer: =AlignInContainer.Start
+            - acd_lblEvtAdresse:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Adresse où est survenu l'évènement" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - acd_aideEvtAdresse:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="S'il n'y a aucune adresse, indiquer l'adresse civique la plus proche de l'évènement."
+                  Color: =cTexte2
+                  Size: =10.5
+                  AutoHeight: =true
+                  Wrap: =true
+            - acd_txtEvtAdresse:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.EvtAdresse
+                  HintText: =""
+                  Height: =38
+            - acd_lblHoraire:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Horaire de travail au moment de l'évènement" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - acd_aideHoraire:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Plusieurs choix possibles (au plus 2 pour un incident)."
+                  Color: =cTexte2
+                  Size: =10.5
+                  AutoHeight: =true
+                  Wrap: =true
+            - acd_cmbHoraire:
+                Control: Classic/ComboBox@2.4.0
+                Properties:
+                  BorderColor: =cBordure
+                  Color: =cTexte
+                  Size: =12
+                  Reset: =locReset
+                  Items: =Sort(Filter(colListes, Liste = "Horaire"), Ordre).Value
+                  SelectMultiple: =true
+                  IsSearchable: =false
+                  DisplayFields: =["Value"]
+                  SearchFields: =["Value"]
+                  DefaultSelectedItems: |-
+                    =ForAll(Filter(Split(varDossier.Horaire, "; "), !IsBlank(Value)), {Value: ThisRecord.Value})
+                  InputTextPlaceholder: ="Choisir..."
+                  Height: =38
+                  ChevronBackground: =cBleu
+                  ChevronFill: =Color.White
+                  SelectionFill: =cBleu
+            - acd_lblTemoins:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Est-ce qu'il y a des témoins ?" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - acd_rdoTemoins:
+                Control: Classic/Radio@2.3.0
+                Properties:
+                  Items: =["Oui", "Aucun"]
+                  Default: =varDossier.Temoins
+                  Reset: =locReset
+                  Size: =12
+                  Color: =cTexte
+                  RadioSelectionFill: =cBleu
+                  RadioBorderColor: =cTexte2
+                  Layout: =Layout.Horizontal
+                  Height: =40
+            - acd_lblTemoinsNoms:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Nom du/des témoin(s)"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =acd_rdoTemoins.Selected.Value = "Oui"
+            - acd_txmTemoinsNoms:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.TemoinsNoms
+                  HintText: =""
+                  Height: =90
+                  Mode: =TextMode.MultiLine
+                  Visible: =acd_rdoTemoins.Selected.Value = "Oui"
+            - acd_lblVehicule:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Véhicule / équipement motorisé impliqué lors de l'évènement" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - acd_aideVehicule:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Répondre « Oui » si le véhicule appartient à la Ville, « Autre » s'il s'agit d'un véhicule personnel."
+                  Color: =cTexte2
+                  Size: =10.5
+                  AutoHeight: =true
+                  Wrap: =true
+            - acd_rdoVehicule:
+                Control: Classic/Radio@2.3.0
+                Properties:
+                  Items: =["Oui", "Non", "Autre"]
+                  Default: =varDossier.Vehicule
+                  Reset: =locReset
+                  Size: =12
+                  Color: =cTexte
+                  RadioSelectionFill: =cBleu
+                  RadioBorderColor: =cTexte2
+                  Layout: =Layout.Horizontal
+                  Height: =40
+            - acd_lblVehiculeDesc:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Description et numéro du véhicule / équipement motorisé impliqué"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =acd_rdoVehicule.Selected.Value in ["Oui", "Autre"]
+            - acd_txtVehiculeDesc:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.VehiculeDesc
+                  HintText: =""
+                  Height: =38
+                  Visible: =acd_rdoVehicule.Selected.Value in ["Oui", "Autre"]
+            - acd_sec79:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Description détaillée"
+                  Color: =cMarine
+                  Size: =16
+                  FontWeight: =FontWeight.Bold
+                  AutoHeight: =true
+                  PaddingTop: =14
+                  PaddingBottom: =2
+            - acd_ligne80:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =cOr
+                  BorderThickness: =0
+                  Height: =2
+            - acd_lblTache:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Tâche au moment de l'évènement" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - acd_aideTache:
+                Control: Label@2.5.1
+                Properties:
+                  Text: |-
+                    ="Préciser exactement ce que l'employé était en train de faire lorsque l'évènement est survenu (ex. : en dévissant un tuyau, en déposant des documents dans le classeur, en changeant une conduite d'aqueduc, en me dirigeant à une réunion)."
+                  Color: =cTexte2
+                  Size: =10.5
+                  AutoHeight: =true
+                  Wrap: =true
+            - acd_txmTache:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.Tache
+                  HintText: =""
+                  Height: =70
+                  Mode: =TextMode.MultiLine
+            - acd_lblDescription:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Description détaillée selon la version du travailleur" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - acd_aideDescription:
+                Control: Label@2.5.1
+                Properties:
+                  Text: |-
+                    ="Décrire clairement la série d'évènements qui a entraîné l'accident ou l'incident. Donnez des précisions sur les faits reliés au MELITO (Moment/Temps, Équipement/Matériel, Lieu/Environnement, Individu, Tâche, Organisation) et décrire la blessure subie. Trucs : écrire au « JE »; répondre aux questions Qui? Quoi? Où? Quand? Comment?; toute personne qui lit doit comprendre ce qui s'est réellement passé, même sans connaître le milieu de travail. Moins de 255 caractères."
+                  Color: =cTexte2
+                  Size: =10.5
+                  AutoHeight: =true
+                  Wrap: =true
+            - acd_txmDescription:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.Description
+                  HintText: =""
+                  Height: =110
+                  Mode: =TextMode.MultiLine
+                  MaxLength: =255
+            - acd_cptDescription:
+                Control: Label@2.5.1
+                Properties:
+                  Text: =Len(acd_txmDescription.Text) & " / 255"
+                  Color: =If(Len(acd_txmDescription.Text) >= 255, cRouge, cTexte2)
+                  Size: =10
+                  Align: =Align.Right
+                  Height: =20
+            - acd_nav2:
+                Control: GroupContainer@1.3.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =Color.Transparent
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGap: =12
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutJustifyContent: =LayoutJustifyContent.End
+                  Height: =60
+                  PaddingTop: =16
+                  FillPortions: =0
+                Children:
+                  - acd_nav2Prec:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: ="← Précédent"
+                        OnSelect: |-
+                          =UpdateContext({locOnglet: 1})
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =6
+                        RadiusTopRight: =6
+                        RadiusBottomLeft: =6
+                        RadiusBottomRight: =6
+                        Fill: =Color.White
+                        Color: =cBleu
+                        BorderColor: =cBleu
+                        BorderThickness: =2
+                        HoverFill: =cBleuPale
+                        HoverColor: =cBleu
+                        HoverBorderColor: =cBleu
+                        PressedFill: =cBordure
+                        PressedColor: =cBleu
+                        PressedBorderColor: =cBleu
+                        Width: =150
+                        Height: =38
+                  - acd_nav2Suiv:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: ="Suivant →"
+                        OnSelect: |-
+                          =UpdateContext({locOnglet: 3})
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =6
+                        RadiusTopRight: =6
+                        RadiusBottomLeft: =6
+                        RadiusBottomRight: =6
+                        Fill: =cBleu
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =ColorFade(cBleu, -0.15)
+                        PressedFill: =ColorFade(cBleu, -0.3)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        Width: =150
+                        Height: =38
+      - acd_conOnglet3:
+          Control: GroupContainer@1.3.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =Color.White
+            BorderThickness: =1
+            DropShadow: =DropShadow.None
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =6
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            BorderColor: =cBordure
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            X: =24
+            Y: =244
+            Width: =Parent.Width - 48
+            Height: =Parent.Height - 260
+            LayoutOverflowY: =LayoutOverflow.Scroll
+            PaddingTop: =16
+            PaddingBottom: =32
+            PaddingLeft: =Max(24, (Self.Width - 940) / 2)
+            PaddingRight: =Max(24, (Self.Width - 940) / 2)
+            Visible: =locOnglet = 3
+          Children:
+            - acd_sec88:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Registre des premiers soins"
+                  Color: =cMarine
+                  Size: =16
+                  FontWeight: =FontWeight.Bold
+                  AutoHeight: =true
+                  PaddingTop: =14
+                  PaddingBottom: =2
+            - acd_ligne89:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =cOr
+                  BorderThickness: =0
+                  Height: =2
+            - acd_lblPSDonnes:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Est-ce que des premiers secours ont été donnés par un secouriste ou un paramédic ?" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - acd_rdoPSDonnes:
+                Control: Classic/Radio@2.3.0
+                Properties:
+                  Items: =["Oui", "Non"]
+                  Default: =varDossier.PSDonnes
+                  Reset: =locReset
+                  Size: =12
+                  Color: =cTexte
+                  RadioSelectionFill: =cBleu
+                  RadioBorderColor: =cTexte2
+                  Layout: =Layout.Horizontal
+                  Height: =40
+            - acd_lblPSHeure:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Heure des premiers secours"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =acd_rdoPSDonnes.Selected.Value = "Oui"
+            - acd_txtPSHeure:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.PSHeure
+                  HintText: |-
+                    ="ex. : 18:45"
+                  Height: =38
+                  Width: =200
+                  AlignInContainer: =AlignInContainer.Start
+                  Visible: =acd_rdoPSDonnes.Selected.Value = "Oui"
+            - acd_lblPSNature:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Nature des premiers secours"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =acd_rdoPSDonnes.Selected.Value = "Oui"
+            - acd_txmPSNature:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.PSNature
+                  HintText: =""
+                  Height: =90
+                  Mode: =TextMode.MultiLine
+                  MaxLength: =255
+                  Visible: =acd_rdoPSDonnes.Selected.Value = "Oui"
+            - acd_cptPSNature:
+                Control: Label@2.5.1
+                Properties:
+                  Text: =Len(acd_txmPSNature.Text) & " / 255"
+                  Color: =If(Len(acd_txmPSNature.Text) >= 255, cRouge, cTexte2)
+                  Size: =10
+                  Align: =Align.Right
+                  Height: =20
+                  Visible: =acd_rdoPSDonnes.Selected.Value = "Oui"
+            - acd_lblPSSecouriste:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Nom du secouriste"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =acd_rdoPSDonnes.Selected.Value = "Oui"
+            - acd_txtPSSecouriste:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.PSSecouriste
+                  HintText: =""
+                  Height: =38
+                  Visible: =acd_rdoPSDonnes.Selected.Value = "Oui"
+            - acd_lblTransport:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Moyen de transport utilisé"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - acd_rdoTransport:
+                Control: Classic/Radio@2.3.0
+                Properties:
+                  Items: =["Aucun", "Ambulance", "Taxi", "Autre"]
+                  Default: =varDossier.Transport
+                  Reset: =locReset
+                  Size: =12
+                  Color: =cTexte
+                  RadioSelectionFill: =cBleu
+                  RadioBorderColor: =cTexte2
+                  Layout: =Layout.Horizontal
+                  Height: =40
+            - acd_lblTransportAutre:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Préciser le moyen de transport"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =acd_rdoTransport.Selected.Value = "Autre"
+            - acd_txtTransportAutre:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.TransportAutre
+                  HintText: =""
+                  Height: =38
+                  Visible: =acd_rdoTransport.Selected.Value = "Autre"
+            - acd_nav3:
+                Control: GroupContainer@1.3.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =Color.Transparent
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGap: =12
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutJustifyContent: =LayoutJustifyContent.End
+                  Height: =60
+                  PaddingTop: =16
+                  FillPortions: =0
+                Children:
+                  - acd_nav3Prec:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: ="← Précédent"
+                        OnSelect: |-
+                          =UpdateContext({locOnglet: 2})
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =6
+                        RadiusTopRight: =6
+                        RadiusBottomLeft: =6
+                        RadiusBottomRight: =6
+                        Fill: =Color.White
+                        Color: =cBleu
+                        BorderColor: =cBleu
+                        BorderThickness: =2
+                        HoverFill: =cBleuPale
+                        HoverColor: =cBleu
+                        HoverBorderColor: =cBleu
+                        PressedFill: =cBordure
+                        PressedColor: =cBleu
+                        PressedBorderColor: =cBleu
+                        Width: =150
+                        Height: =38
+                  - acd_nav3Suiv:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: ="Suivant →"
+                        OnSelect: |-
+                          =UpdateContext({locOnglet: If(acd_rdoTypeFormulaire.Selected.Value = "Accident", 4, 5)})
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =6
+                        RadiusTopRight: =6
+                        RadiusBottomLeft: =6
+                        RadiusBottomRight: =6
+                        Fill: =cBleu
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =ColorFade(cBleu, -0.15)
+                        PressedFill: =ColorFade(cBleu, -0.3)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        Width: =150
+                        Height: =38
+      - acd_conOnglet4:
+          Control: GroupContainer@1.3.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =Color.White
+            BorderThickness: =1
+            DropShadow: =DropShadow.None
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =6
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            BorderColor: =cBordure
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            X: =24
+            Y: =244
+            Width: =Parent.Width - 48
+            Height: =Parent.Height - 260
+            LayoutOverflowY: =LayoutOverflow.Scroll
+            PaddingTop: =16
+            PaddingBottom: =32
+            PaddingLeft: =Max(24, (Self.Width - 940) / 2)
+            PaddingRight: =Max(24, (Self.Width - 940) / 2)
+            Visible: =locOnglet = 4
+          Children:
+            - acd_sec103:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Localisation de la ou des blessures"
+                  Color: =cMarine
+                  Size: =16
+                  FontWeight: =FontWeight.Bold
+                  AutoHeight: =true
+                  PaddingTop: =14
+                  PaddingBottom: =2
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident"
+            - acd_ligne104:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =cOr
+                  BorderThickness: =0
+                  Height: =2
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident"
+            - acd_info105:
+                Control: Label@2.5.1
+                Properties:
+                  Text: |-
+                    ="Les côtés « gauche » et « droit » correspondent à la gauche et à la droite de l'employé (vue de face : comme si vous vous regardiez dans un miroir)."
+                  Color: =cTexte2
+                  Size: =11
+                  AutoHeight: =true
+                  Wrap: =true
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident"
+            - acd_conCorps:
+                Control: GroupContainer@1.3.0
+                Variant: ManualLayout
+                Properties:
+                  Fill: =Color.Transparent
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  Height: =452
+                  FillPortions: =0
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident"
+                Children:
+                  - acd_btnFace:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: ="Vue de face"
+                        OnSelect: =Set(varVue, "face")
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =6
+                        RadiusTopRight: =6
+                        RadiusBottomLeft: =6
+                        RadiusBottomRight: =6
+                        Fill: =If(varVue = "face", cBleu, Color.White)
+                        Color: =If(varVue = "face", Color.White, cBleu)
+                        BorderThickness: =2
+                        HoverFill: =If(varVue = "face", ColorFade(cBleu, -0.15), cBleuPale)
+                        PressedFill: =ColorFade(If(varVue = "face", cBleu, Color.White), -0.3)
+                        HoverColor: =If(varVue = "face", Color.White, cBleu)
+                        PressedColor: =Color.White
+                        BorderColor: =cBleu
+                        X: =0
+                        Y: =0
+                        Width: =110
+                        Height: =32
+                  - acd_btnDos:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: ="Vue de dos"
+                        OnSelect: =Set(varVue, "dos")
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =6
+                        RadiusTopRight: =6
+                        RadiusBottomLeft: =6
+                        RadiusBottomRight: =6
+                        Fill: =If(varVue = "dos", cBleu, Color.White)
+                        Color: =If(varVue = "dos", Color.White, cBleu)
+                        BorderThickness: =2
+                        HoverFill: =If(varVue = "dos", ColorFade(cBleu, -0.15), cBleuPale)
+                        PressedFill: =ColorFade(If(varVue = "dos", cBleu, Color.White), -0.3)
+                        HoverColor: =If(varVue = "dos", Color.White, cBleu)
+                        PressedColor: =Color.White
+                        BorderColor: =cBleu
+                        X: =118
+                        Y: =0
+                        Width: =110
+                        Height: =32
+                  - acd_imgCorps:
+                      Control: Image@2.2.3
+                      Properties:
+                        Image: |-
+                          ="data:image/svg+xml;utf8," & EncodeUrl(
+                          "<svg xmlns='http://www.w3.org/2000/svg' width='200' height='400' viewBox='0 0 200 400'>" &
+                          "<rect width='200' height='400' fill='white'/>" &
+                          "<text x='100' y='11' text-anchor='middle' font-family='Segoe UI,Arial' font-size='10' fill='#6B7280'>" & If(varVue = "face", "Vue de face", "Vue de dos") & "</text>" &
+                          "<text x='30' y='60' font-family='Segoe UI,Arial' font-size='12' font-weight='bold' fill='#00285E'>G</text><text x='162' y='60' font-family='Segoe UI,Arial' font-size='12' font-weight='bold' fill='#00285E'>D</text>" &
+                          "<path d='M72,76 L128,76 L121,150 L79,150 Z' fill='" & If(varB1Zone = If(varVue = "face", "thorax", "hautDos"), "#C80000", varB2Zone = If(varVue = "face", "thorax", "hautDos"), "#857650", "#ECF1F7") & "' stroke='#6B7280' stroke-width='1'/>" &
+                          "<path d='M79,150 L121,150 L116,183 L84,183 Z' fill='" & If(varB1Zone = If(varVue = "face", "abdomen", "basDos"), "#C80000", varB2Zone = If(varVue = "face", "abdomen", "basDos"), "#857650", "#ECF1F7") & "' stroke='#6B7280' stroke-width='1'/>" &
+                          "<ellipse cx='100' cy='38' rx='19' ry='21' fill='" & If(varB1Zone = If(varVue = "face", "tete", "crane"), "#C80000", varB2Zone = If(varVue = "face", "tete", "crane"), "#857650", "#ECF1F7") & "' stroke='#6B7280' stroke-width='1'/>" &
+                          "<path d='M92,58 L108,58 L106,74 L94,74 Z' fill='" & If(varB1Zone = If(varVue = "face", "cou", "nuque"), "#C80000", varB2Zone = If(varVue = "face", "cou", "nuque"), "#857650", "#ECF1F7") & "' stroke='#6B7280' stroke-width='1'/>" &
+                          "<rect x='45' y='95' width='17' height='48' rx='8.5' fill='" & If(varB1Zone = If(varVue = "face", "brasG", "brasGdos"), "#C80000", varB2Zone = If(varVue = "face", "brasG", "brasGdos"), "#857650", "#ECF1F7") & "' stroke='#6B7280' stroke-width='1'/>" &
+                          "<rect x='138' y='95' width='17' height='48' rx='8.5' fill='" & If(varB1Zone = If(varVue = "face", "brasD", "brasDdos"), "#C80000", varB2Zone = If(varVue = "face", "brasD", "brasDdos"), "#857650", "#ECF1F7") & "' stroke='#6B7280' stroke-width='1'/>" &
+                          "<circle cx='64' cy='88' r='13' fill='" & If(varB1Zone = If(varVue = "face", "epauleG", "epauleGdos"), "#C80000", varB2Zone = If(varVue = "face", "epauleG", "epauleGdos"), "#857650", "#ECF1F7") & "' stroke='#6B7280' stroke-width='1'/>" &
+                          "<circle cx='136' cy='88' r='13' fill='" & If(varB1Zone = If(varVue = "face", "epauleD", "epauleDdos"), "#C80000", varB2Zone = If(varVue = "face", "epauleD", "epauleDdos"), "#857650", "#ECF1F7") & "' stroke='#6B7280' stroke-width='1'/>" &
+                          "<circle cx='53.5' cy='147' r='9' fill='" & If(varB1Zone = If(varVue = "face", "coudeG", "coudeGdos"), "#C80000", varB2Zone = If(varVue = "face", "coudeG", "coudeGdos"), "#857650", "#ECF1F7") & "' stroke='#6B7280' stroke-width='1'/>" &
+                          "<circle cx='146.5' cy='147' r='9' fill='" & If(varB1Zone = If(varVue = "face", "coudeD", "coudeDdos"), "#C80000", varB2Zone = If(varVue = "face", "coudeD", "coudeDdos"), "#857650", "#ECF1F7") & "' stroke='#6B7280' stroke-width='1'/>" &
+                          "<rect x='45' y='156' width='15' height='45' rx='7.5' fill='" & If(varB1Zone = If(varVue = "face", "avantbrasG", "avantbrasGdos"), "#C80000", varB2Zone = If(varVue = "face", "avantbrasG", "avantbrasGdos"), "#857650", "#ECF1F7") & "' stroke='#6B7280' stroke-width='1'/>" &
+                          "<rect x='140' y='156' width='15' height='45' rx='7.5' fill='" & If(varB1Zone = If(varVue = "face", "avantbrasD", "avantbrasDdos"), "#C80000", varB2Zone = If(varVue = "face", "avantbrasD", "avantbrasDdos"), "#857650", "#ECF1F7") & "' stroke='#6B7280' stroke-width='1'/>" &
+                          "<ellipse cx='52.5' cy='212' rx='10' ry='13' fill='" & If(varB1Zone = If(varVue = "face", "mainG", "mainGdos"), "#C80000", varB2Zone = If(varVue = "face", "mainG", "mainGdos"), "#857650", "#ECF1F7") & "' stroke='#6B7280' stroke-width='1'/>" &
+                          "<ellipse cx='147.5' cy='212' rx='10' ry='13' fill='" & If(varB1Zone = If(varVue = "face", "mainD", "mainDdos"), "#C80000", varB2Zone = If(varVue = "face", "mainD", "mainDdos"), "#857650", "#ECF1F7") & "' stroke='#6B7280' stroke-width='1'/>" &
+                          "<path d='M84,183 L100,183 L102,215 L80,215 Z' fill='" & If(varB1Zone = If(varVue = "face", "hancheG", "fessierG"), "#C80000", varB2Zone = If(varVue = "face", "hancheG", "fessierG"), "#857650", "#ECF1F7") & "' stroke='#6B7280' stroke-width='1'/>" &
+                          "<path d='M100,183 L116,183 L120,215 L98,215 Z' fill='" & If(varB1Zone = If(varVue = "face", "hancheD", "fessierD"), "#C80000", varB2Zone = If(varVue = "face", "hancheD", "fessierD"), "#857650", "#ECF1F7") & "' stroke='#6B7280' stroke-width='1'/>" &
+                          "<rect x='79' y='215' width='19' height='70' rx='9.5' fill='" & If(varB1Zone = If(varVue = "face", "cuisseG", "cuisseGdos"), "#C80000", varB2Zone = If(varVue = "face", "cuisseG", "cuisseGdos"), "#857650", "#ECF1F7") & "' stroke='#6B7280' stroke-width='1'/>" &
+                          "<rect x='102' y='215' width='19' height='70' rx='9.5' fill='" & If(varB1Zone = If(varVue = "face", "cuisseD", "cuisseDdos"), "#C80000", varB2Zone = If(varVue = "face", "cuisseD", "cuisseDdos"), "#857650", "#ECF1F7") & "' stroke='#6B7280' stroke-width='1'/>" &
+                          "<circle cx='88.5' cy='290' r='10' fill='" & If(varB1Zone = If(varVue = "face", "genouG", "genouGdos"), "#C80000", varB2Zone = If(varVue = "face", "genouG", "genouGdos"), "#857650", "#ECF1F7") & "' stroke='#6B7280' stroke-width='1'/>" &
+                          "<circle cx='111.5' cy='290' r='10' fill='" & If(varB1Zone = If(varVue = "face", "genouD", "genouDdos"), "#C80000", varB2Zone = If(varVue = "face", "genouD", "genouDdos"), "#857650", "#ECF1F7") & "' stroke='#6B7280' stroke-width='1'/>" &
+                          "<rect x='80' y='300' width='17' height='60' rx='8.5' fill='" & If(varB1Zone = If(varVue = "face", "jambeG", "molletG"), "#C80000", varB2Zone = If(varVue = "face", "jambeG", "molletG"), "#857650", "#ECF1F7") & "' stroke='#6B7280' stroke-width='1'/>" &
+                          "<rect x='103' y='300' width='17' height='60' rx='8.5' fill='" & If(varB1Zone = If(varVue = "face", "jambeD", "molletD"), "#C80000", varB2Zone = If(varVue = "face", "jambeD", "molletD"), "#857650", "#ECF1F7") & "' stroke='#6B7280' stroke-width='1'/>" &
+                          "<circle cx='88.5' cy='365' r='8' fill='" & If(varB1Zone = If(varVue = "face", "chevilleG", "chevilleGdos"), "#C80000", varB2Zone = If(varVue = "face", "chevilleG", "chevilleGdos"), "#857650", "#ECF1F7") & "' stroke='#6B7280' stroke-width='1'/>" &
+                          "<circle cx='111.5' cy='365' r='8' fill='" & If(varB1Zone = If(varVue = "face", "chevilleD", "chevilleDdos"), "#C80000", varB2Zone = If(varVue = "face", "chevilleD", "chevilleDdos"), "#857650", "#ECF1F7") & "' stroke='#6B7280' stroke-width='1'/>" &
+                          "<ellipse cx='86' cy='384' rx='13' ry='8' fill='" & If(varB1Zone = If(varVue = "face", "piedG", "talonG"), "#C80000", varB2Zone = If(varVue = "face", "piedG", "talonG"), "#857650", "#ECF1F7") & "' stroke='#6B7280' stroke-width='1'/>" &
+                          "<ellipse cx='114' cy='384' rx='13' ry='8' fill='" & If(varB1Zone = If(varVue = "face", "piedD", "talonD"), "#C80000", varB2Zone = If(varVue = "face", "piedD", "talonD"), "#857650", "#ECF1F7") & "' stroke='#6B7280' stroke-width='1'/>" &
+                          "</svg>")
+                        X: =14
+                        Y: =44
+                        Width: =200
+                        Height: =400
+                        ImagePosition: =ImagePosition.Fit
+                        PaddingTop: =0
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                  - acd_zone00:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: =""
+                        OnSelect: |-
+                          =With({z: If(varVue = "face", "thorax", "hautDos")}, If(varB1Zone = z, Set(varB1Zone, ""), varB2Zone = z, Set(varB2Zone, ""), IsBlank(varB1Zone), Set(varB1Zone, z), Set(varB2Zone, z)))
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Fill: =Color.Transparent
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =RGBA(7, 75, 152, 0.25)
+                        PressedFill: =RGBA(7, 75, 152, 0.4)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        X: =86
+                        Y: =120
+                        Width: =56
+                        Height: =74
+                        Tooltip: =LookUp(tZones, Id = If(varVue = "face", "thorax", "hautDos"), Libelle)
+                        AccessibleLabel: =LookUp(tZones, Id = If(varVue = "face", "thorax", "hautDos"), Libelle)
+                  - acd_zone01:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: =""
+                        OnSelect: |-
+                          =With({z: If(varVue = "face", "abdomen", "basDos")}, If(varB1Zone = z, Set(varB1Zone, ""), varB2Zone = z, Set(varB2Zone, ""), IsBlank(varB1Zone), Set(varB1Zone, z), Set(varB2Zone, z)))
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Fill: =Color.Transparent
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =RGBA(7, 75, 152, 0.25)
+                        PressedFill: =RGBA(7, 75, 152, 0.4)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        X: =93
+                        Y: =194
+                        Width: =42
+                        Height: =33
+                        Tooltip: =LookUp(tZones, Id = If(varVue = "face", "abdomen", "basDos"), Libelle)
+                        AccessibleLabel: =LookUp(tZones, Id = If(varVue = "face", "abdomen", "basDos"), Libelle)
+                  - acd_zone02:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: =""
+                        OnSelect: |-
+                          =With({z: If(varVue = "face", "tete", "crane")}, If(varB1Zone = z, Set(varB1Zone, ""), varB2Zone = z, Set(varB2Zone, ""), IsBlank(varB1Zone), Set(varB1Zone, z), Set(varB2Zone, z)))
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Fill: =Color.Transparent
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =RGBA(7, 75, 152, 0.25)
+                        PressedFill: =RGBA(7, 75, 152, 0.4)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        X: =95
+                        Y: =61
+                        Width: =38
+                        Height: =42
+                        Tooltip: =LookUp(tZones, Id = If(varVue = "face", "tete", "crane"), Libelle)
+                        AccessibleLabel: =LookUp(tZones, Id = If(varVue = "face", "tete", "crane"), Libelle)
+                  - acd_zone03:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: =""
+                        OnSelect: |-
+                          =With({z: If(varVue = "face", "cou", "nuque")}, If(varB1Zone = z, Set(varB1Zone, ""), varB2Zone = z, Set(varB2Zone, ""), IsBlank(varB1Zone), Set(varB1Zone, z), Set(varB2Zone, z)))
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Fill: =Color.Transparent
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =RGBA(7, 75, 152, 0.25)
+                        PressedFill: =RGBA(7, 75, 152, 0.4)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        X: =106
+                        Y: =102
+                        Width: =16
+                        Height: =17
+                        Tooltip: =LookUp(tZones, Id = If(varVue = "face", "cou", "nuque"), Libelle)
+                        AccessibleLabel: =LookUp(tZones, Id = If(varVue = "face", "cou", "nuque"), Libelle)
+                  - acd_zone04:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: =""
+                        OnSelect: |-
+                          =With({z: If(varVue = "face", "brasG", "brasGdos")}, If(varB1Zone = z, Set(varB1Zone, ""), varB2Zone = z, Set(varB2Zone, ""), IsBlank(varB1Zone), Set(varB1Zone, z), Set(varB2Zone, z)))
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Fill: =Color.Transparent
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =RGBA(7, 75, 152, 0.25)
+                        PressedFill: =RGBA(7, 75, 152, 0.4)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        X: =59
+                        Y: =139
+                        Width: =17
+                        Height: =44
+                        Tooltip: =LookUp(tZones, Id = If(varVue = "face", "brasG", "brasGdos"), Libelle)
+                        AccessibleLabel: =LookUp(tZones, Id = If(varVue = "face", "brasG", "brasGdos"), Libelle)
+                  - acd_zone05:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: =""
+                        OnSelect: |-
+                          =With({z: If(varVue = "face", "brasD", "brasDdos")}, If(varB1Zone = z, Set(varB1Zone, ""), varB2Zone = z, Set(varB2Zone, ""), IsBlank(varB1Zone), Set(varB1Zone, z), Set(varB2Zone, z)))
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Fill: =Color.Transparent
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =RGBA(7, 75, 152, 0.25)
+                        PressedFill: =RGBA(7, 75, 152, 0.4)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        X: =152
+                        Y: =139
+                        Width: =17
+                        Height: =44
+                        Tooltip: =LookUp(tZones, Id = If(varVue = "face", "brasD", "brasDdos"), Libelle)
+                        AccessibleLabel: =LookUp(tZones, Id = If(varVue = "face", "brasD", "brasDdos"), Libelle)
+                  - acd_zone06:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: =""
+                        OnSelect: |-
+                          =With({z: If(varVue = "face", "epauleG", "epauleGdos")}, If(varB1Zone = z, Set(varB1Zone, ""), varB2Zone = z, Set(varB2Zone, ""), IsBlank(varB1Zone), Set(varB1Zone, z), Set(varB2Zone, z)))
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Fill: =Color.Transparent
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =RGBA(7, 75, 152, 0.25)
+                        PressedFill: =RGBA(7, 75, 152, 0.4)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        X: =65
+                        Y: =119
+                        Width: =26
+                        Height: =26
+                        Tooltip: =LookUp(tZones, Id = If(varVue = "face", "epauleG", "epauleGdos"), Libelle)
+                        AccessibleLabel: =LookUp(tZones, Id = If(varVue = "face", "epauleG", "epauleGdos"), Libelle)
+                  - acd_zone07:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: =""
+                        OnSelect: |-
+                          =With({z: If(varVue = "face", "epauleD", "epauleDdos")}, If(varB1Zone = z, Set(varB1Zone, ""), varB2Zone = z, Set(varB2Zone, ""), IsBlank(varB1Zone), Set(varB1Zone, z), Set(varB2Zone, z)))
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Fill: =Color.Transparent
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =RGBA(7, 75, 152, 0.25)
+                        PressedFill: =RGBA(7, 75, 152, 0.4)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        X: =137
+                        Y: =119
+                        Width: =26
+                        Height: =26
+                        Tooltip: =LookUp(tZones, Id = If(varVue = "face", "epauleD", "epauleDdos"), Libelle)
+                        AccessibleLabel: =LookUp(tZones, Id = If(varVue = "face", "epauleD", "epauleDdos"), Libelle)
+                  - acd_zone08:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: =""
+                        OnSelect: |-
+                          =With({z: If(varVue = "face", "coudeG", "coudeGdos")}, If(varB1Zone = z, Set(varB1Zone, ""), varB2Zone = z, Set(varB2Zone, ""), IsBlank(varB1Zone), Set(varB1Zone, z), Set(varB2Zone, z)))
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Fill: =Color.Transparent
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =RGBA(7, 75, 152, 0.25)
+                        PressedFill: =RGBA(7, 75, 152, 0.4)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        X: =58
+                        Y: =182
+                        Width: =19
+                        Height: =18
+                        Tooltip: =LookUp(tZones, Id = If(varVue = "face", "coudeG", "coudeGdos"), Libelle)
+                        AccessibleLabel: =LookUp(tZones, Id = If(varVue = "face", "coudeG", "coudeGdos"), Libelle)
+                  - acd_zone09:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: =""
+                        OnSelect: |-
+                          =With({z: If(varVue = "face", "coudeD", "coudeDdos")}, If(varB1Zone = z, Set(varB1Zone, ""), varB2Zone = z, Set(varB2Zone, ""), IsBlank(varB1Zone), Set(varB1Zone, z), Set(varB2Zone, z)))
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Fill: =Color.Transparent
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =RGBA(7, 75, 152, 0.25)
+                        PressedFill: =RGBA(7, 75, 152, 0.4)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        X: =151
+                        Y: =182
+                        Width: =19
+                        Height: =18
+                        Tooltip: =LookUp(tZones, Id = If(varVue = "face", "coudeD", "coudeDdos"), Libelle)
+                        AccessibleLabel: =LookUp(tZones, Id = If(varVue = "face", "coudeD", "coudeDdos"), Libelle)
+                  - acd_zone10:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: =""
+                        OnSelect: |-
+                          =With({z: If(varVue = "face", "avantbrasG", "avantbrasGdos")}, If(varB1Zone = z, Set(varB1Zone, ""), varB2Zone = z, Set(varB2Zone, ""), IsBlank(varB1Zone), Set(varB1Zone, z), Set(varB2Zone, z)))
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Fill: =Color.Transparent
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =RGBA(7, 75, 152, 0.25)
+                        PressedFill: =RGBA(7, 75, 152, 0.4)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        X: =59
+                        Y: =200
+                        Width: =15
+                        Height: =43
+                        Tooltip: =LookUp(tZones, Id = If(varVue = "face", "avantbrasG", "avantbrasGdos"), Libelle)
+                        AccessibleLabel: =LookUp(tZones, Id = If(varVue = "face", "avantbrasG", "avantbrasGdos"), Libelle)
+                  - acd_zone11:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: =""
+                        OnSelect: |-
+                          =With({z: If(varVue = "face", "avantbrasD", "avantbrasDdos")}, If(varB1Zone = z, Set(varB1Zone, ""), varB2Zone = z, Set(varB2Zone, ""), IsBlank(varB1Zone), Set(varB1Zone, z), Set(varB2Zone, z)))
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Fill: =Color.Transparent
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =RGBA(7, 75, 152, 0.25)
+                        PressedFill: =RGBA(7, 75, 152, 0.4)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        X: =154
+                        Y: =200
+                        Width: =15
+                        Height: =43
+                        Tooltip: =LookUp(tZones, Id = If(varVue = "face", "avantbrasD", "avantbrasDdos"), Libelle)
+                        AccessibleLabel: =LookUp(tZones, Id = If(varVue = "face", "avantbrasD", "avantbrasDdos"), Libelle)
+                  - acd_zone12:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: =""
+                        OnSelect: |-
+                          =With({z: If(varVue = "face", "mainG", "mainGdos")}, If(varB1Zone = z, Set(varB1Zone, ""), varB2Zone = z, Set(varB2Zone, ""), IsBlank(varB1Zone), Set(varB1Zone, z), Set(varB2Zone, z)))
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Fill: =Color.Transparent
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =RGBA(7, 75, 152, 0.25)
+                        PressedFill: =RGBA(7, 75, 152, 0.4)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        X: =56
+                        Y: =243
+                        Width: =21
+                        Height: =26
+                        Tooltip: =LookUp(tZones, Id = If(varVue = "face", "mainG", "mainGdos"), Libelle)
+                        AccessibleLabel: =LookUp(tZones, Id = If(varVue = "face", "mainG", "mainGdos"), Libelle)
+                  - acd_zone13:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: =""
+                        OnSelect: |-
+                          =With({z: If(varVue = "face", "mainD", "mainDdos")}, If(varB1Zone = z, Set(varB1Zone, ""), varB2Zone = z, Set(varB2Zone, ""), IsBlank(varB1Zone), Set(varB1Zone, z), Set(varB2Zone, z)))
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Fill: =Color.Transparent
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =RGBA(7, 75, 152, 0.25)
+                        PressedFill: =RGBA(7, 75, 152, 0.4)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        X: =151
+                        Y: =243
+                        Width: =21
+                        Height: =26
+                        Tooltip: =LookUp(tZones, Id = If(varVue = "face", "mainD", "mainDdos"), Libelle)
+                        AccessibleLabel: =LookUp(tZones, Id = If(varVue = "face", "mainD", "mainDdos"), Libelle)
+                  - acd_zone14:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: =""
+                        OnSelect: |-
+                          =With({z: If(varVue = "face", "hancheG", "fessierG")}, If(varB1Zone = z, Set(varB1Zone, ""), varB2Zone = z, Set(varB2Zone, ""), IsBlank(varB1Zone), Set(varB1Zone, z), Set(varB2Zone, z)))
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Fill: =Color.Transparent
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =RGBA(7, 75, 152, 0.25)
+                        PressedFill: =RGBA(7, 75, 152, 0.4)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        X: =94
+                        Y: =227
+                        Width: =20
+                        Height: =32
+                        Tooltip: =LookUp(tZones, Id = If(varVue = "face", "hancheG", "fessierG"), Libelle)
+                        AccessibleLabel: =LookUp(tZones, Id = If(varVue = "face", "hancheG", "fessierG"), Libelle)
+                  - acd_zone15:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: =""
+                        OnSelect: |-
+                          =With({z: If(varVue = "face", "hancheD", "fessierD")}, If(varB1Zone = z, Set(varB1Zone, ""), varB2Zone = z, Set(varB2Zone, ""), IsBlank(varB1Zone), Set(varB1Zone, z), Set(varB2Zone, z)))
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Fill: =Color.Transparent
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =RGBA(7, 75, 152, 0.25)
+                        PressedFill: =RGBA(7, 75, 152, 0.4)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        X: =114
+                        Y: =227
+                        Width: =20
+                        Height: =32
+                        Tooltip: =LookUp(tZones, Id = If(varVue = "face", "hancheD", "fessierD"), Libelle)
+                        AccessibleLabel: =LookUp(tZones, Id = If(varVue = "face", "hancheD", "fessierD"), Libelle)
+                  - acd_zone16:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: =""
+                        OnSelect: |-
+                          =With({z: If(varVue = "face", "cuisseG", "cuisseGdos")}, If(varB1Zone = z, Set(varB1Zone, ""), varB2Zone = z, Set(varB2Zone, ""), IsBlank(varB1Zone), Set(varB1Zone, z), Set(varB2Zone, z)))
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Fill: =Color.Transparent
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =RGBA(7, 75, 152, 0.25)
+                        PressedFill: =RGBA(7, 75, 152, 0.4)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        X: =93
+                        Y: =259
+                        Width: =19
+                        Height: =65
+                        Tooltip: =LookUp(tZones, Id = If(varVue = "face", "cuisseG", "cuisseGdos"), Libelle)
+                        AccessibleLabel: =LookUp(tZones, Id = If(varVue = "face", "cuisseG", "cuisseGdos"), Libelle)
+                  - acd_zone17:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: =""
+                        OnSelect: |-
+                          =With({z: If(varVue = "face", "cuisseD", "cuisseDdos")}, If(varB1Zone = z, Set(varB1Zone, ""), varB2Zone = z, Set(varB2Zone, ""), IsBlank(varB1Zone), Set(varB1Zone, z), Set(varB2Zone, z)))
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Fill: =Color.Transparent
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =RGBA(7, 75, 152, 0.25)
+                        PressedFill: =RGBA(7, 75, 152, 0.4)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        X: =116
+                        Y: =259
+                        Width: =19
+                        Height: =65
+                        Tooltip: =LookUp(tZones, Id = If(varVue = "face", "cuisseD", "cuisseDdos"), Libelle)
+                        AccessibleLabel: =LookUp(tZones, Id = If(varVue = "face", "cuisseD", "cuisseDdos"), Libelle)
+                  - acd_zone18:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: =""
+                        OnSelect: |-
+                          =With({z: If(varVue = "face", "genouG", "genouGdos")}, If(varB1Zone = z, Set(varB1Zone, ""), varB2Zone = z, Set(varB2Zone, ""), IsBlank(varB1Zone), Set(varB1Zone, z), Set(varB2Zone, z)))
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Fill: =Color.Transparent
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =RGBA(7, 75, 152, 0.25)
+                        PressedFill: =RGBA(7, 75, 152, 0.4)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        X: =92
+                        Y: =324
+                        Width: =21
+                        Height: =20
+                        Tooltip: =LookUp(tZones, Id = If(varVue = "face", "genouG", "genouGdos"), Libelle)
+                        AccessibleLabel: =LookUp(tZones, Id = If(varVue = "face", "genouG", "genouGdos"), Libelle)
+                  - acd_zone19:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: =""
+                        OnSelect: |-
+                          =With({z: If(varVue = "face", "genouD", "genouDdos")}, If(varB1Zone = z, Set(varB1Zone, ""), varB2Zone = z, Set(varB2Zone, ""), IsBlank(varB1Zone), Set(varB1Zone, z), Set(varB2Zone, z)))
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Fill: =Color.Transparent
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =RGBA(7, 75, 152, 0.25)
+                        PressedFill: =RGBA(7, 75, 152, 0.4)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        X: =115
+                        Y: =324
+                        Width: =21
+                        Height: =20
+                        Tooltip: =LookUp(tZones, Id = If(varVue = "face", "genouD", "genouDdos"), Libelle)
+                        AccessibleLabel: =LookUp(tZones, Id = If(varVue = "face", "genouD", "genouDdos"), Libelle)
+                  - acd_zone20:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: =""
+                        OnSelect: |-
+                          =With({z: If(varVue = "face", "jambeG", "molletG")}, If(varB1Zone = z, Set(varB1Zone, ""), varB2Zone = z, Set(varB2Zone, ""), IsBlank(varB1Zone), Set(varB1Zone, z), Set(varB2Zone, z)))
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Fill: =Color.Transparent
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =RGBA(7, 75, 152, 0.25)
+                        PressedFill: =RGBA(7, 75, 152, 0.4)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        X: =94
+                        Y: =344
+                        Width: =17
+                        Height: =57
+                        Tooltip: =LookUp(tZones, Id = If(varVue = "face", "jambeG", "molletG"), Libelle)
+                        AccessibleLabel: =LookUp(tZones, Id = If(varVue = "face", "jambeG", "molletG"), Libelle)
+                  - acd_zone21:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: =""
+                        OnSelect: |-
+                          =With({z: If(varVue = "face", "jambeD", "molletD")}, If(varB1Zone = z, Set(varB1Zone, ""), varB2Zone = z, Set(varB2Zone, ""), IsBlank(varB1Zone), Set(varB1Zone, z), Set(varB2Zone, z)))
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Fill: =Color.Transparent
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =RGBA(7, 75, 152, 0.25)
+                        PressedFill: =RGBA(7, 75, 152, 0.4)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        X: =117
+                        Y: =344
+                        Width: =17
+                        Height: =57
+                        Tooltip: =LookUp(tZones, Id = If(varVue = "face", "jambeD", "molletD"), Libelle)
+                        AccessibleLabel: =LookUp(tZones, Id = If(varVue = "face", "jambeD", "molletD"), Libelle)
+                  - acd_zone22:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: =""
+                        OnSelect: |-
+                          =With({z: If(varVue = "face", "chevilleG", "chevilleGdos")}, If(varB1Zone = z, Set(varB1Zone, ""), varB2Zone = z, Set(varB2Zone, ""), IsBlank(varB1Zone), Set(varB1Zone, z), Set(varB2Zone, z)))
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Fill: =Color.Transparent
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =RGBA(7, 75, 152, 0.25)
+                        PressedFill: =RGBA(7, 75, 152, 0.4)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        X: =94
+                        Y: =401
+                        Width: =17
+                        Height: =16
+                        Tooltip: =LookUp(tZones, Id = If(varVue = "face", "chevilleG", "chevilleGdos"), Libelle)
+                        AccessibleLabel: =LookUp(tZones, Id = If(varVue = "face", "chevilleG", "chevilleGdos"), Libelle)
+                  - acd_zone23:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: =""
+                        OnSelect: |-
+                          =With({z: If(varVue = "face", "chevilleD", "chevilleDdos")}, If(varB1Zone = z, Set(varB1Zone, ""), varB2Zone = z, Set(varB2Zone, ""), IsBlank(varB1Zone), Set(varB1Zone, z), Set(varB2Zone, z)))
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Fill: =Color.Transparent
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =RGBA(7, 75, 152, 0.25)
+                        PressedFill: =RGBA(7, 75, 152, 0.4)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        X: =117
+                        Y: =401
+                        Width: =17
+                        Height: =16
+                        Tooltip: =LookUp(tZones, Id = If(varVue = "face", "chevilleD", "chevilleDdos"), Libelle)
+                        AccessibleLabel: =LookUp(tZones, Id = If(varVue = "face", "chevilleD", "chevilleDdos"), Libelle)
+                  - acd_zone24:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: =""
+                        OnSelect: |-
+                          =With({z: If(varVue = "face", "piedG", "talonG")}, If(varB1Zone = z, Set(varB1Zone, ""), varB2Zone = z, Set(varB2Zone, ""), IsBlank(varB1Zone), Set(varB1Zone, z), Set(varB2Zone, z)))
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Fill: =Color.Transparent
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =RGBA(7, 75, 152, 0.25)
+                        PressedFill: =RGBA(7, 75, 152, 0.4)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        X: =87
+                        Y: =420
+                        Width: =26
+                        Height: =16
+                        Tooltip: =LookUp(tZones, Id = If(varVue = "face", "piedG", "talonG"), Libelle)
+                        AccessibleLabel: =LookUp(tZones, Id = If(varVue = "face", "piedG", "talonG"), Libelle)
+                  - acd_zone25:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: =""
+                        OnSelect: |-
+                          =With({z: If(varVue = "face", "piedD", "talonD")}, If(varB1Zone = z, Set(varB1Zone, ""), varB2Zone = z, Set(varB2Zone, ""), IsBlank(varB1Zone), Set(varB1Zone, z), Set(varB2Zone, z)))
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =0
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =0
+                        Fill: =Color.Transparent
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =RGBA(7, 75, 152, 0.25)
+                        PressedFill: =RGBA(7, 75, 152, 0.4)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        X: =115
+                        Y: =420
+                        Width: =26
+                        Height: =16
+                        Tooltip: =LookUp(tZones, Id = If(varVue = "face", "piedD", "talonD"), Libelle)
+                        AccessibleLabel: =LookUp(tZones, Id = If(varVue = "face", "piedD", "talonD"), Libelle)
+                  - acd_lgdCorps:
+                      Control: Label@2.5.1
+                      Properties:
+                        Text: |-
+                          ="■ Blessure principale : " & Coalesce(LookUp(tZones, Id = varB1Zone, Libelle), "—") & Char(10) & "■ Blessure secondaire : " & Coalesce(LookUp(tZones, Id = varB2Zone, Libelle), "—") & Char(10) & Char(10) & "Cliquez une zone pour la blessure principale, puis une autre pour la blessure secondaire. Cliquez de nouveau une zone pour la retirer."
+                        Color: =cTexte
+                        Size: =11
+                        X: =240
+                        Y: =44
+                        Width: =Parent.Width - 250
+                        Height: =160
+                        Wrap: =true
+                        VerticalAlign: =VerticalAlign.Top
+            - acd_sec106:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Blessure principale"
+                  Color: =cMarine
+                  Size: =16
+                  FontWeight: =FontWeight.Bold
+                  AutoHeight: =true
+                  PaddingTop: =14
+                  PaddingBottom: =2
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident"
+            - acd_ligne107:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =cOr
+                  BorderThickness: =0
+                  Height: =2
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident"
+            - acd_lblB1Nature:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Description de la blessure (siège de la blessure)" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident"
+            - acd_drpB1Nature:
+                Control: Classic/DropDown@2.3.1
+                Properties:
+                  BorderColor: =cBordure
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Items: =Sort(Filter(colListes, Liste = "NatureBlessure"), Ordre).Value
+                  Default: =varDossier.B1Nature
+                  AllowEmptySelection: =true
+                  Height: =38
+                  ChevronBackground: =cBleu
+                  ChevronFill: =Color.White
+                  SelectionFill: =cBleu
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident"
+            - acd_lblB1Partie:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Partie du corps" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident"
+            - acd_drpB1Partie:
+                Control: Classic/DropDown@2.3.1
+                Properties:
+                  BorderColor: =cBordure
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Items: =Sort(Filter(colListes, Liste = "PartieCorps"), Ordre).Value
+                  Default: =If(IsBlank(varB1Zone) || varB1Zone = varDossier.B1Zone, varDossier.B1Partie, LookUp(tZones, Id = varB1Zone, Partie))
+                  AllowEmptySelection: =true
+                  Height: =38
+                  ChevronBackground: =cBleu
+                  ChevronFill: =Color.White
+                  SelectionFill: =cBleu
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident"
+            - acd_lblB1Cote:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Côté" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident"
+            - acd_rdoB1Cote:
+                Control: Classic/Radio@2.3.0
+                Properties:
+                  Items: =["Gauche", "Droit", "Non applicable"]
+                  Default: =If(IsBlank(varB1Zone) || varB1Zone = varDossier.B1Zone, varDossier.B1Cote, LookUp(tZones, Id = varB1Zone, Cote))
+                  Reset: =locReset
+                  Size: =12
+                  Color: =cTexte
+                  RadioSelectionFill: =cBleu
+                  RadioBorderColor: =cTexte2
+                  Layout: =Layout.Horizontal
+                  Height: =40
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident"
+            - acd_lblB1Precision:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Précision (optionnel)"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident"
+            - acd_txtB1Precision:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.B1Precision
+                  HintText: =""
+                  Height: =38
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident"
+            - acd_sec116:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Blessure secondaire (optionnelle)"
+                  Color: =cMarine
+                  Size: =16
+                  FontWeight: =FontWeight.Bold
+                  AutoHeight: =true
+                  PaddingTop: =14
+                  PaddingBottom: =2
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident"
+            - acd_ligne117:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =cOr
+                  BorderThickness: =0
+                  Height: =2
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident"
+            - acd_lblB2Nature:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Description de la blessure (siège de la blessure)"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident"
+            - acd_drpB2Nature:
+                Control: Classic/DropDown@2.3.1
+                Properties:
+                  BorderColor: =cBordure
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Items: =Sort(Filter(colListes, Liste = "NatureBlessure"), Ordre).Value
+                  Default: =varDossier.B2Nature
+                  AllowEmptySelection: =true
+                  Height: =38
+                  ChevronBackground: =cBleu
+                  ChevronFill: =Color.White
+                  SelectionFill: =cBleu
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident"
+            - acd_lblB2Partie:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Partie du corps"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident"
+            - acd_drpB2Partie:
+                Control: Classic/DropDown@2.3.1
+                Properties:
+                  BorderColor: =cBordure
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Items: =Sort(Filter(colListes, Liste = "PartieCorps"), Ordre).Value
+                  Default: =If(IsBlank(varB2Zone) || varB2Zone = varDossier.B2Zone, varDossier.B2Partie, LookUp(tZones, Id = varB2Zone, Partie))
+                  AllowEmptySelection: =true
+                  Height: =38
+                  ChevronBackground: =cBleu
+                  ChevronFill: =Color.White
+                  SelectionFill: =cBleu
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident"
+            - acd_lblB2Cote:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Côté"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident"
+            - acd_rdoB2Cote:
+                Control: Classic/Radio@2.3.0
+                Properties:
+                  Items: =["Gauche", "Droit", "Non applicable"]
+                  Default: =If(IsBlank(varB2Zone) || varB2Zone = varDossier.B2Zone, varDossier.B2Cote, LookUp(tZones, Id = varB2Zone, Cote))
+                  Reset: =locReset
+                  Size: =12
+                  Color: =cTexte
+                  RadioSelectionFill: =cBleu
+                  RadioBorderColor: =cTexte2
+                  Layout: =Layout.Horizontal
+                  Height: =40
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident"
+            - acd_lblB2Precision:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Précision (optionnel)"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident"
+            - acd_txtB2Precision:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.B2Precision
+                  HintText: =""
+                  Height: =38
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident"
+            - acd_nav4:
+                Control: GroupContainer@1.3.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =Color.Transparent
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGap: =12
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutJustifyContent: =LayoutJustifyContent.End
+                  Height: =60
+                  PaddingTop: =16
+                  FillPortions: =0
+                Children:
+                  - acd_nav4Prec:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: ="← Précédent"
+                        OnSelect: |-
+                          =UpdateContext({locOnglet: 3})
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =6
+                        RadiusTopRight: =6
+                        RadiusBottomLeft: =6
+                        RadiusBottomRight: =6
+                        Fill: =Color.White
+                        Color: =cBleu
+                        BorderColor: =cBleu
+                        BorderThickness: =2
+                        HoverFill: =cBleuPale
+                        HoverColor: =cBleu
+                        HoverBorderColor: =cBleu
+                        PressedFill: =cBordure
+                        PressedColor: =cBleu
+                        PressedBorderColor: =cBleu
+                        Width: =150
+                        Height: =38
+                  - acd_nav4Suiv:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: ="Suivant →"
+                        OnSelect: |-
+                          =UpdateContext({locOnglet: 5})
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =6
+                        RadiusTopRight: =6
+                        RadiusBottomLeft: =6
+                        RadiusBottomRight: =6
+                        Fill: =cBleu
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =ColorFade(cBleu, -0.15)
+                        PressedFill: =ColorFade(cBleu, -0.3)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        Width: =150
+                        Height: =38
+      - acd_conOnglet5:
+          Control: GroupContainer@1.3.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =Color.White
+            BorderThickness: =1
+            DropShadow: =DropShadow.None
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =6
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            BorderColor: =cBordure
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            X: =24
+            Y: =244
+            Width: =Parent.Width - 48
+            Height: =Parent.Height - 260
+            LayoutOverflowY: =LayoutOverflow.Scroll
+            PaddingTop: =16
+            PaddingBottom: =32
+            PaddingLeft: =Max(24, (Self.Width - 940) / 2)
+            PaddingRight: =Max(24, (Self.Width - 940) / 2)
+            Visible: =locOnglet = 5
+          Children:
+            - acd_sec126:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Type et cause principale de l'évènement"
+                  Color: =cMarine
+                  Size: =16
+                  FontWeight: =FontWeight.Bold
+                  AutoHeight: =true
+                  PaddingTop: =14
+                  PaddingBottom: =2
+            - acd_ligne127:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =cOr
+                  BorderThickness: =0
+                  Height: =2
+            - acd_lblCauseType:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Description de la cause (type d'évènement)" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - acd_drpCauseType:
+                Control: Classic/DropDown@2.3.1
+                Properties:
+                  BorderColor: =cBordure
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Items: =Sort(Filter(colListes, Liste = "CauseAccident"), Ordre).Value
+                  Default: =varDossier.CauseType
+                  AllowEmptySelection: =true
+                  Height: =38
+                  ChevronBackground: =cBleu
+                  ChevronFill: =Color.White
+                  SelectionFill: =cBleu
+            - acd_lblActivite:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Description de l'activité (activité principale lors de l'évènement)" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - acd_drpActivite:
+                Control: Classic/DropDown@2.3.1
+                Properties:
+                  BorderColor: =cBordure
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Items: =Sort(Filter(colListes, Liste = "Activite"), Ordre).Value
+                  Default: =varDossier.Activite
+                  AllowEmptySelection: =true
+                  Height: =38
+                  ChevronBackground: =cBleu
+                  ChevronFill: =Color.White
+                  SelectionFill: =cBleu
+            - acd_sec132:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Mesures préventives immédiates"
+                  Color: =cMarine
+                  Size: =16
+                  FontWeight: =FontWeight.Bold
+                  AutoHeight: =true
+                  PaddingTop: =14
+                  PaddingBottom: =2
+            - acd_ligne133:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =cOr
+                  BorderThickness: =0
+                  Height: =2
+            - acd_lblMesurePrev:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Mesure préventive immédiate" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - acd_aideMesurePrev:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Que doit-on mettre en place pour éviter d'autres évènements ?"
+                  Color: =cTexte2
+                  Size: =10.5
+                  AutoHeight: =true
+                  Wrap: =true
+            - acd_txmMesurePrev:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.MesurePrev
+                  HintText: =""
+                  Height: =90
+                  Mode: =TextMode.MultiLine
+            - acd_lblMesureResp:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Responsable de la mesure préventive immédiate"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - acd_aideMesureResp:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Indiquer le nom d'un seul gestionnaire responsable. S'il y a plus d'une personne responsable, compléter le champ « Collaborateur(s) »."
+                  Color: =cTexte2
+                  Size: =10.5
+                  AutoHeight: =true
+                  Wrap: =true
+            - acd_txtMesureResp:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.MesureResp
+                  HintText: =""
+                  Height: =38
+            - acd_lblMesureCollab:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Nom du/des collaborateur(s)"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - acd_txmMesureCollab:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.MesureCollab
+                  HintText: =""
+                  Height: =60
+                  Mode: =TextMode.MultiLine
+            - acd_lblMesureEcheance:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Date d'échéance (fin souhaitée) de la mesure préventive immédiate" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - acd_dteMesureEcheance:
+                Control: Classic/DatePicker@2.6.0
+                Properties:
+                  BorderColor: =cBordure
+                  Color: =cTexte
+                  Reset: =locReset
+                  DefaultDate: =varDossier.MesureEcheance
+                  Format: ="yyyy-mm-dd"
+                  Height: =38
+                  Width: =260
+                  AlignInContainer: =AlignInContainer.Start
+            - acd_lblEnqueteRequise:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Une enquête et analyse d'évènement est-elle requise ?"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - acd_aideEnqueteRequise:
+                Control: Label@2.5.1
+                Properties:
+                  Text: |-
+                    =If(("élevée" in acd_drpGravite.Selected.Value || "moyenne" in acd_drpGravite.Selected.Value), "Enquête OBLIGATOIRE : gravité élevée ou moyenne.", "Si oui, un plan d'action de mesures correctives sera élaboré par un comité d'enquête paritaire SST.")
+                  Color: =cTexte2
+                  Size: =10.5
+                  AutoHeight: =true
+                  Wrap: =true
+            - acd_rdoEnqueteRequise:
+                Control: Classic/Radio@2.3.0
+                Properties:
+                  Items: =["Oui", "Non"]
+                  Default: =If(("élevée" in acd_drpGravite.Selected.Value || "moyenne" in acd_drpGravite.Selected.Value), "Oui", varDossier.EnqueteRequise)
+                  Reset: =locReset
+                  Size: =12
+                  Color: =cTexte
+                  RadioSelectionFill: =cBleu
+                  RadioBorderColor: =cTexte2
+                  Layout: =Layout.Horizontal
+                  Height: =40
+                  DisplayMode: =If(("élevée" in acd_drpGravite.Selected.Value || "moyenne" in acd_drpGravite.Selected.Value), DisplayMode.Disabled, DisplayMode.Edit)
+            - acd_nav5:
+                Control: GroupContainer@1.3.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =Color.Transparent
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGap: =12
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutJustifyContent: =LayoutJustifyContent.End
+                  Height: =60
+                  PaddingTop: =16
+                  FillPortions: =0
+                Children:
+                  - acd_nav5Prec:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: ="← Précédent"
+                        OnSelect: |-
+                          =UpdateContext({locOnglet: If(acd_rdoTypeFormulaire.Selected.Value = "Accident", 4, 3)})
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =6
+                        RadiusTopRight: =6
+                        RadiusBottomLeft: =6
+                        RadiusBottomRight: =6
+                        Fill: =Color.White
+                        Color: =cBleu
+                        BorderColor: =cBleu
+                        BorderThickness: =2
+                        HoverFill: =cBleuPale
+                        HoverColor: =cBleu
+                        HoverBorderColor: =cBleu
+                        PressedFill: =cBordure
+                        PressedColor: =cBleu
+                        PressedBorderColor: =cBleu
+                        Width: =150
+                        Height: =38
+                  - acd_nav5Suiv:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: ="Suivant →"
+                        OnSelect: |-
+                          =UpdateContext({locOnglet: 6})
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =6
+                        RadiusTopRight: =6
+                        RadiusBottomLeft: =6
+                        RadiusBottomRight: =6
+                        Fill: =cBleu
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =ColorFade(cBleu, -0.15)
+                        PressedFill: =ColorFade(cBleu, -0.3)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        Width: =150
+                        Height: =38
+      - acd_conOnglet6:
+          Control: GroupContainer@1.3.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =Color.White
+            BorderThickness: =1
+            DropShadow: =DropShadow.None
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =6
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            BorderColor: =cBordure
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            X: =24
+            Y: =244
+            Width: =Parent.Width - 48
+            Height: =Parent.Height - 260
+            LayoutOverflowY: =LayoutOverflow.Scroll
+            PaddingTop: =16
+            PaddingBottom: =32
+            PaddingLeft: =Max(24, (Self.Width - 940) / 2)
+            PaddingRight: =Max(24, (Self.Width - 940) / 2)
+            Visible: =locOnglet = 6
+          Children:
+            - acd_sec147:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Arrêt de travail"
+                  Color: =cMarine
+                  Size: =16
+                  FontWeight: =FontWeight.Bold
+                  AutoHeight: =true
+                  PaddingTop: =14
+                  PaddingBottom: =2
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident"
+            - acd_ligne148:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =cOr
+                  BorderThickness: =0
+                  Height: =2
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident"
+            - acd_lblArretTravail:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Arrêt de travail ?"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident"
+            - acd_rdoArretTravail:
+                Control: Classic/Radio@2.3.0
+                Properties:
+                  Items: =["Oui", "Non"]
+                  Default: =varDossier.ArretTravail
+                  Reset: =locReset
+                  Size: =12
+                  Color: =cTexte
+                  RadioSelectionFill: =cBleu
+                  RadioBorderColor: =cTexte2
+                  Layout: =Layout.Horizontal
+                  Height: =40
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident"
+            - acd_lblDateDernierJour:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Date du dernier jour travaillé"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident" && acd_rdoArretTravail.Selected.Value = "Oui"
+            - acd_dteDateDernierJour:
+                Control: Classic/DatePicker@2.6.0
+                Properties:
+                  BorderColor: =cBordure
+                  Color: =cTexte
+                  Reset: =locReset
+                  DefaultDate: =varDossier.DateDernierJour
+                  Format: ="yyyy-mm-dd"
+                  Height: =38
+                  Width: =260
+                  AlignInContainer: =AlignInContainer.Start
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident" && acd_rdoArretTravail.Selected.Value = "Oui"
+            - acd_lblRetourTravail:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Retour au travail ?"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident" && acd_rdoArretTravail.Selected.Value = "Oui"
+            - acd_rdoRetourTravail:
+                Control: Classic/Radio@2.3.0
+                Properties:
+                  Items: =["Oui", "Non"]
+                  Default: =varDossier.RetourTravail
+                  Reset: =locReset
+                  Size: =12
+                  Color: =cTexte
+                  RadioSelectionFill: =cBleu
+                  RadioBorderColor: =cTexte2
+                  Layout: =Layout.Horizontal
+                  Height: =40
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident" && acd_rdoArretTravail.Selected.Value = "Oui"
+            - acd_lblDateRetour:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Date du retour"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident" && acd_rdoArretTravail.Selected.Value = "Oui" && acd_rdoRetourTravail.Selected.Value = "Oui"
+            - acd_dteDateRetour:
+                Control: Classic/DatePicker@2.6.0
+                Properties:
+                  BorderColor: =cBordure
+                  Color: =cTexte
+                  Reset: =locReset
+                  DefaultDate: =varDossier.DateRetour
+                  Format: ="yyyy-mm-dd"
+                  Height: =38
+                  Width: =260
+                  AlignInContainer: =AlignInContainer.Start
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident" && acd_rdoArretTravail.Selected.Value = "Oui" && acd_rdoRetourTravail.Selected.Value = "Oui"
+            - acd_lblModaliteRetour:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Modalité de retour"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident" && acd_rdoArretTravail.Selected.Value = "Oui" && acd_rdoRetourTravail.Selected.Value = "Oui"
+            - acd_rdoModaliteRetour:
+                Control: Classic/Radio@2.3.0
+                Properties:
+                  Items: =["Même emploi", "Assignation temporaire", "Autre"]
+                  Default: =varDossier.ModaliteRetour
+                  Reset: =locReset
+                  Size: =12
+                  Color: =cTexte
+                  RadioSelectionFill: =cBleu
+                  RadioBorderColor: =cTexte2
+                  Layout: =Layout.Horizontal
+                  Height: =40
+                  Visible: =acd_rdoTypeFormulaire.Selected.Value = "Accident" && acd_rdoArretTravail.Selected.Value = "Oui" && acd_rdoRetourTravail.Selected.Value = "Oui"
+            - acd_sec159:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Signature / consentement"
+                  Color: =cMarine
+                  Size: =16
+                  FontWeight: =FontWeight.Bold
+                  AutoHeight: =true
+                  PaddingTop: =14
+                  PaddingBottom: =2
+            - acd_ligne160:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =cOr
+                  BorderThickness: =0
+                  Height: =2
+            - acd_lblApprobationEmp:
+                Control: Label@2.5.1
+                Properties:
+                  Text: |-
+                    ="Employé impliqué : « J'étais présent(e) lorsque mon gestionnaire a complété ce formulaire. Il s'agit de ma version des faits et je confirme que la description de l'évènement est exacte. »" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - acd_aideApprobationEmp:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Approbation de l'employé (fait office de signature)."
+                  Color: =cTexte2
+                  Size: =10.5
+                  AutoHeight: =true
+                  Wrap: =true
+            - acd_rdoApprobationEmp:
+                Control: Classic/Radio@2.3.0
+                Properties:
+                  Items: =["Oui", "Non, pour des raisons médicales l'employé est incapable de compléter sa déclaration"]
+                  Default: =varDossier.ApprobationEmp
+                  Reset: =locReset
+                  Size: =12
+                  Color: =cTexte
+                  RadioSelectionFill: =cBleu
+                  RadioBorderColor: =cTexte2
+                  Layout: =Layout.Vertical
+                  Height: =74
+            - acd_lblFormatCopie:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Format souhaité pour la copie de la déclaration" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+            - acd_rdoFormatCopie:
+                Control: Classic/Radio@2.3.0
+                Properties:
+                  Items: =["Copie courriel", "Copie papier", "Copie courriel et papier"]
+                  Default: =varDossier.FormatCopie
+                  Reset: =locReset
+                  Size: =12
+                  Color: =cTexte
+                  RadioSelectionFill: =cBleu
+                  RadioBorderColor: =cTexte2
+                  Layout: =Layout.Vertical
+                  Height: =108
+            - acd_lblEmpCourriel:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Courriel de l'employé" & " *"
+                  Color: =cTexte
+                  Size: =12
+                  FontWeight: =FontWeight.Semibold
+                  AutoHeight: =true
+                  Wrap: =true
+                  PaddingTop: =6
+                  Visible: ="courriel" in Lower(acd_rdoFormatCopie.Selected.Value)
+            - acd_aideEmpCourriel:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Inscrire un seul courriel (personnel ou Ville)."
+                  Color: =cTexte2
+                  Size: =10.5
+                  AutoHeight: =true
+                  Wrap: =true
+                  Visible: ="courriel" in Lower(acd_rdoFormatCopie.Selected.Value)
+            - acd_txtEmpCourriel:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =cBordure
+                  HoverBorderColor: =cBleu
+                  FocusedBorderColor: =cBleu
+                  FocusedBorderThickness: =2
+                  Color: =cTexte
+                  Size: =12
+                  Fill: =Color.White
+                  Reset: =locReset
+                  Default: =varDossier.EmpCourriel
+                  HintText: =""
+                  Height: =38
+                  Visible: ="courriel" in Lower(acd_rdoFormatCopie.Selected.Value)
+            - acd_info169:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="Pour signaler une problématique relative à ce formulaire ou en cas de désaccord avec la version du travailleur, communiquez avec votre répondant SST."
+                  Color: =cMarine
+                  Size: =11
+                  AutoHeight: =true
+                  Wrap: =true
+                  Fill: =cBleuPale
+                  PaddingLeft: =12
+                  PaddingRight: =12
+                  PaddingTop: =8
+                  PaddingBottom: =8
+                  BorderColor: =cBleu
+                  BorderThickness: =1
+            - acd_nav6:
+                Control: GroupContainer@1.3.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =Color.Transparent
+                  BorderThickness: =0
+                  DropShadow: =DropShadow.None
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGap: =12
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutJustifyContent: =LayoutJustifyContent.End
+                  Height: =60
+                  PaddingTop: =16
+                  FillPortions: =0
+                Children:
+                  - acd_nav6Prec:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: ="← Précédent"
+                        OnSelect: |-
+                          =UpdateContext({locOnglet: 5})
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =6
+                        RadiusTopRight: =6
+                        RadiusBottomLeft: =6
+                        RadiusBottomRight: =6
+                        Fill: =Color.White
+                        Color: =cBleu
+                        BorderColor: =cBleu
+                        BorderThickness: =2
+                        HoverFill: =cBleuPale
+                        HoverColor: =cBleu
+                        HoverBorderColor: =cBleu
+                        PressedFill: =cBordure
+                        PressedColor: =cBleu
+                        PressedBorderColor: =cBleu
+                        Width: =150
+                        Height: =38
+                  - acd_btnDeposerBas:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Text: ="☁️ Enregistrer et déposer"
+                        OnSelect: |-
+                          =UpdateContext({locManquants: Concat(Filter(Table(
+                              {c: "Catégorie de déclaration", ok: !(true) || !(IsBlank(acd_rdoTypeFormulaire.Selected.Value))},
+                              {c: "Niveau de gravité (accident) ou de gravité potentielle (incident)", ok: !(true) || !(IsBlank(acd_drpGravite.Selected.Value))},
+                              {c: "Avez-vous remis une trousse d'assignation temporaire à votre employé ?", ok: !((acd_rdoTypeFormulaire.Selected.Value = "Accident") && (acd_rdoTypeFormulaire.Selected.Value = "Accident")) || !(IsBlank(acd_rdoTrousseRemise.Selected.Value))},
+                              {c: "Pour quelle raison la trousse d'assignation temporaire n'a pas été remise ?", ok: !((acd_rdoTypeFormulaire.Selected.Value = "Accident" && acd_rdoTrousseRemise.Selected.Value = "Non") && (true)) || !(IsBlank(acd_txmTrousseRaison.Text))},
+                              {c: "Selon les premières constatations, est-ce que cet accident impliquera une absence de l'employé au-delà de sa journée de travail ?", ok: !((acd_rdoTypeFormulaire.Selected.Value = "Accident") && (acd_rdoTypeFormulaire.Selected.Value = "Accident")) || !(IsBlank(acd_rdoAbsenceAuDela.Selected.Value))},
+                              {c: "Nom de l'employé", ok: !(true) || !(IsBlank(acd_txtEmpNom.Text))},
+                              {c: "Prénom de l'employé", ok: !(true) || !(IsBlank(acd_txtEmpPrenom.Text))},
+                              {c: "ID de l'employé", ok: !(true) || !(IsBlank(acd_txtEmpID.Text))},
+                              {c: "ID de l'employé (6 chiffres)", ok: !(true) || !(!IsMatch(acd_txtEmpID.Text, "\d{6}"))},
+                              {c: "Service auquel est rattaché l'employé (unité administrative)", ok: !(true) || !(IsBlank(acd_drpEmpService.Selected.Value))},
+                              {c: "Syndicat auquel l'employé est rattaché", ok: !(true) || !(IsBlank(acd_drpEmpSyndicat.Selected.Value))},
+                              {c: "Classe d'emploi (SFMQ) de l'employé", ok: !((acd_drpEmpSyndicat.Selected.Value = "Syndicat des fonctionnaires municipaux de Québec (SFMQ)") && (true)) || !(IsBlank(acd_drpEmpClasse.Selected.Value))},
+                              {c: "Titre d'emploi de l'employé", ok: !((!IsBlank(acd_drpEmpSyndicat.Selected.Value) && CountRows(Sort(Filter(colTitres, Syndicat = acd_drpEmpSyndicat.Selected.Value && (IsBlank(Classe) || Classe = acd_drpEmpClasse.Selected.Value)), Ordre).Value) > 0) && (true)) || !(IsBlank(acd_drpEmpTitre.Selected.Value))},
+                              {c: "Titre d'emploi (préciser)", ok: !((!IsBlank(acd_drpEmpSyndicat.Selected.Value) && (CountRows(Sort(Filter(colTitres, Syndicat = acd_drpEmpSyndicat.Selected.Value && (IsBlank(Classe) || Classe = acd_drpEmpClasse.Selected.Value)), Ordre).Value) = 0 || acd_drpEmpTitre.Selected.Value = "Autre")) && (true)) || !(IsBlank(acd_txtEmpTitreAutre.Text))},
+                              {c: "Adresse de l'établissement auquel est rattaché l'employé", ok: !(true) || !(IsBlank(acd_drpEmpAdresseEtab.Selected.Value))},
+                              {c: "Adresse de l'établissement (autre)", ok: !((acd_drpEmpAdresseEtab.Selected.Value = "Autre") && (true)) || !(IsBlank(acd_txtEmpAdresseAutre.Text))},
+                              {c: "Nom du supérieur immédiat", ok: !(true) || !(IsBlank(acd_txtEmpSuperieur.Text))},
+                              {c: "Nom du gestionnaire", ok: !(true) || !(IsBlank(acd_txtGestNom.Text))},
+                              {c: "Date de l'évènement", ok: !(true) || !(IsBlank(acd_dteEvtDate.SelectedDate))},
+                              {c: "Heure de l'évènement", ok: !(true) || !(IsBlank(acd_txtEvtHeure.Text))},
+                              {c: "Date de déclaration de l'employé", ok: !(true) || !(IsBlank(acd_dteEvtDateDeclEmp.SelectedDate))},
+                              {c: "Adresse où est survenu l'évènement", ok: !(true) || !(IsBlank(acd_txtEvtAdresse.Text))},
+                              {c: "Horaire de travail au moment de l'évènement", ok: !(true) || !(IsBlank(Concat(acd_cmbHoraire.SelectedItems, Value, "; ")))},
+                              {c: "Horaire : au plus 2 choix pour un incident", ok: !(acd_rdoTypeFormulaire.Selected.Value = "Incident") || !(CountRows(acd_cmbHoraire.SelectedItems) > 2)},
+                              {c: "Est-ce qu'il y a des témoins ?", ok: !(true) || !(IsBlank(acd_rdoTemoins.Selected.Value))},
+                              {c: "Véhicule / équipement motorisé impliqué lors de l'évènement", ok: !(true) || !(IsBlank(acd_rdoVehicule.Selected.Value))},
+                              {c: "Tâche au moment de l'évènement", ok: !(true) || !(IsBlank(acd_txmTache.Text))},
+                              {c: "Description détaillée selon la version du travailleur", ok: !(true) || !(IsBlank(acd_txmDescription.Text))},
+                              {c: "Est-ce que des premiers secours ont été donnés par un secouriste ou un paramédic ?", ok: !(true) || !(IsBlank(acd_rdoPSDonnes.Selected.Value))},
+                              {c: "Description de la blessure (siège de la blessure)", ok: !((acd_rdoTypeFormulaire.Selected.Value = "Accident") && (acd_rdoTypeFormulaire.Selected.Value = "Accident")) || !(IsBlank(acd_drpB1Nature.Selected.Value))},
+                              {c: "Partie du corps", ok: !((acd_rdoTypeFormulaire.Selected.Value = "Accident") && (acd_rdoTypeFormulaire.Selected.Value = "Accident")) || !(IsBlank(acd_drpB1Partie.Selected.Value))},
+                              {c: "Côté", ok: !((acd_rdoTypeFormulaire.Selected.Value = "Accident") && (acd_rdoTypeFormulaire.Selected.Value = "Accident")) || !(IsBlank(acd_rdoB1Cote.Selected.Value))},
+                              {c: "Description de la cause (type d'évènement)", ok: !(true) || !(IsBlank(acd_drpCauseType.Selected.Value))},
+                              {c: "Description de l'activité (activité principale lors de l'évènement)", ok: !(true) || !(IsBlank(acd_drpActivite.Selected.Value))},
+                              {c: "Mesure préventive immédiate", ok: !(true) || !(IsBlank(acd_txmMesurePrev.Text))},
+                              {c: "Date d'échéance (fin souhaitée) de la mesure préventive immédiate", ok: !(true) || !(IsBlank(acd_dteMesureEcheance.SelectedDate))},
+                              {c: "Employé impliqué : « J'étais présent(e) lorsque mon gestionnaire a complété ce formulaire. Il s'agit de ma version des faits et je confirme que la description de l'évènement est exacte. »", ok: !(true) || !(IsBlank(acd_rdoApprobationEmp.Selected.Value))},
+                              {c: "Format souhaité pour la copie de la déclaration", ok: !(true) || !(IsBlank(acd_rdoFormatCopie.Selected.Value))},
+                              {c: "Courriel de l'employé", ok: !(("courriel" in Lower(acd_rdoFormatCopie.Selected.Value)) && (true)) || !(IsBlank(acd_txtEmpCourriel.Text))},
+                              {c: "Courriel de l'employé (format invalide)", ok: !("courriel" in Lower(acd_rdoFormatCopie.Selected.Value)) || !(!IsMatch(acd_txtEmpCourriel.Text, Match.Email))}), !ok), c, " • ")});
+                          If(!IsBlank(locManquants),
+                            Notify("Champs obligatoires à compléter : " & locManquants, NotificationType.Error),
+                            IfError(
+                            Set(varDossier, Patch(SST_Dossiers, If(IsBlank(varDossier.ID), Defaults(SST_Dossiers), varDossier),
+                            {TypeFormulaire: acd_rdoTypeFormulaire.Selected.Value,
+                            Gravite: acd_drpGravite.Selected.Value,
+                            TrousseRemise: acd_rdoTrousseRemise.Selected.Value,
+                            TrousseRaison: acd_txmTrousseRaison.Text,
+                            AbsenceAuDela: acd_rdoAbsenceAuDela.Selected.Value,
+                            EmpNom: acd_txtEmpNom.Text,
+                            EmpPrenom: acd_txtEmpPrenom.Text,
+                            EmpID: acd_txtEmpID.Text,
+                            EmpService: acd_drpEmpService.Selected.Value,
+                            EmpDirection: acd_drpEmpDirection.Selected.Value,
+                            EmpDivision: acd_drpEmpDivision.Selected.Value,
+                            EmpSection: acd_drpEmpSection.Selected.Value,
+                            EmpSyndicat: acd_drpEmpSyndicat.Selected.Value,
+                            EmpClasse: acd_drpEmpClasse.Selected.Value,
+                            EmpTitre: acd_drpEmpTitre.Selected.Value,
+                            EmpTitreAutre: acd_txtEmpTitreAutre.Text,
+                            EmpAdresseEtab: acd_drpEmpAdresseEtab.Selected.Value,
+                            EmpAdresseAutre: acd_txtEmpAdresseAutre.Text,
+                            EmpSuperieur: acd_txtEmpSuperieur.Text,
+                            GestNom: acd_txtGestNom.Text,
+                            GestTitre: acd_txtGestTitre.Text,
+                            RempliSeul: If(acd_chkRempliSeul.Value, "Oui", "Non"),
+                            EvtDate: acd_dteEvtDate.SelectedDate,
+                            EvtHeure: acd_txtEvtHeure.Text,
+                            EvtDateDeclEmp: acd_dteEvtDateDeclEmp.SelectedDate,
+                            EvtAdresse: acd_txtEvtAdresse.Text,
+                            Horaire: Concat(acd_cmbHoraire.SelectedItems, Value, "; "),
+                            Temoins: acd_rdoTemoins.Selected.Value,
+                            TemoinsNoms: acd_txmTemoinsNoms.Text,
+                            Vehicule: acd_rdoVehicule.Selected.Value,
+                            VehiculeDesc: acd_txtVehiculeDesc.Text,
+                            Tache: acd_txmTache.Text,
+                            Description: acd_txmDescription.Text,
+                            PSDonnes: acd_rdoPSDonnes.Selected.Value,
+                            PSHeure: acd_txtPSHeure.Text,
+                            PSNature: acd_txmPSNature.Text,
+                            PSSecouriste: acd_txtPSSecouriste.Text,
+                            Transport: acd_rdoTransport.Selected.Value,
+                            TransportAutre: acd_txtTransportAutre.Text,
+                            B1Nature: acd_drpB1Nature.Selected.Value,
+                            B1Partie: acd_drpB1Partie.Selected.Value,
+                            B1Cote: acd_rdoB1Cote.Selected.Value,
+                            B1Precision: acd_txtB1Precision.Text,
+                            B1Zone: varB1Zone,
+                            B2Nature: acd_drpB2Nature.Selected.Value,
+                            B2Partie: acd_drpB2Partie.Selected.Value,
+                            B2Cote: acd_rdoB2Cote.Selected.Value,
+                            B2Precision: acd_txtB2Precision.Text,
+                            B2Zone: varB2Zone,
+                            CauseType: acd_drpCauseType.Selected.Value,
+                            Activite: acd_drpActivite.Selected.Value,
+                            MesurePrev: acd_txmMesurePrev.Text,
+                            MesureResp: acd_txtMesureResp.Text,
+                            MesureCollab: acd_txmMesureCollab.Text,
+                            MesureEcheance: acd_dteMesureEcheance.SelectedDate,
+                            EnqueteRequise: acd_rdoEnqueteRequise.Selected.Value,
+                            ArretTravail: acd_rdoArretTravail.Selected.Value,
+                            DateDernierJour: acd_dteDateDernierJour.SelectedDate,
+                            RetourTravail: acd_rdoRetourTravail.Selected.Value,
+                            DateRetour: acd_dteDateRetour.SelectedDate,
+                            ModaliteRetour: acd_rdoModaliteRetour.Selected.Value,
+                            ApprobationEmp: acd_rdoApprobationEmp.Selected.Value,
+                            FormatCopie: acd_rdoFormatCopie.Selected.Value,
+                            EmpCourriel: acd_txtEmpCourriel.Text,
+                            Title: acd_rdoTypeFormulaire.Selected.Value & " – " & acd_txtEmpNom.Text & ", " & acd_txtEmpPrenom.Text & " – " & Text(acd_dteEvtDate.SelectedDate, "yyyy-mm-dd"),
+                            CreeParCourriel: Coalesce(varDossier.CreeParCourriel, varMoi),
+                            CreeParNom: Coalesce(varDossier.CreeParNom, User().FullName),
+                            DateMesures: If(IsBlank(acd_txmMesurePrev.Text), varDossier.DateMesures, Coalesce(varDossier.DateMesures, Today())),
+                            DateApprobation: If(acd_rdoApprobationEmp.Selected.Value = "Oui", Coalesce(varDossier.DateApprobation, Today()), varDossier.DateApprobation),
+                            Statut: If(IsBlank(varDossier.Statut) || varDossier.Statut = "Brouillon", "Déposé", varDossier.Statut),
+                            DateDeclaration: Coalesce(varDossier.DateDeclaration, Today())}));
+                            Notify("Dossier n° " & varDossier.ID & " déposé.", NotificationType.Success);
+                            Set(varAutoEnvoi, true);
+                            Navigate(scrApercu, ScreenTransition.None),
+                            Notify("Erreur d'enregistrement : " & FirstError.Message, NotificationType.Error)))
+                        Size: =11
+                        FontWeight: =FontWeight.Semibold
+                        RadiusTopLeft: =6
+                        RadiusTopRight: =6
+                        RadiusBottomLeft: =6
+                        RadiusBottomRight: =6
+                        Fill: =cVert
+                        Color: =Color.White
+                        BorderThickness: =0
+                        HoverFill: =ColorFade(cVert, -0.15)
+                        PressedFill: =ColorFade(cVert, -0.3)
+                        HoverColor: =Color.White
+                        PressedColor: =Color.White
+                        Width: =240
+                        Height: =38

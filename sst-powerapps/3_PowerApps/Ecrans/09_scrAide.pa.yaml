@@ -1,0 +1,351 @@
+Screens:
+  scrAide:
+    Properties:
+      Fill: =cFond
+      OnVisible: |-
+        =If(IsBlank(locAideOnglet) || locAideOnglet = 0, UpdateContext({locAideOnglet: 1}))
+    Children:
+      - aid_bandeau:
+          Control: Rectangle@2.3.0
+          Properties:
+            Fill: =cOr
+            BorderThickness: =0
+            X: =0
+            Y: =0
+            Width: =Parent.Width
+            Height: =64
+      - aid_titre:
+          Control: Label@2.5.1
+          Properties:
+            Text: ="Comment remplir"
+            Color: =Color.White
+            Size: =20
+            X: =0
+            Y: =6
+            Width: =Parent.Width
+            Height: =32
+            FontWeight: =FontWeight.Bold
+            Align: =Align.Center
+      - aid_sousTitre:
+          Control: Label@2.5.1
+          Properties:
+            Text: ="Aide et informations"
+            Color: =Color.White
+            Size: =12
+            X: =0
+            Y: =36
+            Width: =Parent.Width
+            Height: =22
+            Align: =Align.Center
+      - aid_pilRole:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="👤 " & varRole
+            OnSelect: =false
+            Fill: =cVert
+            Color: =Color.White
+            BorderThickness: =0
+            HoverFill: =cVert
+            PressedFill: =cVert
+            HoverColor: =Color.White
+            PressedColor: =Color.White
+            DisabledFill: =cVert
+            DisabledColor: =Color.White
+            DisplayMode: =DisplayMode.View
+            Size: =10
+            FontWeight: =FontWeight.Semibold
+            Height: =28
+            RadiusTopLeft: =14
+            RadiusTopRight: =14
+            RadiusBottomLeft: =14
+            RadiusBottomRight: =14
+            TabIndex: =-1
+            X: =Parent.Width - 224
+            Y: =18
+            Width: =200
+      - aid_barre:
+          Control: Rectangle@2.3.0
+          Properties:
+            Fill: =Color.White
+            BorderThickness: =0
+            X: =0
+            Y: =64
+            Width: =Parent.Width
+            Height: =52
+      - aid_barreLigne:
+          Control: Rectangle@2.3.0
+          Properties:
+            Fill: =cBordure
+            BorderThickness: =0
+            X: =0
+            Y: =115
+            Width: =Parent.Width
+            Height: =1
+      - aid_btnAccueil:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="🏠 Accueil"
+            OnSelect: =Navigate(scrAccueil, ScreenTransition.None)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =Color.White
+            Color: =cBleu
+            BorderColor: =cBleu
+            BorderThickness: =2
+            HoverFill: =cBleuPale
+            HoverColor: =cBleu
+            HoverBorderColor: =cBleu
+            PressedFill: =cBordure
+            PressedColor: =cBleu
+            PressedBorderColor: =cBleu
+            X: =24
+            Y: =72
+            Width: =120
+            Height: =36
+      - aid_btnDossiers:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="📂 Mes dossiers"
+            OnSelect: =Navigate(scrDossiers, ScreenTransition.None)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =Color.White
+            Color: =cBleu
+            BorderColor: =cBleu
+            BorderThickness: =2
+            HoverFill: =cBleuPale
+            HoverColor: =cBleu
+            HoverBorderColor: =cBleu
+            PressedFill: =cBordure
+            PressedColor: =cBleu
+            PressedBorderColor: =cBleu
+            X: =152
+            Y: =72
+            Width: =150
+            Height: =36
+      - aid_btnAide:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="❓ Comment remplir"
+            OnSelect: =Navigate(scrAide, ScreenTransition.None)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =cOr
+            Color: =Color.White
+            BorderThickness: =0
+            HoverFill: =ColorFade(cOr, -0.15)
+            PressedFill: =ColorFade(cOr, -0.3)
+            HoverColor: =Color.White
+            PressedColor: =Color.White
+            X: =310
+            Y: =72
+            Width: =170
+            Height: =36
+      - aid_btnNouveau:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="📝 Nouveau formulaire"
+            OnSelect: =Navigate(scrAccueil, ScreenTransition.None)
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Fill: =Color.White
+            Color: =cRouge
+            BorderColor: =cRouge
+            BorderThickness: =2
+            HoverFill: =cBleuPale
+            HoverColor: =cRouge
+            HoverBorderColor: =cRouge
+            PressedFill: =cBordure
+            PressedColor: =cRouge
+            PressedBorderColor: =cRouge
+            X: =Parent.Width - 234
+            Y: =72
+            Width: =202
+            Height: =36
+      - aid_ong1:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="Accident / incident"
+            OnSelect: |-
+              =UpdateContext({locAideOnglet: 1})
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            Fill: =If(locAideOnglet = 1, cBleu, Color.White)
+            Color: =If(locAideOnglet = 1, Color.White, cBleu)
+            BorderThickness: =1
+            HoverFill: =If(locAideOnglet = 1, ColorFade(cBleu, -0.15), cBleuPale)
+            PressedFill: =ColorFade(If(locAideOnglet = 1, cBleu, Color.White), -0.3)
+            HoverColor: =If(locAideOnglet = 1, Color.White, cBleu)
+            PressedColor: =Color.White
+            BorderColor: =cBleu
+            X: =24 + 0 * 214
+            Y: =128
+            Width: =210
+            Height: =36
+      - aid_ong2:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="Enquête et 5 Pourquoi"
+            OnSelect: |-
+              =UpdateContext({locAideOnglet: 2})
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            Fill: =If(locAideOnglet = 2, cBleu, Color.White)
+            Color: =If(locAideOnglet = 2, Color.White, cBleu)
+            BorderThickness: =1
+            HoverFill: =If(locAideOnglet = 2, ColorFade(cBleu, -0.15), cBleuPale)
+            PressedFill: =ColorFade(If(locAideOnglet = 2, cBleu, Color.White), -0.3)
+            HoverColor: =If(locAideOnglet = 2, Color.White, cBleu)
+            PressedColor: =Color.White
+            BorderColor: =cBleu
+            X: =24 + 1 * 214
+            Y: =128
+            Width: =210
+            Height: =36
+      - aid_ong3:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="Situation dangereuse"
+            OnSelect: |-
+              =UpdateContext({locAideOnglet: 3})
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            Fill: =If(locAideOnglet = 3, cBleu, Color.White)
+            Color: =If(locAideOnglet = 3, Color.White, cBleu)
+            BorderThickness: =1
+            HoverFill: =If(locAideOnglet = 3, ColorFade(cBleu, -0.15), cBleuPale)
+            PressedFill: =ColorFade(If(locAideOnglet = 3, cBleu, Color.White), -0.3)
+            HoverColor: =If(locAideOnglet = 3, Color.White, cBleu)
+            PressedColor: =Color.White
+            BorderColor: =cBleu
+            X: =24 + 2 * 214
+            Y: =128
+            Width: =210
+            Height: =36
+      - aid_ong4:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="Violence"
+            OnSelect: |-
+              =UpdateContext({locAideOnglet: 4})
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            Fill: =If(locAideOnglet = 4, cBleu, Color.White)
+            Color: =If(locAideOnglet = 4, Color.White, cBleu)
+            BorderThickness: =1
+            HoverFill: =If(locAideOnglet = 4, ColorFade(cBleu, -0.15), cBleuPale)
+            PressedFill: =ColorFade(If(locAideOnglet = 4, cBleu, Color.White), -0.3)
+            HoverColor: =If(locAideOnglet = 4, Color.White, cBleu)
+            PressedColor: =Color.White
+            BorderColor: =cBleu
+            X: =24 + 3 * 214
+            Y: =128
+            Width: =210
+            Height: =36
+      - aid_ong5:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: ="À propos"
+            OnSelect: |-
+              =UpdateContext({locAideOnglet: 5})
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            Fill: =If(locAideOnglet = 5, cBleu, Color.White)
+            Color: =If(locAideOnglet = 5, Color.White, cBleu)
+            BorderThickness: =1
+            HoverFill: =If(locAideOnglet = 5, ColorFade(cBleu, -0.15), cBleuPale)
+            PressedFill: =ColorFade(If(locAideOnglet = 5, cBleu, Color.White), -0.3)
+            HoverColor: =If(locAideOnglet = 5, Color.White, cBleu)
+            PressedColor: =Color.White
+            BorderColor: =cBleu
+            X: =24 + 4 * 214
+            Y: =128
+            Width: =210
+            Height: =36
+      - aid_conCorps:
+          Control: GroupContainer@1.3.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =Color.White
+            BorderThickness: =1
+            DropShadow: =DropShadow.None
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =6
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            BorderColor: =cBordure
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            X: =24
+            Y: =172
+            Width: =Parent.Width - 48
+            Height: =Parent.Height - 188
+            LayoutOverflowY: =LayoutOverflow.Scroll
+            PaddingTop: =16
+            PaddingBottom: =32
+            PaddingLeft: =Max(24, (Self.Width - 940) / 2)
+            PaddingRight: =Max(24, (Self.Width - 940) / 2)
+          Children:
+            - aid_htmAide:
+                Control: HtmlViewer@2.1.0
+                Properties:
+                  HtmlText: |-
+                    =Switch(locAideOnglet, 1, "<div style='font-size:13px;line-height:1.55;color:#1F2937'><h3 style='color:#00285E;font-size:16px;border-bottom:2px solid #857650;padding-bottom:3px'>Déclaration d'accident ou d'incident de travail</h3><p>Ce formulaire permet de déclarer immédiatement tous les accidents et tous les incidents de travail aux instances concernées, peu importe leur gravité, afin d'établir les mesures appropriées pour éviter qu'un tel évènement se reproduise.</p><p><b>Étape 1</b> — Le gestionnaire remplit ce formulaire conjointement avec l'employé, la journée même de l'évènement.</p><p style='background:#ECF1F7;padding:8px'><b>Important :</b> si l'état de santé de l'employé ne lui permet pas de remplir le formulaire avec son gestionnaire la journée même, le gestionnaire le remplit seul et rencontrera l'employé dès que possible pour valider l'information.</p><p><b>Étape 2</b> — Le gestionnaire identifie, documente et applique des mesures préventives immédiates. Lorsqu'une enquête et analyse d'évènement est requise, un plan d'action de mesures correctives est élaboré par un comité d'enquête paritaire SST.</p><h3 style='color:#00285E;font-size:16px;border-bottom:2px solid #857650;padding-bottom:3px'>Accident ou incident ?</h3><ul><li><b>Accident</b> : l'employé a eu une blessure physique apparente ou non.</li><li><b>Incident</b> : passé proche, l'employé aurait pu se blesser (aucune blessure ni douleur; sinon, c'est un accident).</li></ul><h3 style='color:#00285E;font-size:16px;border-bottom:2px solid #857650;padding-bottom:3px'>Niveau de gravité (ou de gravité potentielle pour un incident)</h3><ul><li><b>Élevée (enquête obligatoire)</b> : ex. le décès d'un employé; la perte totale ou partielle d'un membre ou de son usage; un traumatisme physique important; des blessures à plusieurs employés occasionnant une absence de 1 jour ouvrable, excluant la journée de l'accident; des dommages matériels de 150 000 $ et plus.</li><li><b>Moyenne (enquête obligatoire)</b> : accident provoquant une absence qui dépasse la journée de l'évènement, électrisation ou incident qui aurait pu entraîner une blessure ou une maladie réversible. Si l'employé est en assignation temporaire.</li><li><b>Faible</b> : accident sans aucune perte de temps (blessure mineure) ou incident qui aurait pu causer une blessure mineure.</li></ul><h3 style='color:#00285E;font-size:16px;border-bottom:2px solid #857650;padding-bottom:3px'>Bien décrire l'évènement (MELITO)</h3><ul><li><b>M</b>oment / temps, <b>É</b>quipement / matériel, <b>L</b>ieu / environnement, <b>I</b>ndividu, <b>T</b>âche, <b>O</b>rganisation.</li><li>Écrire au « JE ».</li><li>Répondre à : Qui? Quoi? Où? Quand? Comment?</li><li>Toute personne qui lit doit comprendre ce qui s'est réellement passé, même sans connaître le milieu de travail.</li></ul><h3 style='color:#00285E;font-size:16px;border-bottom:2px solid #857650;padding-bottom:3px'>Dans l'application</h3><ul><li>Remplissez les onglets dans l'ordre (le n° 4 « Blessures » apparaît seulement pour un accident).</li><li><b>☁️ Enregistrer</b> conserve un brouillon que vous retrouvez dans <b>📂 Mes dossiers</b>.</li><li><b>☁️ Enregistrer et déposer</b> vérifie les champs obligatoires (*), dépose la déclaration, produit le PDF et l'envoie à la Division SST (et à l'employé s'il a choisi une copie courriel).</li><li>La barre d'étapes (7 cercles) montre l'avancement : vert ✓ = étape faite (avec la date), gris = à venir.</li></ul><p>Pour signaler une problématique relative à ce formulaire ou en cas de désaccord avec la version du travailleur, communiquez avec votre répondant SST.</p></div>", 2, "<div style='font-size:13px;line-height:1.55;color:#1F2937'><h3 style='color:#00285E;font-size:16px;border-bottom:2px solid #857650;padding-bottom:3px'>Enquête — la collecte des faits</h3><p>L'enquête et l'analyse d'accident forment un processus en deux étapes pour éviter qu'un accident ne se reproduise. L'ENQUÊTE (la collecte) : la recherche immédiate des faits. On recueille les indices, prend des photos et interroge les témoins pour savoir ce qui s'est passé. Cette collecte s'appuie sur trois axes : l'organisation du travail (consignes, formations, planification et répartition des tâches); l'environnement et les équipements (état du matériel, aménagement des lieux et contraintes physiques); le comportement des personnes concernées (actions, faits et décisions observés lors de l'évènement). L'ANALYSE (la compréhension) : la recherche des causes. On étudie les faits collectés pour comprendre pourquoi cela s'est passé et identifier les failles. En résumé : l'enquête rassemble les pièces du puzzle, l'analyse les assemble pour corriger le problème.</p><ul><li><b>L'organisation du travail</b> — Cet axe examine le cadre, les méthodes et la planification mis en place par l'organisation avant que l'évènement ne survienne. On cherche à savoir si les conditions de travail théoriques étaient adéquates et sécuritaires. Ce qu'on évalue : la clarté des consignes et des procédures de travail; la formation reçue par le travailleur (était-il qualifié/informé des risques ?); la gestion du temps, le rythme de travail, la charge de travail et le niveau de fatigue; la répartition des tâches et la qualité de la supervision sur le terrain. Plusieurs choix possibles.</li><li><b>L'environnement et les équipements</b> — Cet axe examine le milieu physique et le matériel utilisé au moment de l'évènement. L'objectif est d'identifier toutes les anomalies ou contraintes matérielles ayant pu jouer un rôle déclencheur ou aggravant. Ce qu'on évalue : l'état des équipements (outils, machines, équipements de protection individuelle); l'entretien, le bon fonctionnement et la présence des protecteurs/dispositifs de sécurité; les conditions des lieux (éclairage, bruit, température, ventilation, encombrement du sol, état des surfaces); la disposition et l'ergonomie du poste de travail. Plusieurs choix possibles.</li><li><b>Le comportement des personnes concernées</b> — Cet axe documente les actions, les faits et les décisions des personnes impliquées juste avant et pendant l'évènement. Attention : il ne s'agit pas de blâmer, mais de comprendre pourquoi une action a été posée dans ce contexte précis. Ce qu'on évalue : les gestes effectifs et la position du corps au moment de l'évènement; le respect ou l'écart par rapport aux méthodes de travail habituelles ou prescrites; la perception du danger par le travailleur (était-il conscient du risque ?); la communication ou la coordination entre les membres de l'équipe au moment des faits. Plusieurs choix possibles.</li><li><b>Mesures correctives suggérées</b> — Proposer des mesures correctives réalistes afin d'éviter qu'une situation semblable ne survienne à nouveau. Plusieurs choix possibles.</li></ul><h3 style='color:#00285E;font-size:16px;border-bottom:2px solid #857650;padding-bottom:3px'>Analyse — la méthode des 5 Pourquoi</h3><div style='font-size:13px;line-height:1.55;color:#1F2937'>
+                    <p>Cette méthode consiste à demander « Pourquoi ? » de façon répétée face à un problème, afin de dépasser sa cause apparente et de remonter jusqu'à sa cause profonde. En général, cinq questions suffisent, mais une chaîne peut être plus courte ou plus longue.</p>
+                    <p style='color:#00285E;font-weight:bold;margin-bottom:2px'>1. Bien poser le problème</p>
+                    <ul><li>Énoncez un fait observable, pas un jugement.</li><li>L'objectif est de comprendre un processus, pas de désigner une personne responsable.</li></ul>
+                    <p style='color:#00285E;font-weight:bold;margin-bottom:2px'>2. Creuser, puis savoir quand s'arrêter</p>
+                    <ul><li>Restez factuel à chaque réponse : appuyez-vous sur ce qui est observé ou vérifiable.</li>
+                    <li>Un problème peut avoir plusieurs causes contributives : ouvrez une branche séparée pour chacune.</li>
+                    <li>Arrêtez de creuser une branche dès que la réponse devient illogique, se répète ou sort du champ d'action de l'équipe : revenez à la réponse précédente et cherchez une autre piste.</li>
+                    <li>Une cause racine est atteinte quand la réponse décrit quelque chose sur lequel l'équipe peut réellement agir.</li></ul>
+                    <p style='color:#00285E;font-weight:bold;margin-bottom:2px'>3. Agir et vérifier</p>
+                    <ul><li>Pour chaque cause racine, définissez une action corrective concrète, avec un responsable et une échéance.</li>
+                    <li>Revenez vérifier que l'action a réellement empêché le problème de se reproduire (statut « Efficacité vérifiée »).</li></ul>
+                    <p style='color:#00285E;font-weight:bold;margin-bottom:2px'>4. Quatre pièges classiques</p>
+                    <ul><li><b>S'arrêter à « l'erreur humaine »</b> : c'est le symptôme d'un système qui l'a rendue possible. L'application signale ces réponses.</li>
+                    <li><b>S'enfermer dans une seule ligne</b> : ouvrez une branche par facteur.</li>
+                    <li><b>S'arrêter à une cause « acceptable »</b> pour éviter un sujet délicat.</li>
+                    <li><b>Remonter trop loin</b>, jusqu'à des causes générales sur lesquelles personne n'a de prise.</li></ul>
+                    <p style='color:#00285E;font-weight:bold;margin-bottom:2px'>5. Test du « Donc »</p>
+                    <p>Relisez la chaîne à l'envers en remplaçant chaque « Pourquoi » par « donc ». Si l'enchaînement ne sonne pas juste, un maillon manque. L'application génère cette relecture automatiquement sous le plan d'action.</p>
+                    <div style='background:#ECF1F7;border-left:4px solid #857650;padding:8px 10px'><b>Astuce :</b> si une réponse dépend de quelque chose hors du contrôle de l'équipe, revenez à la réponse précédente et cherchez une piste qui relève de votre sphère d'influence.</div>
+                    </div><h3 style='color:#00285E;font-size:16px;border-bottom:2px solid #857650;padding-bottom:3px'>Dans l'application</h3><ul><li>Depuis un dossier (📂 Mes dossiers), ouvrez <b>🔍 Enquête</b>, cochez les facteurs constatés puis enregistrez : l'étape 4 passe au vert.</li><li>Dans <b>🌳 Analyse 5 Pourquoi</b>, cliquez « Créer les branches à partir des facteurs de l'enquête » pour démarrer l'arbre, puis creusez chaque branche avec « + Pourquoi ».</li><li>Marquez la ou les causes racines, puis remplissez l'action, le responsable, l'échéance et le statut : l'étape 5 (analyse) puis l'étape 6 (plan d'action complet) passent au vert.</li><li>Le PDF du dossier inclut l'enquête, l'arbre et le plan d'action.</li></ul></div>", 3, "<div style='font-size:13px;line-height:1.55;color:#1F2937'><h3 style='color:#00285E;font-size:16px;border-bottom:2px solid #857650;padding-bottom:3px'>Signalement d'une situation dangereuse</h3><p>Si vous observez dans votre milieu de travail une situation dangereuse, sécurisez immédiatement les lieux et avisez votre gestionnaire afin qu'il prenne en charge la problématique. Si la situation dangereuse ne peut être corrigée immédiatement, vous devez remplir ce formulaire.</p><p>En cas de besoin, conservez une ou vos photos dans vos dossiers personnels pour la suite des choses.</p><ul><li>Tous les employés peuvent remplir ce formulaire (rôle « Employé »).</li><li>Si vous le demandez, votre syndicat ou association est mis en copie du PDF (si son courriel est configuré par la Division SST).</li><li>Le conseiller SST indique la prise en charge, la mesure corrective et la fermeture du dossier (4 étapes).</li></ul></div>", 4, "<div style='font-size:13px;line-height:1.55;color:#1F2937'><h3 style='color:#00285E;font-size:16px;border-bottom:2px solid #857650;padding-bottom:3px'>Évènement traumatisant et acte de violence</h3><p>Ce formulaire vise à déclarer un évènement potentiellement traumatique, un acte violent, une agression, une situation impliquant un manque de respect, de l'incivilité ou du harcèlement subi par un employé de la Ville, de la part d'un citoyen ou d'un partenaire externe (sous-traitants, fournisseurs, etc.). Avant de le compléter : 1) composez le 911 si la situation requiert l'assistance de la police ou un transport par ambulance; 2) gérez la situation et les priorités sur le terrain, si possible. ATTENTION : les évènements en lien avec des collègues ou des gestionnaires ne doivent pas être adressés via ce formulaire (voir la Politique pour contrer l'incivilité, le harcèlement et la violence au travail). Ce formulaire ne s'applique pas au service de police et de protection contre les incendies.</p><h3 style='color:#00285E;font-size:16px;border-bottom:2px solid #857650;padding-bottom:3px'>Comité bouclier</h3><p>Le Comité bouclier a pour mission : 1) de soutenir et protéger les employés victimes de harcèlement, d'intimidation, de diffamation ou de gestes violents commis par un citoyen, un fournisseur ou tout autre tiers externe; 2) d'accompagner les gestionnaires dans la gestion de ces situations; 3) d'analyser chaque situation dénoncée et, le cas échéant, de prendre des mesures pour la corriger. Actions possibles : juridiques, policières, communications internes ou externes, soutien à l'employé. Le comité est formé de gestionnaires de la Direction générale, du Service de police, des Ressources humaines, de l'Interaction citoyenne, des Communications, des Affaires juridiques, de l'Arrondissement de La Cité-Limoilou, de la Gestion du territoire et de la Gestion des matières résiduelles et de la valorisation.</p><ul><li>Le formulaire est complété par le gestionnaire avec l'employé; l'approbation de l'employé fait office de signature.</li><li>Si vous sollicitez le Comité bouclier, le PDF lui est aussi transmis (si son courriel est configuré).</li></ul></div>", 5, "<div style='font-size:13px;line-height:1.55;color:#1F2937'><h3 style='color:#00285E;font-size:16px;border-bottom:2px solid #857650;padding-bottom:3px'>À propos</h3><p>Application de déclaration et de suivi en santé et sécurité au travail : accidents et incidents (avec enquête et analyse 5 Pourquoi), situations dangereuses, évènements traumatisants et actes de violence.</p><ul><li><b>Rôles</b> : Gestionnaire (déclarations de son équipe), Employé (situation dangereuse), Conseiller SST (voit tous les dossiers, assure le suivi et la fermeture). Le rôle Conseiller SST est accordé par la liste SharePoint SST_Roles.</li><li><b>Données</b> : listes SharePoint de la Ville (SST_Dossiers, SST_Pourquoi) et PDF dans la bibliothèque SST_PDF. Aucune donnée n'est stockée hors de Microsoft 365.</li><li><b>Confidentialité</b> : les renseignements de santé sont confidentiels; ne les transmettez qu'aux personnes autorisées.</li><li>Formulaires propriété de la Division de la santé et de la sécurité au travail — Ville de Québec.</li></ul></div>")
+                  AutoHeight: =true
