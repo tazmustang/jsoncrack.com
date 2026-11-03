@@ -28,3 +28,4 @@ Commencez par **GUIDE-MISE-EN-PRODUCTION.docx**. Il explique tout et liste chaqu
 | presentation/ | Présentation aux gestionnaires (.pptx + .pdf, 18 diapositives) |
 | Appreciation-contribution-VERSION-FINALE.zip | Tous les fichiers ci-dessus en un seul téléchargement |
 | generer-formule-pdf.py, schema/schema-solution.html, schema/generer-image.js | Sources pour régénérer |
+| liste-lisible/ | Liste SharePoint lisible (affichage, formulaire) et export Excel / Power Query des colonnes JSON |

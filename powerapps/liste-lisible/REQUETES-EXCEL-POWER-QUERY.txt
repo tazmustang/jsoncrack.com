@@ -1,0 +1,153 @@
+REQUÊTES EXCEL (POWER QUERY) — Rendre lisibles les colonnes de la liste des appréciations
+Application « Appréciation de la contribution » (SRHVQ) — 3 novembre 2026
+=====================================================================================
+Utilisation : voir GUIDE-LISTE-LISIBLE-ET-EXPORT.docx, partie 4.
+Dans Excel : Données › Obtenir des données › À partir d'autres sources › Requête vide,
+puis Accueil › Éditeur avancé : effacez tout et collez UNE requête ci-dessous.
+Changez seulement les 2 lignes Site et NomListe si besoin.
+
+Chaque requête donne une ligne par élément du tableau (ex. une ligne par objectif),
+avec le nom de la personne, son ID et l'année.
+
+
+#####################################################################
+# REQUÊTE 1 — Objectifs de l'année (section A)
+#####################################################################
+let
+    Site = "https://villedequebec.sharepoint.com/sites/RHPowerAppsDonneesPreProd",
+    NomListe = "Appréciation de la contribution des cadres",
+    Source = SharePoint.Tables(Site, [Implementation = "2.0", ViewMode = "All"]),
+    Liste = Source{[Title = NomListe]}[Items],
+    Colonnes = Table.SelectColumns(Liste, {"ID", "Title", "IdEmploye", "Annee", "ObjectifsActuels"}),
+    Lu = Table.TransformColumns(Colonnes, {{"ObjectifsActuels", each try Json.Document(_) otherwise {}}}),
+    Lignes = Table.ExpandListColumn(Lu, "ObjectifsActuels"),
+    Detail = Table.ExpandRecordColumn(Lignes, "ObjectifsActuels",
+        {"objectif", "indicateur", "actions"},
+        {"Objectif", "Indicateur de mesure", "Actions réalisées / commentaires"}),
+    Renomme = Table.RenameColumns(Detail, {{"ID", "No dossier"}, {"Title", "Nom, prénom"}, {"IdEmploye", "ID employé"}, {"Annee", "Année"}})
+in
+    Renomme
+
+
+#####################################################################
+# REQUÊTE 2 — Objectifs à venir (section A)
+#####################################################################
+let
+    Site = "https://villedequebec.sharepoint.com/sites/RHPowerAppsDonneesPreProd",
+    NomListe = "Appréciation de la contribution des cadres",
+    Source = SharePoint.Tables(Site, [Implementation = "2.0", ViewMode = "All"]),
+    Liste = Source{[Title = NomListe]}[Items],
+    Colonnes = Table.SelectColumns(Liste, {"ID", "Title", "IdEmploye", "Annee", "ObjectifsAvenir"}),
+    Lu = Table.TransformColumns(Colonnes, {{"ObjectifsAvenir", each try Json.Document(_) otherwise {}}}),
+    Lignes = Table.ExpandListColumn(Lu, "ObjectifsAvenir"),
+    Detail = Table.ExpandRecordColumn(Lignes, "ObjectifsAvenir",
+        {"objectif", "indicateur"}, {"Objectif à venir", "Indicateur de mesure"}),
+    Renomme = Table.RenameColumns(Detail, {{"ID", "No dossier"}, {"Title", "Nom, prénom"}, {"IdEmploye", "ID employé"}, {"Annee", "Année"}})
+in
+    Renomme
+
+
+#####################################################################
+# REQUÊTE 3 — Postures de leadership : cotes (section B, cadres)
+#####################################################################
+let
+    Site = "https://villedequebec.sharepoint.com/sites/RHPowerAppsDonneesPreProd",
+    NomListe = "Appréciation de la contribution des cadres",
+    Source = SharePoint.Tables(Site, [Implementation = "2.0", ViewMode = "All"]),
+    Liste = Source{[Title = NomListe]}[Items],
+    Colonnes = Table.SelectColumns(Liste, {"ID", "Title", "IdEmploye", "Annee", "Postures"}),
+    Lu = Table.TransformColumns(Colonnes, {{"Postures", each try Json.Document(_)[cotes] otherwise {}}}),
+    Lignes = Table.ExpandListColumn(Lu, "Postures"),
+    Detail = Table.ExpandRecordColumn(Lignes, "Postures",
+        {"k", "cadre", "sup"}, {"Comportement (code)", "Cote de la personne", "Cote du supérieur"}),
+    Posture = Table.AddColumn(Detail, "Posture", each try Text.BeforeDelimiter([#"Comportement (code)"], "-") otherwise null, type text),
+    Renomme = Table.RenameColumns(Posture, {{"ID", "No dossier"}, {"Title", "Nom, prénom"}, {"IdEmploye", "ID employé"}, {"Annee", "Année"}})
+in
+    Renomme
+
+
+#####################################################################
+# REQUÊTE 4 — Postures de leadership : commentaires (section B, cadres)
+#####################################################################
+let
+    Site = "https://villedequebec.sharepoint.com/sites/RHPowerAppsDonneesPreProd",
+    NomListe = "Appréciation de la contribution des cadres",
+    Source = SharePoint.Tables(Site, [Implementation = "2.0", ViewMode = "All"]),
+    Liste = Source{[Title = NomListe]}[Items],
+    Colonnes = Table.SelectColumns(Liste, {"ID", "Title", "IdEmploye", "Annee", "Postures"}),
+    Lu = Table.TransformColumns(Colonnes, {{"Postures", each try Json.Document(_)[commentaires] otherwise {}}}),
+    Lignes = Table.ExpandListColumn(Lu, "Postures"),
+    Detail = Table.ExpandRecordColumn(Lignes, "Postures", {"p", "texte"}, {"Posture", "Exemples et commentaires"}),
+    Renomme = Table.RenameColumns(Detail, {{"ID", "No dossier"}, {"Title", "Nom, prénom"}, {"IdEmploye", "ID employé"}, {"Annee", "Année"}})
+in
+    Renomme
+
+
+#####################################################################
+# REQUÊTE 5 — Compétences (section B, professionnels)
+#####################################################################
+let
+    Site = "https://villedequebec.sharepoint.com/sites/RHPowerAppsDonneesPreProd",
+    NomListe = "Appréciation de la contribution des cadres",
+    Source = SharePoint.Tables(Site, [Implementation = "2.0", ViewMode = "All"]),
+    Liste = Source{[Title = NomListe]}[Items],
+    Colonnes = Table.SelectColumns(Liste, {"ID", "Title", "IdEmploye", "Annee", "Competences"}),
+    Lu = Table.TransformColumns(Colonnes, {{"Competences", each try Json.Document(_) otherwise {}}}),
+    Lignes = Table.ExpandListColumn(Lu, "Competences"),
+    Detail = Table.ExpandRecordColumn(Lignes, "Competences", {"id", "exemple"}, {"Compétence", "Exemples d'application"}),
+    Renomme = Table.RenameColumns(Detail, {{"ID", "No dossier"}, {"Title", "Nom, prénom"}, {"IdEmploye", "ID employé"}, {"Annee", "Année"}})
+in
+    Renomme
+
+
+#####################################################################
+# REQUÊTE 6 — Grands fondements et orientations (section C, thèmes cochés seulement)
+#####################################################################
+let
+    Site = "https://villedequebec.sharepoint.com/sites/RHPowerAppsDonneesPreProd",
+    NomListe = "Appréciation de la contribution des cadres",
+    Source = SharePoint.Tables(Site, [Implementation = "2.0", ViewMode = "All"]),
+    Liste = Source{[Title = NomListe]}[Items],
+    Colonnes = Table.SelectColumns(Liste, {"ID", "Title", "IdEmploye", "Annee", "Valeurs"}),
+    Lu = Table.TransformColumns(Colonnes, {{"Valeurs", each try Json.Document(_) otherwise {}}}),
+    Lignes = Table.ExpandListColumn(Lu, "Valeurs"),
+    Detail = Table.ExpandRecordColumn(Lignes, "Valeurs", {"s", "coche", "ex1", "ex2"}, {"Thème", "Coché", "Exemple 1", "Exemple 2"}),
+    Coches = Table.SelectRows(Detail, each [Coché] = true),
+    Renomme = Table.RenameColumns(Coches, {{"ID", "No dossier"}, {"Title", "Nom, prénom"}, {"IdEmploye", "ID employé"}, {"Annee", "Année"}})
+in
+    Renomme
+
+
+#####################################################################
+# REQUÊTE 7 — Développement : actions passées (section D)
+#####################################################################
+let
+    Site = "https://villedequebec.sharepoint.com/sites/RHPowerAppsDonneesPreProd",
+    NomListe = "Appréciation de la contribution des cadres",
+    Source = SharePoint.Tables(Site, [Implementation = "2.0", ViewMode = "All"]),
+    Liste = Source{[Title = NomListe]}[Items],
+    Colonnes = Table.SelectColumns(Liste, {"ID", "Title", "IdEmploye", "Annee", "DevPrecedents"}),
+    Lu = Table.TransformColumns(Colonnes, {{"DevPrecedents", each try Json.Document(_) otherwise {}}}),
+    Lignes = Table.ExpandListColumn(Lu, "DevPrecedents"),
+    Detail = Table.ExpandRecordColumn(Lignes, "DevPrecedents",
+        {"objectif", "moyens", "impacts"}, {"Objectif de développement", "Moyens", "Résultats / impacts"}),
+    Renomme = Table.RenameColumns(Detail, {{"ID", "No dossier"}, {"Title", "Nom, prénom"}, {"IdEmploye", "ID employé"}, {"Annee", "Année"}})
+in
+    Renomme
+
+
+#####################################################################
+# REQUÊTE 8 — Développement : nouveaux besoins (section D)
+#####################################################################
+let
+    Site = "https://villedequebec.sharepoint.com/sites/RHPowerAppsDonneesPreProd",
+    NomListe = "Appréciation de la contribution des cadres",
+    Source = SharePoint.Tables(Site, [Implementation = "2.0", ViewMode = "All"]),
+    Liste = Source{[Title = NomListe]}[Items],
+    Colonnes = Table.SelectColumns(Liste, {"ID", "Title", "IdEmploye", "Annee", "DevNouveaux"}),
+    Lu = Table.TransformColumns(Colonnes, {{"DevNouveaux", each try Json.Document(_) otherwise {}}}),
+    Lignes = Table.ExpandListColumn(Lu, "DevNouveaux"),
+    Detail = Table.ExpandRecordColumn(Lignes, "DevNouveaux", {"besoin", "moyen"}, {"Besoin de développement", "Moyen"}),
+    Renomme = Table.RenameColumns(Detail, {{"ID", "No dossier"}, {"Title", "Nom, prénom"}, {"IdEmploye", "ID employé"}, {"Annee", "Année"}})
+in
+    Renomme
