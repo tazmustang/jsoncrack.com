@@ -56,7 +56,7 @@ rencontres = ('Concat(Filter(Table('
               '{T: "Première rencontre annuelle"; C: chkPremiere.Checked}; '
               '{T: "Bilan de mi-année"; C: chkMiAnnee.Checked}; '
               '{T: "Bilan annuel"; C: chkBilan.Checked}; '
-              '{T: "Autre : " & Coalesce(txtAutre.Text; varDossier.TypeRencontreAutre); C: chkAutre.Checked}); C); T; ", ")')
+              '{T: "Autre : " & Coalesce(txtAutre.Text; varDossier.TypeRencontreAutre); C: chkAutre.Checked Or !IsBlank(Coalesce(txtAutre.Text; varDossier.TypeRencontreAutre))}); C); T; ", ")')
 P(ligne("Type de rencontre", E(rencontres)))
 P(s("</table><h3>Participants</h3><table>"))
 P(ligne("Personne en appréciation", 'Coalesce(varDossier.PersonneAppreciation.DisplayName; "—")'))

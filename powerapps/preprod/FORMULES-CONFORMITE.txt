@@ -88,7 +88,7 @@ If(!IsBlank(varDossier);
             ("premi" in Value And chkPremiere.Checked) Or
             ("mi-ann" in Value And chkMiAnnee.Checked) Or
             ("bilan annuel" in Value And chkBilan.Checked) Or
-            (StartsWith(Value; "Autre") And chkAutre.Checked));
+            (StartsWith(Value; "Autre") And (chkAutre.Checked Or !IsBlank(Trim(txtAutre.Text)))));
         TypeRencontreAutre: txtAutre.Text;
         ObjectifsActuels: JSON(ForAll(colObjActuels;
             {objectif: Objectif; indicateur: Indicateur; actions: Actions}));
@@ -184,7 +184,7 @@ With(
                     {Champ: "Nom"; Ok: !IsBlank(Trim(txtNom.Text))};
                     {Champ: "ID de l'employé"; Ok: !IsBlank(Trim(txtId.Text))};
                     {Champ: "Type de poste"; Ok: CurrentPosteID <> ""};
-                    {Champ: "Type de rencontre"; Ok: chkEssai.Checked Or chkPremiere.Checked Or chkMiAnnee.Checked Or chkBilan.Checked Or chkAutre.Checked};
+                    {Champ: "Type de rencontre"; Ok: chkEssai.Checked Or chkPremiere.Checked Or chkMiAnnee.Checked Or chkBilan.Checked Or chkAutre.Checked Or !IsBlank(Trim(txtAutre.Text))};
                     {Champ: "Précision du type « Autre »"; Ok: !chkAutre.Checked Or !IsBlank(Trim(txtAutre.Text))};
                     {Champ: "Directeur ou directrice"; Ok: !chkDirRequis.Checked Or !IsBlank(cboDirecteur.Selected) Or !IsBlank(varDossier.CourrielDirecteur)}
                 );
@@ -361,10 +361,19 @@ Dans scrFormulaire.OnVisible, juste après la relecture du dossier (voir scrForm
 
 // Sécurité : on n'ouvre un dossier que si la personne connectée y est nommée
 If(!IsBlank(varDossier) &&
-    Not(varMoi in [Lower(varDossier.CourrielPersonne); Lower(varDossier.CourrielSI);
-                   Lower(varDossier.CourrielSH); Lower(varDossier.CourrielDirecteur)]);
+    With({moi: Lower(User().Email)};
+        IsBlank(moi) ||
+        Not(moi in [Lower(varDossier.CourrielPersonne); Lower(varDossier.CourrielSI);
+                    Lower(varDossier.CourrielSH); Lower(varDossier.CourrielDirecteur)]));
     Notify("Vous n'avez pas accès à ce dossier."; NotificationType.Error);;
     Set(varDossier; Blank());;
     Navigate(scrMesDossiers; ScreenTransition.None));;
 
 Détails et tests : preprod/SECURISER-LES-DOSSIERS.docx
+
+
+#####################################################################
+# C10. MES DOSSIERS — courriel lu directement (3 novembre)
+#####################################################################
+Voir preprod/CORRECTION-MES-DOSSIERS-ET-AUTRE.docx : nouvelles formules galDossiers.Items et
+cellRole.Text, avec Lower(User().Email) au lieu de varMoi (vide après un rafraîchissement).

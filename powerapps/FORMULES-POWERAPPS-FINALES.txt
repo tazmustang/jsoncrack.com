@@ -53,7 +53,7 @@ chkBilan.Checked
 !IsEmpty(Filter(varDossier.TypeRencontre; "bilan annuel" in Value))
 
 chkAutre.Checked
-!IsEmpty(Filter(varDossier.TypeRencontre; StartsWith(Value; "Autre")))
+!IsEmpty(Filter(varDossier.TypeRencontre; StartsWith(Value; "Autre"))) Or !IsBlank(varDossier.TypeRencontreAutre)
 
 
 #####################################################################
@@ -96,7 +96,7 @@ If(!IsBlank(varDossier);
             ("premi" in Value And chkPremiere.Checked) Or
             ("mi-ann" in Value And chkMiAnnee.Checked) Or
             ("bilan annuel" in Value And chkBilan.Checked) Or
-            (StartsWith(Value; "Autre") And chkAutre.Checked));
+            (StartsWith(Value; "Autre") And (chkAutre.Checked Or !IsBlank(Trim(txtAutre.Text)))));
         TypeRencontreAutre: txtAutre.Text;
         ObjectifsActuels: JSON(ForAll(colObjActuels;
             {objectif: Objectif; indicateur: Indicateur; actions: Actions}));

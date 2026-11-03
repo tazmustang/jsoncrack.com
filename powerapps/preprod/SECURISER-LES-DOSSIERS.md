@@ -89,8 +89,10 @@ collez :
 ```
 // Sécurité : on n'ouvre un dossier que si la personne connectée y est nommée
 If(!IsBlank(varDossier) &&
-    Not(varMoi in [Lower(varDossier.CourrielPersonne); Lower(varDossier.CourrielSI);
-                   Lower(varDossier.CourrielSH); Lower(varDossier.CourrielDirecteur)]);
+    With({moi: Lower(User().Email)};
+        IsBlank(moi) ||
+        Not(moi in [Lower(varDossier.CourrielPersonne); Lower(varDossier.CourrielSI);
+                    Lower(varDossier.CourrielSH); Lower(varDossier.CourrielDirecteur)]));
     Notify("Vous n'avez pas accès à ce dossier."; NotificationType.Error);;
     Set(varDossier; Blank());;
     Navigate(scrMesDossiers; ScreenTransition.None));;
