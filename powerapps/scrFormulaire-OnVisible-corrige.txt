@@ -37,8 +37,7 @@ If(!IsBlank(varDossier) &&
         Not(moi in [Lower(varDossier.CourrielPersonne); Lower(varDossier.CourrielSI);
                     Lower(varDossier.CourrielSH); Lower(varDossier.CourrielDirecteur)]));
     Notify("Vous n'avez pas accès à ce dossier."; NotificationType.Error);;
-    Set(varDossier; Blank());;
-    Navigate(scrMesDossiers; ScreenTransition.None));;
+    Set(varDossier; Blank()));;
 
 // Rôle selon le courriel de la personne connectée
 Set(CurrentRoleID;

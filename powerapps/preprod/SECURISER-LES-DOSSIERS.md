@@ -19,7 +19,7 @@ Les **RH** (groupe SRHVQ_RH) consultent tous les dossiers, en lecture, dans Shar
 |---|---|---|---|
 | 1 | **Autorisations de chaque dossier** | Flux 1 (SharePoint) | **La vraie sécurité.** Même avec un lien direct, ou dans SharePoint, une personne non nommée ne peut pas ouvrir le dossier |
 | 2 | **Filtre de « Mes dossiers »** | Application (galDossiers.Items) | N'affiche que les dossiers où le courriel de la personne apparaît |
-| 3 | **Contrôle à l'ouverture** (nouveau) | Application (scrFormulaire.OnVisible) | Refuse d'ouvrir un dossier où la personne n'est pas nommée, même par un lien |
+| 3 | **Contrôle à l'ouverture** (nouveau) | Application (scrFormulaire.OnVisible) | Refuse d'afficher un dossier où la personne n'est pas nommée, même par un lien : message et formulaire vide |
 
 # Étape 1 — Diagnostic (vous, sur le site PréProd, 2 minutes)
 
@@ -94,8 +94,7 @@ If(!IsBlank(varDossier) &&
         Not(moi in [Lower(varDossier.CourrielPersonne); Lower(varDossier.CourrielSI);
                     Lower(varDossier.CourrielSH); Lower(varDossier.CourrielDirecteur)]));
     Notify("Vous n'avez pas accès à ce dossier."; NotificationType.Error);;
-    Set(varDossier; Blank());;
-    Navigate(scrMesDossiers; ScreenTransition.None));;
+    Set(varDossier; Blank()));;
 ```
 
 Ou recollez tout le fichier **scrFormulaire-OnVisible-corrige.txt**, mis à jour le 3 novembre.
@@ -130,7 +129,7 @@ Les dossiers créés **avant** la correction ne seront **pas** corrigés automat
 | 1 | Testeur A | Crée son dossier (rôle Personne en appréciation) | Message vert |
 | 2 | Vous | Liste PréProd › ce dossier › Gérer l'accès | Propriétaires, SRHVQ_RH, testeur A, son SI et son SH. **Pas SRHVQ_Utilisateurs** |
 | 3 | Testeur B (sans lien avec A) | Ouvre Mes dossiers | **Ne voit pas** le dossier de A |
-| 4 | Testeur B | Ouvre le lien direct du dossier de A (…&ID=n) | « Vous n'avez pas accès à ce dossier », ou dossier vide |
+| 4 | Testeur B | Ouvre le lien direct du dossier de A (…&ID=n) | « Vous n'avez pas accès à ce dossier » et un formulaire vide |
 | 5 | Testeur B | Ouvre la liste dans SharePoint | **Ne voit pas** le dossier de A |
 | 6 | SI de A | Ouvre Mes dossiers | Voit le dossier de A, avec le rôle « Supérieur(e) immédiat(e) » |
 | 7 | Membre de SRHVQ_RH | Ouvre la liste dans SharePoint | Voit le dossier, en lecture seulement |
