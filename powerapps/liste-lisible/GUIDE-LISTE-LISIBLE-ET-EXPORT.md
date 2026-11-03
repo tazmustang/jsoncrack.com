@@ -111,7 +111,7 @@ Chaque ligne indique aussi le **no de dossier**, le **nom**, l'**ID** et l'**ann
 | Message | Solution |
 |---|---|
 | « La clé ne correspond à aucune ligne de la table » | Le nom de la liste (`NomListe`) n'est pas exact : copiez-le tel qu'il s'affiche dans SharePoint |
-| « La colonne … est introuvable » | Une colonne a un autre nom interne dans cette liste : envoyez-moi le message |
+| « La colonne … est introuvable » | Une colonne a un autre nom interne dans cette liste : envoyez-moi le message (ou, dans l'éditeur, cliquez sur l'étape « Liste » à droite pour voir les vrais noms des colonnes) |
 | « Accès refusé » | Votre compte n'a pas accès à la liste ou à certains dossiers |
 
 ## 4.3 Confidentialité des exports (important)

@@ -16,7 +16,7 @@ avec le nom de la personne, son ID et l'année.
 let
     Site = "https://villedequebec.sharepoint.com/sites/RHPowerAppsDonneesPreProd",
     NomListe = "Appréciation de la contribution des cadres",
-    Source = SharePoint.Tables(Site, [Implementation = "2.0", ViewMode = "All"]),
+    Source = SharePoint.Tables(Site, [ApiVersion = 15]),
     Liste = Source{[Title = NomListe]}[Items],
     Colonnes = Table.SelectColumns(Liste, {"ID", "Title", "IdEmploye", "Annee", "ObjectifsActuels"}),
     Lu = Table.TransformColumns(Colonnes, {{"ObjectifsActuels", each try Json.Document(_) otherwise {}}}),
@@ -35,7 +35,7 @@ in
 let
     Site = "https://villedequebec.sharepoint.com/sites/RHPowerAppsDonneesPreProd",
     NomListe = "Appréciation de la contribution des cadres",
-    Source = SharePoint.Tables(Site, [Implementation = "2.0", ViewMode = "All"]),
+    Source = SharePoint.Tables(Site, [ApiVersion = 15]),
     Liste = Source{[Title = NomListe]}[Items],
     Colonnes = Table.SelectColumns(Liste, {"ID", "Title", "IdEmploye", "Annee", "ObjectifsAvenir"}),
     Lu = Table.TransformColumns(Colonnes, {{"ObjectifsAvenir", each try Json.Document(_) otherwise {}}}),
@@ -53,7 +53,7 @@ in
 let
     Site = "https://villedequebec.sharepoint.com/sites/RHPowerAppsDonneesPreProd",
     NomListe = "Appréciation de la contribution des cadres",
-    Source = SharePoint.Tables(Site, [Implementation = "2.0", ViewMode = "All"]),
+    Source = SharePoint.Tables(Site, [ApiVersion = 15]),
     Liste = Source{[Title = NomListe]}[Items],
     Colonnes = Table.SelectColumns(Liste, {"ID", "Title", "IdEmploye", "Annee", "Postures"}),
     Lu = Table.TransformColumns(Colonnes, {{"Postures", each try Json.Document(_)[cotes] otherwise {}}}),
@@ -72,7 +72,7 @@ in
 let
     Site = "https://villedequebec.sharepoint.com/sites/RHPowerAppsDonneesPreProd",
     NomListe = "Appréciation de la contribution des cadres",
-    Source = SharePoint.Tables(Site, [Implementation = "2.0", ViewMode = "All"]),
+    Source = SharePoint.Tables(Site, [ApiVersion = 15]),
     Liste = Source{[Title = NomListe]}[Items],
     Colonnes = Table.SelectColumns(Liste, {"ID", "Title", "IdEmploye", "Annee", "Postures"}),
     Lu = Table.TransformColumns(Colonnes, {{"Postures", each try Json.Document(_)[commentaires] otherwise {}}}),
@@ -89,7 +89,7 @@ in
 let
     Site = "https://villedequebec.sharepoint.com/sites/RHPowerAppsDonneesPreProd",
     NomListe = "Appréciation de la contribution des cadres",
-    Source = SharePoint.Tables(Site, [Implementation = "2.0", ViewMode = "All"]),
+    Source = SharePoint.Tables(Site, [ApiVersion = 15]),
     Liste = Source{[Title = NomListe]}[Items],
     Colonnes = Table.SelectColumns(Liste, {"ID", "Title", "IdEmploye", "Annee", "Competences"}),
     Lu = Table.TransformColumns(Colonnes, {{"Competences", each try Json.Document(_) otherwise {}}}),
@@ -106,7 +106,7 @@ in
 let
     Site = "https://villedequebec.sharepoint.com/sites/RHPowerAppsDonneesPreProd",
     NomListe = "Appréciation de la contribution des cadres",
-    Source = SharePoint.Tables(Site, [Implementation = "2.0", ViewMode = "All"]),
+    Source = SharePoint.Tables(Site, [ApiVersion = 15]),
     Liste = Source{[Title = NomListe]}[Items],
     Colonnes = Table.SelectColumns(Liste, {"ID", "Title", "IdEmploye", "Annee", "Valeurs"}),
     Lu = Table.TransformColumns(Colonnes, {{"Valeurs", each try Json.Document(_) otherwise {}}}),
@@ -124,7 +124,7 @@ in
 let
     Site = "https://villedequebec.sharepoint.com/sites/RHPowerAppsDonneesPreProd",
     NomListe = "Appréciation de la contribution des cadres",
-    Source = SharePoint.Tables(Site, [Implementation = "2.0", ViewMode = "All"]),
+    Source = SharePoint.Tables(Site, [ApiVersion = 15]),
     Liste = Source{[Title = NomListe]}[Items],
     Colonnes = Table.SelectColumns(Liste, {"ID", "Title", "IdEmploye", "Annee", "DevPrecedents"}),
     Lu = Table.TransformColumns(Colonnes, {{"DevPrecedents", each try Json.Document(_) otherwise {}}}),
@@ -142,7 +142,7 @@ in
 let
     Site = "https://villedequebec.sharepoint.com/sites/RHPowerAppsDonneesPreProd",
     NomListe = "Appréciation de la contribution des cadres",
-    Source = SharePoint.Tables(Site, [Implementation = "2.0", ViewMode = "All"]),
+    Source = SharePoint.Tables(Site, [ApiVersion = 15]),
     Liste = Source{[Title = NomListe]}[Items],
     Colonnes = Table.SelectColumns(Liste, {"ID", "Title", "IdEmploye", "Annee", "DevNouveaux"}),
     Lu = Table.TransformColumns(Colonnes, {{"DevNouveaux", each try Json.Document(_) otherwise {}}}),
