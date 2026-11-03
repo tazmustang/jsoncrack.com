@@ -352,3 +352,19 @@ Table(
 Bouton de fin ou de retour du didacticiel :
 // Quitte l'aide et revient à l'écran précédent
 Back()
+
+
+#####################################################################
+# C9. SÉCURITÉ — contrôle à l'ouverture d'un dossier (3 novembre)
+#####################################################################
+Dans scrFormulaire.OnVisible, juste après la relecture du dossier (voir scrFormulaire-OnVisible-corrige.txt) :
+
+// Sécurité : on n'ouvre un dossier que si la personne connectée y est nommée
+If(!IsBlank(varDossier) &&
+    Not(varMoi in [Lower(varDossier.CourrielPersonne); Lower(varDossier.CourrielSI);
+                   Lower(varDossier.CourrielSH); Lower(varDossier.CourrielDirecteur)]);
+    Notify("Vous n'avez pas accès à ce dossier."; NotificationType.Error);;
+    Set(varDossier; Blank());;
+    Navigate(scrMesDossiers; ScreenTransition.None));;
+
+Détails et tests : preprod/SECURISER-LES-DOSSIERS.docx

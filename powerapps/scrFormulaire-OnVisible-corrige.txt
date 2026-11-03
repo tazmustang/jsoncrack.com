@@ -1,4 +1,4 @@
-// scrFormulaire.OnVisible — VERSION FINALE — 28 octobre 2026, mises à jour du 29 et du 30 octobre (conformité TI) (coller tout le contenu de ce fichier)
+// scrFormulaire.OnVisible — VERSION FINALE — 28 octobre 2026, mises à jour du 29 et du 30 octobre (conformité TI ; sécurité du 3 novembre) (coller tout le contenu de ce fichier)
 // ---------- Paramètres de l'environnement (liste Parametres) ----------
 Set(varEnv; Coalesce(LookUp(Parametres; Title = "Environnement").Valeur; "PROD"));;
 Set(varCourrielSoutien; LookUp(Parametres; Title = "CourrielSoutien").Valeur);;
@@ -29,6 +29,14 @@ If(IsBlank(varDossier) && !IsBlank(Param("ID"));
 // peuvent arriver vides quand le dossier est ouvert depuis « Mes dossiers ») — ajout du 29 octobre
 If(!IsBlank(varDossier);
     Set(varDossier; LookUp(Appreciations; ID = varDossier.ID)));;
+
+// ---------- Sécurité (3 novembre) : on n'ouvre un dossier que si la personne connectée y est nommée ----------
+If(!IsBlank(varDossier) &&
+    Not(varMoi in [Lower(varDossier.CourrielPersonne); Lower(varDossier.CourrielSI);
+                   Lower(varDossier.CourrielSH); Lower(varDossier.CourrielDirecteur)]);
+    Notify("Vous n'avez pas accès à ce dossier."; NotificationType.Error);;
+    Set(varDossier; Blank());;
+    Navigate(scrMesDossiers; ScreenTransition.None));;
 
 // Rôle selon le courriel de la personne connectée
 Set(CurrentRoleID;
