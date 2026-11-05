@@ -80,6 +80,7 @@ Déclencheur : SharePoint › Lors de la création ou de la modification d'un é
 STRUCTURE (cartes refermées, dans cet ordre, au même niveau) :
   LienApp → CourrielPaie → Changements
   → « Directeur ajouté »  (Si oui : Assurer directeur → Accès directeur)
+  → « Version SI transmise » (Si oui : courriel à la personne) — ajout du 6 novembre
   → « Statut changé »     (Si oui : commutateur « Selon le statut »)
        Avisé au supérieur | Certifié | Approuvé SI | Approuvé SH | Complété
 
@@ -113,6 +114,16 @@ triggerOutputs()?['body/{TriggerWindowEndToken}']
        URI :
 _api/web/lists(guid'@{parameters('SRHVQ_Appreciations (rhdsst_ListeAppreciations)')}')/items(@{triggerOutputs()?['body/ID']})/roleassignments/addroleassignment(principalid=@{body('Assurer_directeur')?['Id']},roledefid=1073741827)
 
+[4c] « Version SI transmise » — Condition — SOUS « Directeur ajouté », AVANT « Statut changé » (même niveau)
+    (ajout du 6 novembre : le supérieur immédiat transmet sa version à la personne avant la rencontre)
+    Ligne 1 : body('Changements')?['ColumnHasChanged']?['VersionSILe']   est égal à   true
+    Ligne 2 : triggerOutputs()?['body/VersionSILe']   n'est pas égal à   (vide)
+  Si oui : Envoyer un courriel (V2)
+      À : CourrielPersonne (contenu dynamique)
+      Objet : Appréciation : la version de votre supérieur(e) immédiat(e) est prête
+      Corps (mode code </>) :
+Bonjour,<br><br>Votre supérieur(e) immédiat(e) a complété sa partie de votre formulaire d'appréciation de la contribution (cotes, bilan et évaluation globale). Vous pouvez la consulter avant votre rencontre. Après la rencontre, vous pourrez approuver et soumettre le formulaire.<br><br><a href="@{variables('LienApp')}">Ouvrir le dossier</a>
+
 [5] « Statut changé » — Condition — SOUS « Directeur ajouté » (pas dedans !)
     body('Changements')?['ColumnHasChanged']?['Statut']   est égal à   true
     Si non : rien.
@@ -125,13 +136,13 @@ triggerOutputs()?['body/Statut/Value']
       À : CourrielSI (contenu dynamique)
       Objet : Appréciation de @{triggerOutputs()?['body/Title']} : prête pour votre consultation
       Corps (mode code </>) :
-Bonjour,<br><br>@{triggerOutputs()?['body/Title']} a rempli sa partie du formulaire d'appréciation de la contribution. Vous pouvez la consulter et planifier la rencontre.<br><br><a href="@{variables('LienApp')}">Ouvrir le dossier</a>
+Bonjour,<br><br>@{triggerOutputs()?['body/Title']} a rempli sa partie du formulaire d'appréciation de la contribution. Vous pouvez la consulter, compléter votre partie (cotes de la section B, bilan de la section E et évaluation globale), puis la lui transmettre avec le bouton « Transmettre ma version » avant la rencontre.<br><br><a href="@{variables('LienApp')}">Ouvrir le dossier</a>
 
   --- Cas « Certifié » : Envoyer un courriel (V2)
       À : CourrielSI
       Objet : À approuver : appréciation de @{triggerOutputs()?['body/Title']}
       Corps :
-Bonjour,<br><br>@{triggerOutputs()?['body/Title']} a confirmé et approuvé son formulaire. C'est maintenant votre étape : complétez au besoin le bilan annuel (section E) et l'évaluation globale, puis approuvez.<br><br><a href="@{variables('LienApp')}">Ouvrir le dossier</a>
+Bonjour,<br><br>@{triggerOutputs()?['body/Title']} a confirmé et approuvé son formulaire après la rencontre. C'est maintenant votre étape : ajustez au besoin votre partie, puis approuvez.<br><br><a href="@{variables('LienApp')}">Ouvrir le dossier</a>
 
   --- Cas « Approuvé SI » : Envoyer un courriel (V2)
       À : CourrielSH

@@ -62,7 +62,11 @@ Quand votre partie est prête :
 
 Votre supérieur(e) immédiat(e) reçoit un courriel avec un lien vers votre dossier. **Vous pouvez encore modifier** votre contenu ensuite.
 
-## Étape 3 — La rencontre
+## Étape 3 — La version de votre supérieur(e), puis la rencontre
+
+Votre supérieur(e) immédiat(e) remplit sa partie (cotes, bilan de la section E, évaluation globale) et vous la **transmet** : vous recevez un courriel et pouvez la consulter avant la rencontre.
+
+### La rencontre
 
 Vous échangez avec votre supérieur(e). Ajustez votre dossier au besoin, puis **enregistrez**.
 

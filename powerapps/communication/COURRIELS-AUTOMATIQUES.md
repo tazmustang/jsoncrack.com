@@ -6,11 +6,12 @@ lang: fr-CA
 
 # En bref
 
-L'application envoie **6 courriels automatiques** au fil du circuit (flux « Appréciation – Suivi des étapes »), plus 2 courriels de soutien. **Aucun courriel ne contient l'évaluation**, sauf celui destiné aux RH à la toute fin (évaluation globale seulement). Chaque courriel contient un **lien qui ouvre directement le dossier** dans l'application.
+L'application envoie **7 courriels automatiques** au fil du circuit (flux « Appréciation – Suivi des étapes »), plus 2 courriels de soutien. **Aucun courriel ne contient l'évaluation**, sauf celui destiné aux RH à la toute fin (évaluation globale seulement). Chaque courriel contient un **lien qui ouvre directement le dossier** dans l'application.
 
 | Ordre | Déclencheur (quand) | Destinataire | Objet |
 |---|---|---|---|
 | 1 | La personne clique sur **Aviser** | Supérieur(e) immédiat(e) | Appréciation de [Nom] : prête pour votre consultation |
+| 1b | Le SI clique sur **Transmettre ma version** | Personne en appréciation | Appréciation : la version de votre supérieur(e) immédiat(e) est prête |
 | 2 | La personne clique sur **Approuver et soumettre** | Supérieur(e) immédiat(e) | À approuver : appréciation de [Nom] |
 | 3 | Le SI clique sur **Approuver** | Supérieur(e) hiérarchique | À approuver : appréciation de [Nom] |
 | 4 | Le SH clique sur **Approuver** (*seulement si un directeur de service est requis*) | Directeur / directrice de service | À approuver : appréciation de [Nom] |
@@ -31,7 +32,19 @@ Sans directeur de service requis, l'approbation du SH fait passer le dossier dir
 
 > Bonjour,
 >
-> [Nom] a rempli sa partie du formulaire d'appréciation de la contribution. Vous pouvez la consulter et planifier la rencontre.
+> [Nom] a rempli sa partie du formulaire d'appréciation de la contribution. Vous pouvez la consulter, compléter votre partie (cotes de la section B, bilan de la section E et évaluation globale), puis la lui transmettre avec le bouton « Transmettre ma version » avant la rencontre.
+>
+> **Ouvrir le dossier** (lien)
+
+## 1b. La version du supérieur est prête (nouveau, 6 novembre)
+
+- **Quand :** le SI clique sur **Transmettre ma version**, après avoir rempli ses cotes, la section E et l'évaluation globale.
+- **À :** la personne en appréciation.
+- **Objet :** Appréciation : la version de votre supérieur(e) immédiat(e) est prête
+
+> Bonjour,
+>
+> Votre supérieur(e) immédiat(e) a complété sa partie de votre formulaire d'appréciation de la contribution (cotes, bilan et évaluation globale). Vous pouvez la consulter avant votre rencontre. Après la rencontre, vous pourrez approuver et soumettre le formulaire.
 >
 > **Ouvrir le dossier** (lien)
 

@@ -132,6 +132,7 @@ P(s("<h2>Section G — Confirmation et chaîne d'approbation</h2><table><tr><th>
 def g(etape, qui, date):
     return f'"<tr><td>{etape}</td><td>" & {qui} & "</td><td>" & {d(date)} & "</td></tr>"'
 P(g("Avis au supérieur immédiat", 'Coalesce(varDossier.PersonneAppreciation.DisplayName; "—")', 'varDossier.AviseLe'))
+P(g("Version transmise par le supérieur immédiat", 'Coalesce(varDossier.SuperieurImmediat.DisplayName; "—")', 'varDossier.VersionSILe'))
 P(g("Confirmation et approbation (personne en appréciation)", 'Coalesce(varDossier.PersonneAppreciation.DisplayName; "—")', 'varDossier.CertifieLe'))
 P(g("Approbation du supérieur immédiat", 'Coalesce(varDossier.SuperieurImmediat.DisplayName; "—")', 'varDossier.ApprouveSILe'))
 P(g("Approbation du supérieur hiérarchique", 'Coalesce(varDossier.SuperieurHierarchique.DisplayName; "—")', 'varDossier.ApprouveSHLe'))
