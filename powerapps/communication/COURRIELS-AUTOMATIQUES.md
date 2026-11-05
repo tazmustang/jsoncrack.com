@@ -11,15 +11,15 @@ L'application envoie **6 courriels automatiques** au fil du circuit (flux « App
 | Ordre | Déclencheur (quand) | Destinataire | Objet |
 |---|---|---|---|
 | 1 | La personne clique sur **Aviser** | Supérieur(e) immédiat(e) | Appréciation de [Nom] : prête pour votre consultation |
-| 2 | La personne clique sur **Certifier** | Supérieur(e) immédiat(e) | À approuver : appréciation de [Nom] |
+| 2 | La personne clique sur **Approuver et soumettre** | Supérieur(e) immédiat(e) | À approuver : appréciation de [Nom] |
 | 3 | Le SI clique sur **Approuver** | Supérieur(e) hiérarchique | À approuver : appréciation de [Nom] |
-| 4 | Le SH clique sur **Approuver** (*seulement si un directeur est requis*) | Directeur / directrice | À approuver : appréciation de [Nom] |
+| 4 | Le SH clique sur **Approuver** (*seulement si un directeur de service est requis*) | Directeur / directrice de service | À approuver : appréciation de [Nom] |
 | 5 | Dossier **Complété** | RH (adresse de la variable SRHVQ_CourrielPaie) | Évaluation globale – [Nom] ([ID]) – [Année] |
 | 6 | Dossier **Complété** | Personne, SI et SH | Appréciation complétée – [Nom] |
 
-Sans directeur requis, l'approbation du SH fait passer le dossier directement à **Complété** : le courriel 4 n'est pas envoyé.
+Sans directeur de service requis, l'approbation du SH fait passer le dossier directement à **Complété** : le courriel 4 n'est pas envoyé.
 
-> **Ajout d'un directeur :** quand un directeur est choisi dans la section G, il reçoit l'**accès** au dossier tout de suite, mais **pas de courriel**. Il est avisé seulement à son tour (courriel 4).
+> **Ajout d'un directeur de service :** quand un directeur de service est choisi dans la section G, il reçoit l'**accès** au dossier tout de suite, mais **pas de courriel**. Il est avisé seulement à son tour (courriel 4).
 
 # Le texte de chaque courriel
 
@@ -37,13 +37,13 @@ Sans directeur requis, l'approbation du SH fait passer le dossier directement à
 
 ## 2. À approuver (supérieur immédiat)
 
-- **Quand :** la personne clique sur **Certifier** (statut « Certifié »). Son contenu est alors verrouillé.
+- **Quand :** la personne clique sur **Approuver et soumettre** (statut « Confirmé »). Son contenu est alors verrouillé.
 - **À :** supérieur(e) immédiat(e).
 - **Objet :** À approuver : appréciation de [Nom]
 
 > Bonjour,
 >
-> [Nom] a certifié son formulaire. C'est maintenant votre étape : complétez au besoin le bilan annuel (section E) et l'évaluation globale, puis approuvez.
+> [Nom] a confirmé son formulaire. C'est maintenant votre étape : complétez au besoin le bilan annuel (section E) et l'évaluation globale, puis approuvez.
 >
 > **Ouvrir le dossier** (lien)
 
@@ -59,15 +59,15 @@ Sans directeur requis, l'approbation du SH fait passer le dossier directement à
 >
 > **Ouvrir le dossier** (lien)
 
-## 4. À approuver (directeur ou directrice)
+## 4. À approuver (directeur ou directrice de service)
 
-- **Quand :** le SH clique sur **Approuver**, et l'approbation d'un directeur est requise (statut « Approuvé SH »).
-- **À :** directeur ou directrice choisi(e) dans la section G.
+- **Quand :** le SH clique sur **Approuver**, et l'approbation d'un directeur de service est requise (statut « Approuvé SH »).
+- **À :** directeur ou directrice de service choisi(e) dans la section G.
 - **Objet :** À approuver : appréciation de [Nom]
 
 > Bonjour,
 >
-> Le dossier de [Nom] attend votre approbation (directeur ou directrice).
+> Le dossier de [Nom] attend votre approbation (directeur ou directrice de service).
 >
 > **Ouvrir le dossier** (lien)
 
@@ -91,7 +91,7 @@ Sans directeur requis, l'approbation du SH fait passer le dossier directement à
 ## 6. Appréciation complétée
 
 - **Quand :** le dossier passe à **Complété**, juste après le courriel 5.
-- **À :** la personne, le SI et le SH (*le directeur n'est pas inclus*).
+- **À :** la personne, le SI et le SH (*le directeur de service n'est pas inclus*).
 - **Objet :** Appréciation complétée – [Nom]
 
 > Toutes les étapes d'approbation sont complétées. Le dossier est archivé en lecture seule.
@@ -113,7 +113,7 @@ Ensuite, automatiquement : toutes les personnes du dossier passent en **lecture 
 |---|---|---|
 | ☐ | Les textes conviennent-ils (ton, vouvoiement, signature) ? | |
 | ☐ | Faut-il ajouter une signature (ex. « Ressources humaines — Ville de Québec ») ? | |
-| ☐ | Le directeur doit-il recevoir le courriel 6 (« Appréciation complétée ») ? | |
+| ☐ | Le directeur de service doit-il recevoir le courriel 6 (« Appréciation complétée ») ? | |
 | ☐ | L'adresse RH / paie de Prod pour le courriel 5 (variable SRHVQ_CourrielPaie) | |
 | ☐ | L'expéditeur : en PréProd et en Prod, les courriels partent de la boîte du **compte de service** (connexion Outlook des TI). Son nom affiché convient-il ? | |
 

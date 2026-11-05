@@ -22,7 +22,7 @@ scrFormulaire.OnVisible ..... (déjà commenté par section : recoller scrFormul
 btnDeposer.OnSelect ......... (section C4, déjà commentée)
 btnDeposerExec.OnSelect ..... (section C3, déjà commentée)
 btnAviser.OnSelect .......... // Aviser — Passe le statut à « Avisé au supérieur » ; le flux 2 envoie le courriel au SI
-btnCertifier.OnSelect ....... // Certifier — Verrouille le contenu de la personne et passe au statut « Certifié »
+btnCertifier.OnSelect ....... // Approuver et soumettre (personne) — Verrouille son contenu ; statut interne « Certifié », affiché « Confirmé »
 btnApprouver.OnSelect ....... // Approuver — Enregistre l'approbation du rôle connecté (SI, SH ou directeur) et passe à l'étape suivante
 chkDirRequis.OnCheck ........ // Indique qu'un directeur ou une directrice doit approuver en dernier
 cboDirecteur.Items .......... // Recherche du directeur ou de la directrice dans l'annuaire Office 365
@@ -186,7 +186,7 @@ With(
                     {Champ: "Type de poste"; Ok: CurrentPosteID <> ""};
                     {Champ: "Type de rencontre"; Ok: chkEssai.Checked Or chkPremiere.Checked Or chkMiAnnee.Checked Or chkBilan.Checked Or chkAutre.Checked Or !IsBlank(Trim(txtAutre.Text))};
                     {Champ: "Précision du type « Autre »"; Ok: !chkAutre.Checked Or !IsBlank(Trim(txtAutre.Text))};
-                    {Champ: "Directeur ou directrice"; Ok: !chkDirRequis.Checked Or !IsBlank(cboDirecteur.Selected) Or !IsBlank(varDossier.CourrielDirecteur)}
+                    {Champ: "Directeur ou directrice de service"; Ok: !chkDirRequis.Checked Or !IsBlank(cboDirecteur.Selected) Or !IsBlank(varDossier.CourrielDirecteur)}
                 );
                 !Ok
             );
@@ -344,7 +344,7 @@ Table(
     {Etape: 3; Titre: "Le formulaire";
      Texte: "Choisissez votre type de poste, vérifiez l'identification et remplissez les sections A à F. Seules les sections de votre rôle sont modifiables. « Enregistrer et déposer » enregistre votre travail ; une confirmation est demandée à la création."};
     {Etape: 4; Titre: "Le circuit et le PDF";
-     Texte: "Section G : Aviser, Certifier puis Approuver (SI, SH, directeur au besoin). La barre d'étapes montre l'avancement et les dates. « Aperçu PDF » produit le PDF complet, joint au dossier ; « Ouvrir le PDF » l'affiche."};
+     Texte: "Section G : Aviser, puis Approuver et soumettre (confirmation de la personne), puis Approuver (SI, SH, directeur de service au besoin). La barre d'étapes montre l'avancement et les dates. « Aperçu PDF » produit le PDF complet, joint au dossier ; « Ouvrir le PDF » l'affiche."};
     {Etape: 5; Titre: "À propos et soutien";
      Texte: "Le bouton « À propos » donne le nom et le téléphone de la personne responsable du soutien, et permet de lui écrire directement depuis l'application."}
 )

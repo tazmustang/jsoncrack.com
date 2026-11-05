@@ -67,7 +67,7 @@ td.sec{font-weight:700;color:var(--marine);background:#f1f5fb;width:250px}
   <div class="hd">1 · Préparer<small>Brouillon</small></div>
   <div class="hd">2 · Aviser<small>Avisé au supérieur</small></div>
   <div class="hd">3 · Rencontre<small>échanges</small></div>
-  <div class="hd">4 · Certifier<small>Certifié</small></div>
+  <div class="hd">4 · Approuver et soumettre<small>Confirmé</small></div>
   <div class="hd">5 · Approuver<small>Approuvé SI</small></div>
   <div class="hd">6 · Approuver<small>Approuvé SH</small></div>
   <div class="hd">7 · Terminé<small>Complété</small></div>
@@ -76,7 +76,7 @@ td.sec{font-weight:700;color:var(--marine);background:#f1f5fb;width:250px}
   <div><div class="c p"><b>Remplit sa partie</b>Type de poste, identification, sections A à D, bilan F. Enregistre autant de fois que voulu.</div></div>
   <div><div class="c p"><b>Avise son supérieur</b>Un clic : le dossier est prêt à consulter.</div></div>
   <div><div class="c p"><b>Échange avec son supérieur</b>Ajuste au besoin.</div></div>
-  <div><div class="c p"><b>Certifie et soumet</b>Coche la confirmation. Son contenu se verrouille.</div></div>
+  <div><div class="c p"><b>Confirme et soumet</b>Coche la confirmation. Son contenu se verrouille.</div></div>
   <div></div><div></div>
   <div><div class="c p"><b>Consulte et télécharge le PDF</b></div></div>
 
@@ -95,7 +95,7 @@ td.sec{font-weight:700;color:var(--marine);background:#f1f5fb;width:250px}
   <div><div class="c h"><b>Prend connaissance et approuve</b></div></div>
   <div><div class="c h"><b>Lecture seule</b></div></div>
 
-  <div class="role">Directeur / directrice<span>seulement si requis</span></div>
+  <div class="role">Directeur / directrice de service<span>seulement si requis</span></div>
   <div></div><div></div><div></div><div></div><div></div>
   <div><div class="c d"><b>Si requis : reçoit « À approuver » et approuve</b>Sinon, l'étape est sautée.</div></div>
   <div><div class="c d"><b>Lecture seule</b></div></div>
@@ -106,10 +106,10 @@ td.sec{font-weight:700;color:var(--marine);background:#f1f5fb;width:250px}
   <div></div>
   <div><div class="c auto"><b>✉ Courriel au SI</b>Barre d'étapes à jour.</div></div>
   <div><div class="c auto"><b>✉ Courriel au SH</b></div></div>
-  <div><div class="c auto"><b>✉ Courriel au directeur</b>(si requis)</div></div>
+  <div><div class="c auto"><b>✉ Courriel au directeur de service</b>(si requis)</div></div>
   <div><div class="c auto"><b>✉ RH avisés · tous avisés</b>Dossier archivé en lecture seule.</div></div>
  </div>
- <div class="leg"><span><i style="background:#e8f6ee;border:1.5px solid #009e49"></i>Personne en appréciation</span><span><i style="background:#eaf1fb;border:1.5px solid #074b98"></i>Supérieur(e) immédiat(e)</span><span><i style="background:#f3eefb;border:1.5px solid #6b3fa0"></i>Supérieur(e) hiérarchique</span><span><i style="background:#fbf6ea;border:1.5px dashed #857650"></i>Directeur (si requis)</span><span><i style="background:#fff;border:1.5px solid #9ca3af"></i>Fait automatiquement</span></div>
+ <div class="leg"><span><i style="background:#e8f6ee;border:1.5px solid #009e49"></i>Personne en appréciation</span><span><i style="background:#eaf1fb;border:1.5px solid #074b98"></i>Supérieur(e) immédiat(e)</span><span><i style="background:#f3eefb;border:1.5px solid #6b3fa0"></i>Supérieur(e) hiérarchique</span><span><i style="background:#fbf6ea;border:1.5px dashed #857650"></i>Directeur de service (si requis)</span><span><i style="background:#fff;border:1.5px solid #9ca3af"></i>Fait automatiquement</span></div>
 </section>
 
 <!-- PAGE 2 : QUI REMPLIT QUOI -->
@@ -118,21 +118,21 @@ td.sec{font-weight:700;color:var(--marine);background:#f1f5fb;width:250px}
  <div class="sous">Chacun ne peut modifier que sa partie, et seulement à son étape — le reste est en lecture</div></div>
  <div class="ville">VILLE DE QUÉBEC<br>Ressources humaines<br><span style="color:#009e49">Version finale · 28 oct. 2026</span></div></div>
  <table>
-  <tr><th>Partie du formulaire</th><th>Personne en appréciation</th><th>Supérieur(e) immédiat(e)</th><th>Supérieur(e) hiérarchique / directeur</th></tr>
+  <tr><th>Partie du formulaire</th><th>Personne en appréciation</th><th>Supérieur(e) immédiat(e)</th><th>Supérieur(e) hiérarchique / directeur de service</th></tr>
   <tr><td class="sec">Type de poste</td><td class="ok">Choisit (cadre avec équipe, cadre sans équipe, professionnel)</td><td class="lec">Lecture</td><td class="lec">Lecture</td></tr>
-  <tr><td class="sec">Identification et type de rencontre</td><td class="ok">Remplit</td><td class="ok">Peut compléter avant la certification</td><td class="lec">Lecture</td></tr>
-  <tr><td class="sec">A — Objectifs annuels</td><td class="ok">Remplit</td><td class="ok">Peut compléter avant la certification</td><td class="lec">Lecture</td></tr>
+  <tr><td class="sec">Identification et type de rencontre</td><td class="ok">Remplit</td><td class="ok">Peut compléter avant la confirmation</td><td class="lec">Lecture</td></tr>
+  <tr><td class="sec">A — Objectifs annuels</td><td class="ok">Remplit</td><td class="ok">Peut compléter avant la confirmation</td><td class="lec">Lecture</td></tr>
   <tr><td class="sec">B — Postures (cadres) ou compétences (professionnels)</td><td class="ok">Ses cotes et exemples</td><td class="ok">Ses propres cotes (colonne du supérieur)</td><td class="lec">Lecture</td></tr>
-  <tr><td class="sec">C — Valeurs organisationnelles</td><td class="ok">Coche les thèmes, donne des exemples</td><td class="ok">Peut compléter avant la certification</td><td class="lec">Lecture</td></tr>
-  <tr><td class="sec">D — Développement des compétences</td><td class="ok">Remplit</td><td class="ok">Peut compléter avant la certification</td><td class="lec">Lecture</td></tr>
+  <tr><td class="sec">C — Valeurs organisationnelles</td><td class="ok">Coche les thèmes, donne des exemples</td><td class="ok">Peut compléter avant la confirmation</td><td class="lec">Lecture</td></tr>
+  <tr><td class="sec">D — Développement des compétences</td><td class="ok">Remplit</td><td class="ok">Peut compléter avant la confirmation</td><td class="lec">Lecture</td></tr>
   <tr><td class="sec">E — Bilan du supérieur</td><td class="lec">Lecture (une fois rempli)</td><td class="ok">Remplit, jusqu'à son approbation</td><td class="lec">Lecture</td></tr>
-  <tr><td class="sec">F — Bilan de la personne</td><td class="ok">Remplit, jusqu'à la certification</td><td class="lec">Lecture</td><td class="lec">Lecture</td></tr>
+  <tr><td class="sec">F — Bilan de la personne</td><td class="ok">Remplit, jusqu'à la confirmation</td><td class="lec">Lecture</td><td class="lec">Lecture</td></tr>
   <tr><td class="sec">Évaluation globale</td><td class="lec">Lecture (une fois remplie)</td><td class="ok">Choisit, jusqu'à son approbation</td><td class="lec">Lecture</td></tr>
-  <tr><td class="sec">G — Avis, certification, approbations</td><td class="ok">Aviser · Certifier · indiquer si un directeur est requis</td><td class="ok">Approuver · indiquer si un directeur est requis</td><td class="ok">Approuver (chacun à son tour)</td></tr>
+  <tr><td class="sec">G — Avis, confirmation, approbations</td><td class="ok">Aviser · Approuver et soumettre · indiquer si un directeur de service est requis</td><td class="ok">Approuver · indiquer si un directeur de service est requis</td><td class="ok">Approuver (chacun à son tour)</td></tr>
   <tr><td class="sec">Aperçu PDF</td><td class="ok">Oui, en tout temps</td><td class="ok">Oui</td><td class="ok">Oui</td></tr>
   <tr><td class="sec">Voir le dossier d'un collègue</td><td class="non">Non</td><td class="non">Non, sauf s'il ou elle y est nommé(e)</td><td class="non">Non, sauf s'il ou elle y est nommé(e)</td></tr>
  </table>
- <p class="pied">Après la certification, le contenu de la personne est verrouillé. Après « Complété », tout le dossier passe en lecture seule pour tout le monde. Les RH (groupe RH – Appréciations) peuvent consulter les dossiers.</p>
+ <p class="pied">Après la confirmation, le contenu de la personne est verrouillé. Après « Complété », tout le dossier passe en lecture seule pour tout le monde. Les RH (groupe RH – Appréciations) peuvent consulter les dossiers.</p>
 </section>
 
 <!-- PAGE 3 : EN COULISSES -->
@@ -147,9 +147,9 @@ td.sec{font-weight:700;color:var(--marine);background:#f1f5fb;width:250px}
  </div>
  <div class="mail">
   <div class="m"><b>Aviser</b>→ courriel au SI : « prête pour votre consultation »</div>
-  <div class="m"><b>Certifier</b>→ courriel au SI : « À approuver »</div>
+  <div class="m"><b>Approuver et soumettre</b>→ courriel au SI : « À approuver »</div>
   <div class="m"><b>Approuvé SI</b>→ courriel au SH : « À approuver »</div>
-  <div class="m"><b>Approuvé SH</b>→ courriel au directeur (si requis)</div>
+  <div class="m"><b>Approuvé SH</b>→ courriel au directeur de service (si requis)</div>
   <div class="m"><b>Complété</b>→ courriel aux RH (évaluation globale)</div>
   <div class="m"><b>Complété</b>→ avis à tous + lecture seule</div>
  </div>
@@ -175,7 +175,7 @@ td.sec{font-weight:700;color:var(--marine);background:#f1f5fb;width:250px}
   <div class="col apres"><h2>📱 Maintenant : l'application</h2>
    <div class="it"><span class="e">✅</span><span><b>Un seul dossier</b>, toujours à jour, que chacun ouvre au bon moment.</span></div>
    <div class="it"><span class="e">🔒</span><span><b>Accès limité automatiquement</b> aux personnes concernées et aux RH.</span></div>
-   <div class="it"><span class="e">🖱️</span><span>Certifier et approuver <b>en un clic</b>, avec date et nom enregistrés.</span></div>
+   <div class="it"><span class="e">🖱️</span><span>Approuver et soumettre et approuver <b>en un clic</b>, avec date et nom enregistrés.</span></div>
    <div class="it"><span class="e">📍</span><span><b>Barre d'étapes</b> et « Mes dossiers » : on voit l'avancement en un coup d'œil.</span></div>
    <div class="it"><span class="e">📊</span><span><b>PDF complet</b> de l'appréciation, joint au dossier automatiquement.</span></div>
    <div class="it"><span class="e">💼</span><span>Évaluation globale <b>transmise aux RH</b> automatiquement.</span></div>
@@ -184,7 +184,7 @@ td.sec{font-weight:700;color:var(--marine);background:#f1f5fb;width:250px}
  </div>
  <div class="kpis">
   <div class="k"><div class="n">0</div><div class="t">fichier envoyé par courriel</div></div>
-  <div class="k"><div class="n">1 clic</div><div class="t">pour aviser, certifier, approuver ou produire le PDF</div></div>
+  <div class="k"><div class="n">1 clic</div><div class="t">pour aviser, approuver et soumettre, approuver ou produire le PDF</div></div>
   <div class="k"><div class="n">6</div><div class="t">courriels de suivi envoyés automatiquement</div></div>
   <div class="k"><div class="n">100 %</div><div class="t">dans Microsoft 365 de la Ville, accès contrôlés</div></div>
  </div>

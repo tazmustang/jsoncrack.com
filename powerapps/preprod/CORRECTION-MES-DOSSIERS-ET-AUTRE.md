@@ -47,7 +47,7 @@ With({moi: Lower(User().Email)};
         ThisItem.CourrielPersonne = moi; "Personne en appréciation";
         ThisItem.CourrielSI = moi; "Supérieur(e) immédiat(e)";
         ThisItem.CourrielSH = moi; "Supérieur(e) hiérarchique";
-        ThisItem.CourrielDirecteur = moi; "Directeur / directrice";
+        ThisItem.CourrielDirecteur = moi; "Directeur / directrice de service";
         ""))
 ```
 

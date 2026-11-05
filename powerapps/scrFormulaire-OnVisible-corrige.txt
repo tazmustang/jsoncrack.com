@@ -10,7 +10,7 @@ ClearCollect(colRoles;
     {RoleLabel: "Personne en appréciation"; RoleID: "cadre"};
     {RoleLabel: "Supérieur(e) immédiat(e)"; RoleID: "superieur_immediat"};
     {RoleLabel: "Supérieur(e) hiérarchique"; RoleID: "superieur_hierarchique"};
-    {RoleLabel: "Directeur / directrice"; RoleID: "directeur"});;
+    {RoleLabel: "Directeur / directrice de service"; RoleID: "directeur"});;
 ClearCollect(colPostes;
     {PosteLabel: "Cadre avec équipe"; PosteColor: RGBA(7;75;152;1); PosteID: "avec_equipe"};
     {PosteLabel: "Cadre sans équipe"; PosteColor: RGBA(0;121;107;1); PosteID: "sans_equipe"};

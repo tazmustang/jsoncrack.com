@@ -29,3 +29,4 @@ Commencez par **GUIDE-MISE-EN-PRODUCTION.docx**. Il explique tout et liste chaqu
 | Appreciation-contribution-VERSION-FINALE.zip | Tous les fichiers ci-dessus en un seul téléchargement |
 | generer-formule-pdf.py, schema/schema-solution.html, schema/generer-image.js | Sources pour régénérer |
 | liste-lisible/ | Liste SharePoint lisible (affichage, formulaire) et export Excel / Power Query des colonnes JSON |
+| MODIFICATIONS-LIBELLES-5-NOVEMBRE.docx | « Directeur / directrice de service » et « Confirmation » (section G) |

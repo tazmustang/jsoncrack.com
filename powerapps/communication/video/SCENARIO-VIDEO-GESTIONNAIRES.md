@@ -24,7 +24,7 @@ lang: fr-CA
 1. **Faites l'enregistrement en PréProd**, jamais en Prod, avec des **données fictives**. Aucun vrai nom ni vraie évaluation ne doit apparaître.
 2. **Créez un dossier de démonstration** avec une collègue de l'équipe, qui joue la personne en appréciation. Par exemple « Tremblay, Julie (démo) » :
    - elle remplit les sections A, B (ses cotes), C, D et F avec du texte fictif ;
-   - elle clique sur **Aviser**, puis sur **Certifier**.
+   - elle clique sur **Aviser**, puis sur **Approuver et soumettre**.
 3. **Vous**, vous jouez le **supérieur immédiat** : le dossier doit être « À approuver par moi ».
 4. **Préparez l'écran :**
    - fermez Teams et Outlook (ou coupez les notifications : **Paramètres Windows › Système › Notifications › Ne pas déranger**) ;
@@ -47,14 +47,14 @@ Chaque ligne est un plan. Faites l'action indiquée pendant que vous lisez le te
 | 1:00 – 1:20 | Mes dossiers | Écran Mes dossiers, filtre « À approuver par moi » | Vous pouvez aussi ouvrir l'application et aller dans Mes dossiers. Le filtre « À approuver par moi » montre les dossiers qui attendent votre action. Cliquez sur Ouvrir. |
 | 1:20 – 1:40 | Votre rôle et la barre d'étapes | Formulaire : en haut à gauche « Vous êtes », puis la barre d'étapes | L'application reconnaît votre rôle automatiquement : ici, supérieur immédiat. La barre d'étapes, en haut, montre où en est le dossier, avec les dates. |
 | 1:40 – 1:45 | Chapitre 2 | 03-Chapitre-2.png | Étape 2 : compléter votre partie. |
-| 1:45 – 2:10 | Prendre connaissance | Faire défiler les sections A, C et D | Prenez connaissance des objectifs, des valeurs et du développement inscrits par la personne. Avant la certification, vous pouvez compléter ces sections avec elle, par exemple pendant la rencontre. |
+| 1:45 – 2:10 | Prendre connaissance | Faire défiler les sections A, C et D | Prenez connaissance des objectifs, des valeurs et du développement inscrits par la personne. Avant la confirmation, vous pouvez compléter ces sections avec elle, par exemple pendant la rencontre. |
 | 2:10 – 2:40 | Les cotes (section B) | Section B : tableau de l'échelle, puis choisir une cote dans la colonne du supérieur | Dans la section B, l'échelle à quatre niveaux est rappelée en haut : insatisfaisant, partiellement satisfaisant, complètement satisfaisant et supérieur. Pour chaque comportement, choisissez votre cote dans votre colonne. La cote de la personne est affichée à côté. |
 | 2:40 – 3:00 | Le bilan (section E) | Section E : taper un bilan fictif | Dans la section E, rédigez votre bilan annuel de la contribution. |
 | 3:00 – 3:20 | L'évaluation globale | Évaluation globale : choisir un niveau | Puis choisissez l'évaluation globale. C'est la seule information qui sera transmise aux RH, à la fin du processus. |
 | 3:20 – 3:35 | Enregistrer | Clic sur « Enregistrer et déposer », message vert | Cliquez sur « Enregistrer et déposer ». Un message vert confirme l'enregistrement. Vous pouvez fermer et revenir plus tard : rien n'est perdu. |
 | 3:35 – 3:40 | Chapitre 3 | 04-Chapitre-3.png | Étape 3 : approuver. |
-| 3:40 – 4:05 | Approuver | Section G : cocher la confirmation, puis Approuver ; la barre d'étapes avance | Une fois la rencontre faite et le dossier certifié par la personne, allez à la section G. Cochez la case de confirmation, puis cliquez sur Approuver. Le supérieur hiérarchique reçoit automatiquement le dossier à approuver. |
-| 4:05 – 4:20 | Si un directeur doit approuver | Section G : case « Approbation du directeur requise » et choix d'un nom | Si un directeur ou une directrice doit aussi approuver, cochez cette case et choisissez la personne. Elle approuvera en dernier. |
+| 3:40 – 4:05 | Approuver | Section G : cocher la confirmation, puis Approuver ; la barre d'étapes avance | Une fois la rencontre faite et le dossier confirmé par la personne, allez à la section G. Cochez la case de confirmation, puis cliquez sur Approuver. Le supérieur hiérarchique reçoit automatiquement le dossier à approuver. |
+| 4:05 – 4:20 | Si un directeur de service doit approuver | Section G : case « Approbation du directeur / de la directrice de service requise » et choix d'un nom | Si un directeur ou une directrice de service doit aussi approuver, cochez cette case et choisissez la personne. Elle approuvera en dernier. |
 | 4:20 – 4:25 | Chapitre 4 | 05-Chapitre-4.png | Étape 4 : le PDF et la suite. |
 | 4:25 – 4:45 | Le PDF | Clic sur « Aperçu PDF », message vert, puis « Ouvrir le PDF » | Le bouton Aperçu PDF produit le PDF complet de l'appréciation, en quelques secondes. Il est joint au dossier. Cliquez ensuite sur Ouvrir le PDF. |
 | 4:45 – 5:05 | La fin du processus | Barre d'étapes complète, dossier en lecture seule | Quand toutes les approbations sont faites, le dossier passe à « Complété ». L'évaluation globale est transmise aux RH, tout le monde est avisé, et le dossier devient en lecture seule. |

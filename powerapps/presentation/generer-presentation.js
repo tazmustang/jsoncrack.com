@@ -109,7 +109,7 @@ carte(s, 0.5, 1.25, 4.4, 3.75, C.background2, "objectifs");
 s.addText("Objectifs", { x: 0.75, y: 1.4, w: 4, h: 0.4, fontSize: 18, bold: true, color: C.text2, margin: 0, isTextBox: true });
 s.addText([
   { text: "Intégrer les 3 nouveaux formulaires", options: { bullet: true, breakLine: true } },
-  { text: "Circuit : personne, supérieur immédiat, hiérarchique, directeur au besoin", options: { bullet: true, breakLine: true } },
+  { text: "Circuit : personne, supérieur immédiat, hiérarchique, directeur de service au besoin", options: { bullet: true, breakLine: true } },
   { text: "Courriels de suivi automatiques", options: { bullet: true, breakLine: true } },
   { text: "Transmission de l'évaluation globale aux RH", options: { bullet: true, breakLine: true } },
   { text: "PDF de l'appréciation complète", options: { bullet: true } },
@@ -199,7 +199,7 @@ s.addImage({ path: IMG + "/communication/1-Circuit-des-etapes.png", x: 1.35, y: 
 // ---------- 9. Tests ----------
 pres.addSection({ title: "Tests" });
 s = contenu("Tests", "Tests et validation : les chiffres");
-const stats = [["15", "scénarios de test définis"], ["23", "ajustements apportés au guide de construction"], ["3", "flux automatisés validés"], ["4", "rôles testés (personne, SI, SH, directeur)"]];
+const stats = [["15", "scénarios de test définis"], ["23", "ajustements apportés au guide de construction"], ["3", "flux automatisés validés"], ["4", "rôles testés (personne, SI, SH, directeur de service)"]];
 stats.forEach(([n, t], i) => {
   const x = 0.5 + i * 2.28;
   carte(s, x, 1.35, 2.1, 1.9, C.text2, "stat" + i);
@@ -227,7 +227,7 @@ corr.forEach(([t, d], i) => {
 s = contenu("Tests", "Confidentialité : vérifiée dossier par dossier");
 carte(s, 0.5, 1.2, 5.3, 3.8, C.background2, "securite");
 s.addText([
-  { text: "Chaque dossier est automatiquement réservé à la personne, à ses supérieurs, au directeur si requis et aux RH", options: { bullet: true, breakLine: true } },
+  { text: "Chaque dossier est automatiquement réservé à la personne, à ses supérieurs, au directeur de service si requis et aux RH", options: { bullet: true, breakLine: true } },
   { text: "Un collègue ne voit jamais le dossier d'un autre (testé)", options: { bullet: true, breakLine: true } },
   { text: "Les courriels ne contiennent aucune évaluation, seulement un lien", options: { bullet: true, breakLine: true } },
   { text: "À la fin, le dossier passe en lecture seule pour tous", options: { bullet: true, breakLine: true } },

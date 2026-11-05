@@ -9,7 +9,7 @@ lang: fr-CA
 L'appréciation de la contribution se fait maintenant **dans une application**, et non plus dans un document Word.
 
 - **Un seul dossier** par appréciation, conservé dans SharePoint de la Ville.
-- **Vous ne voyez que vos dossiers** : ceux où vous êtes la personne en appréciation, son supérieur ou son directeur.
+- **Vous ne voyez que vos dossiers** : ceux où vous êtes la personne en appréciation, son supérieur ou son directeur de service.
 - **L'application avise automatiquement** la bonne personne à chaque étape, par courriel.
 - **Aucun fichier à envoyer** par courriel.
 
@@ -66,12 +66,12 @@ Votre supérieur(e) immédiat(e) reçoit un courriel avec un lien vers votre dos
 
 Vous échangez avec votre supérieur(e). Ajustez votre dossier au besoin, puis **enregistrez**.
 
-**Si un directeur ou une directrice doit approuver :** dans la section G, cochez **« Approbation du directeur requise »** et choisissez la personne. Ce choix est possible jusqu'à la certification.
+**Si un directeur ou une directrice de service doit approuver :** dans la section G, cochez **« Approbation du directeur / de la directrice de service requise »** et choisissez la personne. Ce choix est possible jusqu'à la confirmation.
 
-## Étape 4 — Certifier et soumettre
+## Étape 4 — Approuver et soumettre
 
 1. Dans la **section G**, cochez la case de confirmation.
-2. Cliquez sur **Certifier**.
+2. Cliquez sur **Approuver et soumettre**.
 
 **À partir de ce moment, votre contenu est verrouillé.** Votre supérieur(e) immédiat(e) reçoit « À approuver ».
 
@@ -85,9 +85,9 @@ Vous suivez l'avancement dans la **barre d'étapes**, en haut du formulaire. Qua
 
 # 3. Supérieur(e) immédiat(e)
 
-1. Vous recevez un **courriel** : « prête pour votre consultation » après l'avis, puis « À approuver » après la certification. Cliquez sur le lien, ou ouvrez **Mes dossiers › À approuver par moi**.
+1. Vous recevez un **courriel** : « prête pour votre consultation » après l'avis, puis « À approuver » après la confirmation. Cliquez sur le lien, ou ouvrez **Mes dossiers › À approuver par moi**.
 2. L'application reconnaît votre rôle **automatiquement** : « Vous êtes : Supérieur(e) immédiat(e) ».
-3. Avant la certification, vous pouvez compléter :
+3. Avant la confirmation, vous pouvez compléter :
    - l'identification ;
    - les sections A, C et D ;
    - les commentaires de la section B.
@@ -95,17 +95,17 @@ Vous suivez l'avancement dans la **barre d'étapes**, en haut du formulaire. Qua
    - **vos cotes** dans la section B (colonne du supérieur) ;
    - le **bilan annuel (section E)** ;
    - l'**évaluation globale**.
-5. Après la certification, allez à la **section G**, cochez la case de confirmation et cliquez sur **Approuver**.
+5. Après la confirmation, allez à la **section G**, cochez la case de confirmation et cliquez sur **Approuver**.
 6. Le supérieur hiérarchique reçoit alors « À approuver ».
 
-# 4. Supérieur(e) hiérarchique et directeur ou directrice
+# 4. Supérieur(e) hiérarchique et directeur ou directrice de service
 
 1. Vous recevez « À approuver » par courriel, avec le lien vers le dossier.
 2. Prenez connaissance du dossier. La **barre d'étapes** montre où il en est, et **🖨️ Aperçu PDF** en donne une version complète à lire.
 3. Dans la **section G**, cochez la case de confirmation et cliquez sur **Approuver**.
 
-- **Sans directeur requis :** l'approbation du supérieur hiérarchique **termine** le dossier (statut « Complété »).
-- **Avec directeur requis :** le directeur ou la directrice reçoit « À approuver » et approuve en dernier.
+- **Sans directeur de service requis :** l'approbation du supérieur hiérarchique **termine** le dossier (statut « Complété »).
+- **Avec directeur de service requis :** le directeur ou la directrice de service reçoit « À approuver » et approuve en dernier.
 
 **À « Complété », tout est automatique :**
 
@@ -130,12 +130,12 @@ Vous suivez l'avancement dans la **barre d'étapes**, en haut du formulaire. Qua
 |---|---|
 | Je ne vois pas le dossier de mon employé. | Il apparaît dès que la personne a fait son premier **Enregistrer et déposer**. Vérifiez aussi le filtre **Tous**. |
 | Mon supérieur immédiat affiché n'est pas le bon. | Il vient de l'annuaire de la Ville. Écrivez au soutien (en bas de page) pour faire corriger le dossier. |
-| Je ne peux plus modifier mon contenu. | Il est verrouillé depuis la **certification**. Pour une correction, parlez-en à votre supérieur(e) et au soutien RH. |
+| Je ne peux plus modifier mon contenu. | Il est verrouillé depuis la **confirmation**. Pour une correction, parlez-en à votre supérieur(e) et au soutien RH. |
 | Une section est grisée. | Elle est réservée à un autre rôle, ou à une autre étape. |
 | Le bouton Approuver est grisé. | Cochez d'abord la case de confirmation juste au-dessus. |
 | Le PDF ne s'ouvre pas. | Attendez le message vert, puis cliquez sur **📄 Ouvrir le PDF**. Si un message rouge apparaît, réessayez dans une minute, puis contactez le soutien. |
 | Il y a plusieurs versions de mon PDF ? | Non : chaque nouvelle demande remplace l'ancienne. Le PDF le plus récent est toujours celui joint au dossier. |
-| Qui voit mon appréciation ? | Vous, votre supérieur(e) immédiat(e), votre supérieur(e) hiérarchique, le directeur ou la directrice si requis, et l'équipe RH responsable. **Personne d'autre.** |
+| Qui voit mon appréciation ? | Vous, votre supérieur(e) immédiat(e), votre supérieur(e) hiérarchique, le directeur ou la directrice de service si requis, et l'équipe RH responsable. **Personne d'autre.** |
 | Est-ce que le courriel contient mon évaluation ? | Non. Les courriels contiennent seulement un lien. Seule l'**évaluation globale** est transmise aux RH, à la fin. |
 
 # 7. Besoin d'aide ?

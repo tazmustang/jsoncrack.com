@@ -42,7 +42,7 @@ P(s("<html><head><meta charset='utf-8'><style>" + CSS + "</style></head><body>")
 P(s("<h1>Appréciation de la contribution</h1><p class=sous>") +
   ' & LookUp(colPostes; PosteID = CurrentPosteID).PosteLabel & ' +
   s(" — dossier no ") + ' & varDossier.ID & ' +
-  s(" — statut : ") + ' & Coalesce(varDossier.Statut.Value; "Brouillon") & ' + s("</p>"))
+  s(" — statut : ") + ' & Substitute(Coalesce(varDossier.Statut.Value; "Brouillon"); "Certifié"; "Confirmé") & ' + s("</p>"))
 
 # Identification
 P(s("<h2>Identification de la personne en appréciation et du type de rencontre</h2><table>"))
@@ -62,7 +62,7 @@ P(s("</table><h3>Participants</h3><table>"))
 P(ligne("Personne en appréciation", 'Coalesce(varDossier.PersonneAppreciation.DisplayName; "—")'))
 P(ligne("Supérieur(e) immédiat(e)", 'Coalesce(varDossier.SuperieurImmediat.DisplayName; "—")'))
 P(ligne("Supérieur(e) hiérarchique", 'Coalesce(varDossier.SuperieurHierarchique.DisplayName; "—")'))
-P(ligne("Directeur / directrice", 'If(chkDirRequis.Checked; Coalesce(varDossier.Directeur.DisplayName; "à choisir"); "non requis")'))
+P(ligne("Directeur / directrice de service", 'If(chkDirRequis.Checked; Coalesce(varDossier.Directeur.DisplayName; "à choisir"); "non requis")'))
 P(s("</table>"))
 
 # Section A
@@ -128,14 +128,14 @@ P('If(IsBlank(varEvalGlobale); ' + s("<p class=vide>Non remplie.</p>") +
   '; "<p><b>" & varEvalGlobale & "</b><br><span class=desc>" & LookUp(colEvalGlobale; Label = varEvalGlobale).Desc & "</span></p>")')
 
 # Section G
-P(s("<h2>Section G — Avis, certification et approbations</h2><table><tr><th>Étape</th><th>Personne</th><th>Date</th></tr>"))
+P(s("<h2>Section G — Confirmation et chaîne d'approbation</h2><table><tr><th>Étape</th><th>Personne</th><th>Date</th></tr>"))
 def g(etape, qui, date):
     return f'"<tr><td>{etape}</td><td>" & {qui} & "</td><td>" & {d(date)} & "</td></tr>"'
 P(g("Avis au supérieur immédiat", 'Coalesce(varDossier.PersonneAppreciation.DisplayName; "—")', 'varDossier.AviseLe'))
-P(g("Certification (personne en appréciation)", 'Coalesce(varDossier.PersonneAppreciation.DisplayName; "—")', 'varDossier.CertifieLe'))
+P(g("Confirmation et approbation (personne en appréciation)", 'Coalesce(varDossier.PersonneAppreciation.DisplayName; "—")', 'varDossier.CertifieLe'))
 P(g("Approbation du supérieur immédiat", 'Coalesce(varDossier.SuperieurImmediat.DisplayName; "—")', 'varDossier.ApprouveSILe'))
 P(g("Approbation du supérieur hiérarchique", 'Coalesce(varDossier.SuperieurHierarchique.DisplayName; "—")', 'varDossier.ApprouveSHLe'))
-P('If(chkDirRequis.Checked; ' + g("Approbation du directeur", 'Coalesce(varDossier.Directeur.DisplayName; "—")', 'varDossier.ApprouveDirLe') + '; "")')
+P('If(chkDirRequis.Checked; ' + g("Approbation du directeur / de la directrice de service", 'Coalesce(varDossier.Directeur.DisplayName; "—")', 'varDossier.ApprouveDirLe') + '; "")')
 P(g("Transmis aux RH", '"—"', 'varDossier.TransmisPaieLe'))
 P(s("</table><p class=pied>Document produit le ") + ' & Text(Now(); "d mmmm yyyy") & " à " & Text(Now(); "hh:mm") & ' +
   s(" à partir de l'application Appréciation de la contribution.</p></body></html>"))

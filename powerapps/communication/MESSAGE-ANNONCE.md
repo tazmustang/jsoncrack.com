@@ -17,7 +17,7 @@ Bonjour,
 - **Un seul dossier, toujours à jour.** Fini les versions Word qui circulent par courriel.
 - **Confidentiel par défaut.** Seuls vous, vos supérieur(e)s et l'équipe RH responsable y ont accès.
 - **Suivi automatique.** La bonne personne est avisée par courriel à chaque étape, et une barre d'étapes montre où en est le dossier.
-- **Plus simple.** Vous certifiez et approuvez en un clic. Un PDF complet se produit en un clic, et l'évaluation globale est transmise automatiquement aux RH.
+- **Plus simple.** Vous confirmez et approuvez en un clic. Un PDF complet se produit en un clic, et l'évaluation globale est transmise automatiquement aux RH.
 
 **Pour commencer :**
 
@@ -61,7 +61,7 @@ Les appréciations de vos employé(e)s se font maintenant dans l'application **A
 1. Vous recevrez un **courriel** quand un dossier est prêt à consulter, puis quand il est à approuver. Le courriel contient un lien direct vers le dossier.
 2. Dans l'application, **📂 Mes dossiers › À approuver par moi** liste les dossiers qui attendent votre action.
 3. Le **supérieur immédiat** remplit ses cotes, le bilan (section E) et l'évaluation globale, puis approuve. Le **supérieur hiérarchique** prend connaissance du dossier et approuve.
-4. Si un **directeur** doit aussi approuver, cochez-le à la section G avant la certification.
+4. Si un **directeur de service** doit aussi approuver, cochez-le à la section G avant la confirmation.
 
 Votre rôle est reconnu automatiquement selon le dossier. Vous ne voyez que les dossiers où vous êtes nommé(e).
 

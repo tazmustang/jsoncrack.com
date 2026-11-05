@@ -131,7 +131,7 @@ Bonjour,<br><br>@{triggerOutputs()?['body/Title']} a rempli sa partie du formula
       À : CourrielSI
       Objet : À approuver : appréciation de @{triggerOutputs()?['body/Title']}
       Corps :
-Bonjour,<br><br>@{triggerOutputs()?['body/Title']} a certifié son formulaire. C'est maintenant votre étape : complétez au besoin le bilan annuel (section E) et l'évaluation globale, puis approuvez.<br><br><a href="@{variables('LienApp')}">Ouvrir le dossier</a>
+Bonjour,<br><br>@{triggerOutputs()?['body/Title']} a confirmé et approuvé son formulaire. C'est maintenant votre étape : complétez au besoin le bilan annuel (section E) et l'évaluation globale, puis approuvez.<br><br><a href="@{variables('LienApp')}">Ouvrir le dossier</a>
 
   --- Cas « Approuvé SI » : Envoyer un courriel (V2)
       À : CourrielSH
@@ -143,7 +143,7 @@ Bonjour,<br><br>Le ou la supérieur(e) immédiat(e) a approuvé le dossier de @{
       À : CourrielDirecteur
       Objet : À approuver : appréciation de @{triggerOutputs()?['body/Title']}
       Corps :
-Bonjour,<br><br>Le dossier de @{triggerOutputs()?['body/Title']} attend votre approbation (directeur ou directrice).<br><br><a href="@{variables('LienApp')}">Ouvrir le dossier</a>
+Bonjour,<br><br>Le dossier de @{triggerOutputs()?['body/Title']} attend votre approbation (directeur ou directrice de service).<br><br><a href="@{variables('LienApp')}">Ouvrir le dossier</a>
 
   --- Cas « Complété » (dans cet ordre) :
 

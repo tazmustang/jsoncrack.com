@@ -165,10 +165,10 @@ Ces visuels accompagneront l'annonce aux employés et la présentation aux gesti
 | Titre de l'application | Appréciation de la contribution |
 | Sous-titre | Formulaire : Cadre avec équipe / Cadre sans équipe / Professionnel non syndiqué |
 | Menu de gauche | 1. VOUS ÊTES : · 2. TYPE DE POSTE · ACTIONS |
-| Rôles | Personne en appréciation · Supérieur(e) immédiat(e) · Supérieur(e) hiérarchique · Directeur / directrice |
-| Boutons | Comment remplir ce formulaire · Enregistrer et déposer · Mes dossiers · Aperçu PDF · Ouvrir le PDF · Nouveau formulaire · + Ajouter une ligne · Aviser · Certifier · Approuver · À propos · Aide |
+| Rôles | Personne en appréciation · Supérieur(e) immédiat(e) · Supérieur(e) hiérarchique · Directeur / directrice de service |
+| Boutons | Comment remplir ce formulaire · Enregistrer et déposer · Mes dossiers · Aperçu PDF · Ouvrir le PDF · Nouveau formulaire · + Ajouter une ligne · Aviser · Approuver et soumettre · Approuver · À propos · Aide |
 | Écran d'accueil | Mes dossiers · Rechercher un nom · Tous · En cours · À approuver par moi · Complétés · Ouvrir |
-| Barre d'étapes | Brouillon · Certifié (personne en appréciation) · Approuvé (sup. immédiat) · Approuvé (sup. hiérarchique) · Approuvé (directeur) · Transmis aux RH · Archivé (lecture seule) |
+| Barre d'étapes | Brouillon · Confirmé (personne en appréciation) · Approuvé (sup. immédiat) · Approuvé (sup. hiérarchique) · Approuvé (directeur de service) · Transmis aux RH · Archivé (lecture seule) |
 | Messages | « Dossier enregistré. » · « Avant d'enregistrer, complétez : … » · « Créer votre dossier d'appréciation ? » · « Création du PDF en cours… Comptez de 10 à 30 secondes. » · « PDF prêt : cliquez sur « 📄 Ouvrir le PDF ». » · « Le PDF n'a pas pu être créé. Réessayez dans un moment. » |
 | Objets des courriels | « Appréciation de [Nom] : prête pour votre consultation » · « À approuver : appréciation de [Nom] » · « Appréciation complétée – [Nom] » |
 
