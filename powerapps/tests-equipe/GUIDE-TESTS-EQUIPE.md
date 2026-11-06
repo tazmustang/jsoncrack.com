@@ -1,6 +1,6 @@
 ---
 title: "Appréciation de la contribution — Guide de tests pour l'équipe"
-subtitle: "VERSION FINALE — 28 octobre 2026 · Durée : 30 à 45 minutes"
+subtitle: "Mise à jour du 7 novembre 2026 (version 1.0.0.9) · Durée : 30 à 45 minutes"
 lang: fr-CA
 ---
 
@@ -85,10 +85,11 @@ Annie forme des **paires** : une personne joue la **personne en appréciation**,
 
 | ✔ | Qui | Étape | Résultat attendu |
 |---|---|---|---|
-| ☐ | Personne en appréciation | Section G : cliquez sur **Aviser**. | Le supérieur reçoit un courriel « prête pour votre consultation » avec un lien. |
+| ☐ | Personne en appréciation | Section G : cliquez sur **Aviser le supérieur**. | Le supérieur reçoit un courriel avec un lien. Vous voyez « En attente de la version de votre supérieur(e) immédiat(e) » : **Approuver et soumettre** est grisé. |
+| ☐ | Supérieur(e) | Remplissez vos cotes (section B), la section E et l'évaluation globale. Section G : **Transmettre ma version**. | La personne reçoit un courriel « version transmise ». L'étape 3 de la barre a un ✓. |
 | ☐ | Supérieur(e) | Ouvrez le lien du courriel. | « Vous êtes : Supérieur(e) immédiat(e) ». Le dossier est visible dans **À approuver par moi**. |
-| ☐ | Personne en appréciation | Section G : cochez la confirmation, puis **Certifier**. | Votre contenu est **verrouillé**. Le supérieur reçoit « À approuver ». |
-| ☐ | Supérieur(e) | Remplissez vos cotes (section B), la section E et l'évaluation globale. Section G : cochez, puis **Approuver**. | La barre d'étapes avance, avec la date. |
+| ☐ | Personne en appréciation | Après la rencontre, section G : cochez « Je confirme… je l'approuve », puis **Approuver et soumettre**. | Votre contenu est **verrouillé** (étape « Confirmé »). Le supérieur reçoit « À approuver ». |
+| ☐ | Supérieur(e) | Ajustez au besoin. Section G : cochez, puis **Approuver**. | La barre d'étapes avance, avec la date. |
 | ☐ | Les deux | Suivez la **barre d'étapes** jusqu'à la fin, avec Annie pour les dernières approbations. | À **Complété** : courriel à tous, dossier en **lecture seule**, étape « **Transmis aux RH** » cochée. |
 
 ## Test 7 — La confidentialité

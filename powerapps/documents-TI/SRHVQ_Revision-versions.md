@@ -21,9 +21,30 @@ Les numéros de version sont ceux de la solution Power Platform : **majeure.mine
 | 1.0.0.1 | 28 octobre 2026 | Bac à sable | Version finale initiale | Flux PDF (flux 3), PDF joint au dossier, écran allégé, corrections des tests | Annie Audet |
 | 1.0.0.2 | 29 octobre 2026 | Bac à sable | Correction | Type de rencontre conservé et affiché dans le PDF | Annie Audet |
 | 1.0.0.3 | 30 octobre 2026 | Bac à sable | Modification | Échelle des postures de leadership à 4 niveaux, avec la note 1 | Annie Audet |
-| **1.0.0.4** | *[date d'export]* | **PréProd** (puis Prod) | Conformité aux exigences des TI | Noms SRHVQ, groupes d'application, validation, confirmation, gestion des erreurs, À propos, Aide | Annie Audet |
+| 1.0.0.4 | 1er novembre 2026 | PréProd | Conformité aux exigences des TI | Noms SRHVQ, groupes d'application, validation, confirmation, gestion des erreurs, À propos, Aide | Annie Audet |
+| 1.0.0.5 | 4 novembre 2026 | PréProd | Correction | Liste recréée (variable), « Autre » du type de rencontre dans le PDF, contrôle d'accès à l'ouverture | Annie Audet |
+| 1.0.0.6 | 5 novembre 2026 | PréProd | Modification | Libellés (directeur/directrice de service, confirmation, Aviser le supérieur, Approuver et soumettre), sécurité Mes dossiers | Annie Audet |
+| 1.0.0.7 / 1.0.0.8 | 6 novembre 2026 | Bac à sable | Nouvelle étape | « Version du supérieur immédiat transmise » (VersionSILe), barre à 8 étapes, curseur corrigé, flux 1 getbyname('SRHVQ_Utilisateurs'), couleurs Ville, ID manuel | Annie Audet |
+| **1.0.0.9** | *[date d'export]* | **PréProd** (puis Prod) | Mise à niveau | 1.0.0.8 + corrections finales (hauteur sigSI, bannière hors de la barre, gris, logo, « Comportement démontré », 7ᵉ variable retirée) | Annie Audet |
 
 # 2. Détail des changements
+
+## 1.0.0.9 — Nouvelle étape, sécurité et identité visuelle (6-7 novembre)
+
+- Nouvelle étape « Version du supérieur immédiat transmise » : bouton « Transmettre ma version » (SI), colonne VersionSILe, courriel à la personne (flux 2). La personne approuve seulement après.
+- Barre d'étapes à 8 étapes ; « Certifié » affiché « Confirmé ».
+- Sécurité : le flux 1 retire le groupe SRHVQ_Utilisateurs (getbyname) ; G-IS-APP placé dans SRHVQ_Utilisateurs.
+- Curseur : les tableaux A et D sont recopiés à l'enregistrement (plus de saut à la section B).
+- Libellés : « Processus d'approbation », « Comportement démontré », « Directeur / directrice de service ».
+- Bandeau #00285E avec le logo de la Ville ; gris #8A8C8E.
+- Numéro d'employé saisi par la personne (obligatoire).
+- Variable d'environnement inutilisée du bac à sable retirée de la solution.
+
+## 1.0.0.5 et 1.0.0.6 — Corrections des tests PréProd (4-5 novembre)
+
+- Liste PréProd recréée : valeur de la variable mise à jour, flux désactivés puis réactivés.
+- Type de rencontre « Autre » conservé dans le PDF ; contrôle d'accès à l'ouverture d'un dossier.
+- Libellés demandés par les testeurs et les RH.
 
 ## 1.0.0.4 — Conformité aux exigences des TI
 
@@ -61,5 +82,6 @@ Les numéros de version sont ceux de la solution Power Platform : **majeure.mine
 
 | Version | PréProd — date et approbateur | Prod — date et approbateur |
 |---|---|---|
-| 1.0.0.4 | | |
+| 1.0.0.4 | 1er novembre 2026 — TI | |
+| 1.0.0.9 | | |
 | | | |

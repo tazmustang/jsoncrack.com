@@ -1,6 +1,6 @@
 ---
 title: "Appréciation de la contribution — Guide d'utilisation"
-subtitle: "VERSION FINALE — 28 octobre 2026 · Pour les personnes en appréciation et les gestionnaires"
+subtitle: "Mise à jour du 7 novembre 2026 (version 1.0.0.9) · Pour les personnes en appréciation et les gestionnaires"
 lang: fr-CA
 ---
 
@@ -64,7 +64,9 @@ Votre supérieur(e) immédiat(e) reçoit un courriel avec un lien vers votre dos
 
 ## Étape 3 — La version de votre supérieur(e), puis la rencontre
 
-Votre supérieur(e) immédiat(e) remplit sa partie (cotes, bilan de la section E, évaluation globale) et vous la **transmet** : vous recevez un courriel et pouvez la consulter avant la rencontre.
+Votre supérieur(e) immédiat(e) remplit sa partie (cotes de la section B, bilan de la section E, évaluation globale) et vous la **transmet** : vous recevez le courriel « la version de votre supérieur(e) immédiat(e) est prête » et pouvez la consulter avant la rencontre.
+
+> Tant que cette version n'est pas transmise, la case de confirmation indique « En attente de la version de votre supérieur(e) immédiat(e) » et le bouton **Approuver et soumettre** reste grisé.
 
 ### La rencontre
 
@@ -74,7 +76,9 @@ Vous échangez avec votre supérieur(e). Ajustez votre dossier au besoin, puis *
 
 ## Étape 4 — Approuver et soumettre
 
-1. Dans la **section G**, cochez la case de confirmation.
+Après la rencontre :
+
+1. Dans la **section G**, cochez « Je confirme avoir pris connaissance du contenu de ce formulaire et je l'approuve ».
 2. Cliquez sur **Approuver et soumettre**.
 
 **À partir de ce moment, votre contenu est verrouillé.** Votre supérieur(e) immédiat(e) reçoit « À approuver ».
@@ -91,16 +95,16 @@ Vous suivez l'avancement dans la **barre d'étapes**, en haut du formulaire. Qua
 
 1. Vous recevez un **courriel** : « prête pour votre consultation » après l'avis, puis « À approuver » après la confirmation. Cliquez sur le lien, ou ouvrez **Mes dossiers › À approuver par moi**.
 2. L'application reconnaît votre rôle **automatiquement** : « Vous êtes : Supérieur(e) immédiat(e) ».
-3. Avant la confirmation, vous pouvez compléter :
-   - l'identification ;
-   - les sections A, C et D ;
-   - les commentaires de la section B.
-4. Jusqu'à **votre approbation**, vous remplissez :
+3. **Avant la rencontre**, remplissez votre partie :
    - **vos cotes** dans la section B (colonne du supérieur) ;
    - le **bilan annuel (section E)** ;
    - l'**évaluation globale**.
-5. Après la confirmation, allez à la **section G**, cochez la case de confirmation et cliquez sur **Approuver**.
-6. Le supérieur hiérarchique reçoit alors « À approuver ».
+
+   Vous pouvez aussi compléter l'identification et les sections A, C et D.
+4. **Transmettez votre version :** dans la **section G**, carte « Supérieur(e) immédiat(e) », cochez « Ma version est complète… », puis cliquez sur **📨 Transmettre ma version**. La personne reçoit un courriel et voit maintenant vos cotes, votre bilan et l'évaluation globale.
+5. **Tenez la rencontre.** Vous pouvez encore ajuster votre partie.
+6. Après la rencontre, la personne clique sur **Approuver et soumettre** ; vous recevez « À approuver ».
+7. Dans la **section G**, cochez la case et cliquez sur **Approuver**. Le supérieur hiérarchique reçoit alors « À approuver ».
 
 # 4. Supérieur(e) hiérarchique et directeur ou directrice de service
 
@@ -123,7 +127,7 @@ Vous suivez l'avancement dans la **barre d'étapes**, en haut du formulaire. Qua
 
 | Outil | Où | À quoi il sert |
 |---|---|---|
-| **Barre d'étapes** | En haut du formulaire | Les 7 étapes, avec un ✓ et la date quand elles sont faites |
+| **Barre d'étapes** | En haut du formulaire | Les 8 étapes, avec un ✓ et la date quand elles sont faites |
 | **🖨️ Aperçu PDF** | Barre de gauche | Produit le **PDF complet** de l'appréciation (10 à 30 secondes) et le **joint au dossier**. Cliquez ensuite sur **📄 Ouvrir le PDF** |
 | **🗑️ Nouveau formulaire** | Barre de gauche | Vide l'écran pour commencer un autre formulaire. Ce qui a été enregistré n'est pas effacé |
 | **📂 Mes dossiers** | Barre de gauche | Revenir à la liste de vos dossiers |
@@ -137,6 +141,9 @@ Vous suivez l'avancement dans la **barre d'étapes**, en haut du formulaire. Qua
 | Je ne peux plus modifier mon contenu. | Il est verrouillé depuis la **confirmation**. Pour une correction, parlez-en à votre supérieur(e) et au soutien RH. |
 | Une section est grisée. | Elle est réservée à un autre rôle, ou à une autre étape. |
 | Le bouton Approuver est grisé. | Cochez d'abord la case de confirmation juste au-dessus. |
+| « Approuver et soumettre » est grisé (personne en appréciation). | Votre supérieur(e) immédiat(e) n'a pas encore transmis sa version. Vous recevrez un courriel dès qu'elle sera prête. |
+| Mon ID n'est pas rempli automatiquement. | C'est normal : inscrivez votre numéro d'employé. Il est obligatoire pour enregistrer. |
+| Comment corriger mes fautes d'orthographe ? | Dans Edge : Paramètres › Langues › activez la vérification orthographique et ajoutez Français (Canada). Les fautes sont soulignées en rouge. |
 | Le PDF ne s'ouvre pas. | Attendez le message vert, puis cliquez sur **📄 Ouvrir le PDF**. Si un message rouge apparaît, réessayez dans une minute, puis contactez le soutien. |
 | Il y a plusieurs versions de mon PDF ? | Non : chaque nouvelle demande remplace l'ancienne. Le PDF le plus récent est toujours celui joint au dossier. |
 | Qui voit mon appréciation ? | Vous, votre supérieur(e) immédiat(e), votre supérieur(e) hiérarchique, le directeur ou la directrice de service si requis, et l'équipe RH responsable. **Personne d'autre.** |

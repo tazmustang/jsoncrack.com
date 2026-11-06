@@ -297,3 +297,16 @@ Concat(Sort(colEchelle; Ordre) As n;
 
 echelleLegend.AutoHeight
 true
+
+
+#####################################################################
+# 14. VERSION 1.0.0.7 à 1.0.0.9 (6-7 novembre) — où trouver les formules
+#####################################################################
+- Nouvelle étape « Transmettre ma version », curseur, textes, sécurité : preprod/PLAN-ETAPES-VERSION-1-0-0-7.docx
+- Barre d'étapes (8 étapes)                : barre-etapes-formules.txt
+- PDF (recopie des tableaux, section G)    : btnApercuPDF-OnSelect.txt
+- Couleurs bleu #00285E / gris #8A8C8E     : preprod/FORMULES-COULEURS-BLEU.txt et preprod/ID-COULEURS-LOGO-FLUX-7-NOVEMBRE.docx
+- Corrections restantes de la 1.0.0.8      : preprod/RESTE-A-FAIRE-1-0-0-8.docx
+
+txtId.Default       varDossier.IdEmploye
+txtId.Placeholder   "Votre numéro d'employé (obligatoire)"

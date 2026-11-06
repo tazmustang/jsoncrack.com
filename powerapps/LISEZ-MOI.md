@@ -1,6 +1,6 @@
 # Appréciation de la contribution — application Power Apps
 
-**VERSION FINALE — 28 octobre 2026** (version présentée et soumise pour déploiement)
+**Mise à jour du 7 novembre 2026 — version de la solution 1.0.0.9** (nouvelle étape « Version du supérieur immédiat transmise », 8 étapes, couleurs et logo de la Ville)
 
 Commencez par **GUIDE-MISE-EN-PRODUCTION.docx**. Il explique tout et liste chaque fichier.
 
@@ -29,4 +29,7 @@ Commencez par **GUIDE-MISE-EN-PRODUCTION.docx**. Il explique tout et liste chaqu
 | Appreciation-contribution-VERSION-FINALE.zip | Tous les fichiers ci-dessus en un seul téléchargement |
 | generer-formule-pdf.py, schema/schema-solution.html, schema/generer-image.js | Sources pour régénérer |
 | liste-lisible/ | Liste SharePoint lisible (affichage, formulaire) et export Excel / Power Query des colonnes JSON |
+| preprod/PLAN-ETAPES-VERSION-1-0-0-7.docx | **Plan maître** de la version 1.0.0.7 à 1.0.0.9 (20 étapes) |
+| preprod/RESTE-A-FAIRE-1-0-0-8.docx | **À faire dans l'application avant d'exporter la 1.0.0.9** (analyse de la 1.0.0.8) |
+| logo/ | Logo de la Ville (blanc et couleur, fond transparent) |
 | MODIFICATIONS-LIBELLES-5-NOVEMBRE.docx | « Directeur / directrice de service » et « Confirmation » (section G) |

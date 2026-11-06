@@ -1,6 +1,6 @@
 ---
 title: "Guide — PDF de l'appréciation"
-subtitle: "VERSION FINALE — 28 octobre 2026 · Application Power Apps « Appréciation de la contribution »"
+subtitle: "Mise à jour du 7 novembre 2026 (version 1.0.0.9) · Application Power Apps « Appréciation de la contribution »"
 lang: fr-CA
 ---
 
@@ -10,7 +10,8 @@ lang: fr-CA
   - identification et participants ;
   - sections A à F ;
   - évaluation globale ;
-  - avis, certification et approbations.
+  - section G « Processus d'approbation » : avis, version du supérieur immédiat, confirmation et approbations ;
+  - bandeau bleu Ville #00285E et gris #8A8C8E.
 - Le PDF est **joint au dossier**, comme pièce jointe de l'élément de la liste Appreciations : `Appreciation_dossierN.pdf`.
 - **Une seule version** : chaque nouvelle demande **remplace** l'ancienne.
 - Le PDF a **les mêmes accès que le dossier** : la personne, ses supérieurs, le directeur si requis et les RH. Personne d'autre.

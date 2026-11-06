@@ -60,7 +60,7 @@ Les appréciations de vos employé(e)s se font maintenant dans l'application **A
 
 1. Vous recevrez un **courriel** quand un dossier est prêt à consulter, puis quand il est à approuver. Le courriel contient un lien direct vers le dossier.
 2. Dans l'application, **📂 Mes dossiers › À approuver par moi** liste les dossiers qui attendent votre action.
-3. Le **supérieur immédiat** remplit ses cotes, le bilan (section E) et l'évaluation globale, puis approuve. Le **supérieur hiérarchique** prend connaissance du dossier et approuve.
+3. Le **supérieur immédiat** remplit ses cotes, le bilan (section E) et l'évaluation globale, puis clique sur **Transmettre ma version** : la personne la reçoit **avant la rencontre**. Après la rencontre et l'approbation de la personne, il approuve à son tour. Le **supérieur hiérarchique** prend connaissance du dossier et approuve.
 4. Si un **directeur de service** doit aussi approuver, cochez-le à la section G avant la confirmation.
 
 Votre rôle est reconnu automatiquement selon le dossier. Vous ne voyez que les dossiers où vous êtes nommé(e).

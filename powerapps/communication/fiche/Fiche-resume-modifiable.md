@@ -6,12 +6,12 @@ lang: fr-CA
 
 L'appréciation annuelle des **cadres avec ou sans équipe** et des **professionnels non syndiqués** se fait maintenant dans une **application Power Apps** : **un seul dossier** par appréciation, rempli par chaque personne à son tour, conservé de façon sécurisée dans SharePoint de la Ville. Aucun fichier à envoyer par courriel.
 
-**Le circuit en 7 étapes :** 1. Brouillon › 2. Aviser › 3. Approuver et soumettre (contenu verrouillé) › 4. Approuvé SI › 5. Approuvé SH › 6. Directeur de service (si requis) › 7. Complété (transmis aux RH, lecture seule)
+**Le circuit en 8 étapes :** 1. Brouillon › 2. Aviser › 3. Version du supérieur immédiat transmise › 4. Rencontre › 5. Approuver et soumettre (contenu verrouillé) › 6. Approuvé SI › 7. Approuvé SH (puis directeur de service, si requis) › 8. Complété (transmis aux RH, lecture seule)
 
 | Qui | Fait quoi |
 |---|---|
-| Personne en appréciation | Remplit les sections A à D et F, avise, puis confirme |
-| Supérieur(e) immédiat(e) | Cotes (section B), bilan (E), évaluation globale, approuve |
+| Personne en appréciation | Remplit les sections A à D et F, avise, puis approuve et soumet après la rencontre |
+| Supérieur(e) immédiat(e) | Cotes (B), bilan (E), évaluation globale ; transmet sa version, puis approuve |
 | Supérieur(e) hiérarchique | Prend connaissance et approuve |
 | Directeur / directrice de service | Approuve en dernier, si requis |
 | Ressources humaines | Reçoivent l'évaluation globale ; consultent les dossiers |
@@ -20,7 +20,7 @@ L'appréciation annuelle des **cadres avec ou sans équipe** et des **profession
 |---|---|
 | 📂 Mes dossiers | Vos dossiers ; filtre « À approuver par moi » |
 | ☁️ Enregistrer et déposer | Enregistre votre travail (souvent !) |
-| Section G | Aviser · Approuver et soumettre · Approuver |
+| Section G | Aviser · Transmettre ma version · Approuver et soumettre · Approuver |
 | 🖨️ Aperçu PDF | PDF complet, joint au dossier |
 | ❓ Aide · ℹ️ À propos | Mode d'emploi et coordonnées du soutien |
 

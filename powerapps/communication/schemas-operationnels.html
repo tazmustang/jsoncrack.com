@@ -1,15 +1,15 @@
 <!doctype html><html lang="fr"><head><meta charset="utf-8"><title>Schémas opérationnels</title>
 <style>
-:root{--marine:#00285e;--bleu:#074b98;--or:#857650;--vert:#009e49;--vert2:#00796b;--mauve:#6b3fa0;--gris:#6b7280;--fond:#f8fafc}
+:root{--marine:#00285e;--bleu:#074b98;--or:#00285e;--vert:#009e49;--vert2:#00796b;--mauve:#6b3fa0;--gris:#8a8c8e;--fond:#f8fafc}
 *{box-sizing:border-box}
 body{font-family:"Segoe UI",Arial,sans-serif;margin:0;color:#1f2937;background:#fff}
 section.page{width:1600px;padding:34px 40px 40px}
 .bandeau{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:4px solid var(--or);padding-bottom:10px;margin-bottom:22px}
 h1{margin:0;font-size:32px;color:var(--marine)}
 .sous{color:var(--gris);font-size:16px;margin-top:4px}
-.ville{font-weight:800;color:var(--or);letter-spacing:.08em;font-size:14px;text-align:right}
+.ville{text-align:right;font-size:12px;color:var(--gris)}.ville img{height:62px;display:block;margin-left:auto;margin-bottom:4px}
 /* page 1 : swimlanes */
-.lanes{display:grid;grid-template-columns:190px repeat(7,1fr);border:2px solid #d1d5db;border-radius:12px;overflow:hidden}
+.lanes{display:grid;grid-template-columns:180px repeat(8,1fr);border:2px solid #d1d5db;border-radius:12px;overflow:hidden}
 .lanes>div{border-right:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb;min-height:118px;padding:8px}
 .hd{background:var(--marine)!important;color:#fff;font-weight:700;font-size:14px;min-height:auto!important;text-align:center;display:flex;flex-direction:column;justify-content:center}
 .hd small{font-weight:400;opacity:.85;font-size:12px}
@@ -20,8 +20,8 @@ h1{margin:0;font-size:32px;color:var(--marine)}
 .p{background:#e8f6ee;border:1.5px solid var(--vert)}
 .s{background:#eaf1fb;border:1.5px solid var(--bleu)}
 .h{background:#f3eefb;border:1.5px solid var(--mauve)}
-.d{background:#fbf6ea;border:1.5px dashed var(--or)}
-.auto{background:#fff;border:1.5px solid #9ca3af;color:#4b5563}
+.d{background:#f4f4f5;border:1.5px dashed #8a8c8e}
+.auto{background:#fff;border:1.5px solid #8a8c8e;color:#4b5563}
 .auto b{color:#4b5563}
 .leg{display:flex;gap:18px;margin-top:14px;font-size:13px;color:var(--gris);flex-wrap:wrap}
 .leg i{display:inline-block;width:14px;height:14px;border-radius:4px;margin-right:6px;vertical-align:-2px}
@@ -37,7 +37,7 @@ td.sec{font-weight:700;color:var(--marine);background:#f1f5fb;width:250px}
 .card h3{margin:0 0 10px;color:var(--marine);font-size:20px}
 .card ul{margin:0;padding-left:20px;line-height:1.55;font-size:15px}
 .ico{font-size:34px}
-.mail{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:22px}
+.mail{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-top:22px}
 .m{border-radius:10px;padding:10px;background:#fff;border:1.5px solid #c7d2e3;font-size:13px}
 .m b{display:block;color:var(--marine)}
 /* page 4 */
@@ -61,20 +61,22 @@ td.sec{font-weight:700;color:var(--marine);background:#f1f5fb;width:250px}
 <section class="page">
  <div class="bandeau"><div><h1>Le circuit d'une appréciation, étape par étape</h1>
  <div class="sous">Qui fait quoi, et à quel moment — l'application avise automatiquement la bonne personne à chaque étape</div></div>
- <div class="ville">VILLE DE QUÉBEC<br>Ressources humaines<br><span style="color:#009e49">Version finale · 28 oct. 2026</span></div></div>
+ <div class="ville"><img src="../logo/logo-ville-quebec-couleur.png" alt="Ville de Québec">Ressources humaines · mise à jour 7 nov. 2026</div></div>
  <div class="lanes">
   <div class="hd">Rôle</div>
   <div class="hd">1 · Préparer<small>Brouillon</small></div>
   <div class="hd">2 · Aviser<small>Avisé au supérieur</small></div>
-  <div class="hd">3 · Rencontre<small>échanges</small></div>
-  <div class="hd">4 · Approuver et soumettre<small>Confirmé</small></div>
-  <div class="hd">5 · Approuver<small>Approuvé SI</small></div>
-  <div class="hd">6 · Approuver<small>Approuvé SH</small></div>
-  <div class="hd">7 · Terminé<small>Complété</small></div>
+  <div class="hd">3 · Version du SI<small>transmise à la personne</small></div>
+  <div class="hd">4 · Rencontre<small>échanges</small></div>
+  <div class="hd">5 · Approuver et soumettre<small>Confirmé</small></div>
+  <div class="hd">6 · Approuver<small>Approuvé SI</small></div>
+  <div class="hd">7 · Approuver<small>Approuvé SH</small></div>
+  <div class="hd">8 · Terminé<small>Complété</small></div>
 
   <div class="role">Personne en appréciation<span>cadre ou professionnel</span></div>
   <div><div class="c p"><b>Remplit sa partie</b>Type de poste, identification, sections A à D, bilan F. Enregistre autant de fois que voulu.</div></div>
   <div><div class="c p"><b>Avise son supérieur</b>Un clic : le dossier est prêt à consulter.</div></div>
+  <div><div class="c auto"><b>✉ Reçoit la version de son supérieur</b>La consulte avant la rencontre.</div></div>
   <div><div class="c p"><b>Échange avec son supérieur</b>Ajuste au besoin.</div></div>
   <div><div class="c p"><b>Confirme et soumet</b>Coche la confirmation. Son contenu se verrouille.</div></div>
   <div></div><div></div>
@@ -83,63 +85,65 @@ td.sec{font-weight:700;color:var(--marine);background:#f1f5fb;width:250px}
   <div class="role">Supérieur(e) immédiat(e)<span>SI</span></div>
   <div><div class="c s"><b>Peut commencer</b>Cotes, section E.</div></div>
   <div><div class="c auto"><b>✉ Reçoit un courriel</b>« prête pour votre consultation »</div></div>
-  <div><div class="c s"><b>Planifie la rencontre</b></div></div>
+  <div><div class="c s"><b>Remplit sa partie et la transmet</b>Cotes, bilan E, évaluation globale, puis « Transmettre ma version ».</div></div>
+  <div><div class="c s"><b>Tient la rencontre</b>Ajuste au besoin.</div></div>
   <div><div class="c auto"><b>✉ Reçoit « À approuver »</b></div></div>
-  <div><div class="c s"><b>Complète et approuve</b>Cotes, bilan E, évaluation globale, puis approuve.</div></div>
+  <div><div class="c s"><b>Approuve</b>Peut encore ajuster sa partie.</div></div>
   <div></div>
   <div><div class="c s"><b>Lecture seule</b></div></div>
 
   <div class="role">Supérieur(e) hiérarchique<span>SH</span></div>
-  <div></div><div></div><div></div><div></div>
+  <div></div><div></div><div></div><div></div><div></div>
   <div><div class="c auto"><b>✉ Reçoit « À approuver »</b></div></div>
   <div><div class="c h"><b>Prend connaissance et approuve</b></div></div>
   <div><div class="c h"><b>Lecture seule</b></div></div>
 
   <div class="role">Directeur / directrice de service<span>seulement si requis</span></div>
-  <div></div><div></div><div></div><div></div><div></div>
+  <div></div><div></div><div></div><div></div><div></div><div></div>
   <div><div class="c d"><b>Si requis : reçoit « À approuver » et approuve</b>Sinon, l'étape est sautée.</div></div>
   <div><div class="c d"><b>Lecture seule</b></div></div>
 
   <div class="role">Automatique<span>l'application</span></div>
   <div><div class="c auto"><b>🔒 Accès limités</b>Seules les personnes du dossier y ont accès.</div></div>
   <div><div class="c auto"><b>✉ Courriel au SI</b></div></div>
+  <div><div class="c auto"><b>✉ Courriel à la personne</b>« la version de votre supérieur est prête »</div></div>
   <div></div>
   <div><div class="c auto"><b>✉ Courriel au SI</b>Barre d'étapes à jour.</div></div>
   <div><div class="c auto"><b>✉ Courriel au SH</b></div></div>
   <div><div class="c auto"><b>✉ Courriel au directeur de service</b>(si requis)</div></div>
   <div><div class="c auto"><b>✉ RH avisés · tous avisés</b>Dossier archivé en lecture seule.</div></div>
  </div>
- <div class="leg"><span><i style="background:#e8f6ee;border:1.5px solid #009e49"></i>Personne en appréciation</span><span><i style="background:#eaf1fb;border:1.5px solid #074b98"></i>Supérieur(e) immédiat(e)</span><span><i style="background:#f3eefb;border:1.5px solid #6b3fa0"></i>Supérieur(e) hiérarchique</span><span><i style="background:#fbf6ea;border:1.5px dashed #857650"></i>Directeur de service (si requis)</span><span><i style="background:#fff;border:1.5px solid #9ca3af"></i>Fait automatiquement</span></div>
+ <div class="leg"><span><i style="background:#e8f6ee;border:1.5px solid #009e49"></i>Personne en appréciation</span><span><i style="background:#eaf1fb;border:1.5px solid #074b98"></i>Supérieur(e) immédiat(e)</span><span><i style="background:#f3eefb;border:1.5px solid #6b3fa0"></i>Supérieur(e) hiérarchique</span><span><i style="background:#f4f4f5;border:1.5px dashed #8a8c8e"></i>Directeur de service (si requis)</span><span><i style="background:#fff;border:1.5px solid #8a8c8e"></i>Fait automatiquement</span></div>
 </section>
 
 <!-- PAGE 2 : QUI REMPLIT QUOI -->
 <section class="page">
  <div class="bandeau"><div><h1>Qui remplit quoi dans le formulaire</h1>
  <div class="sous">Chacun ne peut modifier que sa partie, et seulement à son étape — le reste est en lecture</div></div>
- <div class="ville">VILLE DE QUÉBEC<br>Ressources humaines<br><span style="color:#009e49">Version finale · 28 oct. 2026</span></div></div>
+ <div class="ville"><img src="../logo/logo-ville-quebec-couleur.png" alt="Ville de Québec">Ressources humaines · mise à jour 7 nov. 2026</div></div>
  <table>
   <tr><th>Partie du formulaire</th><th>Personne en appréciation</th><th>Supérieur(e) immédiat(e)</th><th>Supérieur(e) hiérarchique / directeur de service</th></tr>
   <tr><td class="sec">Type de poste</td><td class="ok">Choisit (cadre avec équipe, cadre sans équipe, professionnel)</td><td class="lec">Lecture</td><td class="lec">Lecture</td></tr>
   <tr><td class="sec">Identification et type de rencontre</td><td class="ok">Remplit</td><td class="ok">Peut compléter avant la confirmation</td><td class="lec">Lecture</td></tr>
   <tr><td class="sec">A — Objectifs annuels</td><td class="ok">Remplit</td><td class="ok">Peut compléter avant la confirmation</td><td class="lec">Lecture</td></tr>
-  <tr><td class="sec">B — Postures (cadres) ou compétences (professionnels)</td><td class="ok">Ses cotes et exemples</td><td class="ok">Ses propres cotes (colonne du supérieur)</td><td class="lec">Lecture</td></tr>
+  <tr><td class="sec">B — Postures (cadres) ou compétences (professionnels)</td><td class="ok">Ses cotes et exemples</td><td class="ok">Ses propres cotes (colonne du supérieur), visibles par la personne après la transmission</td><td class="lec">Lecture</td></tr>
   <tr><td class="sec">C — Valeurs organisationnelles</td><td class="ok">Coche les thèmes, donne des exemples</td><td class="ok">Peut compléter avant la confirmation</td><td class="lec">Lecture</td></tr>
   <tr><td class="sec">D — Développement des compétences</td><td class="ok">Remplit</td><td class="ok">Peut compléter avant la confirmation</td><td class="lec">Lecture</td></tr>
-  <tr><td class="sec">E — Bilan du supérieur</td><td class="lec">Lecture (une fois rempli)</td><td class="ok">Remplit, jusqu'à son approbation</td><td class="lec">Lecture</td></tr>
+  <tr><td class="sec">E — Bilan du supérieur</td><td class="lec">Lecture, après « Transmettre ma version »</td><td class="ok">Remplit, jusqu'à son approbation</td><td class="lec">Lecture</td></tr>
   <tr><td class="sec">F — Bilan de la personne</td><td class="ok">Remplit, jusqu'à la confirmation</td><td class="lec">Lecture</td><td class="lec">Lecture</td></tr>
-  <tr><td class="sec">Évaluation globale</td><td class="lec">Lecture (une fois remplie)</td><td class="ok">Choisit, jusqu'à son approbation</td><td class="lec">Lecture</td></tr>
-  <tr><td class="sec">G — Avis, confirmation, approbations</td><td class="ok">Aviser · Approuver et soumettre · indiquer si un directeur de service est requis</td><td class="ok">Approuver · indiquer si un directeur de service est requis</td><td class="ok">Approuver (chacun à son tour)</td></tr>
+  <tr><td class="sec">Évaluation globale</td><td class="lec">Lecture, après « Transmettre ma version »</td><td class="ok">Choisit, jusqu'à son approbation</td><td class="lec">Lecture</td></tr>
+  <tr><td class="sec">G — Avis, confirmation, approbations</td><td class="ok">Aviser · Approuver et soumettre · indiquer si un directeur de service est requis</td><td class="ok">Transmettre ma version · Approuver · indiquer si un directeur de service est requis</td><td class="ok">Approuver (chacun à son tour)</td></tr>
   <tr><td class="sec">Aperçu PDF</td><td class="ok">Oui, en tout temps</td><td class="ok">Oui</td><td class="ok">Oui</td></tr>
   <tr><td class="sec">Voir le dossier d'un collègue</td><td class="non">Non</td><td class="non">Non, sauf s'il ou elle y est nommé(e)</td><td class="non">Non, sauf s'il ou elle y est nommé(e)</td></tr>
  </table>
- <p class="pied">Après la confirmation, le contenu de la personne est verrouillé. Après « Complété », tout le dossier passe en lecture seule pour tout le monde. Les RH (groupe RH – Appréciations) peuvent consulter les dossiers.</p>
+ <p class="pied">Après la confirmation, le contenu de la personne est verrouillé. Après « Complété », tout le dossier passe en lecture seule pour tout le monde. Les RH (groupe SRHVQ_RH) peuvent consulter les dossiers.</p>
 </section>
 
 <!-- PAGE 3 : EN COULISSES -->
 <section class="page">
  <div class="bandeau"><div><h1>Ce que l'outil fait pour vous, en coulisses</h1>
  <div class="sous">Plus de courriels à écrire, de fichiers à transférer ni de signatures à courir</div></div>
- <div class="ville">VILLE DE QUÉBEC<br>Ressources humaines<br><span style="color:#009e49">Version finale · 28 oct. 2026</span></div></div>
+ <div class="ville"><img src="../logo/logo-ville-quebec-couleur.png" alt="Ville de Québec">Ressources humaines · mise à jour 7 nov. 2026</div></div>
  <div class="flow">
   <div class="card"><div class="ico">🔒</div><h3>Confidentialité automatique</h3><ul><li>Dès la création, le dossier n'est visible que par la personne, ses supérieurs et les RH.</li><li>Un collègue ne voit jamais le dossier d'un autre.</li><li>À la fin, tout passe en lecture seule.</li></ul></div>
   <div class="card"><div class="ico">✉️</div><h3>Courriels automatiques</h3><ul><li>À chaque étape, la bonne personne est avisée, avec un lien direct vers le dossier.</li><li>Le supérieur immédiat et hiérarchique sont trouvés automatiquement dans l'annuaire.</li><li>Aucun contenu d'évaluation dans les courriels.</li></ul></div>
@@ -147,6 +151,7 @@ td.sec{font-weight:700;color:var(--marine);background:#f1f5fb;width:250px}
  </div>
  <div class="mail">
   <div class="m"><b>Aviser</b>→ courriel au SI : « prête pour votre consultation »</div>
+  <div class="m"><b>Transmettre ma version</b>→ courriel à la personne : « la version de votre supérieur est prête »</div>
   <div class="m"><b>Approuver et soumettre</b>→ courriel au SI : « À approuver »</div>
   <div class="m"><b>Approuvé SI</b>→ courriel au SH : « À approuver »</div>
   <div class="m"><b>Approuvé SH</b>→ courriel au directeur de service (si requis)</div>
@@ -160,7 +165,7 @@ td.sec{font-weight:700;color:var(--marine);background:#f1f5fb;width:250px}
 <section class="page">
  <div class="bandeau"><div><h1>Pourquoi passer du Word à l'application ?</h1>
  <div class="sous">Le même contenu, une façon beaucoup plus simple de le remplir et de le faire circuler</div></div>
- <div class="ville">VILLE DE QUÉBEC<br>Ressources humaines<br><span style="color:#009e49">Version finale · 28 oct. 2026</span></div></div>
+ <div class="ville"><img src="../logo/logo-ville-quebec-couleur.png" alt="Ville de Québec">Ressources humaines · mise à jour 7 nov. 2026</div></div>
  <div class="vs">
   <div class="col avant"><h2>📄 Avant : le document Word</h2>
    <div class="it"><span class="e">📧</span><span>Le fichier fait l'aller-retour par courriel ; on ne sait plus quelle est la <b>bonne version</b>.</span></div>
@@ -175,7 +180,7 @@ td.sec{font-weight:700;color:var(--marine);background:#f1f5fb;width:250px}
   <div class="col apres"><h2>📱 Maintenant : l'application</h2>
    <div class="it"><span class="e">✅</span><span><b>Un seul dossier</b>, toujours à jour, que chacun ouvre au bon moment.</span></div>
    <div class="it"><span class="e">🔒</span><span><b>Accès limité automatiquement</b> aux personnes concernées et aux RH.</span></div>
-   <div class="it"><span class="e">🖱️</span><span>Approuver et soumettre et approuver <b>en un clic</b>, avec date et nom enregistrés.</span></div>
+   <div class="it"><span class="e">🖱️</span><span>Aviser, transmettre, approuver <b>en un clic</b>, avec date et nom enregistrés.</span></div>
    <div class="it"><span class="e">📍</span><span><b>Barre d'étapes</b> et « Mes dossiers » : on voit l'avancement en un coup d'œil.</span></div>
    <div class="it"><span class="e">📊</span><span><b>PDF complet</b> de l'appréciation, joint au dossier automatiquement.</span></div>
    <div class="it"><span class="e">💼</span><span>Évaluation globale <b>transmise aux RH</b> automatiquement.</span></div>
@@ -185,7 +190,7 @@ td.sec{font-weight:700;color:var(--marine);background:#f1f5fb;width:250px}
  <div class="kpis">
   <div class="k"><div class="n">0</div><div class="t">fichier envoyé par courriel</div></div>
   <div class="k"><div class="n">1 clic</div><div class="t">pour aviser, approuver et soumettre, approuver ou produire le PDF</div></div>
-  <div class="k"><div class="n">6</div><div class="t">courriels de suivi envoyés automatiquement</div></div>
+  <div class="k"><div class="n">7</div><div class="t">courriels de suivi envoyés automatiquement</div></div>
   <div class="k"><div class="n">100 %</div><div class="t">dans Microsoft 365 de la Ville, accès contrôlés</div></div>
  </div>
 </section>

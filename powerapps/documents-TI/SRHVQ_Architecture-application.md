@@ -1,6 +1,6 @@
 ---
 title: "SRHVQ — Document d'architecture de l'application « Appréciation de la contribution »"
-subtitle: "VERSION FINALE — 30 octobre 2026 · Version de la solution : 1.0.0.4"
+subtitle: "Mise à jour du 7 novembre 2026 · Version de la solution : 1.0.0.9"
 lang: fr-CA
 ---
 
@@ -28,8 +28,9 @@ L'application remplace le formulaire Word d'appréciation de la contribution (ve
 | Rôle automatique | Le rôle (personne, SI, SH, directeur) est déduit du courriel de la personne connectée. Seules les sections de son rôle et de l'étape sont modifiables |
 | Annuaire | Le SI et le SH sont trouvés automatiquement dans Office 365 (ManagerV2) à la création |
 | Validation et confirmation | Les champs obligatoires sont vérifiés avant tout enregistrement. Une confirmation est demandée avant la création d'un dossier |
-| Circuit | Brouillon › Avisé au supérieur › Certifié (contenu de la personne verrouillé) › Approuvé SI › Approuvé SH › (Approuvé directeur) › Complété |
-| Barre d'étapes | Les 7 étapes, avec un ✓ et la date |
+| Circuit | Brouillon › Avisé au supérieur › **Version du supérieur immédiat transmise** (colonne VersionSILe, sans nouveau statut) › Confirmé (statut « Certifié » ; contenu de la personne verrouillé) › Approuvé SI › Approuvé SH › (Approuvé directeur, « directeur / directrice de service ») › Complété |
+| Barre d'étapes | Les 8 étapes, avec un ✓ et la date |
+| Identité visuelle | Bandeau bleu Ville #00285E avec le logo blanc de la Ville ; gris #8A8C8E ; numéro d'employé saisi par la personne (obligatoire) |
 | Courriels automatiques | À chaque étape, la bonne personne reçoit un lien vers le dossier. Aucun contenu d'évaluation dans les courriels |
 | Transmission aux RH | À « Complété » : l'évaluation globale seulement est transmise par courriel ; le dossier passe en lecture seule |
 | PDF | PDF complet du dossier, joint au dossier (une seule version, remplacée à chaque demande) |
@@ -45,8 +46,8 @@ L'application remplace le formulaire Word d'appréciation de la contribution (ve
 | Composant | Nom | Rôle |
 |---|---|---|
 | Application canevas | Appréciation de la contribution | 4 écrans : scrMesDossiers, scrFormulaire, scrAPropos, scrAide (didacticiel) ; fenêtre de confirmation dans scrFormulaire |
-| Flux 1 | Appréciation – Permissions à la création | À la création d'un dossier : coupe l'héritage, retire SRHVQ_Utilisateurs, donne Collaboration aux personnes du dossier |
-| Flux 2 | Appréciation – Suivi des étapes | À chaque modification : courriels d'étape, accès du directeur, et à « Complété » : courriel aux RH, avis à tous, lecture seule, date de transmission |
+| Flux 1 | Appréciation – Permissions à la création | À la création d'un dossier : coupe l'héritage, retire SRHVQ_Utilisateurs (`sitegroups/getbyname('SRHVQ_Utilisateurs')`), donne Collaboration aux personnes du dossier |
+| Flux 2 | Appréciation – Suivi des étapes | À chaque modification : courriels d'étape (7 courriels, dont « Version du SI transmise » à la personne), accès du directeur, et à « Complété » : courriel aux RH, avis à tous, lecture seule, date de transmission |
 | Flux 3 | GenererPDFAppreciation | Appelé par l'application : HTML › PDF (OneDrive du compte de service, fichier temporaire supprimé), joint au dossier |
 | Références de connexion (6) | SharePoint Appreciations · Outlook Appreciations · Utilisateurs Office 365 Appreciations · OneDrive Entreprise RHDSSTDAAT-1b68d · SharePoint RHDSSTDAAT-11da3 · Office 365 Outlook Gestion_formulaire_approb… | Connexions du compte de service en PréProd et en Prod |
 | Variables d'environnement | SRHVQ_SiteWeb-RHSST-AppreciationContribution · SRHVQ_Appreciations · SRHVQ_Parametres · SRHVQ_CourrielPaie · SRHVQ_LienApplication · SRHVQ_CourrielSoutien | Valeurs propres à chaque environnement ; **valeur non exportée** |
@@ -55,7 +56,7 @@ L'application remplace le formulaire Word d'appréciation de la contribution (ve
 
 | Liste | Contenu | Détail |
 |---|---|---|
-| SRHVQ_Appreciations | Un élément par dossier (34 colonnes + pièce jointe PDF) | SRHVQ_Matrice-metadonnees.xlsx |
+| SRHVQ_Appreciations | Un élément par dossier (35 colonnes, dont VersionSILe, + pièce jointe PDF) | SRHVQ_Matrice-metadonnees.xlsx |
 | SRHVQ_Parametres | Paramètres de l'environnement (Environnement, CourrielSoutien, SupportNom, SupportTelephone) | Idem |
 
 Les sections à plusieurs lignes (objectifs, postures, compétences, valeurs, développement) sont enregistrées en **JSON** dans des colonnes « Plusieurs lignes de texte brut », puis relues par l'application (ParseJSON).

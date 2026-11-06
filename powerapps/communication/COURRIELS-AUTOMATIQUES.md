@@ -1,6 +1,6 @@
 ---
 title: "Les courriels automatiques de l'application"
-subtitle: "Appréciation de la contribution (SRHVQ) · Ordre, destinataires et textes · 3 novembre 2026"
+subtitle: "Appréciation de la contribution (SRHVQ) · Ordre, destinataires et textes · mise à jour du 7 novembre 2026"
 lang: fr-CA
 ---
 
@@ -56,7 +56,7 @@ Sans directeur de service requis, l'approbation du SH fait passer le dossier dir
 
 > Bonjour,
 >
-> [Nom] a confirmé son formulaire. C'est maintenant votre étape : complétez au besoin le bilan annuel (section E) et l'évaluation globale, puis approuvez.
+> [Nom] a confirmé et approuvé son formulaire après la rencontre. C'est maintenant votre étape : ajustez au besoin votre partie, puis approuvez.
 >
 > **Ouvrir le dossier** (lien)
 
@@ -118,7 +118,7 @@ Ensuite, automatiquement : toutes les personnes du dossier passent en **lecture 
 | Courriel | Quand | À | Contenu |
 |---|---|---|---|
 | **Demande de soutien** | Un utilisateur écrit au soutien depuis l'écran **À propos** | Adresse du soutien (liste Parametres, CourrielSoutien) | Le message, le nom et le courriel de la personne, l'environnement et le no de dossier ouvert |
-| **Échec d'un flux** | Un des 3 flux échoue (gestion des erreurs, version 1.0.0.4) | Variable SRHVQ_CourrielSoutien | Le nom du flux, l'environnement, la date et un lien vers l'exécution en erreur |
+| **Échec d'un flux** | Un des 3 flux échoue (gestion des erreurs) | Variable SRHVQ_CourrielSoutien | Le nom du flux, l'environnement, la date et un lien vers l'exécution en erreur |
 
 # Points à valider
 

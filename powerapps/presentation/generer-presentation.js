@@ -9,8 +9,8 @@ const THEME = {
   bodyFontFace: "Calibri",
   colors: {
     dk1: "1F2937", lt1: "FFFFFF", dk2: "00285E", lt2: "F3F5F9",
-    accent1: "857650", accent2: "009E49", accent3: "074B98",
-    accent4: "6B3FA0", accent5: "B91C1C", accent6: "6B7280",
+    accent1: "00285E", accent2: "009E49", accent3: "074B98",
+    accent4: "6B3FA0", accent5: "B91C1C", accent6: "8A8C8E",
     hlink: "074B98", folHlink: "6B3FA0",
   },
 };
@@ -68,7 +68,7 @@ function pastille(s, x, y, txt, fill, name) {
 pres.addSection({ title: "Introduction" });
 let s = pres.addSlide({ masterName: "TITRE", sectionTitle: "Introduction" });
 s.addText("Appréciation de la contribution : du formulaire Word à l'application numérique", { placeholder: "title" });
-s.addText("Démarche, options évaluées, tests et résultat\nPrésenté par Annie Audet, conseillère en ressources humaines (RH-SST)\nVersion finale — 28 octobre 2026", { placeholder: "body" });
+s.addText("Démarche, options évaluées, tests et résultat\nPrésenté par Annie Audet, conseillère en ressources humaines (RH-SST)\nMise à jour — 7 novembre 2026 (version 1.0.0.9)", { placeholder: "body" });
 s.addNotes("Présenter l'objectif de la rencontre : faire le point sur la démarche, montrer le résultat et obtenir l'appui pour la mise en production.");
 
 // ---------- 2. En bref ----------
@@ -109,7 +109,7 @@ carte(s, 0.5, 1.25, 4.4, 3.75, C.background2, "objectifs");
 s.addText("Objectifs", { x: 0.75, y: 1.4, w: 4, h: 0.4, fontSize: 18, bold: true, color: C.text2, margin: 0, isTextBox: true });
 s.addText([
   { text: "Intégrer les 3 nouveaux formulaires", options: { bullet: true, breakLine: true } },
-  { text: "Circuit : personne, supérieur immédiat, hiérarchique, directeur de service au besoin", options: { bullet: true, breakLine: true } },
+  { text: "Circuit : personne, supérieur immédiat (qui transmet sa version avant la rencontre), hiérarchique, directeur de service au besoin", options: { bullet: true, breakLine: true } },
   { text: "Courriels de suivi automatiques", options: { bullet: true, breakLine: true } },
   { text: "Transmission de l'évaluation globale aux RH", options: { bullet: true, breakLine: true } },
   { text: "PDF de l'appréciation complète", options: { bullet: true } },
@@ -194,7 +194,7 @@ s = contenu("Solution", "L'architecture en un coup d'œil");
 s.addImage({ path: IMG + "/schema/Schema-solution.png", x: 0.9, y: 1.12, w: 8.2, h: 8.2 * 1498 / 3112, altText: "Schéma : application Power Apps, listes SharePoint et 3 flux Power Automate", objectName: "schemaSolution" });
 
 s = contenu("Solution", "Le circuit d'une appréciation");
-s.addImage({ path: IMG + "/communication/1-Circuit-des-etapes.png", x: 1.35, y: 1.1, w: 7.3, h: 7.3 * 1754 / 3200, altText: "Circuit en 7 étapes, rôle par rôle", objectName: "schemaCircuit" });
+s.addImage({ path: IMG + "/communication/1-Circuit-des-etapes.png", x: 1.35, y: 1.1, w: 7.3, h: 7.3 * 1872 / 3200, altText: "Circuit en 8 étapes, rôle par rôle", objectName: "schemaCircuit" });
 
 // ---------- 9. Tests ----------
 pres.addSection({ title: "Tests" });

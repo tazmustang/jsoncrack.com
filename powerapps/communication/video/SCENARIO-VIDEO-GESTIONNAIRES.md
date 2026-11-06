@@ -9,7 +9,7 @@ lang: fr-CA
 | | |
 |---|---|
 | **Public** | Supérieur(e)s immédiat(e)s et hiérarchiques, directeurs et directrices |
-| **Durée** | Environ **5 minutes** (4 chapitres) |
+| **Durée** | Environ **6 minutes** (4 chapitres) |
 | **Outils** | **Gratuits**, déjà sur votre poste : Outil Capture d'écran de Windows (enregistrement) et **Clipchamp** (montage, inclus dans Microsoft 365) |
 | **Diffusion** | **Microsoft Stream** (SharePoint ou OneDrive), avec un lien dans l'annonce et dans le guide d'utilisation |
 | **Temps de préparation** | Environ 1 h pour l'enregistrement et 1 h pour le montage |
@@ -46,20 +46,21 @@ Chaque ligne est un plan. Faites l'action indiquée pendant que vous lisez le te
 | 0:40 – 1:00 | Le courriel | Boîte Outlook : le courriel « prête pour votre consultation » | Quand la personne a rempli sa partie, vous recevez ce courriel. Il ne contient aucune information d'évaluation : seulement un lien. Cliquez sur « Ouvrir le dossier ». |
 | 1:00 – 1:20 | Mes dossiers | Écran Mes dossiers, filtre « À approuver par moi » | Vous pouvez aussi ouvrir l'application et aller dans Mes dossiers. Le filtre « À approuver par moi » montre les dossiers qui attendent votre action. Cliquez sur Ouvrir. |
 | 1:20 – 1:40 | Votre rôle et la barre d'étapes | Formulaire : en haut à gauche « Vous êtes », puis la barre d'étapes | L'application reconnaît votre rôle automatiquement : ici, supérieur immédiat. La barre d'étapes, en haut, montre où en est le dossier, avec les dates. |
-| 1:40 – 1:45 | Chapitre 2 | 03-Chapitre-2.png | Étape 2 : compléter votre partie. |
+| 1:40 – 1:45 | Chapitre 2 | 03-Chapitre-2.png | Étape 2 : compléter votre partie et la transmettre. |
 | 1:45 – 2:10 | Prendre connaissance | Faire défiler les sections A, C et D | Prenez connaissance des objectifs, des valeurs et du développement inscrits par la personne. Avant la confirmation, vous pouvez compléter ces sections avec elle, par exemple pendant la rencontre. |
 | 2:10 – 2:40 | Les cotes (section B) | Section B : tableau de l'échelle, puis choisir une cote dans la colonne du supérieur | Dans la section B, l'échelle à quatre niveaux est rappelée en haut : insatisfaisant, partiellement satisfaisant, complètement satisfaisant et supérieur. Pour chaque comportement, choisissez votre cote dans votre colonne. La cote de la personne est affichée à côté. |
 | 2:40 – 3:00 | Le bilan (section E) | Section E : taper un bilan fictif | Dans la section E, rédigez votre bilan annuel de la contribution. |
 | 3:00 – 3:20 | L'évaluation globale | Évaluation globale : choisir un niveau | Puis choisissez l'évaluation globale. C'est la seule information qui sera transmise aux RH, à la fin du processus. |
-| 3:20 – 3:35 | Enregistrer | Clic sur « Enregistrer et déposer », message vert | Cliquez sur « Enregistrer et déposer ». Un message vert confirme l'enregistrement. Vous pouvez fermer et revenir plus tard : rien n'est perdu. |
-| 3:35 – 3:40 | Chapitre 3 | 04-Chapitre-3.png | Étape 3 : approuver. |
-| 3:40 – 4:05 | Approuver | Section G : cocher la confirmation, puis Approuver ; la barre d'étapes avance | Une fois la rencontre faite et le dossier confirmé par la personne, allez à la section G. Cochez la case de confirmation, puis cliquez sur Approuver. Le supérieur hiérarchique reçoit automatiquement le dossier à approuver. |
-| 4:05 – 4:20 | Si un directeur de service doit approuver | Section G : case « Approbation du directeur / de la directrice de service requise » et choix d'un nom | Si un directeur ou une directrice de service doit aussi approuver, cochez cette case et choisissez la personne. Elle approuvera en dernier. |
-| 4:20 – 4:25 | Chapitre 4 | 05-Chapitre-4.png | Étape 4 : le PDF et la suite. |
-| 4:25 – 4:45 | Le PDF | Clic sur « Aperçu PDF », message vert, puis « Ouvrir le PDF » | Le bouton Aperçu PDF produit le PDF complet de l'appréciation, en quelques secondes. Il est joint au dossier. Cliquez ensuite sur Ouvrir le PDF. |
-| 4:45 – 5:05 | La fin du processus | Barre d'étapes complète, dossier en lecture seule | Quand toutes les approbations sont faites, le dossier passe à « Complété ». L'évaluation globale est transmise aux RH, tout le monde est avisé, et le dossier devient en lecture seule. |
-| 5:05 – 5:20 | L'aide | Boutons « ❓ Aide » et « ℹ️ À propos » | Besoin d'aide ? Le bouton Aide présente chaque écran, et le bouton À propos donne les coordonnées du soutien, avec un formulaire pour nous écrire. |
-| 5:20 – 5:30 | Carte de fin | 99-Carte-fin.png | Merci, et bonnes rencontres d'appréciation ! |
+| 3:20 – 3:45 | Transmettre votre version | Section G : cocher « Ma version est complète », puis « 📨 Transmettre ma version » | Quand vos cotes, votre bilan et l'évaluation globale sont prêts, allez à la section G : cochez la case, puis cliquez sur « Transmettre ma version ». La personne reçoit un courriel et peut consulter votre version avant la rencontre. |
+| 3:45 – 4:00 | Enregistrer | Clic sur « Enregistrer et déposer », message vert | Cliquez sur « Enregistrer et déposer ». Un message vert confirme l'enregistrement. Vous pouvez fermer et revenir plus tard : rien n'est perdu. |
+| 4:00 – 4:05 | Chapitre 3 | 04-Chapitre-3.png | Étape 3 : approuver. |
+| 4:05 – 4:30 | Approuver | Section G : cocher la confirmation, puis Approuver ; la barre d'étapes avance | Une fois la rencontre faite et le dossier confirmé par la personne, allez à la section G. Cochez la case de confirmation, puis cliquez sur Approuver. Le supérieur hiérarchique reçoit automatiquement le dossier à approuver. |
+| 4:30 – 4:45 | Si un directeur de service doit approuver | Section G : case « Approbation du directeur / de la directrice de service requise » et choix d'un nom | Si un directeur ou une directrice de service doit aussi approuver, cochez cette case et choisissez la personne. Elle approuvera en dernier. |
+| 4:45 – 4:50 | Chapitre 4 | 05-Chapitre-4.png | Étape 4 : le PDF et la suite. |
+| 4:50 – 5:10 | Le PDF | Clic sur « Aperçu PDF », message vert, puis « Ouvrir le PDF » | Le bouton Aperçu PDF produit le PDF complet de l'appréciation, en quelques secondes. Il est joint au dossier. Cliquez ensuite sur Ouvrir le PDF. |
+| 5:10 – 5:30 | La fin du processus | Barre d'étapes complète, dossier en lecture seule | Quand toutes les approbations sont faites, le dossier passe à « Complété ». L'évaluation globale est transmise aux RH, tout le monde est avisé, et le dossier devient en lecture seule. |
+| 5:30 – 5:45 | L'aide | Boutons « ❓ Aide » et « ℹ️ À propos » | Besoin d'aide ? Le bouton Aide présente chaque écran, et le bouton À propos donne les coordonnées du soutien, avec un formulaire pour nous écrire. |
+| 5:45 – 5:55 | Carte de fin | 99-Carte-fin.png | Merci, et bonnes rencontres d'appréciation ! |
 
 > 💡 Parlez lentement, souriez (ça s'entend !) et faites une pause d'une seconde avant chaque clic. Une erreur ? Arrêtez-vous, attendez 3 secondes et reprenez la phrase : vous couperez au montage.
 
@@ -85,7 +86,7 @@ Chaque ligne est un plan. Faites l'action indiquée pendant que vous lisez le te
 6. **Sous-titres :**
    - **option 1 :** **Sous-titres › Activer les sous-titres automatiques**, langue **Français (Canada)**, puis corrigez les mots mal compris ;
    - **option 2 :** importez le fichier **Sous-titres-video-gestionnaires.srt**, si les minutages correspondent.
-7. *(Facultatif)* Mettez en évidence les clics importants : **Éléments graphiques › Formes**, avec une flèche ou un cercle or #857650.
+7. *(Facultatif)* Mettez en évidence les clics importants : **Éléments graphiques › Formes**, avec une flèche ou un cercle or #00285E.
 8. **Exporter** › **1080p**.
 
 # 6. Diffuser

@@ -1,6 +1,6 @@
 ---
 title: "Appréciation de la contribution — Charte graphique à valider"
-subtitle: "Pour le Service des communications · Couleurs, polices, éléments graphiques, captures d'écran et textes · 2 novembre 2026"
+subtitle: "Pour le Service des communications · Couleurs, polices, éléments graphiques, captures d'écran et textes · mise à jour du 7 novembre 2026 (bleu #00285E, gris #8A8C8E, logo)"
 lang: fr-CA
 ---
 
@@ -30,7 +30,7 @@ Les codes ont été relevés dans l'application et dans ses fichiers de style.
 
 | Couleur | HEX | Usage | Contraste (blanc) |
 |---|---|---|---|
-| Or Ville | **#857650** | Bandeau du haut, bouton « Comment remplir », filets du PDF et des visuels | 4,46 : 1 (texte blanc) |
+| Bleu Ville (bandeau) | **#00285E** | Bandeau du haut (avec le logo blanc), bouton « Comment remplir », pastilles, filets du PDF et des visuels | 14,33 : 1 ✔ (texte blanc) |
 | Marine | **#00285E** | Titres de sections, titres du PDF | 14,33 : 1 ✔ |
 | Bleu principal | **#074B98** | Pastille du type de poste, onglets, boutons à contour (Mes dossiers, Aperçu PDF, + Ajouter une ligne), « Cadre avec équipe » | 8,51 : 1 ✔ |
 | Vert action | **#009E49** | « Enregistrer et déposer », rôle actif, étapes faites, pastille du rôle | 3,51 : 1 ⚠ |
@@ -38,8 +38,7 @@ Les codes ont été relevés dans l'application et dans ses fichiers de style.
 | Violet | **#6B3FA0** | « Professionnel non syndiqué » | 7,38 : 1 ✔ |
 | Rouge | **#C80000** | Bouton « Nouveau formulaire » (contour et texte) | 6,08 : 1 ✔ |
 | Texte principal | **#1F2937** | Texte courant | 14,68 : 1 ✔ |
-| Texte secondaire | **#6B7280** | Notes, sous-titres, aide | 4,83 : 1 ✔ |
-| Gris libellés | **#9CA3AF** | Titres du menu (« VOUS ÊTES : »), étapes à venir | 2,54 : 1 ⚠ |
+| Gris Ville | **#8A8C8E** | Textes secondaires, libellés, titres du menu, étapes à venir, boutons désactivés | 3,37 : 1 ⚠ |
 | Gris bordures | **#E5E7EB** | Bordures des champs et des cartes | — |
 | Bleu pâle | **#ECF1F7** | En-têtes de tableaux, tableau de l'échelle | — |
 | Fond de page | **#F9FAFB** | Fond derrière les cartes | — |
@@ -48,7 +47,7 @@ Les codes ont été relevés dans l'application et dans ses fichiers de style.
 
 | Couleur | RGB | Format Power Apps |
 |---|---|---|
-| Or Ville **#857650** | 133, 118, 80 | RGBA(133; 118; 80; 1) |
+| Bleu Ville **#00285E** | 0, 40, 94 | RGBA(0; 40; 94; 1) |
 | Marine **#00285E** | 0, 40, 94 | RGBA(0; 40; 94; 1) |
 | Bleu principal **#074B98** | 7, 75, 152 | RGBA(7; 75; 152; 1) |
 | Vert action **#009E49** | 0, 158, 73 | RGBA(0; 158; 73; 1) |
@@ -56,8 +55,7 @@ Les codes ont été relevés dans l'application et dans ses fichiers de style.
 | Violet **#6B3FA0** | 107, 63, 160 | RGBA(107; 63; 160; 1) |
 | Rouge **#C80000** | 200, 0, 0 | RGBA(200; 0; 0; 1) |
 | Texte principal **#1F2937** | 31, 41, 55 | RGBA(31; 41; 55; 1) |
-| Texte secondaire **#6B7280** | 107, 114, 128 | RGBA(107; 114; 128; 1) |
-| Gris libellés **#9CA3AF** | 156, 163, 175 | RGBA(156; 163; 175; 1) |
+| Gris Ville **#8A8C8E** | 138, 140, 142 | RGBA(138; 140; 142; 1) |
 | Gris bordures **#E5E7EB** | 229, 231, 235 | RGBA(229; 231; 235; 1) |
 | Bleu pâle **#ECF1F7** | 236, 241, 247 | RGBA(236; 241; 247; 1) |
 | Fond de page **#F9FAFB** | 249, 250, 251 | RGBA(249; 250; 251; 1) |
@@ -65,8 +63,8 @@ Les codes ont été relevés dans l'application et dans ses fichiers de style.
 **Accessibilité (WCAG 2.1 AA, texte normal : 4,5 : 1 minimum)** :
 
 - **Vert action :** texte blanc sur vert (#009E49) = 3,51 : 1, **sous le seuil** pour du texte normal. Le texte des boutons est en gras ; à valider, ou foncer le vert (ex. #007A38).
-- **Gris libellés :** #9CA3AF sur blanc = 2,54 : 1, **sous le seuil**. Proposition : #6B7280.
-- **Or Ville :** texte blanc = 4,46 : 1, à la limite. Le titre du bandeau est grand et gras (seuil de 3 : 1 pour le grand texte) : conforme.
+- **Gris Ville :** #8A8C8E sur blanc = 3,37 : 1, **sous le seuil** de 4,5 : 1 pour le petit texte (conforme pour le grand texte et les libellés en gras). À valider ; au besoin, un gris plus foncé pour les petites notes.
+- **Bleu Ville :** texte blanc sur #00285E = 14,33 : 1 : conforme.
 
 # 3. Polices
 
@@ -85,17 +83,23 @@ Les codes ont été relevés dans l'application et dans ses fichiers de style.
 | Élément | Description | À valider |
 |---|---|---|
 | **Bandeau de marque** « ON DONNE VIE À LA VILLE » | Image placée sous le titre de l'application (lettrage orange, noir, violet, rose et bleu) | Droit d'utilisation et **version à jour** de la signature ; place dans un outil interne RH |
-| **Bandeau or** | Barre or (#857650) en haut, titre blanc centré « Appréciation de la contribution » et sous-titre « Formulaire : [type de poste] » | Couleur et typographie |
+| **Bandeau bleu** | Barre bleue (#00285E) en haut, avec le **logo blanc de la Ville** à gauche, le titre blanc centré « Appréciation de la contribution » et le sous-titre « Formulaire : [type de poste] » | Couleur, logo et typographie |
 | **Pastilles** | Coins très arrondis : statut (gris, texte marine), type de poste (bleu, texte blanc), rôle (vert, texte blanc, en haut à droite) | — |
 | **Boutons** | Pleins : vert (Enregistrer et déposer, rôle actif) et or (Comment remplir). À contour : bleu (Mes dossiers, Aperçu PDF, + Ajouter une ligne) et rouge (Nouveau formulaire). Coins arrondis | Hiérarchie des boutons |
 | **Barre d'étapes** | 7 cercles reliés par une ligne : vert avec ✓ quand l'étape est faite, gris avec le numéro sinon, avec la date sous l'étape | — |
 | **Repères de couleur des types de poste** | Petite barre verticale à gauche de chaque choix : bleu (avec équipe), sarcelle (sans équipe), violet (professionnel) | — |
 | **Icônes** | Émojis standards : 📝 Nouveau formulaire, ☁️ Enregistrer, 📂 Mes dossiers, 🖨️ Aperçu PDF, 📄 Ouvrir le PDF, ❓ Aide, ℹ️ À propos, 👤 rôle | Remplacer par la banque d'icônes de la Ville ? |
-| **Logo de la Ville** | Non utilisé dans l'application (seulement le bandeau de marque) | Faut-il l'ajouter (écran À propos, PDF) ? |
+| **Logo de la Ville** | Version **blanche** (renversée) dans le bandeau bleu de l'application et des visuels ; version **couleur** sur fond blanc (schémas, documents). Fichiers : logo-ville-quebec-blanc.png et logo-ville-quebec-couleur.png | La version blanche est-elle conforme ? Fichier officiel à utiliser ? |
+
+**Le logo, version couleur (fonds blancs) :**
+
+![Logo couleur](logo-ville-quebec-couleur.png){width=60%}
+
+**Le logo, version blanche (bandeau bleu) :** fichier logo-ville-quebec-blanc.png, blanc sur fond transparent.
 
 # 5. Captures d'écran de l'application
 
-> Ces captures ont été prises pendant les tests. Depuis : les onglets « Plan de développement » et « Synthèse » ont été retirés, l'étape 6 s'appelle « Transmis aux RH », et les écrans « À propos » et « Aide » s'ajoutent. **Les couleurs, polices et éléments graphiques sont inchangés.**
+> Ces captures ont été prises pendant les tests, **avant le passage au bleu #00285E et au logo** (le bandeau y paraît encore or-brun). Depuis : les onglets « Plan de développement » et « Synthèse » ont été retirés, l'étape 6 s'appelle « Transmis aux RH », et les écrans « À propos » et « Aide » s'ajoutent. **Les couleurs, polices et éléments graphiques sont inchangés.**
 
 **5.1 En-tête, menu de gauche, bandeau de marque et barre d'étapes**
 
@@ -117,8 +121,8 @@ Le bouton « Aperçu PDF » produit un PDF complet de l'appréciation, joint au 
 |---|---|
 | Police | Segoe UI, puis Arial ; 10 pt ; texte #1F2937 |
 | Titre | 18 pt, marine #00285E |
-| Sous-titre | Gris #6B7280 |
-| Titres de sections | 12,5 pt, marine #00285E, **filet or #857650** de 2 pt dessous |
+| Sous-titre | Gris #8A8C8E |
+| Titres de sections | 12,5 pt, marine #00285E, **filet bleu #00285E** de 2 pt dessous |
 | Sous-titres (postures) | 11 pt, bleu #074B98 |
 | En-têtes de tableaux | Fond #E8EEF7, texte marine, bordure #C7D2E3 |
 | Cellules | Bordure #D1D5DB ; libellés sur fond #F3F4F6, en gras |
@@ -189,9 +193,9 @@ Merci de remplir et de retourner cette grille à Annie Audet.
 | Contraste : vert action et gris libellés | ☐ | ☐ | ☐ | |
 | Polices | ☐ | ☐ | ☐ | |
 | Bandeau « On donne vie à la ville » (droits, version) | ☐ | ☐ | ☐ | |
-| Bandeau or et titre | ☐ | ☐ | ☐ | |
+| Bandeau bleu, logo et titre | ☐ | ☐ | ☐ | |
 | Boutons, pastilles et icônes | ☐ | ☐ | ☐ | |
-| Logo de la Ville (à ajouter ou non) | ☐ | ☐ | ☐ | |
+| Logo de la Ville (version blanche et couleur) | ☐ | ☐ | ☐ | |
 | PDF de l'appréciation | ☐ | ☐ | ☐ | |
 | Visuels de communication (4 schémas) | ☐ | ☐ | ☐ | |
 | Présentation aux gestionnaires | ☐ | ☐ | ☐ | |

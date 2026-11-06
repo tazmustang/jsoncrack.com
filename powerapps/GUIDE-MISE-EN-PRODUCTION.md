@@ -1,6 +1,6 @@
 ---
 title: "Appréciation de la contribution — Guide de mise en production"
-subtitle: "VERSION FINALE — 28 octobre 2026, mises à jour du 29 et du 30 octobre (transmission PréProd) · Application Power Apps, SharePoint et Power Automate"
+subtitle: "Mise à jour du 7 novembre 2026 · Version de la solution 1.0.0.9 · Application Power Apps, SharePoint et Power Automate"
 lang: fr-CA
 ---
 
@@ -84,6 +84,14 @@ Tout utilise des connecteurs **standard** : aucune licence Premium.
 | 27 | Cases Type de rencontre (29 oct.) | Les cases se décochaient après « Enregistrer et déposer » et le type de rencontre n'était pas dans le PDF : le texte exact des choix ne correspondait pas, ou le dossier ouvert depuis Mes dossiers arrivait incomplet. | Comparaison par **mot-clé** (`"essai" in Value`…) dans Checked et dans btnDeposer ; **relecture du dossier** au début d'OnVisible. Voir `CORRECTION-TYPE-RENCONTRE.docx`. |
 | 28 | Section B, échelle (30 oct.) | Nouvelle échelle des postures de leadership : 4 niveaux (Insatisfaisant, Partiellement satisfaisant, Complètement satisfaisant, Supérieur), nouvelles descriptions et note 1. | `colEchelle` à 4 niveaux avec descriptions (OnVisible) ; `echelleLegend` lit colEchelle. Voir `MISE-A-JOUR-ECHELLE-POSTURES.docx`. |
 | 29 | Conformité TI (30 oct.) | Exigences des TI : documentation, commentaires, confirmation, validation, erreurs, À propos, Aide, conventions de nommage SRHVQ, groupes d'application. | Voir `preprod/GUIDE-PREPROD-ET-CONFORMITE.docx` et `documents-TI/`. |
+| 30 | Sécurité (flux 1) | Le flux retirait le groupe « Membres » du site, alors que l'accès passe par le groupe local SRHVQ_Utilisateurs (qui contient G-IS-APP). Tout le monde voyait tous les dossiers. | URI de l'action « Groupe Membres » : `_api/web/sitegroups/getbyname('SRHVQ_Utilisateurs')?$select=Id`. G-IS-APP est placé DANS SRHVQ_Utilisateurs, jamais directement sur la liste. |
+| 31 | Mes dossiers | Après un rafraîchissement, varMoi était vide : tous les dossiers sans directeur s'affichaient. | Courriel lu directement : `Lower(User().Email)` dans galDossiers et cellRole ; contrôle à l'ouverture dans OnVisible. |
+| 32 | Nouvelle étape (circuit) | Les testeurs voulaient voir la version du gestionnaire avant d'approuver. | Colonne **VersionSILe** ; bouton « Transmettre ma version » (SI) ; la personne approuve seulement après ; barre d'étapes à 8 étapes ; courriel à la personne (flux 2). |
+| 33 | Saisie des objectifs | Le curseur sautait à la section B : le tableau se redessinait après chaque champ. | OnChange vidés ; recopie des tableaux à l'enregistrement, à l'ajout/suppression de ligne et au PDF. |
+| 34 | Libellés | Demandes des testeurs et des RH. | « Directeur / directrice de service », « Processus d'approbation », « Approuver et soumettre », « Comportement démontré », bannière « Choisissez votre type de poste ». |
+| 35 | ID de l'employé | `employeeId` n'est pas offert par le connecteur Utilisateurs d'Office 365. | Saisie manuelle, obligatoire, avec Placeholder. |
+| 36 | Couleurs et logo | Charte de la Ville. | Bandeau #00285E avec logo blanc ; gris #8A8C8E. |
+| 37 | Liste PréProd recréée | « List not found » : la variable gardait l'identifiant de l'ancienne liste. | Mettre à jour la valeur de la variable ; désactiver puis réactiver les flux 1 et 2. |
 | 19 | Tests avec d'autres comptes | « You are not a member of the environment's security group » | Normal dans le bac à sable : seules les personnes du **groupe de sécurité** de l'environnement peuvent ouvrir l'application. Les TI doivent y ajouter les testeurs, et prévoir le bon groupe en pré-prod et en prod. |
 | 13 | Flux 1, action 4 | « Retirer les Membres » échoue (404 NotFound) quand les Membres n'ont pas de droit sur le dossier, et le flux s'arrêtait. | Sur « Personnes du dossier » : Configurer l'exécution après = **a réussi + a échoué**. |
 | 14 | Flux 2, structure | « Statut changé » était placée **dans** « Directeur ajouté », et « Date paie » était **hors** du cas Complété. | Structure corrigée (partie 6.2). |
@@ -229,7 +237,9 @@ Le dossier doit avoir été enregistré au moins une fois.
 | 1 | Vérificateur d'application | Formules : 0 | |
 | 2 | Personne : nouveau formulaire, Identification, type de rencontre, section A, Enregistrer et déposer | Message vert ; ligne dans Appreciations avec Poste, TypeRencontre, SI et SH remplis | |
 | 3 | Flux 1 sur ce dossier | « Correctement exécuté » ; Gérer l'accès = Propriétaires, RH, personnes du dossier seulement | |
-| 4 | Collègue sans lien | Ne voit pas le dossier dans Mes dossiers | |
+| 4 | Collègue sans lien (**non propriétaire du site**) | Ne voit le dossier ni dans Mes dossiers, ni dans SharePoint, ni par un lien direct ; Gérer l'accès du dossier : pas de SRHVQ_Utilisateurs | |
+| 5b | Personne, après Aviser | « En attente de la version de votre supérieur(e) immédiat(e) » ; Approuver et soumettre grisé ; cotes du SI non visibles | |
+| 5c | SI : cotes, E, évaluation globale, puis **Transmettre ma version** | La personne reçoit un courriel et voit la version ; étape 2 de la barre ✓ | |
 | 5 | Fermer, puis rouvrir le dossier | Tout revient, y compris les cases Type de rencontre (2 cases cochées restent cochées) | |
 | 6 | Saisie dans les tableaux (Objectifs, Indicateurs) | Le texte ne saute pas | |
 | 7 | Aviser le supérieur | Le SI reçoit le courriel ; le lien ouvre le bon dossier | |
@@ -258,13 +268,13 @@ Pour les tests de courriels, utilisez des comptes de test, ou mettez temporairem
    S'il manque un élément : **Ajouter existant**.
 2. Pour chacune des **6** variables : ouvrez-la, section **Avancé**, bascule d'export de la valeur à **Non** (la valeur n'est pas exportée). Laissez la valeur par défaut vide. *(Méthode exigée par les TI ; remplace « Retirer de cette solution ».)*
 3. **Publier toutes les personnalisations.**
-4. Augmentez la **version** (ex. 1.0.0.4 pour la remise PréProd).
+4. Augmentez la **version** (ex. 1.0.0.9 pour la remise PréProd).
 
 ## 9.2 Exporter
 
 1. **Exporter la solution**, puis **Vérifier**.
 2. Choisissez **Gérée**, puis **Exporter**.
-3. Téléchargez le .zip (ex. `Solution-ApplicationAppreciation_1_0_0_4_managed.zip`).
+3. Téléchargez le .zip (ex. `Solution-ApplicationAppreciation_1_0_0_9_managed.zip`).
 
 ## 9.3 Remettre aux TI
 

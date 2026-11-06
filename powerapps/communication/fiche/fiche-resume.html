@@ -3,22 +3,22 @@
 @page{size:Letter;margin:0}
 *{box-sizing:border-box}
 body{margin:0;font-family:"Segoe UI",Arial,sans-serif;color:#1F2937;background:#fff}
-.page{width:8.5in;height:11in;padding:0.45in 0.5in;display:flex;flex-direction:column;gap:12px}
-header{background:#857650;color:#fff;border-radius:10px;padding:16px 22px;display:flex;justify-content:space-between;align-items:center}
+.page{width:8.5in;height:11in;padding:0.4in 0.5in;display:flex;flex-direction:column;gap:9px}
+header{background:#00285e;color:#fff;border-radius:10px;padding:16px 22px;display:flex;justify-content:space-between;align-items:center}
 header h1{margin:0;font-size:25px}
 header p{margin:3px 0 0;font-size:13px;opacity:.95}
 header .tag{font-size:11px;text-align:right;line-height:1.5;font-weight:600}
 .intro{font-size:13.5px;line-height:1.45;margin:0;padding:0 2px}
 .intro b{color:#00285E}
-h2{font-size:14.5px;color:#00285E;margin:0 0 7px;border-bottom:2px solid #857650;padding-bottom:3px}
+h2{font-size:14.5px;color:#00285E;margin:0 0 7px;border-bottom:2px solid #00285e;padding-bottom:3px}
 .circuit{display:flex;align-items:stretch;gap:4px}
-.step{flex:1;background:#ECF1F7;border-radius:8px;padding:7px 5px;text-align:center;font-size:10.5px;line-height:1.3}
+.step{flex:1;background:#ECF1F7;border-radius:8px;padding:7px 4px;text-align:center;font-size:9.6px;line-height:1.25}
 .step .n{display:inline-block;width:22px;height:22px;border-radius:50%;background:#009E49;color:#fff;font-weight:700;line-height:22px;font-size:11px;margin-bottom:3px}
-.step b{display:block;color:#00285E;font-size:11px}
-.arrow{align-self:center;color:#857650;font-weight:700}
+.step b{display:block;color:#00285E;font-size:10.2px}
+.arrow{align-self:center;color:#00285e;font-weight:700}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.card{border:1px solid #E5E7EB;border-radius:10px;padding:11px 13px}
-.card ul{margin:0;padding-left:17px;font-size:12px;line-height:1.5}
+.card{border:1px solid #E5E7EB;border-radius:10px;padding:9px 13px}
+.card ul{margin:0;padding-left:17px;font-size:11.5px;line-height:1.42}
 .card li{margin-bottom:2px}
 table{width:100%;border-collapse:collapse;font-size:11.5px}
 td{padding:4px 6px;border-bottom:1px solid #E5E7EB;vertical-align:top}
@@ -29,28 +29,29 @@ td:first-child{font-weight:700;color:#074B98;white-space:nowrap;width:38%}
 .b b{display:block;color:#00285E;font-size:12px;margin-bottom:2px}
 footer{margin-top:auto;background:#00285E;color:#fff;border-radius:10px;padding:11px 18px;font-size:12px;display:flex;justify-content:space-between;align-items:center;gap:12px}
 footer b{color:#fff}
-.small{font-size:10px;color:#6B7280;text-align:right;margin-top:-6px}
+.small{font-size:10px;color:#8A8C8E;text-align:right;margin-top:-6px}
 </style></head><body><div class="page">
 <header><div><h1>Appréciation de la contribution</h1><p>L'application qui remplace le formulaire Word — en bref</p></div>
-<div class="tag">Ville de Québec<br>Ressources humaines<br>RH-SST</div></header>
+<div class="tag"><img src="../../logo/logo-ville-quebec-blanc.png" alt="Ville de Québec" style="height:54px;display:block;margin-left:auto;margin-bottom:4px">Ressources humaines · RH-SST</div></header>
 
 <p class="intro">L'appréciation annuelle des <b>cadres avec ou sans équipe</b> et des <b>professionnels non syndiqués</b> se fait maintenant dans une <b>application Power Apps</b> : <b>un seul dossier</b> par appréciation, rempli par chaque personne à son tour, conservé de façon sécurisée dans SharePoint de la Ville. Aucun fichier à envoyer par courriel.</p>
 
-<section><h2>Le circuit en 7 étapes</h2>
+<section><h2>Le circuit en 8 étapes</h2>
 <div class="circuit">
 <div class="step"><span class="n">1</span><b>Brouillon</b>La personne remplit sa partie</div><span class="arrow">›</span>
 <div class="step"><span class="n">2</span><b>Aviser</b>Le supérieur immédiat est avisé</div><span class="arrow">›</span>
-<div class="step"><span class="n">3</span><b>Approuver et soumettre</b>Après la rencontre ; contenu verrouillé</div><span class="arrow">›</span>
-<div class="step"><span class="n">4</span><b>Approuvé SI</b>Cotes, bilan et évaluation globale</div><span class="arrow">›</span>
-<div class="step"><span class="n">5</span><b>Approuvé SH</b>Supérieur hiérarchique</div><span class="arrow">›</span>
-<div class="step"><span class="n">6</span><b>Directeur de service</b>Seulement si requis</div><span class="arrow">›</span>
-<div class="step"><span class="n">7</span><b>Complété</b>Transmis aux RH ; lecture seule</div>
+<div class="step"><span class="n">3</span><b>Version du SI</b>Cotes, bilan, évaluation, transmises à la personne</div><span class="arrow">›</span>
+<div class="step"><span class="n">4</span><b>Rencontre</b>Échanges et ajustements</div><span class="arrow">›</span>
+<div class="step"><span class="n">5</span><b>Approuver et soumettre</b>La personne confirme ; contenu verrouillé</div><span class="arrow">›</span>
+<div class="step"><span class="n">6</span><b>Approuvé SI</b>Supérieur immédiat</div><span class="arrow">›</span>
+<div class="step"><span class="n">7</span><b>Approuvé SH</b>Puis directeur de service, si requis</div><span class="arrow">›</span>
+<div class="step"><span class="n">8</span><b>Complété</b>Transmis aux RH ; lecture seule</div>
 </div></section>
 
 <div class="grid">
 <div class="card"><h2>Qui fait quoi ?</h2><table>
-<tr><td>Personne en appréciation</td><td>Remplit les sections A à D et F, avise, puis confirme</td></tr>
-<tr><td>Supérieur(e) immédiat(e)</td><td>Cotes (section B), bilan (E), évaluation globale, approuve</td></tr>
+<tr><td>Personne en appréciation</td><td>Remplit les sections A à D et F, avise, puis approuve et soumet après la rencontre</td></tr>
+<tr><td>Supérieur(e) immédiat(e)</td><td>Cotes (B), bilan (E), évaluation globale ; transmet sa version, puis approuve</td></tr>
 <tr><td>Supérieur(e) hiérarchique</td><td>Prend connaissance et approuve</td></tr>
 <tr><td>Directeur / directrice de service</td><td>Approuve en dernier, si requis</td></tr>
 <tr><td>Ressources humaines</td><td>Reçoivent l'évaluation globale ; consultent les dossiers</td></tr>
@@ -58,7 +59,7 @@ footer b{color:#fff}
 <div class="card"><h2>Les boutons essentiels</h2><table>
 <tr><td>📂 Mes dossiers</td><td>Vos dossiers ; filtre « À approuver par moi »</td></tr>
 <tr><td>☁️ Enregistrer et déposer</td><td>Enregistre votre travail (souvent !)</td></tr>
-<tr><td>Section G</td><td>Aviser · Approuver et soumettre · Approuver</td></tr>
+<tr><td>Section G</td><td>Aviser · Transmettre ma version · Approuver et soumettre · Approuver</td></tr>
 <tr><td>🖨️ Aperçu PDF</td><td>PDF complet, joint au dossier</td></tr>
 <tr><td>❓ Aide · ℹ️ À propos</td><td>Mode d'emploi et coordonnées du soutien</td></tr>
 </table></div>
