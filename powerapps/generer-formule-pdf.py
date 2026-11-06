@@ -19,17 +19,17 @@ def d(x):
 
 CSS = ("body{font-family:Segoe UI,Arial,sans-serif;font-size:10pt;color:#1f2937}"
        "h1{font-size:18pt;color:#00285e;margin:0}"
-       ".sous{color:#6b7280;margin:2px 0 14px 0}"
-       "h2{font-size:12.5pt;color:#00285e;border-bottom:2px solid #857650;padding-bottom:3px;margin:18px 0 6px 0}"
+       ".sous{color:#8a8c8e;margin:2px 0 14px 0}"
+       "h2{font-size:12.5pt;color:#00285e;border-bottom:2px solid #00285e;padding-bottom:3px;margin:18px 0 6px 0}"
        "h3{font-size:11pt;color:#074b98;margin:12px 0 4px 0}"
        "table{border-collapse:collapse;width:100%;margin:4px 0 8px 0}"
        "th{background:#e8eef7;color:#00285e;text-align:left;padding:5px;border:1px solid #c7d2e3;font-size:9.5pt}"
        "td{padding:5px;border:1px solid #d1d5db;vertical-align:top;font-size:9.5pt}"
        "td.lbl{background:#f3f4f6;font-weight:bold;width:28%}"
-       ".vide{color:#9ca3af;font-style:italic}"
+       ".vide{color:#8a8c8e;font-style:italic}"
        ".desc{color:#4b5563;font-style:italic;margin:0 0 4px 0}"
        ".bloc{border:1px solid #d1d5db;padding:8px;min-height:30px}"
-       ".pied{margin-top:24px;color:#9ca3af;font-size:8pt;border-top:1px solid #e5e7eb;padding-top:4px}")
+       ".pied{margin-top:24px;color:#8a8c8e;font-size:8pt;border-top:1px solid #e5e7eb;padding-top:4px}")
 
 def ligne(lbl, val):
     return f'"<tr><td class=lbl>{lbl}</td><td>" & {val} & "</td></tr>"'

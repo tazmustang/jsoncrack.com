@@ -89,7 +89,9 @@ Votre formule actuelle contient tout le texte du fichier (« 1) Contrôle : galE
 
 ✅ Le vérificateur (stéthoscope) n'indique plus d'erreur dans galEtapes.
 
-## ☐ Étape 9 — L'ID de l'employé (annuaire)
+## ☐ Étape 9 — L'ID de l'employé
+
+> **Mise à jour du 7 novembre :** `employeeId` n'est pas disponible dans le connecteur. Utilisez simplement `varDossier.IdEmploye` dans Default (voir ID-COULEURS-LOGO-FLUX-7-NOVEMBRE.docx). La formule ci-dessous est remplacée.
 
 1. **txtId › Default** :
 
