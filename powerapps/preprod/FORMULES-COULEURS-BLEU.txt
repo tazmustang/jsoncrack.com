@@ -1,0 +1,69 @@
+FORMULES COMPLÈTES — ÉLÉMENTS OR-BRUN DEVENUS BLEUS (#00285E) — 7 novembre 2026
+Tirées de votre solution 1.0.0.6, avec le bleu RGBA(0;40;94;…) et le nouveau gris RGBA(138;140;142;1).
+Pour chaque bloc : cliquez sur le contrôle › choisissez la propriété › Ctrl+A dans la barre fx › collez.
+Format : ### écran | contrôle | propriété
+
+### scrFormulaire | headerBar | Fill
+RGBA(0;40;94;1)
+
+### scrFormulaire | btnHelp | BorderColor
+RGBA(0;40;94;1)
+
+### scrFormulaire | btnHelp | Fill
+RGBA(0;40;94;1)
+
+### scrFormulaire | btnCalloutHelp | BorderColor
+RGBA(0;40;94;1)
+
+### scrFormulaire | btnCalloutHelp | Fill
+RGBA(0;40;94;1)
+
+### scrFormulaire | gLockedNote | Fill
+RGBA(0;40;94;0,15)
+
+### scrFormulaire | gLockedLabel | Color
+RGBA(0;40;94;1)
+
+### scrFormulaire | sigSIChip | Fill
+If(Not(IsBlank(varDossier.ApprouveSILe)); RGBA(0;158;73;0,12); Coalesce(varDossier.Statut.Value; "Brouillon") = "Certifié"; RGBA(0;40;94;0,15); RGBA(243;244;246;1))
+
+### scrFormulaire | sigSIChipLabel | Color
+If(Not(IsBlank(varDossier.ApprouveSILe)); RGBA(0;158;73;1); Coalesce(varDossier.Statut.Value; "Brouillon") = "Certifié"; RGBA(0;40;94;1); RGBA(138;140;142;1))
+
+### scrFormulaire | sigSHChip | Fill
+If(Not(IsBlank(varDossier.ApprouveSHLe)); RGBA(0;158;73;0,12); Coalesce(varDossier.Statut.Value; "Brouillon") = "Approuvé SI"; RGBA(0;40;94;0,15); RGBA(243;244;246;1))
+
+### scrFormulaire | sigSHChipLabel | Color
+If(Not(IsBlank(varDossier.ApprouveSHLe)); RGBA(0;158;73;1); Coalesce(varDossier.Statut.Value; "Brouillon") = "Approuvé SI"; RGBA(0;40;94;1); RGBA(138;140;142;1))
+
+### scrFormulaire | sigDirChip | Fill
+If(Not(IsBlank(varDossier.ApprouveDirLe)); RGBA(0;158;73;0,12); Coalesce(varDossier.Statut.Value; "Brouillon") = "Approuvé SH"; RGBA(0;40;94;0,15); RGBA(243;244;246;1))
+
+### scrFormulaire | sigDirChipLabel | Color
+If(Not(IsBlank(varDossier.ApprouveDirLe)); RGBA(0;158;73;1); Coalesce(varDossier.Statut.Value; "Brouillon") = "Approuvé SH"; RGBA(0;40;94;1); RGBA(138;140;142;1))
+
+### scrMesDossiers | headerBar_1 | Fill
+RGBA(0;40;94;1)
+
+### scrMesDossiers | statutPill | Fill
+Switch(Coalesce(ThisItem.Statut.Value; "Brouillon");
+    "Brouillon"; RGBA(210;210;210;1);
+    "Avisé au supérieur"; RGBA(0;40;94;0,15);
+    "Certifié"; RGBA(0;40;94;0,15);
+    "Approuvé SI"; RGBA(0;40;94;0,15);
+    "Approuvé SH"; RGBA(0;40;94;0,15);
+    "Approuvé directeur"; RGBA(0;40;94;0,15);
+    "Complété"; RGBA(0;158;73;0,12);
+    RGBA(210;210;210;1))
+
+### scrMesDossiers | statutPillLabel | Color
+Switch(Coalesce(ThisItem.Statut.Value; "Brouillon");
+    "Brouillon"; RGBA(0;40;94;1);
+    "Avisé au supérieur"; RGBA(0;40;94;1);
+    "Certifié"; RGBA(0;40;94;1);
+    "Approuvé SI"; RGBA(0;40;94;1);
+    "Approuvé SH"; RGBA(0;40;94;1);
+    "Approuvé directeur"; RGBA(0;40;94;1);
+    "Complété"; RGBA(0;158;73;1);
+    RGBA(0;40;94;1))
+
