@@ -1,8 +1,15 @@
 // btnApercuPDF.OnSelect — PDF de l'appréciation complète
-// VERSION FINALE — 28 octobre 2026
+// VERSION FINALE — mise à jour du 6 novembre 2026 (recopie des tableaux, section G « Processus d'approbation »)
 // 1) assemble la page HTML dans varHtmlPDF ; 2) le flux GenererPDFAppreciation la convertit
 // en PDF et la joint au dossier (liste Appreciations) en remplaçant la version précédente ;
 // 3) le bouton « 📄 Ouvrir le PDF » (ou Mes dossiers) l'ouvre.
+// Recopie les tableaux de la section A (écran -> collections) avant de produire le PDF
+ClearCollect(colTmpAct; ForAll(galObjActuels.AllItems;
+    {LigneID: LigneID; Objectif: txtActObjectif.Text; Indicateur: txtActIndicateur.Text; Actions: txtActActions.Text}));;
+ClearCollect(colObjActuels; colTmpAct);;
+ClearCollect(colTmpAve; ForAll(galObjAvenir.AllItems;
+    {LigneID: LigneID; Objectif: txtAveObjectif.Text; Indicateur: txtAveIndicateur.Text}));;
+ClearCollect(colObjAvenir; colTmpAve);;
 If(IsBlank(varDossier);
     Notify("Enregistrez d'abord le dossier avec « Enregistrer et déposer »."; NotificationType.Warning);
     Set(varLienPDF; Blank());;
@@ -40,7 +47,7 @@ If(IsBlank(varDossier);
     Set(varHtmlPDF; varHtmlPDF & If(IsBlank(Coalesce(txtBilanPersonne.Text; varDossier.BilanPersonne)); "<p class=vide>Non rempli.</p>"; "<div class=bloc>" & Substitute(Substitute(Substitute(Substitute(Coalesce(txtBilanPersonne.Text; varDossier.BilanPersonne); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br>") & "</div>"));;
     Set(varHtmlPDF; varHtmlPDF & "<h2>Évaluation globale</h2>");;
     Set(varHtmlPDF; varHtmlPDF & If(IsBlank(varEvalGlobale); "<p class=vide>Non remplie.</p>"; "<p><b>" & varEvalGlobale & "</b><br><span class=desc>" & LookUp(colEvalGlobale; Label = varEvalGlobale).Desc & "</span></p>"));;
-    Set(varHtmlPDF; varHtmlPDF & "<h2>Section G — Confirmation et chaîne d'approbation</h2><table><tr><th>Étape</th><th>Personne</th><th>Date</th></tr>");;
+    Set(varHtmlPDF; varHtmlPDF & "<h2>Section G — Processus d'approbation</h2><table><tr><th>Étape</th><th>Personne</th><th>Date</th></tr>");;
     Set(varHtmlPDF; varHtmlPDF & "<tr><td>Avis au supérieur immédiat</td><td>" & Coalesce(varDossier.PersonneAppreciation.DisplayName; "—") & "</td><td>" & If(IsBlank(varDossier.AviseLe); "—"; Text(varDossier.AviseLe; "d mmmm yyyy")) & "</td></tr>");;
     Set(varHtmlPDF; varHtmlPDF & "<tr><td>Version transmise par le supérieur immédiat</td><td>" & Coalesce(varDossier.SuperieurImmediat.DisplayName; "—") & "</td><td>" & If(IsBlank(varDossier.VersionSILe); "—"; Text(varDossier.VersionSILe; "d mmmm yyyy")) & "</td></tr>");;
     Set(varHtmlPDF; varHtmlPDF & "<tr><td>Confirmation et approbation (personne en appréciation)</td><td>" & Coalesce(varDossier.PersonneAppreciation.DisplayName; "—") & "</td><td>" & If(IsBlank(varDossier.CertifieLe); "—"; Text(varDossier.CertifieLe; "d mmmm yyyy")) & "</td></tr>");;

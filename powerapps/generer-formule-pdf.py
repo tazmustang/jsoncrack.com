@@ -128,7 +128,7 @@ P('If(IsBlank(varEvalGlobale); ' + s("<p class=vide>Non remplie.</p>") +
   '; "<p><b>" & varEvalGlobale & "</b><br><span class=desc>" & LookUp(colEvalGlobale; Label = varEvalGlobale).Desc & "</span></p>")')
 
 # Section G
-P(s("<h2>Section G — Confirmation et chaîne d'approbation</h2><table><tr><th>Étape</th><th>Personne</th><th>Date</th></tr>"))
+P(s("<h2>Section G — Processus d'approbation</h2><table><tr><th>Étape</th><th>Personne</th><th>Date</th></tr>"))
 def g(etape, qui, date):
     return f'"<tr><td>{etape}</td><td>" & {qui} & "</td><td>" & {d(date)} & "</td></tr>"'
 P(g("Avis au supérieur immédiat", 'Coalesce(varDossier.PersonneAppreciation.DisplayName; "—")', 'varDossier.AviseLe'))
@@ -179,10 +179,17 @@ def formule(morceaux, titre, nom):
              ['Set(varHtmlPDF; varHtmlPDF & ' + x + ')' for x in morceaux[1:]]
     assemblage = ';;\n    '.join(etapes)
     return f"""// {titre}
-// VERSION FINALE — 28 octobre 2026
+// VERSION FINALE — mise à jour du 6 novembre 2026 (recopie des tableaux, section G « Processus d'approbation »)
 // 1) assemble la page HTML dans varHtmlPDF ; 2) le flux GenererPDFAppreciation la convertit
 // en PDF et la joint au dossier (liste Appreciations) en remplaçant la version précédente ;
 // 3) le bouton « 📄 Ouvrir le PDF » (ou Mes dossiers) l'ouvre.
+// Recopie les tableaux de la section A (écran -> collections) avant de produire le PDF
+ClearCollect(colTmpAct; ForAll(galObjActuels.AllItems;
+    {{LigneID: LigneID; Objectif: txtActObjectif.Text; Indicateur: txtActIndicateur.Text; Actions: txtActActions.Text}}));;
+ClearCollect(colObjActuels; colTmpAct);;
+ClearCollect(colTmpAve; ForAll(galObjAvenir.AllItems;
+    {{LigneID: LigneID; Objectif: txtAveObjectif.Text; Indicateur: txtAveIndicateur.Text}}));;
+ClearCollect(colObjAvenir; colTmpAve);;
 If(IsBlank(varDossier);
     Notify("Enregistrez d'abord le dossier avec « Enregistrer et déposer »."; NotificationType.Warning);
     Set(varLienPDF; Blank());;
