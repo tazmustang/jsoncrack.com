@@ -42,12 +42,12 @@ Ne touchez pas au courriel de la condition « Version SI transmise » : lui doit
 
 ## 2. Une étiquette déplacée par erreur (sigSIRoleLabel)
 
-L'étiquette du rôle du **supérieur immédiat** (sigSIRoleLabel) a été glissée par mégarde dans l'en-tête du bloc du **supérieur hiérarchique** (sigSHHead).
+L'étiquette « ✏️ Votre étape / 🔒 Réservé à ce rôle » du **supérieur immédiat** (sigSIRoleLabel) a été glissée par mégarde dans l'en-tête du bloc du **supérieur hiérarchique** (sigSHHead).
 
 1. Arborescence : section G › **sigSH** › **sigSHHead** › trouvez **sigSIRoleLabel**.
 2. Glissez-la dans **sigSI** › **sigSIRoleBadge** (ou : clic droit › Couper, cliquez sur sigSIRoleBadge, Ctrl + V).
-3. Propriétés **X** = `12` et **Y** = `0` ; **Height** = `Parent.Height`.
-4. Vérifiez : l'en-tête du supérieur hiérarchique n'affiche plus « Supérieur(e) immédiat(e) ».
+3. Le conteneur se place tout seul (mise en page automatique) : rien d'autre à régler.
+4. Vérifiez : le bloc du supérieur immédiat affiche de nouveau « Votre étape » ou « Réservé à ce rôle » dans sa bande grise, et l'en-tête du supérieur hiérarchique n'en a plus qu'une.
 
 ## 3. Bouton d'aide qui ramène au formulaire
 
