@@ -1,0 +1,897 @@
+##############################################################################
+# FORMULES À REFAIRE DANS LE BAC À SABLE : de la version 1.0.0.5 à la version 1.0.0.9
+# Généré le 9 novembre 2026 à partir de VOS solutions 1.0.0.5 et 1.0.0.8, contrôle par contrôle,
+# avec les corrections de la 1.0.0.9 déjà incluses.
+#
+# MODE D'EMPLOI
+#  1. Cliquez sur le contrôle nommé dans l'arborescence (ou tapez son nom dans la loupe).
+#  2. Choisissez la propriété indiquée (liste déroulante à gauche de la barre de formule).
+#  3. Effacez TOUT ce qui est dans la barre de formule.
+#  4. Collez SEULEMENT les lignes entre « --- Propriété --- » et la ligne vide suivante.
+#  Les formules sont en syntaxe française ( ; entre les arguments, ;; entre les actions ).
+##############################################################################
+
+
+==============================================================================
+# Écran du formulaire : formule d'ouverture   (écran scrFormulaire)
+==============================================================================
+
+[1] scrFormulaire
+--- OnVisible ---
+// scrFormulaire.OnVisible — VERSION FINALE — 28 octobre 2026, mises à jour du 29 et du 30 octobre (conformité TI ; sécurité du 3 novembre) (coller tout le contenu de ce fichier)
+// ---------- Paramètres de l'environnement (liste Parametres) ----------
+Set(varEnv; Coalesce(LookUp(Parametres; Title = "Environnement").Valeur; "PROD"));;
+Set(varCourrielSoutien; LookUp(Parametres; Title = "CourrielSoutien").Valeur);;
+
+// ---------- Base ----------
+Set(varMoi; Lower(User().Email));;
+Set(CurrentTabID; 1);;
+ClearCollect(colRoles;
+    {RoleLabel: "Personne en appréciation"; RoleID: "cadre"};
+    {RoleLabel: "Supérieur(e) immédiat(e)"; RoleID: "superieur_immediat"};
+    {RoleLabel: "Supérieur(e) hiérarchique"; RoleID: "superieur_hierarchique"};
+    {RoleLabel: "Directeur / directrice de service"; RoleID: "directeur"});;
+ClearCollect(colPostes;
+    {PosteLabel: "Cadre avec équipe"; PosteColor: RGBA(7;75;152;1); PosteID: "avec_equipe"};
+    {PosteLabel: "Cadre sans équipe"; PosteColor: RGBA(0;121;107;1); PosteID: "sans_equipe"};
+    {PosteLabel: "Professionnel non syndiqué"; PosteColor: RGBA(107;63;160;1); PosteID: "professionnel"});;
+ClearCollect(colTabs;
+    {TabLabel: "← Retour au formulaire"; TabID: 1});;
+// (onglets « Comment remplir », « Synthèse » et « Plan de développement » retirés le 28 octobre :
+//  l'aide s'ouvre avec le bouton « Comment remplir ce formulaire » en haut à gauche ;
+//  la barre d'onglets n'apparaît que dans l'aide, pour revenir au formulaire)
+
+// Dossier ouvert depuis un lien (...&ID=12)
+If(IsBlank(varDossier) && !IsBlank(Param("ID"));
+    Set(varDossier; LookUp(Appreciations; ID = Value(Param("ID")))));;
+
+// Relire le dossier complet dans SharePoint (sinon certaines colonnes, comme TypeRencontre,
+// peuvent arriver vides quand le dossier est ouvert depuis « Mes dossiers ») — ajout du 29 octobre
+If(!IsBlank(varDossier);
+    Set(varDossier; LookUp(Appreciations; ID = varDossier.ID)));;
+
+// ---------- Sécurité (3 novembre) : on n'ouvre un dossier que si la personne connectée y est nommée ----------
+If(!IsBlank(varDossier) &&
+    With({moi: Lower(User().Email)};
+        IsBlank(moi) ||
+        Not(moi in [Lower(varDossier.CourrielPersonne); Lower(varDossier.CourrielSI);
+                    Lower(varDossier.CourrielSH); Lower(varDossier.CourrielDirecteur)]));
+    Notify("Vous n'avez pas accès à ce dossier."; NotificationType.Error);;
+    Set(varDossier; Blank()));;
+
+// Rôle selon le courriel de la personne connectée
+Set(CurrentRoleID;
+    Switch(varMoi;
+        varDossier.CourrielSI; "superieur_immediat";
+        varDossier.CourrielSH; "superieur_hierarchique";
+        varDossier.CourrielDirecteur; "directeur";
+        "cadre"));;
+Set(CurrentPosteID;
+    Coalesce(LookUp(colPostes; PosteLabel = varDossier.TypePoste.Value).PosteID; ""));;
+
+// ---------- Section A ----------
+With({t: Table(ParseJSON(Coalesce(varDossier.ObjectifsActuels; "[]")))};
+    ClearCollect(colObjActuels;
+        ForAll(Sequence(CountRows(t)) As i;
+            With({r: Index(t; i.Value).Value};
+                {LigneID: i.Value; Objectif: Text(r.objectif);
+                 Indicateur: Text(r.indicateur); Actions: Text(r.actions)}))));;
+If(IsEmpty(colObjActuels);
+    Collect(colObjActuels; {LigneID: 1; Objectif: ""; Indicateur: ""; Actions: ""}));;
+With({t: Table(ParseJSON(Coalesce(varDossier.ObjectifsAvenir; "[]")))};
+    ClearCollect(colObjAvenir;
+        ForAll(Sequence(CountRows(t)) As i;
+            With({r: Index(t; i.Value).Value};
+                {LigneID: i.Value; Objectif: Text(r.objectif); Indicateur: Text(r.indicateur)}))));;
+If(IsEmpty(colObjAvenir);
+    Collect(colObjAvenir; {LigneID: 1; Objectif: ""; Indicateur: ""}));;
+
+// ---------- Section B : échelle, postures, comportements, compétences ----------
+// Échelle à 4 niveaux (mise à jour du 30 octobre) — utilisée par les listes de cotes ET par le tableau echelleLegend
+ClearCollect(colEchelle;
+    {Niveau: "Insatisfaisant"; Ordre: 1;
+     Desc: "Ne répond pas aux attentes. Les comportements associés aux postures de leadership sont peu ou pas observés malgré les occasions de les démontrer."};
+    {Niveau: "Partiellement satisfaisant"; Ordre: 2;
+     Desc: "Répond partiellement aux attentes. Les comportements associés aux postures de leadership sont présents, mais leur démonstration manque de constance, de profondeur ou d'autonomie dans certaines situations."};
+    {Niveau: "Complètement satisfaisant"; Ordre: 3;
+     Desc: "Répond pleinement aux attentes en démontrant de façon régulière et autonome les comportements associés aux postures de leadership dans les situations pertinentes à son rôle."};
+    {Niveau: "Supérieur"; Ordre: 4;
+     Desc: "Dépasse les attentes en démontrant les comportements associés aux postures de leadership de façon remarquable, constante et mobilisatrice. Fait preuve d'une grande maîtrise des comportements attendus et exerce une influence positive dans les situations rencontrées."});;
+
+ClearCollect(colPostures;
+    {PostureID: "performant"; Ordre: 1; Titre: "LEADER PERFORMANT(E)";
+     DescAvec: "Axé(e) résultat et communauté, inspire son équipe avec une vision claire et des objectifs ambitieux. Valorise et développe les talents, les efforts et la responsabilisation. Gère les risques et l’ambiguïté.";
+     DescSans: "Axé(e) résultats et communauté, inspire avec une vision claire et des objectifs ambitieux. Valorise et développe les talents, les efforts et la responsabilisation au sein des collaborations. Gère les risques et l’ambiguïté.";
+     Commentaire: ""};
+    {PostureID: "bienveillant"; Ordre: 2; Titre: "LEADER BIENVEILLANT(E)";
+     DescAvec: "Inspire par son courage, son écoute et son soutien. Crée un environnement inclusif. Favorise et valorise la collaboration, gère efficacement les conflits et les communications permettant l’atteinte du plein potentiel et des résultats.";
+     DescSans: "Inspire par son courage, son écoute et son soutien. Crée un environnement inclusif. Favorise et valorise la collaboration, gère efficacement les conflits et les communications permettant l’atteinte du plein potentiel et des résultats.";
+     Commentaire: ""};
+    {PostureID: "responsable"; Ordre: 3; Titre: "LEADER RESPONSABLE";
+     DescAvec: "Agit avec fiabilité, un sens de l’éthique dans le respect des valeurs. Respecte ses engagements et s’ajuste de façon proactive.";
+     DescSans: "Agit avec fiabilité, un sens de l’éthique dans le respect des valeurs. Respecte ses engagements et s’ajuste de façon proactive.";
+     Commentaire: ""};
+    {PostureID: "innovant"; Ordre: 4; Titre: "LEADER INNOVANT(E)";
+     DescAvec: "Sait optimiser et améliorer les processus. Remet en question les choses, stimule la créativité et l’expérimentation. Sait transformer les défis en opportunité.";
+     DescSans: "Sait optimiser et améliorer les processus. Remet en question les choses, stimule la créativité et l’expérimentation. Sait transformer les défis en opportunité.";
+     Commentaire: ""});;
+
+ClearCollect(colComportements;
+    {CompKey: "performant-0"; PostureID: "performant"; ItemIndex: 0; CoteCadre: ""; CoteSup: "";
+     TexteAvec: "Communiquer clairement les orientations, les priorités et les objectifs à l’équipe et en assurer le suivi";
+     TexteSans: "Communiquer clairement les orientations, les priorités et les objectifs et en assurer le suivi."};
+    {CompKey: "performant-1"; PostureID: "performant"; ItemIndex: 1; CoteCadre: ""; CoteSup: "";
+     TexteAvec: "Confier des responsabilités en fonction des rôles et des compétences, en témoignant de la confiance";
+     TexteSans: "Mettre à profit les expertises et les responsabilités de chacun pour soutenir l'atteinte des résultats."};
+    {CompKey: "performant-2"; PostureID: "performant"; ItemIndex: 2; CoteCadre: ""; CoteSup: "";
+     TexteAvec: "Reconnaitre les contributions et fournir une rétroaction constructive utile au développement.";
+     TexteSans: "Reconnaitre les contributions et fournir une rétroaction constructive utile au développement."};
+    {CompKey: "performant-3"; PostureID: "performant"; ItemIndex: 3; CoteCadre: ""; CoteSup: "";
+     TexteAvec: "Prendre des décisions courageuses en cohérence avec les objectifs organisationnels, même en contexte d’incertitude";
+     TexteSans: "Prendre des décisions courageuses en cohérence avec les objectifs organisationnels, même en contexte d’incertitude."};
+    {CompKey: "bienveillant-0"; PostureID: "bienveillant"; ItemIndex: 0; CoteCadre: ""; CoteSup: "";
+     TexteAvec: "Être à l’écoute et favoriser un climat respectueux et inclusif où chacun peut s’exprimer";
+     TexteSans: "Être à l’écoute et favoriser un climat respectueux et inclusif où chacun peut s’exprimer"};
+    {CompKey: "bienveillant-1"; PostureID: "bienveillant"; ItemIndex: 1; CoteCadre: ""; CoteSup: "";
+     TexteAvec: "Mobiliser et favoriser la collaboration afin d’atteindre les objectifs attendus";
+     TexteSans: "Mobiliser et favoriser la collaboration afin d’atteindre les objectifs attendus"};
+    {CompKey: "bienveillant-2"; PostureID: "bienveillant"; ItemIndex: 2; CoteCadre: ""; CoteSup: "";
+     TexteAvec: "Intervenir rapidement, avec courage, pour prévenir ou résoudre les conflits";
+     TexteSans: "Intervenir rapidement, avec courage, pour prévenir ou résoudre les conflits"};
+    {CompKey: "responsable-0"; PostureID: "responsable"; ItemIndex: 0; CoteCadre: ""; CoteSup: "";
+     TexteAvec: "Respecter ses engagements et agir de façon équitable, en cohérence avec les valeurs et les règles de l’organisation";
+     TexteSans: "Respecter ses engagements et agir de façon équitable, en cohérence avec les valeurs et les règles de l’organisation"};
+    {CompKey: "responsable-1"; PostureID: "responsable"; ItemIndex: 1; CoteCadre: ""; CoteSup: "";
+     TexteAvec: "Identifier les risques et les opportunités à venir et ajuster ses pratiques et celles de l’équipe en conséquence";
+     TexteSans: "Identifier les risques et les opportunités à venir et ajuster ses pratiques en conséquence"};
+    {CompKey: "responsable-2"; PostureID: "responsable"; ItemIndex: 2; CoteCadre: ""; CoteSup: "";
+     TexteAvec: "Assurer une gestion rigoureuse des ressources pour répondre aux priorités actuelles et futures";
+     TexteSans: "Assurer une gestion rigoureuse des ressources pour répondre aux priorités actuelles et futures"};
+    {CompKey: "innovant-0"; PostureID: "innovant"; ItemIndex: 0; CoteCadre: ""; CoteSup: "";
+     TexteAvec: "Encourager et soutenir l’expérimentation en tirant des apprentissages des succès comme des erreurs";
+     TexteSans: "Encourager et soutenir l’expérimentation en tirant des apprentissages des succès comme des erreurs"};
+    {CompKey: "innovant-1"; PostureID: "innovant"; ItemIndex: 1; CoteCadre: ""; CoteSup: "";
+     TexteAvec: "Proposer et mettre en place des améliorations concrètes renforçant l’efficacité, l’efficience et la qualité";
+     TexteSans: "Proposer et mettre en place des améliorations concrètes renforçant l’efficacité, l’efficience et la qualité"});;
+
+ClearCollect(colCompetences;
+    {CompID: "autonomie"; Ordre: 1; Label: "Autonomie"; Exemple: "";
+     Desc: "Je réalise mes mandats et mes responsabilités avec le niveau d’autonomie attendu."};
+    {CompID: "efficacite"; Ordre: 2; Label: "Efficacité au travail"; Exemple: "";
+     Desc: "J’effectue une gestion efficace des priorités en fonction des attentes et de la charge de travail."};
+    {CompID: "collaboration"; Ordre: 3; Label: "Collaboration – Mobilisation"; Exemple: "";
+     Desc: "Je travaille en partenariat avec les autres, favorise la collaboration et contribue activement à l’atteinte des objectifs communs."};
+    {CompID: "ecoute"; Ordre: 4; Label: "Faire preuve d’écoute"; Exemple: "";
+     Desc: "Je fais preuve d’ouverture et d’écoute afin de comprendre les besoins de mes partenaires et collaborateurs et d’y répondre de façon appropriée."};
+    {CompID: "agilite"; Ordre: 5; Label: "Agilité – créativité"; Exemple: "";
+     Desc: "Je prends les décisions requises et m’ajuste en fonction du contexte."};
+    {CompID: "autre"; Ordre: 6; Label: "Autres (si jugé opportun)"; Exemple: ""; Desc: ""});;
+
+// ---------- Section B : chargement du dossier ouvert ----------
+With({j: ParseJSON(Coalesce(varDossier.Postures; "{""cotes"":[],""commentaires"":[]}"))};
+    ForAll(Table(j.cotes) As c;
+        Patch(colComportements;
+            LookUp(colComportements; CompKey = Text(c.Value.k));
+            {CoteCadre: Coalesce(Text(c.Value.cadre); "");
+             CoteSup: Coalesce(Text(c.Value.sup); "")}));;
+    ForAll(Table(j.commentaires) As m;
+        Patch(colPostures;
+            LookUp(colPostures; PostureID = Text(m.Value.p));
+            {Commentaire: Coalesce(Text(m.Value.texte); "")})));;
+ForAll(Table(ParseJSON(Coalesce(varDossier.Competences; "[]"))) As e;
+    Patch(colCompetences;
+        LookUp(colCompetences; CompID = Text(e.Value.id));
+        {Exemple: Coalesce(Text(e.Value.exemple); "")}));;
+
+// ---------- Section C : valeurs organisationnelles ----------
+ClearCollect(colValeurs;
+    {Slug: "visionnaire"; Ordre: 1; Label: "Valeurs organisationnelles (Visionnaire, engagé et agile)"; Coche: false; Ex1: ""; Ex2: ""};
+    {Slug: "sst"; Ordre: 2; Label: "Santé et sécurité au travail"; Coche: false; Ex1: ""; Ex2: ""};
+    {Slug: "civilite"; Ordre: 3; Label: "Civilité et respect au travail"; Coche: false; Ex1: ""; Ex2: ""};
+    {Slug: "edi"; Ordre: 4; Label: "Diversité, équité et inclusion"; Coche: false; Ex1: ""; Ex2: ""};
+    {Slug: "securiteCivile"; Ordre: 5; Label: "Prévention et préparation en sécurité civile"; Coche: false; Ex1: ""; Ex2: ""};
+    {Slug: "qualiteService"; Ordre: 6; Label: "Qualité de service aux citoyens"; Coche: false; Ex1: ""; Ex2: ""};
+    {Slug: "autres"; Ordre: 7; Label: "Autres"; Coche: false; Ex1: ""; Ex2: ""});;
+ForAll(Table(ParseJSON(Coalesce(varDossier.Valeurs; "[]"))) As v;
+    Patch(colValeurs;
+        LookUp(colValeurs; Slug = Text(v.Value.s));
+        {Coche: Coalesce(Boolean(v.Value.coche); false);
+         Ex1: Coalesce(Text(v.Value.ex1); "");
+         Ex2: Coalesce(Text(v.Value.ex2); "")}));;
+
+// ---------- Section D : développement des compétences ----------
+With({t: Table(ParseJSON(Coalesce(varDossier.DevPrecedents; "[]")))};
+    ClearCollect(colDevPrecedents;
+        ForAll(Sequence(CountRows(t)) As i;
+            With({r: Index(t; i.Value).Value};
+                {LigneID: i.Value; Objectif: Text(r.objectif); Moyens: Text(r.moyens); Impacts: Text(r.impacts)}))));;
+If(IsEmpty(colDevPrecedents);
+    Collect(colDevPrecedents; {LigneID: 1; Objectif: ""; Moyens: ""; Impacts: ""}));;
+With({t: Table(ParseJSON(Coalesce(varDossier.DevNouveaux; "[]")))};
+    ClearCollect(colDevNouveaux;
+        ForAll(Sequence(CountRows(t)) As i;
+            With({r: Index(t; i.Value).Value};
+                {LigneID: i.Value; Besoin: Text(r.besoin); Moyen: Text(r.moyen)}))));;
+If(IsEmpty(colDevNouveaux);
+    Collect(colDevNouveaux; {LigneID: 1; Besoin: ""; Moyen: ""}));;
+
+// ---------- Évaluation globale ----------
+ClearCollect(colEvalGlobale;
+    {Code: "nouveau"; Ordre: 1; Label: "Nouveau (- de 3 mois)";
+     Desc: "Lorsqu'un(e) cadre est nouvellement dans l'équipe au moment de l'évaluation, il est souvent trop tôt pour l'évaluer. Convenir d'une date pour une rencontre de suivi."};
+    {Code: "I"; Ordre: 2; Label: "Insatisfaisant";
+     Desc: "Contribution grandement inférieure aux attentes et/ou comportements signifiés. Une amélioration immédiate et soutenue est requise. Un plan d'action et de soutien est requis."};
+    {Code: "PS"; Ordre: 3; Label: "Partiellement satisfaisant";
+     Desc: "La contribution est en progrès mais inférieure aux attentes signifiées. On remarque une amélioration et on croit que le niveau complètement satisfaisant sera atteint sous peu."};
+    {Code: "CS"; Ordre: 4; Label: "Complètement satisfaisant";
+     Desc: "La contribution répond globalement aux attentes et/ou comportements signifiés, quantitativement et qualitativement. La personne est considérée comme un atout de grande valeur."};
+    {Code: "S"; Ordre: 5; Label: "Supérieur";
+     Desc: "La contribution dépasse les attentes signifiées et contribue de façon vraiment importante au succès de l'équipe."});;
+Set(varEvalGlobale; Coalesce(varDossier.EvaluationGlobale.Value; ""));;
+
+// ---------- Cases « Type de rencontre » : relire le dossier à chaque ouverture ----------
+Reset(chkEssai);; Reset(chkPremiere);; Reset(chkMiAnnee);; Reset(chkBilan);; Reset(chkAutre);;
+Set(varLienPDF; Blank());;
+
+// ---------- Fenêtre de confirmation de création fermée à l'ouverture (30 octobre) ----------
+UpdateContext({locConfirmer: false})
+
+
+==============================================================================
+# Haut de l'écran et boutons   (écran scrFormulaire)
+==============================================================================
+
+[2] headerBar
+--- Fill ---
+RGBA(0;40;94;1)
+
+
+[3] btnHelp
+--- Text ---
+If(CurrentTabID = 2; "← Retour au formulaire"; "❓ Comment remplir ce formulaire")
+
+--- BorderColor ---
+RGBA(0;40;94;1)
+
+--- Fill ---
+RGBA(0;40;94;1)
+
+--- OnSelect ---
+Set(CurrentTabID; If(CurrentTabID = 2; 1; 2))
+
+
+[4] btnCalloutHelp
+--- BorderColor ---
+RGBA(0; 40; 94; 1) 
+
+--- Fill ---
+RGBA(0; 40; 94; 1) 
+
+
+[5] btnDeposer
+--- OnSelect ---
+// Recopie les tableaux de la section A (écran -> collections), sans faire sauter le curseur
+ClearCollect(colTmpAct; ForAll(galObjActuels.AllItems;
+    {LigneID: LigneID; Objectif: txtActObjectif.Text; Indicateur: txtActIndicateur.Text; Actions: txtActActions.Text}));;
+ClearCollect(colObjActuels; colTmpAct);;
+ClearCollect(colTmpAve; ForAll(galObjAvenir.AllItems;
+    {LigneID: LigneID; Objectif: txtAveObjectif.Text; Indicateur: txtAveIndicateur.Text}));;
+ClearCollect(colObjAvenir; colTmpAve);;
+If(IsBlank(varDossier);
+    If(CurrentRoleID <> "cadre";
+        Notify("Ouvrez d'abord le dossier de la personne depuis « Mes dossiers »."; NotificationType.Warning);
+        With({si: IfError('Utilisateursd’Office365'.ManagerV2(User().Email); Blank())};
+        With({sh: IfError('Utilisateursd’Office365'.ManagerV2(si.mail); Blank())};
+            Set(varDossier; Patch(Appreciations; Defaults(Appreciations); {
+                Titre: txtNom.Text;
+                Annee: Year(Today());
+                VersionFormulaire: "15 octobre 2026";
+                Statut: {Value: "Brouillon"};
+                PersonneAppreciation: {Claims: "i:0#.f|membership|" & varMoi;
+                    DisplayName: User().FullName; Email: User().Email;
+                    Department: ""; JobTitle: ""; Picture: ""};
+                CourrielPersonne: varMoi;
+                SuperieurImmediat: If(!IsBlank(si.mail); {Claims: "i:0#.f|membership|" & Lower(si.mail);
+                    DisplayName: si.displayName; Email: si.mail;
+                    Department: ""; JobTitle: ""; Picture: ""});
+                CourrielSI: Lower(si.mail);
+                SuperieurHierarchique: If(!IsBlank(sh.mail); {Claims: "i:0#.f|membership|" & Lower(sh.mail);
+                    DisplayName: sh.displayName; Email: sh.mail;
+                    Department: ""; JobTitle: ""; Picture: ""});
+                CourrielSH: Lower(sh.mail)
+            }))))));;
+
+If(!IsBlank(varDossier);
+    Set(varDossier; Patch(Appreciations; varDossier; {
+        Titre: txtNom.Text;
+        IdEmploye: txtId.Text;
+        Poste: Coalesce(txtPoste.Text; varDossier.Poste; 'Utilisateursd’Office365'.MyProfileV2().jobTitle);
+        TypePoste: If(CurrentPosteID = ""; Blank();
+            {Value: LookUp(colPostes; PosteID = CurrentPosteID).PosteLabel});
+        TypeRencontre: Filter(Choices(Appreciations.TypeRencontre);
+            ("essai" in Value And chkEssai.Checked) Or
+            ("premi" in Value And chkPremiere.Checked) Or
+            ("mi-ann" in Value And chkMiAnnee.Checked) Or
+            ("bilan annuel" in Value And chkBilan.Checked) Or
+            (StartsWith(Value; "Autre") And (chkAutre.Checked Or !IsBlank(Trim(txtAutre.Text)))));
+        TypeRencontreAutre: txtAutre.Text;
+        ObjectifsActuels: JSON(ForAll(colObjActuels;
+            {objectif: Objectif; indicateur: Indicateur; actions: Actions}));
+        ObjectifsAvenir: JSON(ForAll(colObjAvenir;
+            {objectif: Objectif; indicateur: Indicateur}));
+        Postures: JSON({
+            cotes: ForAll(colComportements; {k: CompKey; cadre: CoteCadre; sup: CoteSup});
+            commentaires: ForAll(colPostures; {p: PostureID; texte: Commentaire})});
+        Competences: JSON(ForAll(colCompetences; {id: CompID; exemple: Exemple}));
+        Valeurs: JSON(ForAll(colValeurs; {s: Slug; coche: Coche; ex1: Ex1; ex2: Ex2}));
+        DevPrecedents: JSON(ForAll(colDevPrecedents; {objectif: Objectif; moyens: Moyens; impacts: Impacts}));
+        DevNouveaux: JSON(ForAll(colDevNouveaux; {besoin: Besoin; moyen: Moyen}));
+        BilanSuperieur: txtBilanSup.Text;
+        BilanPersonne: txtBilanPersonne.Text;
+        EvaluationGlobale: If(varEvalGlobale = ""; Blank(); {Value: varEvalGlobale});
+        DirecteurRequis: chkDirRequis.Checked;
+        Directeur: If(!IsBlank(cboDirecteur.Selected);
+            {Claims: "i:0#.f|membership|" & Lower(cboDirecteur.Selected.Mail);
+             DisplayName: cboDirecteur.Selected.DisplayName; Email: cboDirecteur.Selected.Mail;
+             Department: ""; JobTitle: ""; Picture: ""};
+            varDossier.Directeur);
+        CourrielDirecteur: If(!IsBlank(cboDirecteur.Selected);
+            Lower(cboDirecteur.Selected.Mail); varDossier.CourrielDirecteur)
+    }));;
+    If(IsEmpty(Errors(Appreciations));
+        Notify("Dossier enregistré."; NotificationType.Success);
+        Notify("Erreur : " & First(Errors(Appreciations)).Message; NotificationType.Error)))
+
+
+[6] btnApercuPDF
+--- OnSelect ---
+// btnApercuPDF.OnSelect — PDF de l'appréciation complète
+// VERSION FINALE — mise à jour du 6 novembre 2026 (recopie des tableaux, section G « Processus d'approbation »)
+// 1) assemble la page HTML dans varHtmlPDF ; 2) le flux GenererPDFAppreciation la convertit
+// en PDF et la joint au dossier (liste Appreciations) en remplaçant la version précédente ;
+// 3) le bouton « 📄 Ouvrir le PDF » (ou Mes dossiers) l'ouvre.
+// Recopie les tableaux de la section A (écran -> collections) avant de produire le PDF
+ClearCollect(colTmpAct; ForAll(galObjActuels.AllItems;
+    {LigneID: LigneID; Objectif: txtActObjectif.Text; Indicateur: txtActIndicateur.Text; Actions: txtActActions.Text}));;
+ClearCollect(colObjActuels; colTmpAct);;
+ClearCollect(colTmpAve; ForAll(galObjAvenir.AllItems;
+    {LigneID: LigneID; Objectif: txtAveObjectif.Text; Indicateur: txtAveIndicateur.Text}));;
+ClearCollect(colObjAvenir; colTmpAve);;
+If(IsBlank(varDossier);
+    Notify("Enregistrez d'abord le dossier avec « Enregistrer et déposer »."; NotificationType.Warning);
+    Set(varLienPDF; Blank());;
+    Notify("Création du PDF en cours… Comptez de 10 à 30 secondes."; NotificationType.Information);;
+    Set(varHtmlPDF; "<html><head><meta charset='utf-8'><style>body{font-family:Segoe UI,Arial,sans-serif;font-size:10pt;color:#1f2937}h1{font-size:18pt;color:#00285e;margin:0}.sous{color:#8a8c8e;margin:2px 0 14px 0}h2{font-size:12.5pt;color:#00285e;border-bottom:2px solid #00285e;padding-bottom:3px;margin:18px 0 6px 0}h3{font-size:11pt;color:#074b98;margin:12px 0 4px 0}table{border-collapse:collapse;width:100%;margin:4px 0 8px 0}th{background:#e8eef7;color:#00285e;text-align:left;padding:5px;border:1px solid #c7d2e3;font-size:9.5pt}td{padding:5px;border:1px solid #d1d5db;vertical-align:top;font-size:9.5pt}td.lbl{background:#f3f4f6;font-weight:bold;width:28%}.vide{color:#8a8c8e;font-style:italic}.desc{color:#4b5563;font-style:italic;margin:0 0 4px 0}.bloc{border:1px solid #d1d5db;padding:8px;min-height:30px}.pied{margin-top:24px;color:#8a8c8e;font-size:8pt;border-top:1px solid #e5e7eb;padding-top:4px}</style></head><body>");;
+    Set(varHtmlPDF; varHtmlPDF & "<h1>Appréciation de la contribution</h1><p class=sous>" & LookUp(colPostes; PosteID = CurrentPosteID).PosteLabel & " — dossier no " & varDossier.ID & " — statut : " & Substitute(Coalesce(varDossier.Statut.Value; "Brouillon"); "Certifié"; "Confirmé") & "</p>");;
+    Set(varHtmlPDF; varHtmlPDF & "<h2>Identification de la personne en appréciation et du type de rencontre</h2><table>");;
+    Set(varHtmlPDF; varHtmlPDF & "<tr><td class=lbl>Nom, prénom</td><td>" & Substitute(Substitute(Substitute(Substitute(Coalesce(txtNom.Text; varDossier.Title); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br>") & "</td></tr>");;
+    Set(varHtmlPDF; varHtmlPDF & "<tr><td class=lbl>ID</td><td>" & Substitute(Substitute(Substitute(Substitute(Coalesce(txtId.Text; varDossier.IdEmploye); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br>") & "</td></tr>");;
+    Set(varHtmlPDF; varHtmlPDF & "<tr><td class=lbl>Poste</td><td>" & Substitute(Substitute(Substitute(Substitute(Coalesce(txtPoste.Text; varDossier.Poste); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br>") & "</td></tr>");;
+    Set(varHtmlPDF; varHtmlPDF & "<tr><td class=lbl>Type de poste</td><td>" & LookUp(colPostes; PosteID = CurrentPosteID).PosteLabel & "</td></tr>");;
+    Set(varHtmlPDF; varHtmlPDF & "<tr><td class=lbl>Année</td><td>" & Coalesce(Text(varDossier.Annee); Text(Year(Today()))) & "</td></tr>");;
+    Set(varHtmlPDF; varHtmlPDF & "<tr><td class=lbl>Type de rencontre</td><td>" & Substitute(Substitute(Substitute(Substitute(Concat(Filter(Table({T: "Période d'essai ou progression salariale"; C: chkEssai.Checked}; {T: "Première rencontre annuelle"; C: chkPremiere.Checked}; {T: "Bilan de mi-année"; C: chkMiAnnee.Checked}; {T: "Bilan annuel"; C: chkBilan.Checked}; {T: "Autre : " & Coalesce(txtAutre.Text; varDossier.TypeRencontreAutre); C: chkAutre.Checked Or !IsBlank(Coalesce(txtAutre.Text; varDossier.TypeRencontreAutre))}); C); T; ", "); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br>") & "</td></tr>");;
+    Set(varHtmlPDF; varHtmlPDF & "</table><h3>Participants</h3><table>");;
+    Set(varHtmlPDF; varHtmlPDF & "<tr><td class=lbl>Personne en appréciation</td><td>" & Coalesce(varDossier.PersonneAppreciation.DisplayName; "—") & "</td></tr>");;
+    Set(varHtmlPDF; varHtmlPDF & "<tr><td class=lbl>Supérieur(e) immédiat(e)</td><td>" & Coalesce(varDossier.SuperieurImmediat.DisplayName; "—") & "</td></tr>");;
+    Set(varHtmlPDF; varHtmlPDF & "<tr><td class=lbl>Supérieur(e) hiérarchique</td><td>" & Coalesce(varDossier.SuperieurHierarchique.DisplayName; "—") & "</td></tr>");;
+    Set(varHtmlPDF; varHtmlPDF & "<tr><td class=lbl>Directeur / directrice de service</td><td>" & If(chkDirRequis.Checked; Coalesce(varDossier.Directeur.DisplayName; "à choisir"); "non requis") & "</td></tr>");;
+    Set(varHtmlPDF; varHtmlPDF & "</table>");;
+    Set(varHtmlPDF; varHtmlPDF & "<h2>Section A — Les objectifs annuels</h2><h3>Objectifs de l'année en cours</h3>");;
+    Set(varHtmlPDF; varHtmlPDF & If(CountRows(Filter(colObjActuels; Objectif <> "" Or Indicateur <> "" Or Actions <> "")) = 0; "<p class=vide>Aucun élément.</p>"; "<table><tr><th>Objectifs</th><th>Indicateurs de mesure</th><th>Actions réalisées / commentaires</th></tr>" & Concat(Filter(colObjActuels; Objectif <> "" Or Indicateur <> "" Or Actions <> ""); "<tr><td>" & Substitute(Substitute(Substitute(Substitute(Objectif; "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br>") & "</td><td>" & Substitute(Substitute(Substitute(Substitute(Indicateur; "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br>") & "</td><td>" & Substitute(Substitute(Substitute(Substitute(Actions; "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br>") & "</td></tr>") & "</table>"));;
+    Set(varHtmlPDF; varHtmlPDF & "<h3>Objectifs de l'année à venir</h3>");;
+    Set(varHtmlPDF; varHtmlPDF & If(CountRows(Filter(colObjAvenir; Objectif <> "" Or Indicateur <> "")) = 0; "<p class=vide>Aucun élément.</p>"; "<table><tr><th>Objectifs à venir</th><th>Indicateurs de mesure</th></tr>" & Concat(Filter(colObjAvenir; Objectif <> "" Or Indicateur <> ""); "<tr><td>" & Substitute(Substitute(Substitute(Substitute(Objectif; "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br>") & "</td><td>" & Substitute(Substitute(Substitute(Substitute(Indicateur; "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br>") & "</td></tr>") & "</table>"));;
+    Set(varHtmlPDF; varHtmlPDF & If(CurrentPosteID = "professionnel"; "<h2>Section B — Les compétences</h2>"; "<h2>Section B — Les postures de leadership</h2>"));;
+    Set(varHtmlPDF; varHtmlPDF & If(CurrentPosteID = "professionnel"; Concatenate("<table><tr><th>Compétence</th><th>Exemples d'application</th></tr>"; Concat(Sort(colCompetences; Ordre) As k; Concatenate("<tr><td><b>"; k.Label; "</b>"; If(IsBlank(k.Desc); ""; "<br><span class=desc>" & k.Desc & "</span>"); "</td><td>"; If(IsBlank(k.Exemple); "—"; Substitute(Substitute(Substitute(Substitute(k.Exemple; "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br>")); "</td></tr>")); "</table>"); Concat(Sort(colPostures; Ordre) As p; Concatenate("<h3>"; p.Titre; "</h3><p class=desc>"; If(CurrentPosteID = "sans_equipe"; p.DescSans; p.DescAvec); "</p><table><tr><th>Comportements</th><th>Cote de la personne</th><th>Cote du supérieur</th></tr>"; Concat(Filter(colComportements; PostureID = p.PostureID) As c; Concatenate("<tr><td>"; If(CurrentPosteID = "sans_equipe"; c.TexteSans; c.TexteAvec); "</td><td>"; Coalesce(c.CoteCadre; "—"); "</td><td>"; Coalesce(c.CoteSup; "—"); "</td></tr>")); "</table>"; If(IsBlank(p.Commentaire); ""; Concatenate("<p><b>Exemples et commentaires :</b><br>"; Substitute(Substitute(Substitute(Substitute(p.Commentaire; "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br>"); "</p>"))))));;
+    Set(varHtmlPDF; varHtmlPDF & "<h2>Section C — Les grands fondements et les valeurs organisationnelles</h2>");;
+    Set(varHtmlPDF; varHtmlPDF & If(CountRows(Filter(colValeurs; Coche)) = 0; "<p class=vide>Aucun thème coché.</p>"; "<table><tr><th>Thème</th><th>Exemples d'application</th><th>Commentaires</th></tr>" & Concat(Sort(Filter(colValeurs; Coche); Ordre); "<tr><td><b>" & Label & "</b></td><td>" & Substitute(Substitute(Substitute(Substitute(Ex1; "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br>") & "</td><td>" & Substitute(Substitute(Substitute(Substitute(Ex2; "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br>") & "</td></tr>") & "</table>"));;
+    Set(varHtmlPDF; varHtmlPDF & "<h2>Section D — Le développement des compétences</h2><h3>Résultats des actions de développement réalisées</h3>");;
+    Set(varHtmlPDF; varHtmlPDF & If(CountRows(Filter(colDevPrecedents; Objectif <> "" Or Moyens <> "" Or Impacts <> "")) = 0; "<p class=vide>Aucun élément.</p>"; "<table><tr><th>Objectifs précédents</th><th>Moyens choisis</th><th>Impacts / résultats</th></tr>" & Concat(Filter(colDevPrecedents; Objectif <> "" Or Moyens <> "" Or Impacts <> ""); "<tr><td>" & Substitute(Substitute(Substitute(Substitute(Objectif; "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br>") & "</td><td>" & Substitute(Substitute(Substitute(Substitute(Moyens; "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br>") & "</td><td>" & Substitute(Substitute(Substitute(Substitute(Impacts; "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br>") & "</td></tr>") & "</table>"));;
+    Set(varHtmlPDF; varHtmlPDF & "<h3>Nouveaux besoins et moyens de développement</h3>");;
+    Set(varHtmlPDF; varHtmlPDF & If(CountRows(Filter(colDevNouveaux; Besoin <> "" Or Moyen <> "")) = 0; "<p class=vide>Aucun élément.</p>"; "<table><tr><th>Besoins de développement</th><th>Moyens de développement</th></tr>" & Concat(Filter(colDevNouveaux; Besoin <> "" Or Moyen <> ""); "<tr><td>" & Substitute(Substitute(Substitute(Substitute(Besoin; "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br>") & "</td><td>" & Substitute(Substitute(Substitute(Substitute(Moyen; "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br>") & "</td></tr>") & "</table>"));;
+    Set(varHtmlPDF; varHtmlPDF & "<h2>Section E — Bilan annuel complété par le supérieur immédiat</h2>");;
+    Set(varHtmlPDF; varHtmlPDF & If(IsBlank(Coalesce(txtBilanSup.Text; varDossier.BilanSuperieur)); "<p class=vide>Non rempli.</p>"; "<div class=bloc>" & Substitute(Substitute(Substitute(Substitute(Coalesce(txtBilanSup.Text; varDossier.BilanSuperieur); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br>") & "</div>"));;
+    Set(varHtmlPDF; varHtmlPDF & "<h2>Section F — Bilan annuel complété par la personne en appréciation</h2>");;
+    Set(varHtmlPDF; varHtmlPDF & If(IsBlank(Coalesce(txtBilanPersonne.Text; varDossier.BilanPersonne)); "<p class=vide>Non rempli.</p>"; "<div class=bloc>" & Substitute(Substitute(Substitute(Substitute(Coalesce(txtBilanPersonne.Text; varDossier.BilanPersonne); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br>") & "</div>"));;
+    Set(varHtmlPDF; varHtmlPDF & "<h2>Évaluation globale</h2>");;
+    Set(varHtmlPDF; varHtmlPDF & If(IsBlank(varEvalGlobale); "<p class=vide>Non remplie.</p>"; "<p><b>" & varEvalGlobale & "</b><br><span class=desc>" & LookUp(colEvalGlobale; Label = varEvalGlobale).Desc & "</span></p>"));;
+    Set(varHtmlPDF; varHtmlPDF & "<h2>Section G — Processus d'approbation</h2><table><tr><th>Étape</th><th>Personne</th><th>Date</th></tr>");;
+    Set(varHtmlPDF; varHtmlPDF & "<tr><td>Avis au supérieur immédiat</td><td>" & Coalesce(varDossier.PersonneAppreciation.DisplayName; "—") & "</td><td>" & If(IsBlank(varDossier.AviseLe); "—"; Text(varDossier.AviseLe; "d mmmm yyyy")) & "</td></tr>");;
+    Set(varHtmlPDF; varHtmlPDF & "<tr><td>Version transmise par le supérieur immédiat</td><td>" & Coalesce(varDossier.SuperieurImmediat.DisplayName; "—") & "</td><td>" & If(IsBlank(varDossier.VersionSILe); "—"; Text(varDossier.VersionSILe; "d mmmm yyyy")) & "</td></tr>");;
+    Set(varHtmlPDF; varHtmlPDF & "<tr><td>Confirmation et approbation (personne en appréciation)</td><td>" & Coalesce(varDossier.PersonneAppreciation.DisplayName; "—") & "</td><td>" & If(IsBlank(varDossier.CertifieLe); "—"; Text(varDossier.CertifieLe; "d mmmm yyyy")) & "</td></tr>");;
+    Set(varHtmlPDF; varHtmlPDF & "<tr><td>Approbation du supérieur immédiat</td><td>" & Coalesce(varDossier.SuperieurImmediat.DisplayName; "—") & "</td><td>" & If(IsBlank(varDossier.ApprouveSILe); "—"; Text(varDossier.ApprouveSILe; "d mmmm yyyy")) & "</td></tr>");;
+    Set(varHtmlPDF; varHtmlPDF & "<tr><td>Approbation du supérieur hiérarchique</td><td>" & Coalesce(varDossier.SuperieurHierarchique.DisplayName; "—") & "</td><td>" & If(IsBlank(varDossier.ApprouveSHLe); "—"; Text(varDossier.ApprouveSHLe; "d mmmm yyyy")) & "</td></tr>");;
+    Set(varHtmlPDF; varHtmlPDF & If(chkDirRequis.Checked; "<tr><td>Approbation du directeur / de la directrice de service</td><td>" & Coalesce(varDossier.Directeur.DisplayName; "—") & "</td><td>" & If(IsBlank(varDossier.ApprouveDirLe); "—"; Text(varDossier.ApprouveDirLe; "d mmmm yyyy")) & "</td></tr>"; ""));;
+    Set(varHtmlPDF; varHtmlPDF & "<tr><td>Transmis aux RH</td><td>" & "—" & "</td><td>" & If(IsBlank(varDossier.TransmisPaieLe); "—"; Text(varDossier.TransmisPaieLe; "d mmmm yyyy")) & "</td></tr>");;
+    Set(varHtmlPDF; varHtmlPDF & "</table><p class=pied>Document produit le " & Text(Now(); "d mmmm yyyy") & " à " & Text(Now(); "hh:mm") & " à partir de l'application Appréciation de la contribution.</p></body></html>");;
+    Set(varLienPDF;
+        GenererPDFAppreciation.Run(
+            "Appreciation_dossier" & varDossier.ID;
+            varHtmlPDF;
+            varDossier.ID).lien);;
+    If(IsBlank(varLienPDF);
+        Notify("Le PDF n'a pas pu être créé. Réessayez dans un moment."; NotificationType.Error);
+        Notify("PDF prêt : cliquez sur « 📄 Ouvrir le PDF »."; NotificationType.Success)))
+
+
+==============================================================================
+# Barre d'étapes (8 étapes)   (écran scrFormulaire)
+==============================================================================
+
+[7] galEtapes
+--- Items ---
+With(
+    {S: Coalesce(varDossier.Statut.Value; "Brouillon");
+     dirReq: Coalesce(varDossier.DirecteurRequis; false);
+     dV: !IsBlank(varDossier.VersionSILe);
+     d2: !IsBlank(varDossier.CertifieLe);
+     d3: !IsBlank(varDossier.ApprouveSILe);
+     d4: !IsBlank(varDossier.ApprouveSHLe);
+     d5: !IsBlank(varDossier.ApprouveDirLe);
+     d6: !IsBlank(varDossier.TransmisPaieLe)};
+    Table(
+        {Ordre: 1; Etape: "Brouillon"; Fait: true; EnCours: S = "Brouillon" Or (S = "Avisé au supérieur" And Not(dV)); Saute: false; DateEtape: If(false; Now()); SuivantFait: dV};
+        {Ordre: 2; Etape: "Version du sup. immédiat transmise"; Fait: dV; EnCours: false; Saute: false; DateEtape: varDossier.VersionSILe; SuivantFait: d2};
+        {Ordre: 3; Etape: "Confirmé (personne en appréciation)"; Fait: d2; EnCours: S = "Avisé au supérieur" And dV; Saute: false; DateEtape: varDossier.CertifieLe; SuivantFait: d3};
+        {Ordre: 4; Etape: "Approuvé (sup. immédiat)"; Fait: d3; EnCours: S = "Certifié"; Saute: false; DateEtape: varDossier.ApprouveSILe; SuivantFait: d4};
+        {Ordre: 5; Etape: "Approuvé (sup. hiérarchique)"; Fait: d4; EnCours: S = "Approuvé SI"; Saute: false; DateEtape: varDossier.ApprouveSHLe; SuivantFait: d5};
+        {Ordre: 6; Etape: "Approuvé (directeur de service)"; Fait: d5; EnCours: S = "Approuvé SH"; Saute: Not(dirReq); DateEtape: varDossier.ApprouveDirLe; SuivantFait: d6};
+        {Ordre: 7; Etape: "Transmis aux RH"; Fait: d6; EnCours: S = "Complété" And Not(d6); Saute: false; DateEtape: varDossier.TransmisPaieLe; SuivantFait: S = "Complété"};
+        {Ordre: 8; Etape: "Archivé (lecture seule)"; Fait: S = "Complété"; EnCours: false; Saute: false; DateEtape: If(false; Now()); SuivantFait: false}))
+
+--- TemplateSize ---
+Self.Width / 8
+
+
+[8] stepLineRight
+--- Visible ---
+ThisItem.Ordre < 8
+
+
+==============================================================================
+# Identification   (écran scrFormulaire)
+==============================================================================
+
+[9] txtId
+--- Placeholder ---
+"Votre numéro d'employé (obligatoire)"
+
+
+==============================================================================
+# Section A : tableaux des objectifs (curseur qui saute)   (écran scrFormulaire)
+==============================================================================
+
+[10] txtActObjectif
+--- OnChange ---
+(effacez tout : la propriété reste VIDE)
+
+
+[11] txtActIndicateur
+--- OnChange ---
+(effacez tout : la propriété reste VIDE)
+
+
+[12] txtActActions
+--- OnChange ---
+(effacez tout : la propriété reste VIDE)
+
+
+[13] btnActSupprimer
+--- OnSelect ---
+// Recopie les tableaux de la section A (écran -> collections), sans faire sauter le curseur
+ClearCollect(colTmpAct; ForAll(galObjActuels.AllItems;
+    {LigneID: LigneID; Objectif: txtActObjectif.Text; Indicateur: txtActIndicateur.Text; Actions: txtActActions.Text}));;
+ClearCollect(colObjActuels; colTmpAct);;
+ClearCollect(colTmpAve; ForAll(galObjAvenir.AllItems;
+    {LigneID: LigneID; Objectif: txtAveObjectif.Text; Indicateur: txtAveIndicateur.Text}));;
+ClearCollect(colObjAvenir; colTmpAve);;
+RemoveIf(colObjActuels; LigneID = ThisItem.LigneID)
+
+
+[14] btnAddActuel
+--- OnSelect ---
+// Recopie les tableaux de la section A (écran -> collections), sans faire sauter le curseur
+ClearCollect(colTmpAct; ForAll(galObjActuels.AllItems;
+    {LigneID: LigneID; Objectif: txtActObjectif.Text; Indicateur: txtActIndicateur.Text; Actions: txtActActions.Text}));;
+ClearCollect(colObjActuels; colTmpAct);;
+ClearCollect(colTmpAve; ForAll(galObjAvenir.AllItems;
+    {LigneID: LigneID; Objectif: txtAveObjectif.Text; Indicateur: txtAveIndicateur.Text}));;
+ClearCollect(colObjAvenir; colTmpAve);;
+Collect(
+    colObjActuels;
+    {LigneID: Coalesce(Max(colObjActuels; LigneID); 0) + 1; Objectif: ""; Indicateur: ""; Actions: ""}
+)
+
+
+[15] txtAveObjectif
+--- OnChange ---
+(effacez tout : la propriété reste VIDE)
+
+
+[16] txtAveIndicateur
+--- OnChange ---
+(effacez tout : la propriété reste VIDE)
+
+
+[17] btnAveSupprimer
+--- OnSelect ---
+// Recopie les tableaux de la section A (écran -> collections), sans faire sauter le curseur
+ClearCollect(colTmpAct; ForAll(galObjActuels.AllItems;
+    {LigneID: LigneID; Objectif: txtActObjectif.Text; Indicateur: txtActIndicateur.Text; Actions: txtActActions.Text}));;
+ClearCollect(colObjActuels; colTmpAct);;
+ClearCollect(colTmpAve; ForAll(galObjAvenir.AllItems;
+    {LigneID: LigneID; Objectif: txtAveObjectif.Text; Indicateur: txtAveIndicateur.Text}));;
+ClearCollect(colObjAvenir; colTmpAve);;
+RemoveIf(colObjAvenir; LigneID = ThisItem.LigneID)
+
+
+[18] btnAddAvenir
+--- OnSelect ---
+// Recopie les tableaux de la section A (écran -> collections), sans faire sauter le curseur
+ClearCollect(colTmpAct; ForAll(galObjActuels.AllItems;
+    {LigneID: LigneID; Objectif: txtActObjectif.Text; Indicateur: txtActIndicateur.Text; Actions: txtActActions.Text}));;
+ClearCollect(colObjActuels; colTmpAct);;
+ClearCollect(colTmpAve; ForAll(galObjAvenir.AllItems;
+    {LigneID: LigneID; Objectif: txtAveObjectif.Text; Indicateur: txtAveIndicateur.Text}));;
+ClearCollect(colObjAvenir; colTmpAve);;
+Collect(
+    colObjAvenir;
+    {LigneID: Coalesce(Max(colObjAvenir; LigneID); 0) + 1; Objectif: ""; Indicateur: ""}
+)
+
+
+==============================================================================
+# Section B : cotes du supérieur cachées jusqu'à sa version   (écran scrFormulaire)
+==============================================================================
+
+[19] p1HdrItem
+--- Text ---
+"Comportement démontré"
+
+
+[20] p1HdrSup
+--- Visible ---
+CurrentRoleID <> "cadre" Or (!IsBlank(varDossier.VersionSILe) And CountRows(Filter(colComportements; CoteSup <> "")) > 0)
+
+
+[21] p1CboSup
+--- Visible ---
+CurrentRoleID <> "cadre" Or (!IsBlank(varDossier.VersionSILe) And CountRows(Filter(colComportements; CoteSup <> "")) > 0)
+
+
+[22] p2HdrItem
+--- Text ---
+"Comportement démontré"
+
+
+[23] p2HdrSup
+--- Visible ---
+CurrentRoleID <> "cadre" Or (!IsBlank(varDossier.VersionSILe) And CountRows(Filter(colComportements; CoteSup <> "")) > 0)
+
+
+[24] p2CboSup
+--- Visible ---
+CurrentRoleID <> "cadre" Or (!IsBlank(varDossier.VersionSILe) And CountRows(Filter(colComportements; CoteSup <> "")) > 0)
+
+
+[25] p3HdrItem
+--- Text ---
+"Comportement démontré"
+
+--- Color ---
+RGBA(138;140;142;1)
+
+
+[26] p3HdrCadre
+--- Color ---
+RGBA(138;140;142;1)
+
+
+[27] p3HdrSup
+--- Visible ---
+CurrentRoleID <> "cadre" Or (!IsBlank(varDossier.VersionSILe) And CountRows(Filter(colComportements; CoteSup <> "")) > 0)
+
+--- Color ---
+RGBA(138;140;142;1)
+
+
+[28] p3CboSup
+--- Visible ---
+CurrentRoleID <> "cadre" Or (!IsBlank(varDossier.VersionSILe) And CountRows(Filter(colComportements; CoteSup <> "")) > 0)
+
+
+[29] p4HdrItem
+--- Text ---
+"Comportement démontré"
+
+
+[30] p4HdrSup
+--- Visible ---
+CurrentRoleID <> "cadre" Or (!IsBlank(varDossier.VersionSILe) And CountRows(Filter(colComportements; CoteSup <> "")) > 0)
+
+
+[31] p4CboSup
+--- Visible ---
+CurrentRoleID <> "cadre" Or (!IsBlank(varDossier.VersionSILe) And CountRows(Filter(colComportements; CoteSup <> "")) > 0)
+
+
+==============================================================================
+# Sections E et évaluation globale   (écran scrFormulaire)
+==============================================================================
+
+[32] cardSectionE
+--- Visible ---
+CurrentRoleID = "superieur_immediat" Or (Not(IsBlank(varDossier.BilanSuperieur)) And (CurrentRoleID <> "cadre" Or !IsBlank(varDossier.VersionSILe)))
+
+
+[33] cardEval
+--- Visible ---
+CurrentRoleID = "superieur_immediat" Or (varEvalGlobale <> "" And (CurrentRoleID <> "cadre" Or !IsBlank(varDossier.VersionSILe)))
+
+
+==============================================================================
+# Section G : processus d'approbation   (écran scrFormulaire)
+==============================================================================
+
+[34] gTitle
+--- Text ---
+"Section G — Processus d'approbation"
+
+
+[35] gLockedNote
+--- Fill ---
+RGBA(0;40;94;0,15)
+
+
+[36] gLockedLabel
+--- Color ---
+RGBA(0; 40; 94; 1) 
+
+
+[37] chkDirRequis
+--- Label ---
+"Cochez cette case si la directrice ou le directeur de service est une personne autre que la ou le supérieur(e) hiérarchique."
+
+
+[38] avisTitle
+--- Text ---
+"📨 Avant l'approbation — aviser votre supérieur(e) immédiat(e)"
+
+
+[39] avisText
+--- Text ---
+"Une fois votre partie remplie, avisez votre supérieur(e) immédiat(e), qui pourra consulter votre version dans « Mes dossiers » et planifier la rencontre."
+
+
+[40] certTitle
+--- Text ---
+"Personne en appréciation — confirmation"
+
+
+[41] chkCert
+--- Label ---
+If(IsBlank(varDossier.VersionSILe); "En attente de la version de votre supérieur(e) immédiat(e) : vous recevrez un courriel quand elle sera prête."; "Je confirme avoir pris connaissance du contenu de ce formulaire et je l'approuve.")
+
+--- DisplayMode ---
+If(!IsBlank(varDossier.VersionSILe) && Coalesce(varDossier.Statut.Value; "Brouillon") = "Avisé au supérieur" && CurrentRoleID = "cadre"; DisplayMode.Edit; DisplayMode.Disabled)
+
+
+[42] btnCertifier
+--- Text ---
+"✓ Approuver et soumettre"
+
+--- DisplayMode ---
+If(chkCert.Checked && !IsBlank(varDossier.VersionSILe) && Coalesce(varDossier.Statut.Value; "Brouillon") = "Avisé au supérieur"; DisplayMode.Edit; DisplayMode.Disabled)
+
+--- OnSelect ---
+If(IsBlank(varDossier);
+    Notify("Enregistrez d'abord votre dossier avec « ☁️ Enregistrer et déposer »."; NotificationType.Warning);
+    Set(varDossier; Patch(Appreciations; varDossier; {Statut: {Value: "Certifié"}; CertifieLe: Now()}));;
+    Select(btnDeposer);;
+    Reset(chkCert);;
+    Notify("Formulaire approuvé et soumis au supérieur immédiat."; NotificationType.Success))
+
+
+[43] sigSI
+--- Height ---
+Self.PaddingTop + sigSIHead.Height + 8 + sigSIRoleBadge.Height + 8 + sigSIDetail.Height + If(sigSITransmettre.Visible; 8 + sigSITransmettre.Height; 0) + If(sigSIAction.Visible; 8 + sigSIAction.Height; 0) + Self.PaddingBottom
+
+
+[44] sigSIChip
+--- Fill ---
+If(Not(IsBlank(varDossier.ApprouveSILe)); RGBA(0;158;73;0,12); Coalesce(varDossier.Statut.Value; "Brouillon") = "Certifié"; RGBA(0;40;94;0,15); RGBA(243;244;246;1))
+
+
+[45] sigSIChipLabel
+--- Color ---
+If(Not(IsBlank(varDossier.ApprouveSILe)); RGBA(0;158;73;1); Coalesce(varDossier.Statut.Value; "Brouillon") = "Certifié"; RGBA(0;40;94;1); RGBA(138;140;142;1))
+
+
+[46] sigSHChip
+--- Fill ---
+If(Not(IsBlank(varDossier.ApprouveSHLe)); RGBA(0;158;73;0,12); Coalesce(varDossier.Statut.Value; "Brouillon") = "Approuvé SI"; RGBA(0;40;94;0,15); RGBA(243;244;246;1))
+
+
+[47] sigSHChipLabel
+--- Color ---
+If(Not(IsBlank(varDossier.ApprouveSHLe)); RGBA(0;158;73;1); Coalesce(varDossier.Statut.Value; "Brouillon") = "Approuvé SI"; RGBA(0;40;94;1); RGBA(138;140;142;1))
+
+
+[48] sigDirChip
+--- Fill ---
+If(Not(IsBlank(varDossier.ApprouveDirLe)); RGBA(0;158;73;0,12); Coalesce(varDossier.Statut.Value; "Brouillon") = "Approuvé SH"; RGBA(0;40;94;0,15); RGBA(243;244;246;1))
+
+
+[49] sigDirChipLabel
+--- Color ---
+If(Not(IsBlank(varDossier.ApprouveDirLe)); RGBA(0;158;73;1); Coalesce(varDossier.Statut.Value; "Brouillon") = "Approuvé SH"; RGBA(0;40;94;1); RGBA(138;140;142;1))
+
+
+==============================================================================
+# Aide « Comment remplir »   (écran scrFormulaire)
+==============================================================================
+
+[50] aideHtml
+--- Height ---
+1180
+
+--- HtmlText ---
+"<div style='font-family:Segoe UI,Arial,sans-serif;font-size:14px;color:#1f2937;'>
+<h3 style='font-size:15px;color:#00285e;margin:18px 0 8px;'>Pour commencer</h3>
+<table style='width:100%;border-collapse:collapse;'>
+<tr><td style='width:44px;vertical-align:top;padding:6px 0;'><div style='width:30px;height:30px;line-height:30px;border-radius:15px;background:#00285e;color:#ffffff;font-weight:bold;text-align:center;font-size:14px;'>A</div></td><td style='vertical-align:top;padding:6px 0;'><div style='font-size:14px;font-weight:bold;color:#00285e;'>Ouvrez l'application</div><div style='font-size:13px;color:#4b5563;margin-top:2px;'>Depuis le lien reçu par courriel ou depuis l'écran « Mes dossiers ». Vos dossiers s'affichent automatiquement.</div></td></tr>
+<tr><td style='width:44px;vertical-align:top;padding:6px 0;'><div style='width:30px;height:30px;line-height:30px;border-radius:15px;background:#00285e;color:#ffffff;font-weight:bold;text-align:center;font-size:14px;'>B</div></td><td style='vertical-align:top;padding:6px 0;'><div style='font-size:14px;font-weight:bold;color:#00285e;'>Votre rôle est reconnu</div><div style='font-size:13px;color:#4b5563;margin-top:2px;'>L'application vous reconnaît grâce à votre compte de la Ville : personne en appréciation, supérieur(e) immédiat(e), supérieur(e) hiérarchique ou directeur / directrice de service. Les sections réservées aux autres rôles restent verrouillées.</div></td></tr>
+<tr><td style='width:44px;vertical-align:top;padding:6px 0;'><div style='width:30px;height:30px;line-height:30px;border-radius:15px;background:#00285e;color:#ffffff;font-weight:bold;text-align:center;font-size:14px;'>C</div></td><td style='vertical-align:top;padding:6px 0;'><div style='font-size:14px;font-weight:bold;color:#00285e;'>Personne en appréciation : choisissez votre type de poste</div><div style='font-size:13px;color:#4b5563;margin-top:2px;'>Vous seul(e) faites ce choix dans la barre latérale ; le formulaire s'adapte (cadre avec équipe, cadre sans équipe ou professionnel non syndiqué).</div></td></tr>
+</table>
+<h3 style='font-size:15px;color:#00285e;margin:18px 0 8px;'>Qui fait quoi</h3>
+<table style='width:100%;table-layout:fixed;border-collapse:separate;border-spacing:8px 0;margin:0 -8px;'>
+<tr>
+<td style='vertical-align:top;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:12px;'><div style='font-size:22px;'>👤</div><div style='font-size:14px;font-weight:bold;color:#00285e;margin-top:4px;'>Personne en appréciation</div><div style='font-size:13px;color:#4b5563;margin-top:4px;'>Remplit sa partie, avise son supérieur, puis confirme et approuve après la rencontre.</div></td>
+<td style='vertical-align:top;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:12px;'><div style='font-size:22px;'>👥</div><div style='font-size:14px;font-weight:bold;color:#00285e;margin-top:4px;'>Supérieur(e) immédiat(e)</div><div style='font-size:13px;color:#4b5563;margin-top:4px;'>Remplit ses cotes et son bilan, transmet sa version, puis approuve en premier.</div></td>
+<td style='vertical-align:top;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:12px;'><div style='font-size:22px;'>🏢</div><div style='font-size:14px;font-weight:bold;color:#00285e;margin-top:4px;'>Supérieur(e) hiérarchique</div><div style='font-size:13px;color:#4b5563;margin-top:4px;'>Approuve en second lieu, après le supérieur immédiat.</div></td>
+<td style='vertical-align:top;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:12px;'><div style='font-size:22px;'>🎖️</div><div style='font-size:14px;font-weight:bold;color:#00285e;margin-top:4px;'>Directeur / directrice de service</div><div style='font-size:13px;color:#4b5563;margin-top:4px;'>Approuve en dernier, uniquement si applicable (case à cocher).</div></td>
+</tr>
+</table>
+<h3 style='font-size:15px;color:#00285e;margin:18px 0 8px;'>Les 7 étapes</h3>
+<table style='width:100%;border-collapse:collapse;'>
+<tr><td style='width:44px;vertical-align:top;padding:6px 0;'><div style='width:30px;height:30px;line-height:30px;border-radius:15px;background:#00285e;color:#ffffff;font-weight:bold;text-align:center;font-size:14px;'>1</div></td><td style='vertical-align:top;padding:6px 0;'><div style='font-size:14px;font-weight:bold;color:#00285e;'>Remplir</div><div style='font-size:13px;color:#4b5563;margin-top:2px;'>La personne en appréciation remplit sa partie.</div></td></tr>
+<tr><td style='width:44px;vertical-align:top;padding:6px 0;'><div style='width:30px;height:30px;line-height:30px;border-radius:15px;background:#00285e;color:#ffffff;font-weight:bold;text-align:center;font-size:14px;'>2</div></td><td style='vertical-align:top;padding:6px 0;'><div style='font-size:14px;font-weight:bold;color:#00285e;'>Enregistrer</div><div style='font-size:13px;color:#4b5563;margin-top:2px;'>« ☁️ Enregistrer et déposer » enregistre le dossier dans SharePoint. Vous pouvez y revenir à tout moment depuis « Mes dossiers ».</div></td></tr>
+<tr><td style='width:44px;vertical-align:top;padding:6px 0;'><div style='width:30px;height:30px;line-height:30px;border-radius:15px;background:#00285e;color:#ffffff;font-weight:bold;text-align:center;font-size:14px;'>3</div></td><td style='vertical-align:top;padding:6px 0;'><div style='font-size:14px;font-weight:bold;color:#00285e;'>Aviser le supérieur</div><div style='font-size:13px;color:#4b5563;margin-top:2px;'>La personne clique sur « Aviser le supérieur » : son supérieur(e) immédiat(e) reçoit un courriel.</div></td></tr>
+<tr><td style='width:44px;vertical-align:top;padding:6px 0;'><div style='width:30px;height:30px;line-height:30px;border-radius:15px;background:#00285e;color:#ffffff;font-weight:bold;text-align:center;font-size:14px;'>4</div></td><td style='vertical-align:top;padding:6px 0;'><div style='font-size:14px;font-weight:bold;color:#00285e;'>Version du supérieur immédiat</div><div style='font-size:13px;color:#4b5563;margin-top:2px;'>Le supérieur immédiat remplit ses cotes, son bilan et l'évaluation globale, puis clique sur « Transmettre ma version ». La personne reçoit un courriel et peut lire cette version avant la rencontre.</div></td></tr>
+<tr><td style='width:44px;vertical-align:top;padding:6px 0;'><div style='width:30px;height:30px;line-height:30px;border-radius:15px;background:#00285e;color:#ffffff;font-weight:bold;text-align:center;font-size:14px;'>5</div></td><td style='vertical-align:top;padding:6px 0;'><div style='font-size:14px;font-weight:bold;color:#00285e;'>Confirmer</div><div style='font-size:13px;color:#4b5563;margin-top:2px;'>Après la rencontre, la personne coche « Je confirme… je l'approuve », puis clique sur « Approuver et soumettre » : son contenu se verrouille.</div></td></tr>
+<tr><td style='width:44px;vertical-align:top;padding:6px 0;'><div style='width:30px;height:30px;line-height:30px;border-radius:15px;background:#00285e;color:#ffffff;font-weight:bold;text-align:center;font-size:14px;'>6</div></td><td style='vertical-align:top;padding:6px 0;'><div style='font-size:14px;font-weight:bold;color:#00285e;'>Approuver</div><div style='font-size:13px;color:#4b5563;margin-top:2px;'>Chaque approbateur, à son tour, reçoit un courriel, ouvre le dossier, coche « J'approuve » et approuve. Son nom et l'heure sont inscrits automatiquement.</div></td></tr>
+<tr><td style='width:44px;vertical-align:top;padding:6px 0;'><div style='width:30px;height:30px;line-height:30px;border-radius:15px;background:#00285e;color:#ffffff;font-weight:bold;text-align:center;font-size:14px;'>7</div></td><td style='vertical-align:top;padding:6px 0;'><div style='font-size:14px;font-weight:bold;color:#00285e;'>Fin</div><div style='font-size:13px;color:#4b5563;margin-top:2px;'>Après la dernière approbation, l'évaluation globale est transmise aux RH, chacun est avisé et le dossier passe en lecture seule.</div></td></tr>
+</table>
+<h3 style='font-size:15px;color:#00285e;margin:18px 0 8px;'>Questions fréquentes</h3>
+<div style='padding:10px 0;border-bottom:1px solid #f3f4f6;'><div style='font-size:14px;font-weight:bold;color:#1f2937;'>Qui peut voir mon dossier ?</div><div style='font-size:13px;color:#4b5563;margin-top:3px;'>Seulement vous, votre supérieur(e) immédiat(e), votre supérieur(e) hiérarchique, le directeur ou la directrice de service s'il y a lieu, et l'équipe des RH.</div></div>
+<div style='padding:10px 0;border-bottom:1px solid #f3f4f6;'><div style='font-size:14px;font-weight:bold;color:#1f2937;'>Mes modifications sont-elles enregistrées automatiquement ?</div><div style='font-size:13px;color:#4b5563;margin-top:3px;'>Non : cliquez sur « ☁️ Enregistrer et déposer » avant de quitter. Les boutons de la section G enregistrent aussi votre travail.</div></div>
+<div style='padding:10px 0;border-bottom:1px solid #f3f4f6;'><div style='font-size:14px;font-weight:bold;color:#1f2937;'>Pourquoi « Approuver et soumettre » est-il grisé ?</div><div style='font-size:13px;color:#4b5563;margin-top:3px;'>Vous devez attendre que votre supérieur(e) immédiat(e) ait transmis sa version. Vous recevrez un courriel.</div></div>
+<div style='padding:10px 0;border-bottom:1px solid #f3f4f6;'><div style='font-size:14px;font-weight:bold;color:#1f2937;'>Puis-je modifier le formulaire après l'avoir confirmé ?</div><div style='font-size:13px;color:#4b5563;margin-top:3px;'>Non. Après la confirmation, seul le supérieur immédiat peut encore ajuster sa cotation, son bilan et l'évaluation globale, jusqu'à son approbation.</div></div>
+<div style='padding:10px 0;'><div style='font-size:14px;font-weight:bold;color:#1f2937;'>Je ne vois pas le dossier d'un employé : pourquoi ?</div><div style='font-size:13px;color:#4b5563;margin-top:3px;'>La personne doit d'abord avoir créé et enregistré son dossier. Vérifiez aussi que vous êtes inscrit(e) comme gestionnaire dans l'annuaire de la Ville.</div></div>
+</div>"
+
+
+==============================================================================
+# Écran Mes dossiers   (écran scrMesDossiers)
+==============================================================================
+
+[51] headerBar_1
+--- Fill ---
+RGBA(0;40;94;1)
+
+
+[52] galDossiers
+--- Items ---
+// galDossiers.Items — Seulement les dossiers où la personne connectée est nommée
+// (le courriel est lu directement : jamais vide, même après un rafraîchissement)
+With({moi: Lower(User().Email)};
+    With({mesDossiers: Filter(Appreciations;
+            CourrielPersonne = moi Or CourrielSI = moi Or
+            CourrielSH = moi Or CourrielDirecteur = moi)};
+        SortByColumns(
+            Filter(mesDossiers;
+                StartsWith(Titre; txtRecherche.Text) And
+                Switch(CurrentFiltreID;
+                    "encours"; Coalesce(Statut.Value; "Brouillon") <> "Complété";
+                    "completes"; Statut.Value = "Complété";
+"afaire"; (CourrielSI = moi And Statut.Value = "Avisé au supérieur" And IsBlank(VersionSILe))
+    Or (CourrielSI = moi And Statut.Value = "Certifié")
+    Or (CourrielSH = moi And Statut.Value = "Approuvé SI")
+    Or (CourrielDirecteur = moi And Statut.Value = "Approuvé SH");
+                    true));
+            "Modified"; SortOrder.Descending)))
+
+
+[53] cellRole
+--- Text ---
+// Rôle de la personne connectée dans ce dossier
+With({moi: Lower(User().Email)};
+    Switch(true;
+        ThisItem.CourrielPersonne = moi; "Personne en appréciation";
+        ThisItem.CourrielSI = moi; "Supérieur(e) immédiat(e)";
+        ThisItem.CourrielSH = moi; "Supérieur(e) hiérarchique";
+        ThisItem.CourrielDirecteur = moi; "Directeur / directrice de service";
+        ""))
+
+
+[54] statutPill
+--- Fill ---
+Switch(Coalesce(ThisItem.Statut.Value; "Brouillon");
+    "Brouillon"; RGBA(210;210;210;1);
+    "Avisé au supérieur"; RGBA(0;40;94;0,15);
+    "Certifié"; RGBA(0;40;94;0,15);
+    "Approuvé SI"; RGBA(0;40;94;0,15);
+    "Approuvé SH"; RGBA(0;40;94;0,15);
+    "Approuvé directeur"; RGBA(0;40;94;0,15);
+    "Complété"; RGBA(0;158;73;0,12);
+    RGBA(210;210;210;1))
+
+
+[55] statutPillLabel
+--- Text ---
+Substitute(Coalesce(ThisItem.Statut.Value; "Brouillon"); "Certifié"; "Confirmé")
+
+--- Color ---
+Switch(Coalesce(ThisItem.Statut.Value; "Brouillon");
+    "Brouillon"; RGBA(0;40;94;1);
+    "Avisé au supérieur"; RGBA(0;40;94;1);
+    "Certifié"; RGBA(0;40;94;1);
+    "Approuvé SI"; RGBA(0;40;94;1);
+    "Approuvé SH"; RGBA(0;40;94;1);
+    "Approuvé directeur"; RGBA(0;40;94;1);
+    "Complété"; RGBA(0;158;73;1);
+    RGBA(0;40;94;1))
+
+
+==============================================================================
+# NOUVEAUX CONTRÔLES (voir le guide Word, étapes 5.10 et 5.4)
+==============================================================================
+
+[56] sigSITransmettre  (NOUVEAU)
+--- Visible ---
+Coalesce(varDossier.Statut.Value; "Brouillon") = "Avisé au supérieur" And CurrentRoleID = "superieur_immediat" And IsBlank(varDossier.VersionSILe)
+
+--- Height ---
+Self.PaddingTop + chkTransSI.Height + 8 + btnTransSI.Height + Self.PaddingBottom
+
+
+[57] chkTransSI  (NOUVEAU)
+--- Label ---
+"Ma version est complète (cotes de la section B, bilan de la section E et évaluation globale). Je la transmets à la personne pour la rencontre."
+
+
+[58] btnTransSI  (NOUVEAU)
+--- DisplayMode ---
+If(chkTransSI.Checked; DisplayMode.Edit; DisplayMode.Disabled)
+
+--- OnSelect ---
+// Transmet la version du supérieur immédiat à la personne, avant sa confirmation (le flux 2 l'avise par courriel)
+Set(varDossier; Patch(Appreciations; varDossier; {VersionSILe: Now()}));;
+Select(btnDeposer);;
+Reset(chkTransSI);;
+Notify("Votre version est transmise. La personne en appréciation est avisée par courriel."; NotificationType.Success)
+
+--- Text ---
+"📨 Transmettre ma version"
+
+
+[59] lblChoisirPoste  (NOUVEAU)
+--- Visible ---
+CurrentPosteID = ""
+
+--- Text ---
+"⚠️ Choisissez d'abord votre type de poste (menu de gauche, « 2. Type de poste ») pour afficher le formulaire complet, dont la section B."
+
+--- Fill ---
+RGBA(255; 247; 230; 1)
+
+--- Color ---
+RGBA(146; 64; 14; 1)
+
+--- FontWeight ---
+FontWeight.Semibold
+
+--- AutoHeight ---
+true
+
+--- PaddingLeft ---
+14
