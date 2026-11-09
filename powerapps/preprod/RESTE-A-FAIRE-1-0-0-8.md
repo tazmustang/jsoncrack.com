@@ -14,7 +14,7 @@ La version 1.0.0.8 est très avancée. Ces éléments sont **corrects** :
 - couleurs olive retirées, Placeholder du numéro d'employé ;
 - recopie des tableaux (curseur), nouveaux textes.
 
-Il reste **7 petites choses**. Faites-les dans l'ordre, enregistrez, puis exportez la **1.0.0.9**.
+Il reste **5 choses obligatoires** (1, 2, 3, 5, 7) et **2 facultatives** (4 et 6, les couleurs). Faites-les dans l'ordre, enregistrez, puis exportez la **1.0.0.9**.
 
 # 1. Hauteur du bloc du SI (sigSI.Height) — erreur
 
@@ -41,7 +41,9 @@ Elle est **à l'intérieur de la barre d'étapes** (galerie galEtapes). Elle se 
 1. Barre de recherche de l'arborescence (loupe) : tapez **Comportement attendu**.
 2. Remplacez le texte dans les **4** contrôles trouvés par **Comportement démontré**.
 
-# 4. Gris de la Ville (#8A8C8E)
+# 4. Gris de la Ville (#8A8C8E) — FACULTATIF
+
+> **Vous pouvez sauter cette étape.** Les anciens gris sont presque identiques au gris de la Ville : les utilisateurs ne verront pas de différence, et rien ne bloque la PréProd. Si vous voulez quand même le faire, envoyez le fichier .msapp à Claude (voir la fin de la section).
 
 Il reste d'anciens gris : `RGBA(107; 114; 128; 1)` (52 fois) et `RGBA(156; 163; 175; 1)` (26 fois).
 
@@ -49,12 +51,14 @@ Il reste d'anciens gris : `RGBA(107; 114; 128; 1)` (52 fois) et `RGBA(156; 163; 
 2. Rechercher `RGBA(107; 114; 128; 1)` › Remplacer par `ColorValue("#8A8C8E")` › **Tout remplacer**.
 3. Même chose pour `RGBA(156; 163; 175; 1)`.
 
+Si la recherche n'offre pas « Remplacer » : **Fichier › Enregistrer sous › Cet ordinateur** pour télécharger le fichier .msapp, et envoyez-le à Claude, qui fera le remplacement.
+
 # 5. Logo de la Ville
 
 1. **Médias › Charger** : `logo/logo-ville-quebec-blanc.png`.
 2. Dans le bandeau bleu de **scrMesDossiers** et **scrFormulaire** : **Insérer › Image**, propriété **Image** = `'logo-ville-quebec-blanc'`, **Height** = 40, à gauche du titre.
 
-# 6. Couleur des notes
+# 6. Couleur des notes — FACULTATIF
 
 Contrôles des notes (texte gris pâle sous les sections) : **Color** = `RGBA(55; 65; 81; 1)` pour une meilleure lisibilité.
 
