@@ -1,0 +1,64 @@
+##############################################################
+# AIDE « COMMENT REMPLIR » — corrections du 9 novembre 2026
+# Écran scrFormulaire. Copiez SEULEMENT les lignes sous chaque titre.
+##############################################################
+
+==============================================================
+1) BOUTON POUR REVENIR AU FORMULAIRE (bouton en haut à gauche)
+   Contrôle : le bouton « ❓ Comment remplir ce formulaire » de la barre latérale
+==============================================================
+--- OnSelect ---
+Set(CurrentTabID; If(CurrentTabID = 2; 1; 2))
+
+--- Text ---
+If(CurrentTabID = 2; "← Retour au formulaire"; "❓ Comment remplir ce formulaire")
+
+==============================================================
+2) MÊME CHOSE pour le petit bouton « ❓ Comment remplir » (dans l'encadré bleu
+   au début du formulaire) : seul OnSelect change
+==============================================================
+--- OnSelect ---
+Set(CurrentTabID; 2)
+
+==============================================================
+3) TEXTE DE L'AIDE (étapes à jour)
+   Contrôle : aideHtml   ·   Propriété : HtmlText
+   Effacez tout, puis collez de la ligne qui commence par "<div  jusqu'à </div>"
+==============================================================
+--- HtmlText ---
+"<div style='font-family:Segoe UI,Arial,sans-serif;font-size:14px;color:#1f2937;'>
+<h3 style='font-size:15px;color:#00285e;margin:18px 0 8px;'>Pour commencer</h3>
+<table style='width:100%;border-collapse:collapse;'>
+<tr><td style='width:44px;vertical-align:top;padding:6px 0;'><div style='width:30px;height:30px;line-height:30px;border-radius:15px;background:#00285e;color:#ffffff;font-weight:bold;text-align:center;font-size:14px;'>A</div></td><td style='vertical-align:top;padding:6px 0;'><div style='font-size:14px;font-weight:bold;color:#00285e;'>Ouvrez l'application</div><div style='font-size:13px;color:#4b5563;margin-top:2px;'>Depuis le lien reçu par courriel ou depuis l'écran « Mes dossiers ». Vos dossiers s'affichent automatiquement.</div></td></tr>
+<tr><td style='width:44px;vertical-align:top;padding:6px 0;'><div style='width:30px;height:30px;line-height:30px;border-radius:15px;background:#00285e;color:#ffffff;font-weight:bold;text-align:center;font-size:14px;'>B</div></td><td style='vertical-align:top;padding:6px 0;'><div style='font-size:14px;font-weight:bold;color:#00285e;'>Votre rôle est reconnu</div><div style='font-size:13px;color:#4b5563;margin-top:2px;'>L'application vous reconnaît grâce à votre compte de la Ville : personne en appréciation, supérieur(e) immédiat(e), supérieur(e) hiérarchique ou directeur / directrice de service. Les sections réservées aux autres rôles restent verrouillées.</div></td></tr>
+<tr><td style='width:44px;vertical-align:top;padding:6px 0;'><div style='width:30px;height:30px;line-height:30px;border-radius:15px;background:#00285e;color:#ffffff;font-weight:bold;text-align:center;font-size:14px;'>C</div></td><td style='vertical-align:top;padding:6px 0;'><div style='font-size:14px;font-weight:bold;color:#00285e;'>Personne en appréciation : choisissez votre type de poste</div><div style='font-size:13px;color:#4b5563;margin-top:2px;'>Vous seul(e) faites ce choix dans la barre latérale ; le formulaire s'adapte (cadre avec équipe, cadre sans équipe ou professionnel non syndiqué).</div></td></tr>
+</table>
+<h3 style='font-size:15px;color:#00285e;margin:18px 0 8px;'>Qui fait quoi</h3>
+<table style='width:100%;table-layout:fixed;border-collapse:separate;border-spacing:8px 0;margin:0 -8px;'>
+<tr>
+<td style='vertical-align:top;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:12px;'><div style='font-size:22px;'>👤</div><div style='font-size:14px;font-weight:bold;color:#00285e;margin-top:4px;'>Personne en appréciation</div><div style='font-size:13px;color:#4b5563;margin-top:4px;'>Remplit sa partie, avise son supérieur, puis confirme et approuve après la rencontre.</div></td>
+<td style='vertical-align:top;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:12px;'><div style='font-size:22px;'>👥</div><div style='font-size:14px;font-weight:bold;color:#00285e;margin-top:4px;'>Supérieur(e) immédiat(e)</div><div style='font-size:13px;color:#4b5563;margin-top:4px;'>Remplit ses cotes et son bilan, transmet sa version, puis approuve en premier.</div></td>
+<td style='vertical-align:top;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:12px;'><div style='font-size:22px;'>🏢</div><div style='font-size:14px;font-weight:bold;color:#00285e;margin-top:4px;'>Supérieur(e) hiérarchique</div><div style='font-size:13px;color:#4b5563;margin-top:4px;'>Approuve en second lieu, après le supérieur immédiat.</div></td>
+<td style='vertical-align:top;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:12px;'><div style='font-size:22px;'>🎖️</div><div style='font-size:14px;font-weight:bold;color:#00285e;margin-top:4px;'>Directeur / directrice de service</div><div style='font-size:13px;color:#4b5563;margin-top:4px;'>Approuve en dernier, uniquement si applicable (case à cocher).</div></td>
+</tr>
+</table>
+<h3 style='font-size:15px;color:#00285e;margin:18px 0 8px;'>Les 7 étapes</h3>
+<table style='width:100%;border-collapse:collapse;'>
+<tr><td style='width:44px;vertical-align:top;padding:6px 0;'><div style='width:30px;height:30px;line-height:30px;border-radius:15px;background:#00285e;color:#ffffff;font-weight:bold;text-align:center;font-size:14px;'>1</div></td><td style='vertical-align:top;padding:6px 0;'><div style='font-size:14px;font-weight:bold;color:#00285e;'>Remplir</div><div style='font-size:13px;color:#4b5563;margin-top:2px;'>La personne en appréciation remplit sa partie.</div></td></tr>
+<tr><td style='width:44px;vertical-align:top;padding:6px 0;'><div style='width:30px;height:30px;line-height:30px;border-radius:15px;background:#00285e;color:#ffffff;font-weight:bold;text-align:center;font-size:14px;'>2</div></td><td style='vertical-align:top;padding:6px 0;'><div style='font-size:14px;font-weight:bold;color:#00285e;'>Enregistrer</div><div style='font-size:13px;color:#4b5563;margin-top:2px;'>« ☁️ Enregistrer et déposer » enregistre le dossier dans SharePoint. Vous pouvez y revenir à tout moment depuis « Mes dossiers ».</div></td></tr>
+<tr><td style='width:44px;vertical-align:top;padding:6px 0;'><div style='width:30px;height:30px;line-height:30px;border-radius:15px;background:#00285e;color:#ffffff;font-weight:bold;text-align:center;font-size:14px;'>3</div></td><td style='vertical-align:top;padding:6px 0;'><div style='font-size:14px;font-weight:bold;color:#00285e;'>Aviser le supérieur</div><div style='font-size:13px;color:#4b5563;margin-top:2px;'>La personne clique sur « Aviser le supérieur » : son supérieur(e) immédiat(e) reçoit un courriel.</div></td></tr>
+<tr><td style='width:44px;vertical-align:top;padding:6px 0;'><div style='width:30px;height:30px;line-height:30px;border-radius:15px;background:#00285e;color:#ffffff;font-weight:bold;text-align:center;font-size:14px;'>4</div></td><td style='vertical-align:top;padding:6px 0;'><div style='font-size:14px;font-weight:bold;color:#00285e;'>Version du supérieur immédiat</div><div style='font-size:13px;color:#4b5563;margin-top:2px;'>Le supérieur immédiat remplit ses cotes, son bilan et l'évaluation globale, puis clique sur « Transmettre ma version ». La personne reçoit un courriel et peut lire cette version avant la rencontre.</div></td></tr>
+<tr><td style='width:44px;vertical-align:top;padding:6px 0;'><div style='width:30px;height:30px;line-height:30px;border-radius:15px;background:#00285e;color:#ffffff;font-weight:bold;text-align:center;font-size:14px;'>5</div></td><td style='vertical-align:top;padding:6px 0;'><div style='font-size:14px;font-weight:bold;color:#00285e;'>Confirmer</div><div style='font-size:13px;color:#4b5563;margin-top:2px;'>Après la rencontre, la personne coche « Je confirme… je l'approuve », puis clique sur « Approuver et soumettre » : son contenu se verrouille.</div></td></tr>
+<tr><td style='width:44px;vertical-align:top;padding:6px 0;'><div style='width:30px;height:30px;line-height:30px;border-radius:15px;background:#00285e;color:#ffffff;font-weight:bold;text-align:center;font-size:14px;'>6</div></td><td style='vertical-align:top;padding:6px 0;'><div style='font-size:14px;font-weight:bold;color:#00285e;'>Approuver</div><div style='font-size:13px;color:#4b5563;margin-top:2px;'>Chaque approbateur, à son tour, reçoit un courriel, ouvre le dossier, coche « J'approuve » et approuve. Son nom et l'heure sont inscrits automatiquement.</div></td></tr>
+<tr><td style='width:44px;vertical-align:top;padding:6px 0;'><div style='width:30px;height:30px;line-height:30px;border-radius:15px;background:#00285e;color:#ffffff;font-weight:bold;text-align:center;font-size:14px;'>7</div></td><td style='vertical-align:top;padding:6px 0;'><div style='font-size:14px;font-weight:bold;color:#00285e;'>Fin</div><div style='font-size:13px;color:#4b5563;margin-top:2px;'>Après la dernière approbation, l'évaluation globale est transmise aux RH, chacun est avisé et le dossier passe en lecture seule.</div></td></tr>
+</table>
+<h3 style='font-size:15px;color:#00285e;margin:18px 0 8px;'>Questions fréquentes</h3>
+<div style='padding:10px 0;border-bottom:1px solid #f3f4f6;'><div style='font-size:14px;font-weight:bold;color:#1f2937;'>Qui peut voir mon dossier ?</div><div style='font-size:13px;color:#4b5563;margin-top:3px;'>Seulement vous, votre supérieur(e) immédiat(e), votre supérieur(e) hiérarchique, le directeur ou la directrice de service s'il y a lieu, et l'équipe des RH.</div></div>
+<div style='padding:10px 0;border-bottom:1px solid #f3f4f6;'><div style='font-size:14px;font-weight:bold;color:#1f2937;'>Mes modifications sont-elles enregistrées automatiquement ?</div><div style='font-size:13px;color:#4b5563;margin-top:3px;'>Non : cliquez sur « ☁️ Enregistrer et déposer » avant de quitter. Les boutons de la section G enregistrent aussi votre travail.</div></div>
+<div style='padding:10px 0;border-bottom:1px solid #f3f4f6;'><div style='font-size:14px;font-weight:bold;color:#1f2937;'>Pourquoi « Approuver et soumettre » est-il grisé ?</div><div style='font-size:13px;color:#4b5563;margin-top:3px;'>Vous devez attendre que votre supérieur(e) immédiat(e) ait transmis sa version. Vous recevrez un courriel.</div></div>
+<div style='padding:10px 0;border-bottom:1px solid #f3f4f6;'><div style='font-size:14px;font-weight:bold;color:#1f2937;'>Puis-je modifier le formulaire après l'avoir confirmé ?</div><div style='font-size:13px;color:#4b5563;margin-top:3px;'>Non. Après la confirmation, seul le supérieur immédiat peut encore ajuster sa cotation, son bilan et l'évaluation globale, jusqu'à son approbation.</div></div>
+<div style='padding:10px 0;'><div style='font-size:14px;font-weight:bold;color:#1f2937;'>Je ne vois pas le dossier d'un employé : pourquoi ?</div><div style='font-size:13px;color:#4b5563;margin-top:3px;'>La personne doit d'abord avoir créé et enregistré son dossier. Vérifiez aussi que vous êtes inscrit(e) comme gestionnaire dans l'annuaire de la Ville.</div></div>
+</div>"
+
+--- Height (aideHtml) ---
+1180

@@ -69,6 +69,10 @@ La solution contient encore `rhdsst_shared_sharepointonline_9db72454…` (« San
 1. **Solutions** › Solution-ApplicationAppréciation › **Variables d'environnement**.
 2. Cochez cette variable › **⋯ › Supprimer de cette solution** (pas « Supprimer »).
 
+# 8. Aide « Comment remplir » (9 novembre)
+
+Le bouton du haut devient « ← Retour au formulaire » quand l'aide est ouverte, et l'aide montre les 7 étapes à jour (« Confirmer » au lieu de « Certifier »). Formules : **AIDE-COMMENT-REMPLIR.txt**.
+
 # Ensuite
 
 1. **Enregistrer**, **Publier**.
