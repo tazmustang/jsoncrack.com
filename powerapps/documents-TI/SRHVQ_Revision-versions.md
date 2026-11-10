@@ -25,7 +25,8 @@ Les numéros de version sont ceux de la solution Power Platform : **majeure.mine
 | 1.0.0.5 | 4 novembre 2026 | PréProd | Correction | Liste recréée (variable), « Autre » du type de rencontre dans le PDF, contrôle d'accès à l'ouverture | Annie Audet |
 | 1.0.0.6 | 5 novembre 2026 | PréProd | Modification | Libellés (directeur/directrice de service, confirmation, Aviser le supérieur, Approuver et soumettre), sécurité Mes dossiers | Annie Audet |
 | 1.0.0.7 / 1.0.0.8 | 6 novembre 2026 | Bac à sable | Nouvelle étape | « Version du supérieur immédiat transmise » (VersionSILe), barre à 8 étapes, curseur corrigé, flux 1 getbyname('SRHVQ_Utilisateurs'), couleurs Ville, ID manuel | Annie Audet |
-| **1.0.0.9** | *[date d'export]* | **PréProd** (puis Prod) | Mise à niveau | 1.0.0.8 + corrections finales (hauteur sigSI, bannière hors de la barre, gris, logo, « Comportement démontré », 7ᵉ variable retirée) | Annie Audet |
+| 1.0.0.9 | 6 novembre 2026 | Bac à sable | Mise à niveau | 1.0.0.8 + corrections (hauteur sigSI, bannière hors de la barre, logo, « Comportement démontré », 7ᵉ variable retirée, flux 3 sur le compte de service) | Annie Audet |
+| **1.0.0.10** | *[date d'export]* | **PréProd** (puis Prod) | Conformité TI | Flux 2 (courriel Aviser au SI), validation des champs, confirmation de création, App.OnError, écrans À propos et Aide, aide à jour | Annie Audet |
 
 # 2. Détail des changements
 
@@ -83,5 +84,5 @@ Les numéros de version sont ceux de la solution Power Platform : **majeure.mine
 | Version | PréProd — date et approbateur | Prod — date et approbateur |
 |---|---|---|
 | 1.0.0.4 | 1er novembre 2026 — TI | |
-| 1.0.0.9 | | |
+| 1.0.0.10 | | |
 | | | |

@@ -1,6 +1,6 @@
 ---
 title: "SRHVQ — Document d'architecture de l'application « Appréciation de la contribution »"
-subtitle: "Mise à jour du 7 novembre 2026 · Version de la solution : 1.0.0.9"
+subtitle: "Mise à jour du 7 novembre 2026 · Version de la solution : 1.0.0.10"
 lang: fr-CA
 ---
 
@@ -34,8 +34,9 @@ L'application remplace le formulaire Word d'appréciation de la contribution (ve
 | Courriels automatiques | À chaque étape, la bonne personne reçoit un lien vers le dossier. Aucun contenu d'évaluation dans les courriels |
 | Transmission aux RH | À « Complété » : l'évaluation globale seulement est transmise par courriel ; le dossier passe en lecture seule |
 | PDF | PDF complet du dossier, joint au dossier (une seule version, remplacée à chaque demande) |
-| À propos | Nom, version, environnement, responsable du soutien, téléphone, courriel, et formulaire pour écrire au soutien |
-| Aide | Didacticiel de 5 pages (un par écran), et aide « Comment remplir ce formulaire » |
+| À propos | Écran scrAPropos (depuis Mes dossiers) : nom, version, environnement, responsable du soutien, courriel (téléphone si inscrit dans Parametres), et bouton « Écrire au soutien » qui ouvre un courriel déjà adressé |
+| Aide | Écran scrAide (depuis Mes dossiers) : didacticiel de 5 pages ; dans le formulaire, aide « Comment remplir ce formulaire » et bouton « Écrire à l'équipe » |
+| Validation et gestion des erreurs | Champs obligatoires vérifiés avant « Enregistrer » et « Aviser » ; confirmation à la création ; App.OnError : message clair et trace |
 
 # 3. Architecture technique
 

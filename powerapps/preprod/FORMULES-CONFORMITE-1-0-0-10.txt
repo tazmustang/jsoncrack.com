@@ -1,0 +1,479 @@
+##############################################################################
+# CONFORMITÉ TI À AJOUTER — version 1.0.0.10
+# Validation, confirmation de création, gestion des erreurs, écrans « À propos » et « Aide »
+# Formules faites à partir de VOTRE version 1.0.0.9 (non gérée) — syntaxe française ( ; et ;; )
+# À utiliser avec AJOUTER-CONFORMITE-1-0-0-10.docx (mêmes numéros [1], [2]…)
+##############################################################################
+
+
+==============================================================================
+[1] App — propriété OnError
+==============================================================================
+// App.OnError — Gestion globale des erreurs : message clair à l'utilisateur et trace pour le soutien
+Notify(
+    "Une erreur est survenue : " & FirstError.Message & " — Si le problème persiste, cliquez sur « ℹ️ À propos » pour joindre le soutien.";
+    NotificationType.Error
+);;
+Trace(
+    "SRHVQ - erreur";
+    TraceSeverity.Error;
+    {Source: FirstError.Source; Message: FirstError.Message; Utilisateur: User().Email}
+)
+
+
+==============================================================================
+[2] btnDeposerExec (COPIE de btnDeposer) — propriété OnSelect
+==============================================================================
+// btnDeposerExec.OnSelect — Enregistre le dossier dans SharePoint (lancé seulement par btnDeposer, après la validation, ou par les boutons de la section G)
+// Recopie les tableaux de la section A (écran -> collections), sans faire sauter le curseur
+ClearCollect(colTmpAct; ForAll(galObjActuels.AllItems;
+    {LigneID: LigneID; Objectif: txtActObjectif.Text; Indicateur: txtActIndicateur.Text; Actions: txtActActions.Text}));;
+ClearCollect(colObjActuels; colTmpAct);;
+ClearCollect(colTmpAve; ForAll(galObjAvenir.AllItems;
+    {LigneID: LigneID; Objectif: txtAveObjectif.Text; Indicateur: txtAveIndicateur.Text}));;
+ClearCollect(colObjAvenir; colTmpAve);;
+If(IsBlank(varDossier);
+    If(CurrentRoleID <> "cadre";
+        Notify("Ouvrez d'abord le dossier de la personne depuis « Mes dossiers »."; NotificationType.Warning);
+        With({si: IfError('Utilisateursd’Office365'.ManagerV2(User().Email); Blank())};
+        With({sh: IfError('Utilisateursd’Office365'.ManagerV2(si.mail); Blank())};
+            Set(varDossier; Patch(Appreciations; Defaults(Appreciations); {
+                Titre: txtNom.Text;
+                Annee: Year(Today());
+                VersionFormulaire: "15 octobre 2026";
+                Statut: {Value: "Brouillon"};
+                PersonneAppreciation: {Claims: "i:0#.f|membership|" & varMoi;
+                    DisplayName: User().FullName; Email: User().Email;
+                    Department: ""; JobTitle: ""; Picture: ""};
+                CourrielPersonne: varMoi;
+                SuperieurImmediat: If(!IsBlank(si.mail); {Claims: "i:0#.f|membership|" & Lower(si.mail);
+                    DisplayName: si.displayName; Email: si.mail;
+                    Department: ""; JobTitle: ""; Picture: ""});
+                CourrielSI: Lower(si.mail);
+                SuperieurHierarchique: If(!IsBlank(sh.mail); {Claims: "i:0#.f|membership|" & Lower(sh.mail);
+                    DisplayName: sh.displayName; Email: sh.mail;
+                    Department: ""; JobTitle: ""; Picture: ""});
+                CourrielSH: Lower(sh.mail)
+            }))))));;
+
+If(!IsBlank(varDossier);
+    Set(varDossier; Patch(Appreciations; varDossier; {
+        Titre: txtNom.Text;
+        IdEmploye: txtId.Text;
+        Poste: Coalesce(txtPoste.Text; varDossier.Poste; 'Utilisateursd’Office365'.MyProfileV2().jobTitle);
+        TypePoste: If(CurrentPosteID = ""; Blank();
+            {Value: LookUp(colPostes; PosteID = CurrentPosteID).PosteLabel});
+        TypeRencontre: Filter(Choices(Appreciations.TypeRencontre);
+            ("essai" in Value And chkEssai.Checked) Or
+            ("premi" in Value And chkPremiere.Checked) Or
+            ("mi-ann" in Value And chkMiAnnee.Checked) Or
+            ("bilan annuel" in Value And chkBilan.Checked) Or
+            (StartsWith(Value; "Autre") And (chkAutre.Checked Or !IsBlank(Trim(txtAutre.Text)))));
+        TypeRencontreAutre: txtAutre.Text;
+        ObjectifsActuels: JSON(ForAll(colObjActuels;
+            {objectif: Objectif; indicateur: Indicateur; actions: Actions}));
+        ObjectifsAvenir: JSON(ForAll(colObjAvenir;
+            {objectif: Objectif; indicateur: Indicateur}));
+        Postures: JSON({
+            cotes: ForAll(colComportements; {k: CompKey; cadre: CoteCadre; sup: CoteSup});
+            commentaires: ForAll(colPostures; {p: PostureID; texte: Commentaire})});
+        Competences: JSON(ForAll(colCompetences; {id: CompID; exemple: Exemple}));
+        Valeurs: JSON(ForAll(colValeurs; {s: Slug; coche: Coche; ex1: Ex1; ex2: Ex2}));
+        DevPrecedents: JSON(ForAll(colDevPrecedents; {objectif: Objectif; moyens: Moyens; impacts: Impacts}));
+        DevNouveaux: JSON(ForAll(colDevNouveaux; {besoin: Besoin; moyen: Moyen}));
+        BilanSuperieur: txtBilanSup.Text;
+        BilanPersonne: txtBilanPersonne.Text;
+        EvaluationGlobale: If(varEvalGlobale = ""; Blank(); {Value: varEvalGlobale});
+        DirecteurRequis: chkDirRequis.Checked;
+        Directeur: If(!IsBlank(cboDirecteur.Selected);
+            {Claims: "i:0#.f|membership|" & Lower(cboDirecteur.Selected.Mail);
+             DisplayName: cboDirecteur.Selected.DisplayName; Email: cboDirecteur.Selected.Mail;
+             Department: ""; JobTitle: ""; Picture: ""};
+            varDossier.Directeur);
+        CourrielDirecteur: If(!IsBlank(cboDirecteur.Selected);
+            Lower(cboDirecteur.Selected.Mail); varDossier.CourrielDirecteur)
+    }));;
+    If(IsEmpty(Errors(Appreciations));
+        Notify("Dossier enregistré."; NotificationType.Success);
+        Notify("Erreur : " & First(Errors(Appreciations)).Message; NotificationType.Error)))
+
+
+==============================================================================
+[3] btnDeposerExec — propriété Visible
+==============================================================================
+false
+
+
+==============================================================================
+[4] lblManquants (NOUVELLE étiquette cachée) — propriété Text
+==============================================================================
+// lblManquants.Text — Liste des champs obligatoires encore vides (vide = tout est complet)
+Concat(
+    Filter(
+        Table(
+            {Champ: "Nom"; Ok: !IsBlank(Trim(txtNom.Text))};
+            {Champ: "ID de l'employé"; Ok: !IsBlank(Trim(txtId.Text))};
+            {Champ: "Type de poste"; Ok: CurrentPosteID <> ""};
+            {Champ: "Type de rencontre"; Ok: chkEssai.Checked Or chkPremiere.Checked Or chkMiAnnee.Checked Or chkBilan.Checked Or chkAutre.Checked Or !IsBlank(Trim(txtAutre.Text))};
+            {Champ: "Précision du type « Autre »"; Ok: !chkAutre.Checked Or !IsBlank(Trim(txtAutre.Text))};
+            {Champ: "Directeur ou directrice de service"; Ok: !chkDirRequis.Checked Or !IsBlank(cboDirecteur.Selected) Or !IsBlank(varDossier.CourrielDirecteur)}
+        );
+        !Ok
+    );
+    Champ;
+    ", "
+)
+
+
+==============================================================================
+[5] lblManquants — propriété Visible
+==============================================================================
+false
+
+
+==============================================================================
+[6] btnDeposer — propriété OnSelect (remplace TOUT)
+==============================================================================
+// btnDeposer.OnSelect — « Enregistrer et déposer »
+// 1) Personne en appréciation : vérifie les champs obligatoires ; 2) nouveau dossier : demande une confirmation ;
+// 3) sinon : enregistre (btnDeposerExec)
+If(
+    // Champs obligatoires vides (seulement pour la personne en appréciation, qui les remplit)
+    CurrentRoleID = "cadre" && lblManquants.Text <> "";
+    Notify("Avant d'enregistrer, complétez : " & lblManquants.Text; NotificationType.Warning);
+    // Nouveau dossier : on demande la confirmation de création
+    IsBlank(varDossier);
+    UpdateContext({locConfirmer: true});
+    // Dossier existant : on enregistre directement
+    Select(btnDeposerExec)
+)
+
+
+==============================================================================
+[7] btnDeposer — propriété DisplayMode (si vous l'aviez changée)
+==============================================================================
+DisplayMode.Edit
+
+
+==============================================================================
+[8] btnAviser — propriété OnSelect (remplace TOUT)
+==============================================================================
+// btnAviser.OnSelect — Aviser le supérieur : vérifie les champs obligatoires, passe le statut à « Avisé au supérieur »
+// (le flux 2 envoie le courriel au supérieur immédiat), puis enregistre le contenu
+If(
+    IsBlank(varDossier);
+    Notify("Enregistrez d'abord votre dossier avec « ☁️ Enregistrer et déposer »."; NotificationType.Warning);
+    lblManquants.Text <> "";
+    Notify("Avant d'aviser votre supérieur(e), complétez : " & lblManquants.Text; NotificationType.Warning);
+    Set(varDossier; Patch(Appreciations; varDossier; {Statut: {Value: "Avisé au supérieur"}; AviseLe: Now()}));;
+    Select(btnDeposerExec);;
+    Notify("Votre supérieur(e) immédiat(e) est avisé(e)."; NotificationType.Success)
+)
+
+
+==============================================================================
+[9] btnAviser — propriété DisplayMode
+==============================================================================
+If(CurrentRoleID = "cadre" && CurrentPosteID <> ""; DisplayMode.Edit; DisplayMode.Disabled)
+
+
+==============================================================================
+[10] btnCertifier — propriété OnSelect (seul changement : btnDeposerExec)
+==============================================================================
+If(IsBlank(varDossier);
+    Notify("Enregistrez d'abord votre dossier avec « ☁️ Enregistrer et déposer »."; NotificationType.Warning);
+    Set(varDossier; Patch(Appreciations; varDossier; {Statut: {Value: "Certifié"}; CertifieLe: Now()}));;
+    Select(btnDeposerExec);;
+    Reset(chkCert);;
+    Notify("Formulaire approuvé et soumis au supérieur immédiat."; NotificationType.Success))
+
+
+==============================================================================
+[11] btnTransSI — propriété OnSelect (seul changement : btnDeposerExec)
+==============================================================================
+// Transmet la version du supérieur immédiat à la personne, avant sa confirmation (le flux 2 l'avise par courriel)
+Set(varDossier; Patch(Appreciations; varDossier; {VersionSILe: Now()}));;
+Select(btnDeposerExec);;
+Reset(chkTransSI);;
+Notify("Votre version est transmise. La personne en appréciation est avisée par courriel."; NotificationType.Success)
+
+
+==============================================================================
+[12] btnApprSI — propriété OnSelect (seul changement : btnDeposerExec)
+==============================================================================
+Set(varDossier; Patch(Appreciations; varDossier; {Statut: {Value: "Approuvé SI"}; ApprouveSILe: Now()}));;
+Select(btnDeposerExec);;
+Reset(chkApprSI);;
+Notify("Approbation enregistrée."; NotificationType.Success)
+
+
+==============================================================================
+[13] btnApprSH — propriété OnSelect (seul changement : btnDeposerExec)
+==============================================================================
+Set(varDossier; Patch(Appreciations; varDossier;
+     {Statut: {Value: If(Coalesce(varDossier.DirecteurRequis; false); "Approuvé SH"; "Complété")}; ApprouveSHLe: Now()}));;
+Select(btnDeposerExec);;
+Reset(chkApprSH);;
+Notify("Approbation enregistrée."; NotificationType.Success)
+
+
+==============================================================================
+[14] btnApprDir — propriété OnSelect (seul changement : btnDeposerExec)
+==============================================================================
+Set(varDossier; Patch(Appreciations; varDossier; {Statut: {Value: "Complété"}; ApprouveDirLe: Now()}));;
+Select(btnDeposerExec);;
+Reset(chkApprDir);;
+Notify("Approbation enregistrée."; NotificationType.Success)
+
+
+==============================================================================
+[15] scrFormulaire — propriété OnVisible : AJOUTEZ à la toute fin
+==============================================================================
+(mettez d'abord ;; à la fin de la dernière ligne existante, puis collez :)
+// Fenêtre de confirmation fermée à l'ouverture de l'écran
+UpdateContext({locConfirmer: false})
+
+
+==============================================================================
+[16] Fenêtre de confirmation (conConfirmer, conBoite, 2 étiquettes, 2 boutons)
+==============================================================================
+--- conConfirmer.X ---
+0
+
+--- conConfirmer.Y ---
+0
+
+--- conConfirmer.Width ---
+Parent.Width
+
+--- conConfirmer.Height ---
+Parent.Height
+
+--- conConfirmer.Fill ---
+RGBA(0; 0; 0; 0,45)
+
+--- conConfirmer.Visible ---
+locConfirmer
+
+--- conBoite.Width ---
+540
+
+--- conBoite.Height ---
+250
+
+--- conBoite.X ---
+(Parent.Width - Self.Width) / 2
+
+--- conBoite.Y ---
+(Parent.Height - Self.Height) / 2
+
+--- conBoite.Fill ---
+Color.White
+
+--- lblConfirmerTitre.Text ---
+"Créer votre dossier d'appréciation ?"
+
+--- lblConfirmerTitre.X / Y / Width ---
+24 / 20 / Parent.Width - 48   (FontWeight : Bold ; Size : 16 ; Color : RGBA(0; 40; 94; 1))
+
+--- lblConfirmerTexte.Text ---
+"Un nouveau dossier sera créé dans SharePoint à votre nom. Votre supérieur(e) immédiat(e) et votre supérieur(e) hiérarchique y auront accès. Voulez-vous continuer ?"
+
+--- lblConfirmerTexte.X / Y / Width / Height ---
+24 / 64 / Parent.Width - 48 / 100
+
+--- btnConfirmerOui.Text ---
+"Oui, créer le dossier"
+
+--- btnConfirmerOui.Width / X / Y ---
+210 / Parent.Width - 24 - Self.Width / Parent.Height - 24 - Self.Height   (Fill : RGBA(0; 40; 94; 1))
+
+--- btnConfirmerOui.OnSelect ---
+// Création confirmée : on ferme la fenêtre et on enregistre (btnDeposerExec)
+UpdateContext({locConfirmer: false});;
+Select(btnDeposerExec)
+
+--- btnConfirmerNon.Text ---
+"Annuler"
+
+--- btnConfirmerNon.Width / X / Y ---
+120 / btnConfirmerOui.X - 16 - Self.Width / btnConfirmerOui.Y
+
+--- btnConfirmerNon.OnSelect ---
+// Création annulée : on ferme la fenêtre, rien n'est enregistré
+UpdateContext({locConfirmer: false});;
+Notify("Création annulée. Rien n'a été enregistré."; NotificationType.Information)
+
+
+
+==============================================================================
+[17] Écran scrAPropos (nouvel écran vide)
+==============================================================================
+--- scrAPropos.Fill ---
+RGBA(245; 247; 250; 1)
+
+--- scrAPropos.OnVisible ---
+// scrAPropos.OnVisible — Lit l'environnement et les coordonnées du soutien dans la liste Parametres (modifiables sans republier)
+Set(varEnv; Coalesce(LookUp(Parametres; Title = "Environnement").Valeur; "PROD"));;
+Set(varSupportNom; LookUp(Parametres; Title = "SupportNom").Valeur);;
+Set(varSupportTel; LookUp(Parametres; Title = "SupportTelephone").Valeur);;
+Set(varCourrielSoutien; LookUp(Parametres; Title = "CourrielSoutien").Valeur)
+
+--- recAProposBandeau (Rectangle) : X / Y / Width / Height / Fill ---
+0 / 0 / Parent.Width / 64 / RGBA(0; 40; 94; 1)
+
+--- lblAProposTitre.Text ---
+"À propos"
+
+--- lblAProposTitre : X / Y / Width / Color / Size / FontWeight ---
+24 / 12 / 400 / Color.White / 20 / FontWeight.Bold
+
+--- lblAppNom.Text ---
+"Appréciation de la contribution (SRHVQ)"
+
+--- lblAppNom : X / Y / Width / Size / FontWeight ---
+40 / 90 / Parent.Width - 80 / 18 / FontWeight.Semibold
+
+--- lblVersion.Text ---
+"Version 1.0.0.10 — Environnement : " & varEnv
+
+--- lblVersion : X / Y / Width ---
+40 / 125 / Parent.Width - 80   (changez le numéro à chaque nouvelle version)
+
+--- lblDescriptionApp.Text ---
+"Application de la Ville de Québec pour l'appréciation annuelle de la contribution des cadres et des professionnels non syndiqués. Responsable : Service des ressources humaines, Division de la santé et de la sécurité au travail (RH-SST)."
+
+--- lblDescriptionApp : X / Y / Width / Height ---
+40 / 160 / Parent.Width - 80 / 70
+
+--- lblSupport.Text ---
+"Soutien de l'application" & Char(10) &
+"Responsable : " & Coalesce(varSupportNom; "Annie Audet, RH-SST") & Char(10) &
+If(IsBlank(varSupportTel); ""; "📞 Téléphone : " & varSupportTel & Char(10)) &
+"✉️ Courriel : " & Coalesce(varCourrielSoutien; "—")
+
+--- lblSupport : X / Y / Width / Height / Size ---
+40 / 245 / Parent.Width - 80 / 110 / 14
+
+--- btnEcrireSoutien.Text ---
+"✉️ Écrire au soutien"
+
+--- btnEcrireSoutien.OnSelect ---
+// btnEcrireSoutien.OnSelect — Ouvre un courriel déjà adressé au soutien, avec l'environnement
+If(IsBlank(varCourrielSoutien);
+    Notify("L'adresse du soutien n'est pas configurée (liste Parametres, CourrielSoutien)."; NotificationType.Error);
+    Launch("mailto:" & varCourrielSoutien &
+        "?subject=" & EncodeUrl("Appréciation de la contribution — demande de soutien") &
+        "&body=" & EncodeUrl("Environnement : " & varEnv & Char(10) & Char(10) & "Décrivez votre question ou le problème (écran, bouton, message d'erreur) :" & Char(10))))
+
+--- btnEcrireSoutien : X / Y / Width ---
+40 / 375 / 220   (Fill : RGBA(0; 40; 94; 1))
+
+--- btnAProposRetour.Text ---
+"← Retour"
+
+--- btnAProposRetour.OnSelect ---
+// Revient à l'écran précédent
+Back()
+
+--- btnAProposRetour : X / Y / Width ---
+Parent.Width - 160 / 14 / 130
+
+
+
+==============================================================================
+[18] Écran scrAide (nouvel écran vide, didacticiel de 5 pages)
+==============================================================================
+--- scrAide.Fill ---
+RGBA(245; 247; 250; 1)
+
+--- scrAide.OnVisible ---
+// scrAide.OnVisible — Didacticiel : une page par écran ou étape de l'application
+UpdateContext({locEtape: 1});;
+ClearCollect(colAide;
+    {Etape: 1; Titre: "Bienvenue";
+     Texte: "L'application Appréciation de la contribution remplace le formulaire Word. Chaque appréciation est un dossier, visible seulement par la personne, ses supérieurs, le directeur ou la directrice de service s'il y a lieu, et les RH. Un courriel avise automatiquement la bonne personne à chaque étape."};
+    {Etape: 2; Titre: "Mes dossiers";
+     Texte: "L'écran d'accueil liste vos dossiers, avec votre rôle et le statut. Filtres : Tous, En cours, À approuver par moi, Complétés. « Ouvrir » ouvre un dossier ; « Nouveau formulaire » commence votre appréciation."};
+    {Etape: 3; Titre: "Le formulaire";
+     Texte: "Choisissez d'abord votre type de poste (barre de gauche), puis remplissez l'identification et les sections A à F. Seules les sections de votre rôle sont modifiables. « Enregistrer et déposer » vérifie les champs obligatoires ; une confirmation est demandée à la création du dossier."};
+    {Etape: 4; Titre: "Le processus d'approbation";
+     Texte: "Section G : la personne avise son supérieur(e) immédiat(e). Celui-ci ou celle-ci remplit ses cotes, son bilan et l'évaluation globale, puis transmet sa version. Après la rencontre, la personne confirme et approuve ; ensuite le SI, le SH et, au besoin, le directeur ou la directrice de service approuvent. La barre d'étapes montre l'avancement et les dates."};
+    {Etape: 5; Titre: "PDF, aide et soutien";
+     Texte: "« Aperçu PDF » produit le PDF complet, joint au dossier ; « Ouvrir le PDF » l'affiche. « ❓ Comment remplir » explique le formulaire. « ℹ️ À propos » donne les coordonnées du soutien et permet de lui écrire."})
+
+--- recAideBandeau (Rectangle) : X / Y / Width / Height / Fill ---
+0 / 0 / Parent.Width / 64 / RGBA(0; 40; 94; 1)
+
+--- lblAideEntete.Text ---
+"Aide — étape " & locEtape & " de " & CountRows(colAide)
+
+--- lblAideEntete : X / Y / Width / Color / Size / FontWeight ---
+24 / 12 / 500 / Color.White / 20 / FontWeight.Bold
+
+--- lblAideTitre.Text ---
+LookUp(colAide; Etape = locEtape).Titre
+
+--- lblAideTitre : X / Y / Width / Size / FontWeight / Color ---
+60 / 110 / Parent.Width - 120 / 22 / FontWeight.Bold / RGBA(0; 40; 94; 1)
+
+--- lblAideTexte.Text ---
+LookUp(colAide; Etape = locEtape).Texte
+
+--- lblAideTexte : X / Y / Width / Height / Size ---
+60 / 160 / Parent.Width - 120 / 220 / 15
+
+--- btnAidePrecedent.Text ---
+"← Précédent"
+
+--- btnAidePrecedent.OnSelect ---
+// Page précédente du didacticiel
+UpdateContext({locEtape: Max(1; locEtape - 1)})
+
+--- btnAidePrecedent.DisplayMode ---
+If(locEtape > 1; DisplayMode.Edit; DisplayMode.Disabled)
+
+--- btnAidePrecedent : X / Y / Width ---
+60 / 420 / 150
+
+--- btnAideSuivant.Text ---
+If(locEtape < CountRows(colAide); "Suivant →"; "Terminer ✓")
+
+--- btnAideSuivant.OnSelect ---
+// Page suivante ; à la dernière page, retour à l'écran précédent
+If(locEtape < CountRows(colAide);
+    UpdateContext({locEtape: locEtape + 1});
+    Back())
+
+--- btnAideSuivant : X / Y / Width / Fill ---
+230 / 420 / 150 / RGBA(0; 40; 94; 1)
+
+--- btnAideFermer.Text ---
+"✕ Fermer"
+
+--- btnAideFermer.OnSelect ---
+// Quitte l'aide et revient à l'écran précédent
+Back()
+
+--- btnAideFermer : X / Y / Width ---
+Parent.Width - 160 / 14 / 130
+
+
+
+==============================================================================
+[19] Boutons d'accès btnAPropos et btnAide (écran scrMesDossiers)
+==============================================================================
+--- btnAPropos.Text ---
+"ℹ️ À propos"
+
+--- btnAPropos.OnSelect ---
+// Ouvre l'écran À propos (soutien et contact)
+Navigate(scrAPropos; ScreenTransition.None)
+
+--- btnAide.Text ---
+"📖 Aide (didacticiel)"
+
+--- btnAide.OnSelect ---
+// Ouvre l'écran d'aide (didacticiel)
+Navigate(scrAide; ScreenTransition.None)
+

@@ -67,7 +67,8 @@ Le diagramme montre, dans l'ordre, **qui fait quoi** et **ce que le système fai
 | SRHVQ_RACI-et-sequence.docx | Ce document : modifiez les tableaux RACI directement dans Word |
 | Diagramme-sequence.png / .jpg | Image à insérer dans un document ou une présentation |
 | diagramme-sequence.svg | Même image, qualité parfaite à toute taille |
-| diagramme-sequence.mmd | Source **Mermaid**, modifiable gratuitement |
+| diagramme-sequence.mmd | Source **Mermaid**, modifiable gratuitement (mermaid.live) |
+| diagramme-sequence.drawio | Formes modifiables pour **draw.io**, d'où l'on exporte un fichier **Visio (.vsdx)** |
 | generer-sequence.py | Source de l'image (pour la régénérer) |
 
 **Modifier le diagramme sans logiciel payant :**
@@ -78,3 +79,19 @@ Le diagramme montre, dans l'ordre, **qui fait quoi** et **ce que le système fai
 4. **Actions › PNG** ou **SVG** pour télécharger l'image.
 
 Autre option : **draw.io** (gratuit) › **Organiser › Insérer › Mermaid** › collez le texte.
+
+# 6. Utiliser le diagramme dans Visio
+
+Visio **ne lit pas** les fichiers Mermaid (.mmd). Deux façons gratuites d'obtenir un fichier Visio :
+
+**A. Fichier Visio modifiable (recommandé)**
+
+1. Ouvrez **https://app.diagrams.net** (draw.io, gratuit, sans compte). Choisissez **Appareil** si on vous demande où enregistrer.
+2. **Fichier › Ouvrir depuis › Appareil** › choisissez **diagramme-sequence.drawio**.
+3. **Fichier › Exporter en › VSDX**. Enregistrez.
+4. Ouvrez le fichier .vsdx dans Visio : chaque boîte, flèche et texte est une forme modifiable.
+
+**B. Image dans Visio**
+
+1. Visio › **Insérer › Images** › choisissez **diagramme-sequence.svg**.
+2. Pour modifier : clic droit sur l'image › **Convertir en forme** (ou **Grouper › Dissocier**, selon la version de Visio).
