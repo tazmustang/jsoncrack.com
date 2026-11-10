@@ -1,0 +1,54 @@
+%% Diagramme de séquence SRHVQ (version 1.0.0.9) — modifiable gratuitement sur https://mermaid.live ou dans draw.io (Organiser › Insérer › Mermaid)
+sequenceDiagram
+    actor P as Personne en appréciation
+    actor SI as Supérieur(e) immédiat(e)
+    actor SH as Supérieur(e) hiérarchique
+    actor DIR as Directeur(trice) de service
+    participant APP as Application Power Apps
+    participant SP as Liste SharePoint SRHVQ_Appreciations
+    participant PA as Power Automate (flux 1, 2, 3)
+    actor RH as Ressources humaines
+
+    Note over P,RH: 1. Création du dossier
+    P->>APP: Nouveau formulaire, type de poste, remplit A, B, C, D, F
+    APP->>SP: Enregistrer et déposer : crée le dossier (Brouillon)
+    SP->>PA: Flux 1 : nouvel élément
+    PA->>PA: Coupe l'héritage, retire SRHVQ_Utilisateurs, Collaboration aux personnes du dossier
+
+    Note over P,RH: 2. Avis au supérieur et version du supérieur
+    P->>APP: Aviser le supérieur
+    APP->>SP: Statut = Avisé au supérieur
+    SP->>PA: Flux 2 : élément modifié
+    PA-->>SI: Courriel « prête pour votre consultation »
+    SI->>APP: Cotes B, bilan E, évaluation globale, Transmettre ma version
+    APP->>SP: VersionSILe = maintenant
+    PA-->>P: Courriel « la version de votre supérieur(e) est prête »
+    Note over P,SI: Rencontre d'appréciation (hors application)
+
+    Note over P,RH: 3. Confirmation et approbations
+    P->>APP: Je confirme, Approuver et soumettre
+    APP->>SP: Statut = Certifié (affiché « Confirmé »), contenu verrouillé
+    PA-->>SI: Courriel « À approuver »
+    SI->>APP: Approuver
+    APP->>SP: Statut = Approuvé SI
+    PA-->>SH: Courriel « À approuver »
+    SH->>APP: Approuver
+    alt Directeur ou directrice de service requis(e)
+        APP->>SP: Statut = Approuvé SH
+        PA-->>DIR: Courriel « À approuver »
+        DIR->>APP: Approuver
+        APP->>SP: Statut = Complété
+    else Pas de directeur requis
+        APP->>SP: Statut = Complété
+    end
+
+    Note over P,RH: 4. Clôture
+    SP->>PA: Flux 2 : Statut = Complété
+    PA-->>RH: Courriel : évaluation globale seulement
+    PA-->>P: Avis à tous, lecture seule, date de transmission
+
+    Note over P,RH: En tout temps : PDF
+    P->>APP: Aperçu PDF
+    APP->>PA: Flux 3 GenererPDFAppreciation
+    PA->>SP: PDF joint au dossier (remplace l'ancien)
+    PA-->>APP: Lien : « Ouvrir le PDF »
