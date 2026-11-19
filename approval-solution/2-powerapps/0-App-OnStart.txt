@@ -1,0 +1,11 @@
+// ===== Propriété App.OnStart =====
+// (Arborescence > App > propriété OnStart)
+// Syntaxe anglaise (virgule = séparateur, point-virgule = enchaînement).
+// En Power Apps français, tapez : ";" à la place de "," et ";;" à la place de ";"
+
+Set(varTab, "Mine");
+Set(varItem, Blank())
+
+
+// ===== Propriété App.StartScreen =====
+scrHome

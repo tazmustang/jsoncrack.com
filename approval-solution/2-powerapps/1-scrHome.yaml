@@ -1,0 +1,207 @@
+# ÉCRAN : scrHome (accueil / tableau de bord)
+# 1. Créez un écran vide nommé scrHome
+# 2. Sélectionnez scrHome dans l'arborescence
+# 3. Copiez TOUT ce fichier et faites Ctrl+V (ou clic droit > Coller)
+- recHomeHeader:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =0
+      Y: =0
+      Width: =Parent.Width
+      Height: =80
+      Fill: =RGBA(0, 120, 212, 1)
+- lblHomeTitle:
+    Control: Label@2.5.1
+    Properties:
+      X: =24
+      Y: =0
+      Width: =600
+      Height: =80
+      Text: ="Gestion des approbations"
+      Color: =RGBA(255, 255, 255, 1)
+      Size: =22
+      FontWeight: =FontWeight.Bold
+- lblHomeUser:
+    Control: Label@2.5.1
+    Properties:
+      X: =Parent.Width - 524
+      Y: =0
+      Width: =500
+      Height: =80
+      Text: ="Bonjour " & User().FullName
+      Align: =Align.Right
+      Color: =RGBA(255, 255, 255, 1)
+      Size: =14
+- btnTabMine:
+    Control: Classic/Button@2.2.0
+    Properties:
+      X: =24
+      Y: =100
+      Width: =200
+      Height: =44
+      Text: ="Mes demandes"
+      OnSelect: =Set(varTab, "Mine")
+      Fill: =If(varTab = "Mine", RGBA(0, 120, 212, 1), RGBA(255, 255, 255, 1))
+      Color: =If(varTab = "Mine", RGBA(255, 255, 255, 1), RGBA(0, 120, 212, 1))
+      BorderColor: =RGBA(0, 120, 212, 1)
+      BorderThickness: =1
+      RadiusTopLeft: =6
+      RadiusTopRight: =6
+      RadiusBottomLeft: =6
+      RadiusBottomRight: =6
+- btnTabApprove:
+    Control: Classic/Button@2.2.0
+    Properties:
+      X: =234
+      Y: =100
+      Width: =200
+      Height: =44
+      Text: ="À approuver"
+      OnSelect: =Set(varTab, "Approve")
+      Fill: =If(varTab = "Approve", RGBA(0, 120, 212, 1), RGBA(255, 255, 255, 1))
+      Color: =If(varTab = "Approve", RGBA(255, 255, 255, 1), RGBA(0, 120, 212, 1))
+      BorderColor: =RGBA(0, 120, 212, 1)
+      BorderThickness: =1
+      RadiusTopLeft: =6
+      RadiusTopRight: =6
+      RadiusBottomLeft: =6
+      RadiusBottomRight: =6
+- btnNewRequest:
+    Control: Classic/Button@2.2.0
+    Properties:
+      X: =Parent.Width - 244
+      Y: =100
+      Width: =220
+      Height: =44
+      Text: ="+ Nouvelle demande"
+      OnSelect: =Navigate(scrNew, ScreenTransition.Cover)
+      Fill: =RGBA(16, 124, 16, 1)
+      Color: =RGBA(255, 255, 255, 1)
+      RadiusTopLeft: =6
+      RadiusTopRight: =6
+      RadiusBottomLeft: =6
+      RadiusBottomRight: =6
+- txtSearch:
+    Control: Classic/TextInput@2.3.2
+    Properties:
+      X: =24
+      Y: =160
+      Width: =410
+      Height: =40
+      Default: =""
+      HintText: ="Rechercher un titre (commence par...)"
+- ddStatusFilter:
+    Control: Classic/DropDown@2.3.1
+    Properties:
+      X: =450
+      Y: =160
+      Width: =220
+      Height: =40
+      Items: =["Tous", "En attente", "Approuvé", "Rejeté", "Annulé"]
+      Default: ="Tous"
+      Visible: =varTab = "Mine"
+- galRequests:
+    Control: Gallery@2.15.0
+    Variant: Vertical
+    Properties:
+      X: =24
+      Y: =216
+      Width: =Parent.Width - 48
+      Height: =Parent.Height - 236
+      TemplateSize: =90
+      TemplatePadding: =0
+      Items: |-
+        =If(
+            varTab = "Mine",
+            Sort(
+                Filter(
+                    ApprovalRequests,
+                    'Created By'.Email = User().Email,
+                    StartsWith(Title, txtSearch.Text),
+                    ddStatusFilter.Selected.Value = "Tous" || Status.Value = ddStatusFilter.Selected.Value
+                ),
+                Created,
+                SortOrder.Descending
+            ),
+            Sort(
+                Filter(
+                    ApprovalRequests,
+                    Approver.Email = User().Email,
+                    Status.Value = "En attente",
+                    StartsWith(Title, txtSearch.Text)
+                ),
+                Created,
+                SortOrder.Descending
+            )
+        )
+      OnSelect: |-
+        =Set(varItem, ThisItem);
+        Navigate(scrDetails, ScreenTransition.Cover)
+    Children:
+      - lblItemTitle:
+          Control: Label@2.5.1
+          Properties:
+            X: =16
+            Y: =8
+            Width: =Parent.TemplateWidth - 220
+            Height: =36
+            Text: =ThisItem.Title
+            Size: =16
+            FontWeight: =FontWeight.Semibold
+            OnSelect: =Select(Parent)
+      - lblItemInfo:
+          Control: Label@2.5.1
+          Properties:
+            X: =16
+            Y: =44
+            Width: =Parent.TemplateWidth - 220
+            Height: =32
+            Text: |-
+              =ThisItem.Category.Value & "  ·  " &
+              Text(ThisItem.Amount, "#,##0.00") & " $  ·  " &
+              If(varTab = "Mine", "Approbateur : " & ThisItem.Approver.DisplayName, "Demandeur : " & ThisItem.'Created By'.DisplayName) &
+              "  ·  " & Text(ThisItem.Created, "dd/mm/yyyy")
+            Size: =12
+            Color: =RGBA(96, 96, 96, 1)
+            OnSelect: =Select(Parent)
+      - lblItemStatus:
+          Control: Label@2.5.1
+          Properties:
+            X: =Parent.TemplateWidth - 190
+            Y: =25
+            Width: =170
+            Height: =40
+            Text: =ThisItem.Status.Value
+            Align: =Align.Center
+            Size: =12
+            FontWeight: =FontWeight.Bold
+            Color: =RGBA(255, 255, 255, 1)
+            Fill: |-
+              =Switch(
+                  ThisItem.Status.Value,
+                  "Approuvé", RGBA(16, 124, 16, 1),
+                  "Rejeté", RGBA(196, 43, 28, 1),
+                  "Annulé", RGBA(120, 120, 120, 1),
+                  RGBA(202, 80, 16, 1)
+              )
+            OnSelect: =Select(Parent)
+      - recItemSeparator:
+          Control: Rectangle@2.3.0
+          Properties:
+            X: =0
+            Y: =Parent.TemplateHeight - 1
+            Width: =Parent.TemplateWidth
+            Height: =1
+            Fill: =RGBA(225, 225, 225, 1)
+- lblEmpty:
+    Control: Label@2.5.1
+    Properties:
+      X: =24
+      Y: =260
+      Width: =Parent.Width - 48
+      Height: =60
+      Text: =If(varTab = "Mine", "Vous n'avez aucune demande.", "Aucune demande en attente de votre approbation.")
+      Align: =Align.Center
+      Color: =RGBA(120, 120, 120, 1)
+      Size: =14
+      Visible: =IsEmpty(galRequests.AllItems)

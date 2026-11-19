@@ -1,0 +1,196 @@
+# ÉCRAN : scrNew (formulaire de nouvelle demande)
+# 1. Créez un écran vide nommé scrNew
+# 2. Sélectionnez scrNew dans l'arborescence
+# 3. Copiez TOUT ce fichier et faites Ctrl+V
+# Prérequis : sources de données ApprovalRequests (SharePoint) et Office365Users
+- recNewHeader:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =0
+      Y: =0
+      Width: =Parent.Width
+      Height: =80
+      Fill: =RGBA(0, 120, 212, 1)
+- btnNewBack:
+    Control: Classic/Button@2.2.0
+    Properties:
+      X: =16
+      Y: =18
+      Width: =120
+      Height: =44
+      Text: ="< Retour"
+      OnSelect: =Back()
+      Fill: =RGBA(0, 120, 212, 1)
+      Color: =RGBA(255, 255, 255, 1)
+      BorderColor: =RGBA(255, 255, 255, 1)
+      BorderThickness: =1
+- lblNewTitle:
+    Control: Label@2.5.1
+    Properties:
+      X: =160
+      Y: =0
+      Width: =600
+      Height: =80
+      Text: ="Nouvelle demande d'approbation"
+      Color: =RGBA(255, 255, 255, 1)
+      Size: =22
+      FontWeight: =FontWeight.Bold
+- lblFieldTitle:
+    Control: Label@2.5.1
+    Properties:
+      X: =40
+      Y: =110
+      Width: =300
+      Height: =30
+      Text: ="Titre *"
+      FontWeight: =FontWeight.Semibold
+- txtNewTitle:
+    Control: Classic/TextInput@2.3.2
+    Properties:
+      X: =40
+      Y: =140
+      Width: =600
+      Height: =40
+      Default: =""
+      HintText: |-
+        ="Ex. : Achat d'un ordinateur portable"
+- lblFieldCategory:
+    Control: Label@2.5.1
+    Properties:
+      X: =40
+      Y: =200
+      Width: =290
+      Height: =30
+      Text: ="Catégorie"
+      FontWeight: =FontWeight.Semibold
+- ddNewCategory:
+    Control: Classic/DropDown@2.3.1
+    Properties:
+      X: =40
+      Y: =230
+      Width: =290
+      Height: =40
+      Items: =Choices(ApprovalRequests.Category)
+- lblFieldAmount:
+    Control: Label@2.5.1
+    Properties:
+      X: =350
+      Y: =200
+      Width: =290
+      Height: =30
+      Text: ="Montant ($)"
+      FontWeight: =FontWeight.Semibold
+- txtNewAmount:
+    Control: Classic/TextInput@2.3.2
+    Properties:
+      X: =350
+      Y: =230
+      Width: =290
+      Height: =40
+      Default: =""
+      Format: =TextFormat.Number
+      HintText: ="0"
+- lblFieldApprover:
+    Control: Label@2.5.1
+    Properties:
+      X: =40
+      Y: =290
+      Width: =300
+      Height: =30
+      Text: ="Approbateur *"
+      FontWeight: =FontWeight.Semibold
+- cmbNewApprover:
+    Control: Classic/ComboBox@2.4.0
+    Properties:
+      X: =40
+      Y: =320
+      Width: =600
+      Height: =40
+      Items: |-
+        =Office365Users.SearchUserV2({searchTerm: Self.SearchText, top: 25, isSearchTermRequired: false}).value
+      DisplayFields: =["DisplayName"]
+      SearchFields: =["DisplayName"]
+      SelectMultiple: =false
+      IsSearchable: =true
+      InputTextPlaceholder: ="Tapez un nom..."
+- lblFieldDescription:
+    Control: Label@2.5.1
+    Properties:
+      X: =40
+      Y: =380
+      Width: =300
+      Height: =30
+      Text: ="Description / justification"
+      FontWeight: =FontWeight.Semibold
+- txtNewDescription:
+    Control: Classic/TextInput@2.3.2
+    Properties:
+      X: =40
+      Y: =410
+      Width: =600
+      Height: =140
+      Default: =""
+      Mode: =TextMode.MultiLine
+- btnSubmit:
+    Control: Classic/Button@2.2.0
+    Properties:
+      X: =40
+      Y: =580
+      Width: =290
+      Height: =48
+      Text: ="Envoyer la demande"
+      Fill: =RGBA(16, 124, 16, 1)
+      Color: =RGBA(255, 255, 255, 1)
+      DisplayMode: =If(IsBlank(txtNewTitle.Text) || IsBlank(cmbNewApprover.Selected), DisplayMode.Disabled, DisplayMode.Edit)
+      OnSelect: |-
+        =IfError(
+            Patch(
+                ApprovalRequests,
+                Defaults(ApprovalRequests),
+                {
+                    Title: txtNewTitle.Text,
+                    Description: txtNewDescription.Text,
+                    Category: ddNewCategory.Selected,
+                    Amount: Value(txtNewAmount.Text),
+                    Status: {Value: "En attente"},
+                    NotificationSent: false,
+                    Approver: {
+                        '@odata.type': "#Microsoft.Azure.Connectors.SharePoint.SPListExpandedUser",
+                        Claims: "i:0#.f|membership|" & Lower(cmbNewApprover.Selected.UserPrincipalName),
+                        DisplayName: cmbNewApprover.Selected.DisplayName,
+                        Email: cmbNewApprover.Selected.Mail,
+                        Department: "",
+                        JobTitle: "",
+                        Picture: ""
+                    }
+                }
+            ),
+            Notify("Erreur lors de l'envoi : " & FirstError.Message, NotificationType.Error),
+            Notify("Demande envoyée à " & cmbNewApprover.Selected.DisplayName, NotificationType.Success);
+            Reset(txtNewTitle);
+            Reset(txtNewAmount);
+            Reset(txtNewDescription);
+            Reset(ddNewCategory);
+            Reset(cmbNewApprover);
+            Set(varTab, "Mine");
+            Navigate(scrHome, ScreenTransition.UnCover)
+        )
+- btnNewCancel:
+    Control: Classic/Button@2.2.0
+    Properties:
+      X: =350
+      Y: =580
+      Width: =290
+      Height: =48
+      Text: ="Annuler"
+      Fill: =RGBA(255, 255, 255, 1)
+      Color: =RGBA(96, 96, 96, 1)
+      BorderColor: =RGBA(160, 160, 160, 1)
+      BorderThickness: =1
+      OnSelect: |-
+        =Reset(txtNewTitle);
+        Reset(txtNewAmount);
+        Reset(txtNewDescription);
+        Reset(ddNewCategory);
+        Reset(cmbNewApprover);
+        Back()
