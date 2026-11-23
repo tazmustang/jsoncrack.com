@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(az account show*)",
+      "Bash(az account list*)",
+      "Bash(pac auth list*)",
+      "Bash(pac env list*)",
+      "Bash(pac env list-settings*)",
+      "Bash(pac solution list*)",
+      "Bash(jq *)"
+    ]
+  }
+}
